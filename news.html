@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>News — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="index.html">MGG Wiki</a>
+  <nav>
+    <a href="units/index.html">Units</a>
+    <a href="keywords/index.html">Keywords</a>
+    <a href="gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="talent-simulator.html">Talent Simulator</a>
+    <a href="team-planner.html">Team Planner</a>
+    <a href="search-unit.html">Search · Units</a>
+    <a href="search-talent.html">Search · Talents</a>
+    <a href="news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>News</h1>
+<p><em>Wiki update log — most recent first. Each entry summarizes what changed in the published site.</em></p>
+<h2>2026-05-01 — Team Planner launched</h2>
+<p>New tool: <a href="team-planner.html">Team Planner</a>. 3-unit build sandbox for stacking-numbers comparison.</p>
+<ul>
+<li><strong>3 main slots side-by-side</strong> — pick a unit per slot (searchable picker filtered by Step / Class), each with its own gear / talent / support build.</li>
+<li><strong>10 gear slots per unit</strong> (Main, Off, Head, Body, Gloves, Belt, Shoes, Necklace, Ring, Badge). Picker shows the full 1,234-item pool filtered by slot, sortable by Step (SS/S/A/B/C), with per-item stat strip + bond name + special effect text.</li>
+<li><strong>4 talent slots per unit</strong> with rollable-vs-all toggle. Rollable mode applies the unit's roll-pool restrictions (SpecifyRoleIDs / Race / Class / Element); All mode unlocks the full 588-talent transferable pool.</li>
+<li><strong>3 support slots per unit</strong> (Trait / Title / Perk) — pick a <em>source unit</em> whose corresponding passive is borrowed. Source-unit constraints enforced per the game rules: a fielded main can't also be a support source, and any source unit used on one slot is locked from being a source on any other slot anywhere on the team. Up to 12 distinct units per Trio comp.</li>
+<li><strong>Per-unit stat readout</strong> — raw stats (STR / SPI / AGI / HP / SPD / Tough / Luck / Mana) with breakdown (base + gear delta), pool stats (ATK / DEF / Weakness) with class-specific routing. Mage stat→pool routing is confirmed; Warrior / Archer / Priest are guesses (warning shown on the unit panel until verified in-game).</li>
+<li><strong>Team aggregate panel</strong> — sums everything across the 3 mains:</li>
+<li>Pool stat totals (ATK / DEF / Weakness) and raw stat totals</li>
+<li><strong>Status stacking</strong> — per-status total of detected applies (e.g., "+7 Chill" = sum of every "Apply N stacks of Chill" / "+N stacks of Chill" found across the team's talents, supports, bonds, and own passives), with per-source breakdown so you can see where each number came from. Filters out threshold phrasing ("per 15 stacks of Chill") to avoid false positives.</li>
+<li><strong>Stat additions from effect text</strong> — separate stacking summary for "+N STR" / "+N SPD" patterns parsed from talent / bond / support text (these don't appear on the typed stat columns).</li>
+<li><strong>Active bonds across the team</strong> — bond pieces summed across all 3 mains, with the highest unlocked tier's effect rendered. Shows per-unit piece distribution <code>[a|b|c]</code> so you can see whether bond pieces are concentrated on one unit or spread thin.</li>
+<li><strong>Auto-save to local storage</strong> + Export / Import (JSON copy/paste).</li>
+</ul>
+<p>Use cases: comparing whether 4× same talent or 4× different talents wins on a single unit; checking if a Trio's combined Chill output crosses Hypothermia's 10-stack threshold; sanity-checking team Toughness vs DEF totals across comp candidates.</p>
+<p>Source-of-truth at <code>publish-web/team-planner.html</code> (direct — same pattern as Talent Simulator). Data sidecar <code>team-planner-data.js</code> is regenerated from <code>mgg_datamine/*.md</code> via <code>tools/build_team_planner_data.py</code> (run after each datamine pull).</p>
+<h2>2026-05-01 — Build Outlooks page retired</h2>
+<p>The Builds page and the per-unit build-outlook content have been removed from the wiki. Subjective build advice (synergy chains, 4-talent comps, Solo/Duo/Trio companion picks, support rosters) was getting stale and overlapped with what the game's own Suggest button + the new Talent Simulator already cover. Going forward the wiki stays focused on objective data + tooling.</p>
+<ul>
+<li>Removed: nav link, hub card, all 45 outlook pages, the index page.</li>
+<li>The unit profile pages no longer carry a <code>## Build outlook</code> forward-link section.</li>
+<li>For practical talent planning, use the <a href="talent-simulator.html">Talent Simulator</a>. For team comp suggestions, the in-game Suggest button (server-side curated picks per unit) remains the canonical source.</li>
+</ul>
+<h2>2026-05-01 — Talent Reroll Simulator launched</h2>
+<p>New tool: <a href="talent-simulator.html">Talent Simulator</a>. Per-unit Talent Fruit reroll sandbox modeling the in-game 4-row gacha + lock + soft-pity behavior.</p>
+<ul>
+<li><strong>Unit picker</strong> — searchable thumbnail grid of all 166 units (filter by Step S/A/B/C and Class), 96×96 portrait of selected unit + class/race/element tags + per-tier pool counts.</li>
+<li><strong>Target talent dropdown</strong> — color-grouped by source: ★ Exclusive (gold) → Race-restricted (green) → Class-restricted (amber) → Element-restricted (red) → Generic (dim). Includes talent name + ID.</li>
+<li><strong>4-row roll</strong> — each click rolls up to 4 talent slots with appearance rates (default 100/80/50/10 %, configurable). Tier roll per appearing row uses base S/A/B/C rates (default 2/6/36/56 %). Rolled tier → uniform pick from unit's pool of that tier.</li>
+<li><strong>Lock + cost</strong> — lock any rolled row to keep it; locked slots skip the appearance-rate queue (locking row 3 → row 4 inherits row 3's rate). Cost = 1 + lockedCount Talent Fruits per click; 4 locked = roll disabled.</li>
+<li><strong>Soft pity</strong> — per-click, not per-row. Pity 1: dry +1 if click had no S, resets on any S. Pity 2: nonP +1 if click had S but no target, resets on target, unchanged if no S. Once thresholds (default 50) cross, +5%/click bonus to S-rate (pity 1) or force-target (pity 2).</li>
+<li><strong>Stats + history</strong> — total clicks, fruits spent, target hits, dry streak, current S-rate / force-target chance, tier distribution histogram, last-100 click strip.</li>
+<li><strong>Monte Carlo</strong> — 10k or 100k trials of "clicks until first target appears" with mean / p25 / p50 / p75 / p90 / p99 / min / max + capped distribution histogram. Useful for estimating gem budget for a target talent.</li>
+</ul>
+<p>Default rates and pity model are tuned to the in-game Talent Fruit screen (Orange 2 / Purple 6 / Blue 36 / Green 56 + 50-roll pity at +5%/roll). All values are editable on the page.</p>
+<p>Source-of-truth lives in <code>publish-web/talent-simulator.html</code> directly (no separate source folder). Pool data regenerated from <code>TalentDataTable.md</code> via <code>tools/build_talent_pool.py</code>.</p>
+<h2>2026-05-01 — Frostbound Astral Fiend outlook integrates community guide</h2>
+<p>The <a href="build-outlook/build-outlook-alter-s-frostbound-astral-fiend.html">Frostbound Astral Fiend build outlook</a> now folds in synthesis from the community Versailles guide:</p>
+<ul>
+<li><strong>In-pool talent priority table</strong> — Hypothermia (exclusive) → Deep Freeze (Water in-pool, S-tier +2 Chill + 1 HP per 10 stacks) → Nine Lives → Divine Law (Divine in-pool, turn-1 silence + +15 DMG) → Spell Pierce, with explicit roll-discipline rules ("lock Deep Freeze and open a 2nd page if it appears").</li>
+<li><strong>New Comp Solo-C — Realistic F2P</strong> — single-Hypothermia + Deep Freeze + Divine Law variant for players who don't roll duplicate exclusives.</li>
+<li><strong>Title slot alt — Nightmare Hunter Brave</strong> — Dreameater Title (apply 6 Fear stacks to all enemies turn start) as alternative to standard Hunter Brave's Reaper Title.</li>
+<li><strong>Companion ranking expanded</strong> — Nightmare Hunter Brave added as S-tier support-layer pick, Frost Spider Queen flagged as S-tier early-game carry + permanent Frostweb Perk source.</li>
+<li><strong>F2P progression path section</strong> — 8-step community-validated roadmap covering reroll → events → 4★ → exclusive → Malice 12/12 → 5★ → endgame; gear priority table (Frost Spider Mantle/Gloves, Malice via Evil Fiend set, Bone Chilling staff endgame).</li>
+</ul>
+<h2>2026-05-01 — Support layer complete on all 45 S-tier outlooks</h2>
+<p>Every S-tier build outlook now ships with full Solo / Duo / Trio support rosters (3 slots × every fielded main, with effect text + values + uniqueness check + per-source forfeit notes when sources collide). The remaining <strong>39 outlooks</strong> were filled in batches of 6-7:</p>
+<ul>
+<li><strong>Standard S (24):</strong> Astral Fiend, Core Golem, Crystal Shroom, Dawn Dragoness, Desert Dancer, Dummy, Earth Herald, Earth Witch, Flawless Sage, Forest Nymph, Frost Spider Queen, Ghost Captain, Golden Maiden, Grand Magician, Harpy Princess, Holy Blade, Imp, Isekai Wanderer, Legion Commander, Minotaur Brave, Serene Undine, Shadow Dragoness, Slime Queen, Snowman Knightess, Stellar Archer, Titan Lancer, Wasp Witch, Windstrider</li>
+<li><strong>Alter S (17):</strong> Bunny Grand Magician, Bunny Windstrider, Circus Ghost Captain, Crystal Slime Queen, Frostbound Astral Fiend, Frostbound Harpy Princess, Frostbound Holy Blade, Frostbound Wasp Witch, Legion Minotaur Brave, Lunar Desert Dancer, Mecha Core Golem, Nightmare Earth Herald, Pajama Imp, Pale Shadow Dragoness, Sovereign Flawless Sage, Thunder Titan Lancer, Tribal Legion Commander</li>
+</ul>
+<p>Recurring top-tier source picks across teams: <strong>Stellar Archer's <code>Astral Echo</code> Perk</strong> (extra action — universal action-economy), <strong>Crystal Shroom's <code>Crystal Rule</code> Perk</strong> (Starting Mana for skill-spam Mages), <strong>Hunter Brave's <code>Reaper</code> Title</strong> (low-HP finisher), <strong>Frost Spider's <code>Frostweb</code> Perk</strong> (HP loss per Chill stack), <strong>War Priest's <code>Warlike</code> Trait</strong> (Bloodlust source for Bloodlust-engine units), <strong>Minotaur Brave's <code>Avenger</code> Title</strong> (counter DMG amp), and <strong>Stone Guard's <code>Resolute</code> Trait</strong> (debuff resist while shielded for tank kits).</p>
+<p>Theme-locked source families emerged for tribal builds: Frostbound theme borrows Frost Spider/FB Wasp Witch/FB Harpy/Astral Guardian alter; Thunder theme borrows Tempest Herald alter/Gale Warrior alter/Titan Lancer alter; Demonic Fear theme borrows Imp alter/Earth Herald alter/Hunter Brave alter; Bunny LUK theme borrows Lurking Shadow alter/Windstrider alter/Grand Magician alter. Browse all 166 candidate passives in <a href="units/support-index.html">units/support-index.md</a>.</p>
+<h2>2026-04-30 — Support layer rolled out to 6 flagship S-tier outlooks</h2>
+<p>Five additional S-tier build outlooks now have full per-comp support rosters (3 slots × every main, with effect text + values + uniqueness check + per-source forfeit ledger). Combined with the Windstrider reference, <strong>6 of 45 S-tier outlooks</strong> now ship complete support recommendations:</p>
+<ul>
+<li><a href="build-outlook/build-outlook-standard-s-windstrider.html">Windstrider standard</a> — back-line Precision sniper</li>
+<li><a href="build-outlook/build-outlook-standard-s-astral-fiend.html">Astral Fiend standard</a> — SPI-ramp Mana drainer</li>
+<li><a href="build-outlook/build-outlook-standard-s-forest-nymph.html">Forest Nymph standard</a> — Divine healer / ally-count anchor</li>
+<li><a href="build-outlook/build-outlook-standard-s-frost-spider-queen.html">Frost Spider Queen standard</a> — Insectoid Chill HP-loss</li>
+<li><a href="build-outlook/build-outlook-alter-s-frostbound-astral-fiend.html">Frostbound Astral Fiend (alter)</a> — Chill stack ceiling Mage</li>
+<li><a href="build-outlook/build-outlook-alter-s-frostbound-holy-blade.html">Frostbound Holy Blade (alter)</a> — Frost Echo reverse-DPS tank</li>
+</ul>
+<p>Top-tier source picks recurring across teams: Stellar Archer's <code>Astral Echo</code> Perk (extra action), Crystal Shroom's <code>Crystal Rule</code> Perk (Starting Mana), Hunter Brave's <code>Reaper</code> Title (low-HP finisher), Frost Spider's <code>Frostweb</code> Perk (HP loss per Chill), War Priest's <code>Warlike</code> Trait (Bloodlust to allies), Sovereign Flawless Sage's <code>Rallier</code> Title (Inspire on heal). Browse all 166 candidates in <a href="units/support-index.html">units/support-index.md</a>.</p>
+<p>Remaining 39 S-tier outlooks will be filled iteratively. The format is locked at this point — see Windstrider as the reference layout.</p>
+<h2>2026-04-30 — Support layer mechanic corrected: 3 slots per main</h2>
+<ul>
+<li><strong>Mechanic clarification (user feedback)</strong>: every fielded main has <strong>THREE support slots</strong> — Trait slot, Title slot, Perk slot — each filled by a <em>different</em> non-fielded source unit. The earlier interpretation (1 borrowed slot per main) was wrong: the constraint "chỉ đc dùng 1 trong 3 của 1 unit" is per-source-unit (any one slot used → the other two of that source are forfeit team-wide), not a cap on how many slots the main has.</li>
+<li><strong>Roster capacity</strong> when all support slots are filled: <strong>Solo = 1+3 = up to 4 units · Duo = 2+6 = up to 8 · Trio = 3+9 = up to 12 distinct units total</strong>.</li>
+<li><strong>Migration</strong>: 43 of 45 S-tier outlook headers replaced with the corrected Support layer rule via <code>tools/import_support_into_outlooks.py</code> (now idempotent — replaces existing bullet, not just inserts).</li>
+<li><strong>Reference comp updated</strong>: <a href="build-outlook/build-outlook-standard-s-windstrider.html">build-outlook-standard-s-windstrider.md</a> now shows <strong>3 support slots per main</strong> in Solo / Duo / Trio. Trio comp lists 8 distinct sources + 1 open slot for Forest Nymph's Title; includes a per-source forfeit ledger so the cost of borrowing each unit's whole passive set is explicit. Use this file as the format template; remaining 44 outlooks will be filled iteratively.</li>
+</ul>
+<h2>2026-04-30 — Support layer mechanic imported into build outlooks</h2>
+<ul>
+<li><strong>New mechanic captured</strong>: every fielded unit can borrow <strong>one</strong> of (Trait / Title / Perk) from a non-fielded <strong>support unit</strong>. Borrowed slot is purely additive — the main's own Trait+Title+Perk all stay active. Two hard rules:</li>
+<li>Each support unit's full passive set (all 3 slots) is locked to the one main it serves; cannot be reused on other mains in the same team.</li>
+<li>A given main borrows at most one slot from a given support.</li>
+<li>Roster size doubles: <strong>Solo = 1+1 = 2 units</strong>, <strong>Duo = 2+2 = 4 unique</strong>, <strong>Trio = 3+3 = 6 unique units total</strong>.</li>
+<li><strong>New page</strong>: <a href="units/support-index.html">units/support-index.md</a> — auto-generated browse-all catalogue of every unit's Trait/Title/Perk with effect text and values filled, sorted by step. Re-run <code>py tools/generate_support_index.py</code> after datamine pulls.</li>
+<li><strong>Build outlook header migration</strong>: 43 of 45 S-tier outlooks now carry the new Support layer rule in their talent-rules block (Dummy + Isekai Wanderer skipped — non-standard-pool stubs). Run <code>py tools/import_support_into_outlooks.py</code> for one-shot migration.</li>
+<li><strong>Reference comp</strong>: <a href="build-outlook/build-outlook-standard-s-windstrider.html">build-outlook-standard-s-windstrider.md</a> is the first outlook with full per-comp support picks worked out — Solo / Duo / Trio each list which unit's Trait/Title/Perk each main borrows + uniqueness check. Use it as the format template; remaining 44 outlooks will be filled iteratively.</li>
+</ul>
+<h2>2026-04-30 — Gacha optimizer pool refreshed against current SummonDataTable</h2>
+<ul>
+<li>Re-extracted the 128-unit standard recruit pool from <code>SummonDataTable</code> and merged unit attributes from <code>RoleDataTable</code> (game version 1.0.0.9). Step distribution now reflects the live pool: <strong>3★=26 · 2★=48 · 1★=34 · 0★=20</strong> (was 27 / 47 / 34 / 20).</li>
+<li>Localization fixes propagated: <code>Wolkfkin Hunter</code> → <strong>Wolfkin Hunter</strong> (typo), <code>Troll Hunter</code> → <strong>Troll Hurler</strong>.</li>
+<li>Terrain correction: <code>Fishfolk Vanguard</code> was tagged Desert, now <strong>Beach</strong> (matches game data).</li>
+<li>Reminder: this pool is <strong>standard units only</strong> — alters draw from the separate <code>SkinSummonDataTable</code> banner and never appear in the daily 7-tag picker.</li>
+</ul>
+<h2>2026-04-30 — Mobile responsive layout fixes</h2>
+<ul>
+<li><strong>Sidebar collapses to a horizontal pill row on narrow screens</strong> (≤900px), with a tighter variant for phone-sized viewports (≤480px). Previously the sidebar stayed <code>position: fixed</code> on phones and pushed page content off-screen.</li>
+<li><strong>Tables now scroll horizontally inside their container</strong> instead of forcing the whole page to scroll. Wide search-result tables (8 columns), unit profiles' Animated/Still imagery tables, and the gacha optimizer results table all stay within their column gutter; users swipe within the table itself.</li>
+<li>Added <code>overflow-x: hidden</code> on <code>body</code> plus <code>min-width: 0</code> on layout containers to stop content overflow from leaking horizontal scrollbars onto the page.</li>
+<li>Sidebar font/padding shrinks at 900px and again at 480px to keep all 8 nav links visible without crowding.</li>
+</ul>
+<h2>2026-04-30 — Animated GIFs use exact in-game frame timing</h2>
+<ul>
+<li><strong>Per-clip frame timing is now read directly from <code>AnimationClip</code> data</strong> (the <code>.anim</code> files in bundle <code>24580dcd…</code>) instead of an FPS guess. Each GIF frame is held for exactly <code>1000ms / m_SampleRate</code> per <code>@&lt;duration&gt;</code> sample.</li>
+<li>All 4,098 unit AnimationClips run at <strong>10 FPS</strong> (100ms per sample). Total clip duration matches <code>m_StopTime</code> to the millisecond — e.g. idle = 600ms, walk ≈ 1000ms, special (ult) varies 1.8s–13.2s per unit's signature animation. The wiki's playback now matches the game pixel-for-pixel and millisecond-for-millisecond.</li>
+<li>1,203 GIFs regenerated.</li>
+</ul>
+<h2>2026-04-30 — Imagery section refactor: two tables (Animated + Still) per profile</h2>
+<ul>
+<li><strong>Every unit profile now has two clean H2 sections</strong> for character imagery, placed right after the metadata line:</li>
+<li><strong><code>## Animated</code></strong> — table listing all animation states the unit has: Idle, Walk, Celebrate, Special (Ult), Death, Abnormal, Alt-idle.</li>
+<li><strong><code>## Still</code></strong> — table listing all static sprite variants: Avatar (small portrait), Battle sprite, Illustration (RoleDraw), Card art, Skill banner.</li>
+<li>Replaces the previous compact inline imagery + collapsible gallery with a more browsable layout. Every visual asset the game has for a unit is now on the profile.</li>
+<li>1,203 GIFs (across 7 states) + 5 still types per unit. Pixel-perfect rendering (no browser bilinear blur) on all 1,891 image cells across 166 profiles.</li>
+</ul>
+<h2>2026-04-30 — Talent search drilldown + Effect column</h2>
+<ul>
+<li><strong>Search · Talents — Restricted filter is now drilldown</strong>: instead of a single "Race-restricted / Class-restricted / Element-restricted / Generic" pill, the Restricted block now exposes four sub-sections with multi-select on specific values:</li>
+<li><strong>Race</strong>: 25 races (Feline, Canine, Aquatic, Avian, Insectoid, …) — pick one or many.</li>
+<li><strong>Class</strong>: Warrior / Archer / Mage / Priest.</li>
+<li><strong>Element</strong>: Earth / Wind / Water / Fire / Light / Dark.</li>
+<li><strong>Generic</strong> toggle pill (no restriction).</li>
+<li>OR logic across sub-sections; AND logic vs Tier and Exclusive filters.</li>
+<li><strong>New "Effect (highest tier)" column</strong> in talent results — pulls the S-tier (or highest available) row's <code>Effect_EN</code> and substitutes <code>{0}</code>/<code>{1}</code>/<code>{2}</code> placeholders with bolded <code>Value0/1/2</code>. Now searchable talents show what they actually do at peak tier without clicking through.</li>
+</ul>
+<h2>2026-04-30 — Sidebar nav, Talent search, Race filter</h2>
+<ul>
+<li><strong>Layout refactor</strong>: top horizontal nav replaced with <strong>left sidebar</strong> across every page (units, keywords, builds, optimizer, search, news). Sidebar collapses into a horizontal bar on screens narrower than 720px.</li>
+<li><strong>Search · Units</strong> (renamed from <code>search.html</code> → <code>search-unit.html</code>):</li>
+<li>Added <strong>Race</strong> filter section (26 races: Feline, Canine, Avian, Leporine, Insectoid, Aquatic, Demonic, Divine, etc.).</li>
+<li>Removed redundant <strong>Profile</strong> column — the Name column already links to the unit profile.</li>
+<li><strong>New: Search · Talents</strong> (<code>search-talent.html</code>):</li>
+<li>Filter all 354 talent groups (588 raw rows grouped by name) by:<ul>
+<li><strong>Tier</strong>: Orange (S) / Purple (A) / Blue (B) / Green (C). Per group, all available tier badges are shown.</li>
+<li><strong>Restricted</strong>: Race-restricted (125) / Class-restricted (40) / Element-restricted (36) / Generic (153).</li>
+<li><strong>Exclusive</strong>: Yes (134 unit-exclusive talents) / No.</li>
+</ul>
+</li>
+<li>Result columns: Talent name, Tiers (badges per available tier), Restricted (type + value), Exclusive (linked to the unit profile when applicable).</li>
+</ul>
+<h2>2026-04-30 — Unit Search page</h2>
+<ul>
+<li>New <strong>Search</strong> page (<code>search.html</code>) with pill-style filters across 6 categories:</li>
+<li><strong>Class</strong>: Warrior / Archer / Mage / Priest</li>
+<li><strong>Type</strong>: Spirit / Construct / Demon / Undead / Divine</li>
+<li><strong>Element</strong>: Earth / Wind / Water / Fire / Light / Dark</li>
+<li><strong>Terrain</strong>: Tundra / Plains / Forest / Desert / Mounts / Ocean / Beach / Astral</li>
+<li><strong>Step</strong>: Orange (S) / Purple (A) / Blue (B) / Green (C)</li>
+<li><strong>Variant</strong>: Standard / Alter</li>
+<li>Multi-select within a category = OR; across categories = AND. Click pill to toggle, "Clear all" to reset.</li>
+<li>Result list shows all 166 units with name, class, type, element, terrain, step badge, variant, and link to profile.</li>
+<li>Fix: gacha optimizer's results-table sticky header alignment — table no longer uses inner scroll; thead now pins below the global nav correctly.</li>
+</ul>
+<h2>2026-04-30 — Initial publish</h2>
+<ul>
+<li>Static site built from Obsidian vault, deployed to Netlify-style folder <code>publish-web/</code>.</li>
+<li><strong>Units (166)</strong>: per-unit profiles auto-generated from <code>RoleDataTable</code> — bilingual CN/EN, base stats (sum of 5 axes), active skill, race/trait/title/perk, talent pool (1 exclusive + race-locked + class-locked + element-locked + 58 generic).</li>
+<li><strong>Build Outlooks (45 S-tier)</strong>: synergy chain + Solo/Duo/Trio comps, 4-talent picks per unit. Nine Lives (<code>TF12504</code>, Feline race) pinned as meta-mandatory in every comp. Non-S build outlooks intentionally not maintained.</li>
+<li><strong>Keywords (82)</strong>: per-keyword reference pages for buffs, debuffs, instants, stats, mechanics, classes, elements, races, terrains.</li>
+<li><strong>Gacha Optimizer</strong>: 128-unit standard recruit pool, daily 7-tag picker. Pick up to 3 tags from 4 conflicting categories (Class / Type / Element / Terrain) to maximize 3-star (S-step) density.</li>
+<li><strong>Skipped from publish</strong>: 24 upcoming alters (loc-ready, no <code>RoleDataTable</code> row yet — Swimsuit / Cool Splash / Tidal Surge / Splash Party / etc.); internal templates; <code>MEMORY.md</code>.</li>
+</ul>
+<h2>2026-04-29 — Datamine update (game version 1.0.0.9)</h2>
+<ul>
+<li>Re-extracted localization bundle (hash <code>5d439c9 → 6b2d709</code>): +71 lines, +139 keys, -1 key. New keys cover M31301_000 active skill + Desert area gear (<code>Z05001_*</code>, <code>Z06001_*</code>).</li>
+<li>DataTables bundle (<code>ed2086ba</code>) <strong>unchanged</strong> through 1.0.0.9 — no balance/data changes, only loc + UI/asset updates.</li>
+<li>24 alters detected as loc-ready but <code>RoleDataTable</code>-pending. Tracked separately in internal vault, excluded from publish.</li>
+</ul>
+<h2>Older changes</h2>
+<p><em>(Pre-publish work — Obsidian vault history not retroactively logged.)</em></p>
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.0.0.9 · news.md</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>

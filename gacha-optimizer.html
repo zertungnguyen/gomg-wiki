@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MGG Gacha Optimizer</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0e0e12;--card:#16161d;--card2:#1c1c26;--border:#2a2a3a;--text:#e0dfe6;--dim:#6b6b80;--accent:#c9a24e;--accent2:#e8c36a;--green:#2ecc71;--red:#e74c3c;--blue:#3498db;--purple:#9b59b6}
+body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.wrap{max-width:880px;margin:0 auto;padding:20px 16px}
+h1{font-family:'Chakra Petch',sans-serif;font-size:28px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:4px}
+.sub{color:var(--dim);font-size:13px;margin-bottom:24px}
+.section{margin-bottom:20px}
+.section-title{font-family:'Chakra Petch',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.section-title .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.cat-Class .dot{background:#c9a24e}.cat-Type .dot{background:#2ecc71}.cat-Element .dot{background:#e74c3c}.cat-Terrain .dot{background:#3498db}
+.cat-Class .section-title{color:#c9a24e}.cat-Type .section-title{color:#2ecc71}.cat-Element .section-title{color:#e74c3c}.cat-Terrain .section-title{color:#3498db}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{padding:6px 14px;border-radius:6px;border:1.5px solid var(--border);background:transparent;color:var(--dim);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;user-select:none;font-family:'Noto Sans',sans-serif}
+.pill:hover{border-color:#555}
+.pill.on{color:#fff;border-color:currentColor}
+.cat-Class .pill.on{color:#c9a24e;background:#c9a24e18;border-color:#c9a24e}
+.cat-Type .pill.on{color:#2ecc71;background:#2ecc7118;border-color:#2ecc71}
+.cat-Element .pill.on{color:#e74c3c;background:#e74c3c18;border-color:#e74c3c}
+.cat-Terrain .pill.on{color:#3498db;background:#3498db18;border-color:#3498db}
+.controls{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--card);border-radius:10px;border:1px solid var(--border);margin-bottom:20px}
+.controls label{font-size:13px;color:var(--dim);white-space:nowrap}
+.controls input[type=range]{flex:1;accent-color:var(--accent)}
+.controls .val{font-family:'Chakra Petch',sans-serif;font-size:22px;font-weight:600;min-width:28px;text-align:center;color:var(--accent)}
+.best{padding:16px 20px;border-radius:10px;margin-bottom:20px;background:linear-gradient(135deg,#c9a24e12,#2ecc7112);border:1.5px solid #c9a24e40}
+.best .label{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.best .row{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.best .pct{font-family:'Chakra Petch',sans-serif;font-size:32px;font-weight:700;color:var(--accent)}
+.best .info{font-size:13px;color:var(--dim)}
+.empty{text-align:center;padding:48px 16px;color:var(--dim);font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead th{font-family:'Chakra Petch',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;padding:10px 8px;color:var(--dim);border-bottom:1.5px solid var(--border);text-align:center;position:sticky;top:0;background:var(--bg);z-index:1}
+thead th:nth-child(2){text-align:left}
+tbody tr{border-bottom:1px solid #1a1a24;cursor:pointer;transition:background .1s}
+tbody tr:hover{background:var(--card)}
+tbody tr.top{background:#c9a24e0a}
+td{padding:8px;text-align:center}
+td:nth-child(2){text-align:left}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;margin:1px 2px}
+.tag-Class{background:#c9a24e20;color:#c9a24e}.tag-Type{background:#2ecc7120;color:#2ecc71}.tag-Element{background:#e74c3c20;color:#e74c3c}.tag-Terrain{background:#3498db20;color:#3498db}
+.pct-hi{color:var(--green);font-weight:700}.pct-mid{color:var(--accent);font-weight:600}.pct-lo{font-weight:500}
+.s3{color:var(--accent);font-weight:700}
+.none-tag{color:var(--dim);font-style:italic;font-size:11px}
+.unit-names{font-size:10px;color:var(--dim);margin-top:4px;line-height:1.5}
+.tbl-wrap{border:1px solid var(--border);border-radius:10px;overflow:hidden;max-height:70vh;overflow-y:auto}
+.footer{margin-top:10px;font-size:11px;color:#444;text-align:right}
+</style>
+
+<style>
+html, body { overflow-x: hidden !important; }
+body { padding-left: 220px !important; min-height: 100vh; }
+.mgg-sidenav {
+  position: fixed; top: 0; left: 0; width: 220px; height: 100vh;
+  background: #1d2025; border-right: 1px solid #2c3038;
+  padding: 20px 16px; display: flex; flex-direction: column; gap: 16px;
+  overflow-y: auto; z-index: 100;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  box-sizing: border-box;
+}
+.mgg-sidenav .mgg-brand {
+  font-weight: 700; color: #f5b342; text-decoration: none; font-size: 17px;
+  padding: 4px 8px; padding-bottom: 12px; border-bottom: 1px solid #2c3038;
+}
+.mgg-sidenav nav { display: flex; flex-direction: column; gap: 4px; }
+.mgg-sidenav nav a {
+  color: #e3e3e3; text-decoration: none; font-size: 14px;
+  padding: 8px 12px; border-radius: 4px; transition: background 0.12s;
+}
+.mgg-sidenav nav a:hover { background: #15171a; color: #4ea1ff; }
+.mgg-sidenav nav a.current { background: #15171a; color: #f5b342; }
+body > .wrap { max-width: 100% !important; box-sizing: border-box; }
+@media (max-width: 900px) {
+  body { padding-left: 0 !important; }
+  .mgg-sidenav {
+    position: static; width: 100%; height: auto;
+    flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px;
+    border-right: none; border-bottom: 1px solid #2c3038;
+    padding: 10px 14px; overflow: visible;
+  }
+  .mgg-sidenav .mgg-brand { border-bottom: none; padding: 4px 8px; font-size: 15px; }
+  .mgg-sidenav nav { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+  .mgg-sidenav nav a { padding: 4px 10px; font-size: 13px; }
+  body > .wrap { padding: 14px !important; }
+}
+@media (max-width: 480px) {
+  .mgg-sidenav nav a { font-size: 12px; padding: 3px 8px; }
+}
+/* Unbind the results table from its inner scroll container so sticky thead
+   pins to viewport (top of optimizer body) instead of .tbl-wrap. */
+body > .wrap .tbl-wrap {
+  max-height: none !important;
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  -webkit-overflow-scrolling: touch;
+}
+body > .wrap thead th { top: 0 !important; z-index: 5 !important; }
+</style>
+</head>
+<body>
+<aside class="mgg-sidenav">
+  <a class="mgg-brand" href="index.html">MGG Wiki</a>
+  <nav>
+    <a href="units/index.html">Units</a>
+    <a href="keywords/index.html">Keywords</a>
+    <a href="gacha-optimizer.html" class="current">Gacha Optimizer</a>
+    <a href="talent-simulator.html">Talent Simulator</a>
+    <a href="team-planner.html">Team Planner</a>
+    <a href="search-unit.html">Search · Units</a>
+    <a href="search-talent.html">Search · Talents</a>
+    <a href="news.html">News</a>
+  </nav>
+</aside>
+
+<div class="wrap">
+<h1>⚔ MGG Gacha Optimizer</h1>
+<div class="sub">Guild of Monster Girls — 128 units · includes Desert terrain</div>
+
+<div class="section cat-Class"><div class="section-title"><span class="dot"></span>Class</div><div class="pills" id="pills-Class"></div></div>
+<div class="section cat-Type"><div class="section-title"><span class="dot"></span>Type</div><div class="pills" id="pills-Type"></div></div>
+<div class="section cat-Element"><div class="section-title"><span class="dot"></span>Element</div><div class="pills" id="pills-Element"></div></div>
+<div class="section cat-Terrain"><div class="section-title"><span class="dot"></span>Terrain</div><div class="pills" id="pills-Terrain"></div></div>
+
+<div class="controls">
+  <label>Max picks</label>
+  <input type="range" id="maxPicks" min="0" max="5" value="3">
+  <span class="val" id="maxVal">3</span>
+</div>
+
+<div id="bestBox" class="best" style="display:none">
+  <div class="label">Best pick</div>
+  <div class="row"><span class="pct" id="bestPct"></span><span class="info" id="bestInfo"></span></div>
+</div>
+
+<div id="emptyMsg" class="empty">Select today's available tags to start</div>
+<div id="tblWrap" class="tbl-wrap" style="display:none">
+<table>
+<thead><tr><th>#</th><th>Combo</th><th>3★ %</th><th>3★</th><th>2★</th><th>1★</th><th>0★</th><th>Total</th></tr></thead>
+<tbody id="tbody"></tbody>
+</table>
+</div>
+<div class="footer" id="footer"></div>
+</div>
+
+<script>
+const UNITS=[{"star":2,"name":"Astral Guardian","cls":"Warrior","type":"Divine","elem":"Dark","terrain":"Astral"},{"star":3,"name":"Astral Fiend","cls":"Mage","type":"Divine","elem":"Dark","terrain":"Astral"},{"star":3,"name":"Stellar Archer","cls":"Archer","type":"Divine","elem":"Light","terrain":"Astral"},{"star":3,"name":"Imp","cls":"Warrior","type":"Divine","elem":"Dark","terrain":"Forest"},{"star":0,"name":"Goblin Scout","cls":"Warrior","type":"Spirit","elem":"Wind","terrain":"Plains"},{"star":0,"name":"Goblin Hunter","cls":"Archer","type":"Spirit","elem":"Wind","terrain":"Plains"},{"star":1,"name":"Shining Maiden","cls":"Warrior","type":"Spirit","elem":"Wind","terrain":"Plains"},{"star":1,"name":"Goblin Warrior","cls":"Warrior","type":"Spirit","elem":"Fire","terrain":"Plains"},{"star":1,"name":"Sparkbolt","cls":"Warrior","type":"Spirit","elem":"Light","terrain":"Plains"},{"star":1,"name":"Goblin Mage","cls":"Mage","type":"Spirit","elem":"Fire","terrain":"Plains"},{"star":1,"name":"Star Pupil","cls":"Mage","type":"Spirit","elem":"Dark","terrain":"Plains"},{"star":2,"name":"Hunter Brave","cls":"Warrior","type":"Spirit","elem":"Fire","terrain":"Plains"},{"star":2,"name":"Pepper","cls":"Warrior","type":"Spirit","elem":"Earth","terrain":"Plains"},{"star":2,"name":"Lurking Shadow","cls":"Archer","type":"Spirit","elem":"Dark","terrain":"Plains"},{"star":2,"name":"Candy","cls":"Archer","type":"Spirit","elem":"Fire","terrain":"Plains"},{"star":2,"name":"Poppy","cls":"Mage","type":"Spirit","elem":"Light","terrain":"Plains"},{"star":2,"name":"Goblin Priest","cls":"Priest","type":"Spirit","elem":"Wind","terrain":"Plains"},{"star":2,"name":"Zhaocai","cls":"Priest","type":"Spirit","elem":"Light","terrain":"Plains"},{"star":2,"name":"Gale Warrior","cls":"Warrior","type":"Demon","elem":"Wind","terrain":"Plains"},{"star":2,"name":"Tempest Herald","cls":"Mage","type":"Demon","elem":"Wind","terrain":"Plains"},{"star":3,"name":"Windstrider","cls":"Archer","type":"Spirit","elem":"Wind","terrain":"Plains"},{"star":3,"name":"Earth Herald","cls":"Mage","type":"Spirit","elem":"Earth","terrain":"Plains"},{"star":0,"name":"Slime Warrior","cls":"Warrior","type":"Demon","elem":"Fire","terrain":"Forest"},{"star":0,"name":"Slime Mage","cls":"Mage","type":"Demon","elem":"Water","terrain":"Forest"},{"star":0,"name":"Slime Priest","cls":"Priest","type":"Demon","elem":"Light","terrain":"Forest"},{"star":1,"name":"Academy Priest","cls":"Priest","type":"Spirit","elem":"Light","terrain":"Forest"},{"star":1,"name":"Treant Guard","cls":"Warrior","type":"Spirit","elem":"Earth","terrain":"Forest"},{"star":1,"name":"Slime Maid","cls":"Priest","type":"Demon","elem":"Light","terrain":"Forest"},{"star":1,"name":"Fairy Archer","cls":"Archer","type":"Construct","elem":"Wind","terrain":"Forest"},{"star":1,"name":"Lost Soul","cls":"Mage","type":"Undead","elem":"Dark","terrain":"Forest"},{"star":2,"name":"Giant Slime","cls":"Warrior","type":"Demon","elem":"Water","terrain":"Forest"},{"star":2,"name":"Elder Dryad","cls":"Mage","type":"Spirit","elem":"Earth","terrain":"Forest"},{"star":2,"name":"Thorn Dryad","cls":"Mage","type":"Spirit","elem":"Earth","terrain":"Forest"},{"star":2,"name":"Broken Blade","cls":"Warrior","type":"Construct","elem":"Dark","terrain":"Forest"},{"star":2,"name":"Lost Aegis","cls":"Warrior","type":"Construct","elem":"Light","terrain":"Forest"},{"star":3,"name":"Slime Queen","cls":"Mage","type":"Demon","elem":"Light","terrain":"Forest"},{"star":3,"name":"Holy Blade","cls":"Warrior","type":"Construct","elem":"Light","terrain":"Forest"},{"star":3,"name":"Forest Nymph","cls":"Priest","type":"Divine","elem":"Light","terrain":"Forest"},{"star":0,"name":"Bee Warrior","cls":"Warrior","type":"Spirit","elem":"Dark","terrain":"Plains"},{"star":0,"name":"Bee Hunter","cls":"Archer","type":"Spirit","elem":"Dark","terrain":"Plains"},{"star":1,"name":"Warg Warrior","cls":"Warrior","type":"Spirit","elem":"Fire","terrain":"Plains"},{"star":1,"name":"Harpy Girl","cls":"Warrior","type":"Spirit","elem":"Wind","terrain":"Plains"},{"star":1,"name":"Wolfkin Hunter","cls":"Archer","type":"Spirit","elem":"Fire","terrain":"Plains"},{"star":1,"name":"Wolfkin Shaman","cls":"Mage","type":"Spirit","elem":"Earth","terrain":"Plains"},{"star":2,"name":"Dire Wolf","cls":"Warrior","type":"Spirit","elem":"Wind","terrain":"Plains"},{"star":2,"name":"Warg Archer","cls":"Archer","type":"Spirit","elem":"Earth","terrain":"Plains"},{"star":2,"name":"War Priest","cls":"Priest","type":"Spirit","elem":"Fire","terrain":"Plains"},{"star":3,"name":"Harpy Princess","cls":"Archer","type":"Spirit","elem":"Wind","terrain":"Plains"},{"star":3,"name":"Wasp Witch","cls":"Mage","type":"Spirit","elem":"Dark","terrain":"Plains"},{"star":0,"name":"Gold Digger","cls":"Warrior","type":"Spirit","elem":"Earth","terrain":"Mounts"},{"star":0,"name":"Mine Gatherer","cls":"Archer","type":"Spirit","elem":"Earth","terrain":"Mounts"},{"star":1,"name":"Troll Guard","cls":"Warrior","type":"Spirit","elem":"Earth","terrain":"Mounts"},{"star":1,"name":"Troll Hurler","cls":"Archer","type":"Spirit","elem":"Earth","terrain":"Mounts"},{"star":1,"name":"Grand Explorer","cls":"Warrior","type":"Spirit","elem":"Light","terrain":"Mounts"},{"star":1,"name":"Silver Songstress","cls":"Priest","type":"Demon","elem":"Light","terrain":"Mounts"},{"star":2,"name":"Troll Overseer","cls":"Priest","type":"Spirit","elem":"Earth","terrain":"Mounts"},{"star":2,"name":"Stone Guard","cls":"Warrior","type":"Demon","elem":"Earth","terrain":"Mounts"},{"star":2,"name":"Fire Banshee","cls":"Warrior","type":"Demon","elem":"Fire","terrain":"Mounts"},{"star":2,"name":"Boulder Gunner","cls":"Archer","type":"Demon","elem":"Earth","terrain":"Mounts"},{"star":2,"name":"Gilt Archer","cls":"Archer","type":"Demon","elem":"Light","terrain":"Mounts"},{"star":3,"name":"Earth Witch","cls":"Mage","type":"Spirit","elem":"Earth","terrain":"Mounts"},{"star":3,"name":"Golden Maiden","cls":"Warrior","type":"Demon","elem":"Light","terrain":"Mounts"},{"star":0,"name":"Fishfolk Scout","cls":"Warrior","type":"Spirit","elem":"Water","terrain":"Ocean"},{"star":0,"name":"Fishfolk Warrior","cls":"Warrior","type":"Spirit","elem":"Water","terrain":"Ocean"},{"star":0,"name":"Fishfolk Priest","cls":"Priest","type":"Spirit","elem":"Water","terrain":"Ocean"},{"star":1,"name":"Silverscale Guard","cls":"Warrior","type":"Spirit","elem":"Water","terrain":"Ocean"},{"star":1,"name":"Blueshark Drill","cls":"Warrior","type":"Spirit","elem":"Water","terrain":"Ocean"},{"star":1,"name":"Silverscale Siren","cls":"Priest","type":"Spirit","elem":"Water","terrain":"Ocean"},{"star":1,"name":"Ghost Sailor","cls":"Warrior","type":"Undead","elem":"Dark","terrain":"Ocean"},{"star":1,"name":"Ghost Gunner","cls":"Archer","type":"Undead","elem":"Dark","terrain":"Ocean"},{"star":2,"name":"Naga Archer","cls":"Archer","type":"Spirit","elem":"Water","terrain":"Ocean"},{"star":2,"name":"Tide Guard","cls":"Warrior","type":"Demon","elem":"Water","terrain":"Ocean"},{"star":2,"name":"Water Mage","cls":"Mage","type":"Demon","elem":"Water","terrain":"Ocean"},{"star":2,"name":"Ghost Mate","cls":"Warrior","type":"Undead","elem":"Dark","terrain":"Ocean"},{"star":3,"name":"Ghost Captain","cls":"Warrior","type":"Undead","elem":"Dark","terrain":"Ocean"},{"star":3,"name":"Serene Undine","cls":"Priest","type":"Demon","elem":"Water","terrain":"Ocean"},{"star":0,"name":"Silent Hunter","cls":"Warrior","type":"Spirit","elem":"Wind","terrain":"Forest"},{"star":0,"name":"Wildcat Hunter","cls":"Archer","type":"Spirit","elem":"Earth","terrain":"Forest"},{"star":1,"name":"Academy Apprentice","cls":"Mage","type":"Spirit","elem":"Fire","terrain":"Forest"},{"star":1,"name":"Fighter Apprentice","cls":"Warrior","type":"Spirit","elem":"Earth","terrain":"Forest"},{"star":2,"name":"Soul Mage","cls":"Mage","type":"Spirit","elem":"Dark","terrain":"Forest"},{"star":2,"name":"Academy Mentor","cls":"Mage","type":"Spirit","elem":"Fire","terrain":"Forest"},{"star":2,"name":"Magic Attendant","cls":"Archer","type":"Spirit","elem":"Dark","terrain":"Forest"},{"star":2,"name":"Botanist","cls":"Priest","type":"Spirit","elem":"Earth","terrain":"Forest"},{"star":2,"name":"Jungle Hunter","cls":"Archer","type":"Spirit","elem":"Wind","terrain":"Forest"},{"star":3,"name":"Grand Magician","cls":"Mage","type":"Spirit","elem":"Dark","terrain":"Forest"},{"star":3,"name":"Shadow Dragoness","cls":"Warrior","type":"Spirit","elem":"Dark","terrain":"Forest"},{"star":1,"name":"Shell Maiden","cls":"Archer","type":"Spirit","elem":"Water","terrain":"Beach"},{"star":1,"name":"Aqua Soldier","cls":"Warrior","type":"Spirit","elem":"Water","terrain":"Beach"},{"star":2,"name":"Fish Herder","cls":"Mage","type":"Spirit","elem":"Water","terrain":"Beach"},{"star":2,"name":"Aqua Commander","cls":"Warrior","type":"Spirit","elem":"Water","terrain":"Beach"},{"star":2,"name":"Fishfolk Vanguard","cls":"Warrior","type":"Spirit","elem":"Wind","terrain":"Beach"},{"star":2,"name":"Coco Tosser","cls":"Archer","type":"Spirit","elem":"Wind","terrain":"Beach"},{"star":3,"name":"Flawless Sage","cls":"Priest","type":"Spirit","elem":"Light","terrain":"Beach"},{"star":3,"name":"Dawn Dragoness","cls":"Warrior","type":"Spirit","elem":"Water","terrain":"Beach"},{"star":0,"name":"Shroom Charmer","cls":"Priest","type":"Spirit","elem":"Dark","terrain":"Mounts"},{"star":0,"name":"Blue Shroom","cls":"Mage","type":"Spirit","elem":"Water","terrain":"Mounts"},{"star":1,"name":"Spore Guard","cls":"Warrior","type":"Spirit","elem":"Earth","terrain":"Mounts"},{"star":1,"name":"Spore Archer","cls":"Archer","type":"Spirit","elem":"Wind","terrain":"Mounts"},{"star":1,"name":"Wandering Doll","cls":"Warrior","type":"Construct","elem":"Dark","terrain":"Mounts"},{"star":2,"name":"Spore Witch","cls":"Mage","type":"Spirit","elem":"Earth","terrain":"Mounts"},{"star":2,"name":"Green Cap","cls":"Priest","type":"Spirit","elem":"Wind","terrain":"Mounts"},{"star":2,"name":"Boom Shroom","cls":"Archer","type":"Spirit","elem":"Fire","terrain":"Mounts"},{"star":2,"name":"Jade Golem","cls":"Mage","type":"Construct","elem":"Wind","terrain":"Mounts"},{"star":3,"name":"Crystal Shroom","cls":"Mage","type":"Spirit","elem":"Light","terrain":"Mounts"},{"star":3,"name":"Core Golem","cls":"Warrior","type":"Construct","elem":"Earth","terrain":"Mounts"},{"star":0,"name":"Legion Scout","cls":"Warrior","type":"Spirit","elem":"Wind","terrain":"Plains"},{"star":0,"name":"Legion Priest","cls":"Priest","type":"Spirit","elem":"Wind","terrain":"Plains"},{"star":1,"name":"Legion Archer","cls":"Archer","type":"Spirit","elem":"Wind","terrain":"Plains"},{"star":1,"name":"Brawler Girl","cls":"Warrior","type":"Spirit","elem":"Earth","terrain":"Plains"},{"star":2,"name":"Wild Beastmaster","cls":"Warrior","type":"Spirit","elem":"Wind","terrain":"Plains"},{"star":2,"name":"Minotaur Priest","cls":"Priest","type":"Spirit","elem":"Earth","terrain":"Plains"},{"star":2,"name":"Legion Cavalry","cls":"Warrior","type":"Spirit","elem":"Fire","terrain":"Plains"},{"star":2,"name":"Minotaur Blade","cls":"Warrior","type":"Spirit","elem":"Earth","terrain":"Plains"},{"star":3,"name":"Legion Commander","cls":"Warrior","type":"Spirit","elem":"Earth","terrain":"Plains"},{"star":3,"name":"Minotaur Brave","cls":"Warrior","type":"Spirit","elem":"Fire","terrain":"Plains"},{"star":3,"name":"Snowman Knightess","cls":"Warrior","type":"Demon","elem":"Water","terrain":"Tundra"},{"star":3,"name":"Frost Spider Queen","cls":"Archer","type":"Spirit","elem":"Water","terrain":"Tundra"},{"star":0,"name":"Desert Rogue","cls":"Warrior","type":"Spirit","elem":"Fire","terrain":"Desert"},{"star":0,"name":"Desert Hunter","cls":"Warrior","type":"Spirit","elem":"Fire","terrain":"Desert"},{"star":1,"name":"Ruin Seeker","cls":"Mage","type":"Spirit","elem":"Fire","terrain":"Desert"},{"star":1,"name":"Desert Guard","cls":"Warrior","type":"Spirit","elem":"Light","terrain":"Desert"},{"star":2,"name":"Mercenary Gunner","cls":"Archer","type":"Spirit","elem":"Earth","terrain":"Desert"},{"star":2,"name":"Solar Priest","cls":"Mage","type":"Spirit","elem":"Light","terrain":"Desert"},{"star":2,"name":"Lunar Priest","cls":"Mage","type":"Spirit","elem":"Dark","terrain":"Desert"},{"star":2,"name":"Wasteland Hunter","cls":"Warrior","type":"Spirit","elem":"Fire","terrain":"Desert"},{"star":3,"name":"Desert Dancer","cls":"Archer","type":"Spirit","elem":"Fire","terrain":"Desert"},{"star":3,"name":"Titan Lancer","cls":"Warrior","type":"Construct","elem":"Earth","terrain":"Desert"}];
+
+const ALL={Class:["Warrior","Archer","Mage","Priest"],Type:["Spirit","Construct","Demon","Undead","Divine"],Element:["Earth","Wind","Water","Fire","Light","Dark"],Terrain:["Tundra","Plains","Forest","Desert","Mounts","Ocean","Beach","Astral"]};
+const F={};
+ALL.Class.forEach(a=>F[a]="cls");ALL.Type.forEach(a=>F[a]="type");ALL.Element.forEach(a=>F[a]="elem");ALL.Terrain.forEach(a=>F[a]="terrain");
+const CAT={};
+Object.entries(ALL).forEach(([c,as])=>as.forEach(a=>CAT[a]=c));
+
+let available=[];
+let maxPicks=3;
+
+function combs(arr,k){if(k===0)return[[]];if(arr.length<k)return[];const r=[];function go(s,c){if(c.length===k){r.push([...c]);return}for(let i=s;i<=arr.length-(k-c.length);i++){c.push(arr[i]);go(i+1,c);c.pop()}}go(0,[]);return r}
+function conflict(attrs){const fs={};for(const a of attrs){const f=F[a];if(fs[f]&&fs[f]!==a)return true;fs[f]=a}return false}
+function match(u,attrs){return attrs.every(a=>u[F[a]]===a)}
+function analyze(attrs){const m=UNITS.filter(u=>match(u,attrs));const t=m.length,s3=m.filter(u=>u.star===3).length,s2=m.filter(u=>u.star===2).length,s1=m.filter(u=>u.star===1).length,s0=m.filter(u=>u.star===0).length;return{attrs,total:t,s3,s2,s1,s0,pct:t>0?s3/t*100:0,names3:m.filter(u=>u.star===3).map(u=>u.name)}}
+
+function render(){
+  const mp=Math.min(maxPicks,available.length);
+  document.getElementById("maxVal").textContent=mp;
+  document.getElementById("maxPicks").max=Math.min(available.length,5);
+  if(!available.length){document.getElementById("emptyMsg").style.display="";document.getElementById("tblWrap").style.display="none";document.getElementById("bestBox").style.display="none";document.getElementById("footer").textContent="";return}
+  const results=[];
+  for(let k=0;k<=mp;k++){const cs=k===0?[[]]:combs(available,k);for(const c of cs){if(conflict(c))continue;const r=analyze(c);results.push(r)}}
+  results.sort((a,b)=>b.pct-a.pct||b.s3-a.s3);
+  const best=results[0];
+  document.getElementById("emptyMsg").style.display="none";
+  document.getElementById("tblWrap").style.display="";
+  document.getElementById("bestBox").style.display="";
+  document.getElementById("bestPct").textContent=best.pct.toFixed(1)+"%";
+  document.getElementById("bestInfo").textContent=(best.attrs.length?best.attrs.join(" + "):"None")+" → "+best.s3+"× 3★ / "+best.total+" total";
+  const tbody=document.getElementById("tbody");
+  tbody.innerHTML="";
+  results.forEach((r,i)=>{
+    const tr=document.createElement("tr");
+    if(i===0)tr.className="top";
+    const tags=r.attrs.length?r.attrs.map(a=>`<span class="tag tag-${CAT[a]}">${a}</span>`).join(""):`<span class="none-tag">None</span>`;
+    const pc=r.pct>=40?"pct-hi":r.pct>=25?"pct-mid":"pct-lo";
+    tr.innerHTML=`<td>${i+1}</td><td><div>${tags}</div><div class="unit-names" style="display:none">3★: ${r.names3.join(", ")||"—"}</div></td><td class="${pc}">${r.total?r.pct.toFixed(1):"—"}</td><td class="s3">${r.s3}</td><td>${r.s2}</td><td>${r.s1}</td><td>${r.s0}</td><td>${r.total}</td>`;
+    tr.onclick=()=>{const n=tr.querySelector(".unit-names");n.style.display=n.style.display==="none"?"block":"none"};
+    tbody.appendChild(tr);
+  });
+  document.getElementById("footer").textContent=results.length+" combinations · click row for 3★ names";
+}
+
+Object.entries(ALL).forEach(([cat,attrs])=>{
+  const box=document.getElementById("pills-"+cat);
+  attrs.forEach(a=>{
+    const btn=document.createElement("button");
+    btn.className="pill";btn.textContent=a;
+    btn.onclick=()=>{
+      if(available.includes(a)){available=available.filter(x=>x!==a);btn.classList.remove("on")}
+      else{available.push(a);btn.classList.add("on")}
+      render();
+    };
+    box.appendChild(btn);
+  });
+});
+document.getElementById("maxPicks").oninput=e=>{maxPicks=+e.target.value;render()};
+render();
+</script>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>

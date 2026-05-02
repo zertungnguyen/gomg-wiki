@@ -1,0 +1,2230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MGG Team Planner</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0e0e12;--card:#16161d;--card2:#1c1c26;--border:#2a2a3a;
+  --text:#e0dfe6;--dim:#6b6b80;
+  --accent:#c9a24e;
+  --orange:#ff9933;--purple:#b66dff;--blue:#4ea3ff;--green:#5fcf6b;--picked:#ffd84a;
+  --good:#2ecc71;--bad:#e74c3c;--warn:#f0b842;
+  --atk:#e74c3c;--def:#4ea3ff;--weak:#a0805a;
+}
+body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.4}
+.wrap{max-width:1500px;margin:0 auto;padding:18px 14px}
+h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:2px}
+.sub{color:var(--dim);font-size:12px;margin-bottom:18px}
+
+/* --- Sidenav (shared with siblings) --- */
+html,body{overflow-x:hidden}
+body{padding-left:220px!important;min-height:100vh}
+.mgg-sidenav{
+  position:fixed;top:0;left:0;width:220px;height:100vh;
+  background:#1d2025;border-right:1px solid #2c3038;
+  padding:20px 16px;display:flex;flex-direction:column;gap:16px;
+  overflow-y:auto;z-index:100;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  box-sizing:border-box
+}
+.mgg-sidenav .mgg-brand{
+  font-weight:700;color:#f5b342;text-decoration:none;font-size:17px;
+  padding:4px 8px;padding-bottom:12px;border-bottom:1px solid #2c3038
+}
+.mgg-sidenav nav{display:flex;flex-direction:column;gap:4px}
+.mgg-sidenav nav a{color:#e3e3e3;text-decoration:none;font-size:14px;padding:8px 12px;border-radius:4px;transition:background .12s}
+.mgg-sidenav nav a:hover{background:#15171a;color:#4ea1ff}
+.mgg-sidenav nav a.current{background:#15171a;color:#f5b342}
+
+/* --- Cards / general --- */
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:12px}
+.card-title{font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--dim);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
+.warn-banner{padding:10px 14px;background:#e74c3c20;border:1px solid #e74c3c;border-radius:6px;color:#ffcccc;font-size:13px;margin-bottom:12px}
+.tag-pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;margin-right:4px;font-family:'Chakra Petch',sans-serif;letter-spacing:0.5px}
+.tag-cls{background:#c9a24e20;color:#c9a24e}
+.tag-race{background:#2ecc7120;color:#2ecc71}
+.tag-elem{background:#e74c3c20;color:#e74c3c}
+.tag-step-S{background:var(--orange);color:#1a1a1a}
+.tag-step-A{background:var(--purple);color:#fff}
+.tag-step-B{background:var(--blue);color:#fff}
+.tag-step-C{background:var(--green);color:#1a1a1a}
+.tag-step-SS{background:#f5b342;color:#1a1a1a;outline:1px solid #fff}
+
+button{padding:7px 14px;border:1.5px solid var(--border);background:var(--card);color:var(--text);font-family:'Chakra Petch',sans-serif;font-weight:600;letter-spacing:1px;font-size:11px;cursor:pointer;border-radius:6px;transition:all .15s;text-transform:uppercase}
+button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+button.primary{background:var(--accent);color:#1a1a1a;border-color:var(--accent)}
+button.primary:hover:not(:disabled){background:#e8c36a;color:#0e0e12}
+button.danger:hover:not(:disabled){border-color:var(--bad);color:var(--bad)}
+button:disabled{opacity:0.4;cursor:not-allowed}
+button.ghost{padding:5px 10px;font-size:10px;background:transparent}
+
+/* --- Team grid: 3 unit panels side-by-side --- */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.unit-panel{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.unit-panel-header{display:flex;justify-content:space-between;align-items:center;font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--dim)}
+
+/* --- Unit picker (selected unit display) --- */
+.unit-selected-mini{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:center;padding:8px;background:var(--card2);border-radius:6px;border:1px solid var(--border);cursor:pointer;transition:border-color .15s}
+.unit-selected-mini:hover{border-color:var(--accent)}
+.unit-selected-mini.empty{justify-content:center;text-align:center;font-style:italic;color:var(--dim);font-size:12px;padding:24px 8px;display:flex;align-items:center;justify-content:center}
+.unit-selected-mini .portrait{width:64px;height:64px;border-radius:6px;background:#0a0a10;border:2px solid var(--accent);object-fit:cover;display:block}
+.unit-selected-mini .info{min-width:0;overflow:hidden}
+.unit-selected-mini .uname{font-family:'Chakra Petch',sans-serif;font-size:16px;font-weight:700;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.unit-selected-mini .ualter{color:var(--accent);font-size:13px;font-style:italic;margin-bottom:3px}
+.unit-selected-mini .utags{font-size:11px;line-height:1.7}
+
+/* --- Section blocks within unit panel --- */
+.section-title{font-family:'Chakra Petch',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);margin:6px 0 6px 0;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.section-title .hint{color:var(--dim);font-size:11px;font-weight:500;float:right;letter-spacing:0.5px}
+
+/* --- Equipment row (per unit): Bond list | Gear grid (2×5) | Rune grid (2×5), 1:1:1 --- */
+.eq-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:stretch}
+.eq-col{display:flex;flex-direction:column;min-width:0}
+.eq-col .eq-sub-title{font-family:'Chakra Petch',sans-serif;font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;padding-bottom:3px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:baseline}
+.eq-col .eq-sub-title .hint{font-size:10px;color:var(--dim);font-weight:500;letter-spacing:0.5px}
+
+.bond-mini-list{display:flex;flex-direction:column;gap:4px;overflow-y:auto;flex:1;padding-right:2px;min-height:200px;max-height:560px}
+.bond-mini-row{background:var(--card2);border:1px solid var(--border);border-radius:5px;padding:6px 8px;font-size:11px;display:flex;flex-direction:column;gap:2px}
+.bond-mini-row.active{border-left:3px solid var(--accent);background:#c9a24e08}
+.bond-mini-row.inactive{opacity:0.7}
+.bond-mini-row .h{display:flex;justify-content:space-between;align-items:baseline;gap:4px}
+.bond-mini-row .bnm{font-family:'Chakra Petch',sans-serif;font-size:12px;font-weight:700;line-height:1.2;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bond-mini-row .pcs{font-family:'Chakra Petch',sans-serif;font-size:11px;color:var(--accent);font-weight:700;white-space:nowrap}
+.bond-mini-row.inactive .pcs{color:var(--dim)}
+.bond-mini-row .ef{font-size:11px;color:var(--text);line-height:1.3}
+.bond-mini-row.inactive .ef{color:var(--dim);font-style:italic}
+.bond-mini-empty{font-size:11px;color:var(--dim);font-style:italic;text-align:center;padding:14px 6px}
+
+/* --- Gear grid: now 2 cols × 5 rows in eq-row layout --- */
+.gear-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:5px}
+.slot{position:relative;aspect-ratio:1;background:var(--card2);border:1.5px solid var(--border);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;padding:3px;text-align:center;overflow:hidden}
+.slot:hover{border-color:var(--accent);background:#c9a24e10}
+.slot.filled{border-style:solid}
+.slot .slot-name{font-family:'Chakra Petch',sans-serif;font-size:10px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:0.5px;line-height:1}
+.slot .gear-img{width:100%;height:auto;max-height:55%;object-fit:contain;display:block;image-rendering:pixelated}
+.slot .gear-name{font-family:'Chakra Petch',sans-serif;font-size:10px;font-weight:600;line-height:1.1;margin-top:2px;color:var(--text);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;max-width:100%}
+.slot .step-badge{position:absolute;top:2px;right:2px;font-size:10px;padding:1px 4px;border-radius:2px;font-weight:700;font-family:'Chakra Petch',sans-serif}
+.slot.s-S .step-badge{background:var(--orange);color:#1a1a1a}
+.slot.s-A .step-badge{background:var(--purple);color:#fff}
+.slot.s-B .step-badge{background:var(--blue);color:#fff}
+.slot.s-C .step-badge{background:var(--green);color:#1a1a1a}
+.slot.s-SS .step-badge{background:#f5b342;color:#1a1a1a;outline:1px solid #fff}
+.slot.empty .gear-name{color:var(--dim);font-style:italic;font-weight:400}
+.slot .clear-btn{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:3px;background:rgba(20,20,28,0.85);color:var(--dim);font-size:11px;line-height:1;display:none;cursor:pointer;border:none;font-family:inherit;align-items:center;justify-content:center;padding:0}
+.slot.filled:hover .clear-btn{display:flex}
+.slot .clear-btn:hover{color:var(--bad)}
+
+/* --- Star pips + legacy strip on gear/rune slot cells --- */
+.slot .ctl-strip{position:absolute;bottom:2px;left:2px;right:2px;display:flex;align-items:center;justify-content:space-between;gap:2px;height:11px;padding:0 1px}
+.star-pips{display:inline-flex;gap:2px;align-items:center}
+.star-pips .pip{width:7px;height:7px;border-radius:50%;background:#3a3a4a;cursor:pointer;display:inline-block;border:1px solid #2a2a3a;transition:background .12s,border-color .12s}
+.star-pips .pip:hover{border-color:var(--accent)}
+.star-pips .pip.on{background:var(--accent);border-color:var(--accent)}
+.star-pips .pip.legacy.on{background:#ff9933;border-color:#ff9933}
+.legacy-btn{font-family:'Chakra Petch',sans-serif;font-size:9px;font-weight:700;width:14px;height:11px;border:1px solid var(--border);background:var(--card);color:var(--dim);cursor:pointer;border-radius:2px;line-height:1;padding:0;display:flex;align-items:center;justify-content:center;letter-spacing:0;flex-shrink:0}
+.legacy-btn:hover{border-color:var(--accent)}
+.legacy-btn.on{background:#ff9933;color:#1a1a1a;border-color:#ff9933}
+
+/* Smaller-screen star pips */
+@media(max-width:480px){
+  .star-pips .pip{width:5px;height:5px}
+  .legacy-btn{width:11px;font-size:8px}
+}
+
+/* --- Insight section (per unit panel, tabs+list mirroring in-game) --- */
+.insight-tabs{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:6px}
+.insight-tabs .tab{padding:6px 10px;border:1px solid var(--border);background:var(--card2);color:var(--dim);border-radius:4px;cursor:pointer;font-family:'Chakra Petch',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;display:flex;align-items:center;gap:4px;transition:all .12s}
+.insight-tabs .tab:hover{border-color:#555;color:var(--text)}
+.insight-tabs .tab.on{border-color:var(--accent);color:var(--accent);background:#c9a24e15}
+.insight-tabs .tab .cnt{font-size:11px;color:var(--accent);font-weight:700}
+.insight-tabs .tab.on .cnt{color:#fff}
+.insight-tabs .tab .cnt.partial{color:var(--orange)}
+.insight-list{display:flex;flex-direction:column;gap:4px;max-height:280px;overflow-y:auto;padding-right:2px}
+.insight-row{background:var(--card2);border:1px solid var(--border);border-radius:5px;padding:6px 8px;display:grid;grid-template-columns:38px 1fr;gap:8px;align-items:start}
+.insight-row.own{border-color:var(--accent);background:#c9a24e08;border-left-width:3px}
+.insight-row.active{border-color:var(--good);background:#2ecc7108}
+.insight-row .ir-icon{width:38px;height:38px;background:#0a0a10;border-radius:5px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+.insight-row .ir-icon img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.insight-row .ir-icon.placeholder{font-size:8px;color:var(--dim);font-family:'Chakra Petch',sans-serif}
+.insight-row .ir-body{min-width:0;display:flex;flex-direction:column;gap:2px}
+.insight-row .ir-head{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+.insight-row .ir-name{font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:600;line-height:1.2;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.insight-row .ir-origin{font-size:11px;color:var(--dim);font-style:italic;white-space:nowrap}
+.insight-row .ir-origin.own{color:var(--accent);font-weight:600;font-style:normal}
+.insight-row .ir-effect{font-size:12px;color:var(--text);line-height:1.35}
+.insight-row .ir-effect .girl-prefix{color:var(--accent);font-weight:600}
+.insight-row .ir-effect .star-bump{color:var(--good);font-weight:700}
+.insight-row .ir-control{display:flex;justify-content:flex-end;margin-top:2px}
+.insight-empty-msg{font-size:13px;color:var(--dim);font-style:italic;padding:10px 4px;text-align:center}
+
+/* Pool row: icon + content */
+.pool-row{display:grid;grid-template-columns:32px 1fr;gap:6px;align-items:start}
+.pool-row .pr-icon{width:32px;height:32px;background:#0a0a10;border-radius:4px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;margin-top:2px}
+.pool-row .pr-icon img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.pool-row .pr-body{min-width:0;display:flex;flex-direction:column;gap:2px}
+
+/* 4-state widget: [Off ★ ★★ ★★★] */
+.lvl-widget{display:inline-flex;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--card);font-family:'Chakra Petch',sans-serif;font-size:12px;font-weight:600}
+.lvl-widget button{background:transparent;border:none;color:var(--dim);padding:5px 9px;cursor:pointer;font-size:12px;border-right:1px solid var(--border);min-width:26px;line-height:1;font-family:inherit;transition:all .12s}
+.lvl-widget button:last-child{border-right:none}
+.lvl-widget button:hover:not(.on){color:var(--text);background:var(--card2)}
+.lvl-widget button.on{background:var(--accent);color:#1a1a1a}
+.lvl-widget button.off-on{background:#3a3a4a;color:var(--dim)}
+
+/* --- Rune section (mirrors gear-grid: now 2 cols × 5 rows) --- */
+.rune-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:5px}
+.rune-cell{position:relative;aspect-ratio:1;background:var(--card2);border:1.5px solid var(--border);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;padding:3px;text-align:center;overflow:hidden}
+.rune-cell:hover{border-color:var(--accent);background:#c9a24e10}
+.rune-cell.filled{border-style:solid}
+.rune-cell .slot-name{font-family:'Chakra Petch',sans-serif;font-size:9px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:0.5px;line-height:1}
+.rune-cell .rune-img{width:100%;height:auto;max-height:50%;object-fit:contain;display:block;image-rendering:pixelated}
+.rune-cell .rune-name{font-family:'Chakra Petch',sans-serif;font-size:10px;font-weight:600;line-height:1.1;margin-top:2px;color:var(--text);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;max-width:100%}
+.rune-cell .step-badge{position:absolute;top:2px;right:2px;font-size:10px;padding:1px 4px;border-radius:2px;font-weight:700;font-family:'Chakra Petch',sans-serif}
+.rune-cell.s-S .step-badge{background:var(--orange);color:#1a1a1a}
+.rune-cell.s-A .step-badge{background:var(--purple);color:#fff}
+.rune-cell.s-B .step-badge{background:var(--blue);color:#fff}
+.rune-cell.s-C .step-badge{background:var(--green);color:#1a1a1a}
+.rune-cell .clear-btn{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:3px;background:rgba(20,20,28,0.85);color:var(--dim);font-size:11px;line-height:1;display:none;cursor:pointer;border:none;align-items:center;justify-content:center;padding:0}
+.rune-cell.filled:hover .clear-btn{display:flex}
+.rune-cell .clear-btn:hover{color:var(--bad)}
+.rune-cell .ctl-strip{position:absolute;bottom:2px;left:2px;right:2px;display:flex;justify-content:center;height:11px}
+
+/* --- Insight pool global section --- */
+.pool-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:12px}
+.pool-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--dim);user-select:none}
+.pool-header:hover{color:var(--text)}
+.pool-header .chevron{transition:transform .15s;color:var(--accent);font-weight:700}
+.pool-card.collapsed .chevron{transform:rotate(-90deg)}
+.pool-card.collapsed .pool-body{display:none}
+.pool-body{margin-top:10px}
+.pool-tools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px}
+.pool-tools input.search{flex:1;min-width:160px;padding:6px 10px;background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:5px;font-size:13px}
+.pool-summary{font-size:11px;color:var(--dim);font-family:'Chakra Petch',sans-serif;margin-bottom:8px}
+.pool-summary .v{color:var(--accent);font-weight:700}
+.pool-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px;max-height:480px;overflow-y:auto;padding-right:4px}
+.pool-row{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;gap:3px}
+.pool-row.active{border-color:var(--accent);background:#c9a24e08}
+.pool-row .pr-head{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.pool-row .pr-name{font-family:'Chakra Petch',sans-serif;font-size:12px;font-weight:600;line-height:1.2;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.pool-row .pr-step{font-size:9px;padding:1px 4px;border-radius:3px;font-weight:700;font-family:'Chakra Petch',sans-serif;flex-shrink:0}
+.pool-row .pr-step.s-S{background:var(--orange);color:#1a1a1a}
+.pool-row .pr-step.s-A{background:var(--purple);color:#fff}
+.pool-row .pr-step.s-B{background:var(--blue);color:#fff}
+.pool-row .pr-step.s-C{background:var(--green);color:#1a1a1a}
+.pool-row .pr-restrict{font-size:9px;color:var(--dim);font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:0.5px}
+.pool-row .pr-restrict .tag{display:inline-block;padding:1px 5px;background:var(--card);border-radius:3px;margin-right:3px}
+.pool-row .pr-effect{font-size:10px;color:var(--text);line-height:1.3}
+.pool-row .pr-origin{font-size:9px;color:var(--dim);font-style:italic}
+.pool-row .pr-applies{font-size:9px;color:var(--good);margin-top:1px}
+
+/* --- Talent rows: 4 slots stacked --- */
+.row-slots{display:flex;flex-direction:column;gap:4px}
+.row-slot{display:grid;grid-template-columns:24px 1fr 18px;gap:6px;align-items:center;padding:6px 8px;background:var(--card2);border:1.5px solid var(--border);border-radius:6px;cursor:pointer;transition:all .15s;min-height:36px}
+.row-slot:hover{border-color:var(--accent)}
+.row-slot.filled{border-color:var(--accent)}
+.row-slot.empty{border-style:dashed;opacity:0.6}
+.row-slot .idx{font-family:'Chakra Petch',sans-serif;font-size:12px;color:var(--dim);font-weight:700}
+.row-slot .body{min-width:0}
+.row-slot .nm{font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:600;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-slot .ef{font-size:11px;color:var(--dim);line-height:1.35;margin-top:2px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.row-slot .x{cursor:pointer;font-size:13px;color:var(--dim);text-align:center}
+.row-slot .x:hover{color:var(--bad)}
+.row-slot.support .src-tag{font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;font-weight:600}
+
+/* --- Stat readout per unit --- */
+.stat-block{background:var(--card2);border-radius:6px;padding:10px 12px;margin-top:6px}
+.stat-block .stat-row{display:flex;justify-content:space-between;align-items:baseline;padding:4px 0;font-size:13px;border-bottom:1px solid #1a1a24;flex-wrap:wrap;gap:4px}
+.stat-block .stat-row:last-child{border-bottom:none}
+.stat-block .label{color:var(--dim);font-family:'Chakra Petch',sans-serif;letter-spacing:0.5px;font-size:12px;text-transform:uppercase;flex-shrink:0}
+.stat-block .val{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:14px;color:var(--text);white-space:nowrap}
+.stat-block .val .delta{color:var(--accent);font-size:11px;margin-left:3px;font-weight:500}
+.stat-pool{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:6px}
+.pool-pill{padding:9px 5px;background:var(--card2);border:1.5px solid var(--border);border-radius:6px;text-align:center}
+.pool-pill .lbl{font-family:'Chakra Petch',sans-serif;font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.pool-pill .v{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:22px}
+.pool-pill.atk{border-color:#e74c3c50}.pool-pill.atk .v{color:var(--atk)}
+.pool-pill.def{border-color:#4ea3ff50}.pool-pill.def .v{color:var(--def)}
+.pool-pill.weak{border-color:#a0805a50}.pool-pill.weak .v{color:var(--weak)}
+.pool-warn{font-size:9px;color:var(--warn);margin-top:4px;font-style:italic;line-height:1.3}
+
+/* --- Team aggregate panel --- */
+.team-summary{background:var(--card)}
+.aggr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:12px}
+.aggr-card{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px}
+.aggr-card .h{font-family:'Chakra Petch',sans-serif;font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;border-bottom:1px solid var(--border);padding-bottom:5px}
+.aggr-card .row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0}
+.aggr-card .row .l{color:var(--dim);font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:0.5px;font-size:12px}
+.aggr-card .row .v{font-family:'Chakra Petch',sans-serif;font-weight:700;color:var(--text);font-size:13px}
+
+.status-stack{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}
+.status-card{background:var(--card2);border:1.5px solid var(--border);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:4px}
+.status-card.buff{border-color:#2ecc7150}
+.status-card.debuff{border-color:#e74c3c50}
+.status-card.instant{border-color:#f0b84250}
+.status-card .nm{font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:700;display:flex;justify-content:space-between;align-items:baseline}
+.status-card .nm .pts{font-size:18px;color:var(--accent)}
+.status-card.buff .pts{color:var(--good)}
+.status-card.debuff .pts{color:var(--bad)}
+.status-card.instant .pts{color:var(--warn)}
+.status-card .ef{font-size:10px;color:var(--dim);line-height:1.3}
+.status-card .src{font-size:10px;color:var(--dim);font-style:italic;margin-top:2px;border-top:1px dashed var(--border);padding-top:4px}
+.status-card .src-line{padding:1px 0;font-style:normal}
+.status-card .src-line .src-pts{color:var(--accent);font-weight:700}
+
+.bond-list{display:flex;flex-direction:column;gap:6px}
+.bond-row{display:grid;grid-template-columns:1fr 50px 2fr;gap:8px;align-items:center;padding:5px 8px;background:var(--card2);border-radius:5px;border-left:3px solid var(--border);font-size:11px}
+.bond-row.active{border-left-color:var(--accent)}
+.bond-row .bnm{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:12px}
+.bond-row .pcs{font-family:'Chakra Petch',sans-serif;font-weight:600;color:var(--accent);font-size:11px;text-align:center}
+.bond-row .ef{color:var(--dim);font-size:10px;line-height:1.3}
+.bond-row.inactive{opacity:0.5}
+.bond-row.inactive .pcs{color:var(--dim)}
+
+/* --- Modal --- */
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal-content{background:var(--card);border:1px solid var(--accent);border-radius:10px;max-width:1100px;width:100%;height:90vh;display:flex;flex-direction:column;overflow:hidden}
+.modal-header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border)}
+.modal-header .title{font-family:'Chakra Petch',sans-serif;font-size:14px;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase}
+.modal-close{background:transparent;border:none;color:var(--text);font-size:22px;cursor:pointer;padding:4px 8px;font-family:inherit;font-weight:300}
+.modal-close:hover{color:var(--bad)}
+.modal-body{padding:12px 16px;overflow-y:auto;flex:1}
+.picker-bar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;align-items:center;position:sticky;top:0;background:var(--card);padding:8px 0;z-index:5}
+.picker-bar input.search{flex:1;min-width:160px;padding:6px 10px;background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:5px;font-size:13px}
+.picker-bar input.search:focus{outline:none;border-color:var(--accent)}
+
+/* --- Gear picker filter categories (Basic/Value/Mechanic/Timing/Status) --- */
+.filter-cat-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;align-items:center}
+.filter-cat-btn{padding:5px 10px;border:1px solid var(--border);background:var(--card2);color:var(--dim);border-radius:4px;cursor:pointer;font-family:'Chakra Petch',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;display:inline-flex;align-items:center;gap:5px;transition:all .12s}
+.filter-cat-btn:hover{border-color:#555;color:var(--text)}
+.filter-cat-btn.expanded{border-color:var(--accent);color:var(--accent);background:#c9a24e15}
+.filter-cat-btn .cnt{font-size:10px;color:var(--accent);font-weight:700}
+.filter-cat-btn.expanded .cnt{color:#fff}
+.filter-cat-clear{font-size:10px;color:var(--dim);cursor:pointer;font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:0.5px;border:1px solid var(--border);padding:5px 9px;border-radius:4px;background:transparent}
+.filter-cat-clear:hover{color:var(--bad);border-color:var(--bad)}
+.filter-cat-panel{margin-top:6px;padding:9px 11px;background:var(--card2);border-radius:6px;border:1px solid var(--border)}
+.filter-cat-panel .sub-title{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;font-family:'Chakra Petch',sans-serif;font-weight:600}
+.filter-cat-panel .sub-title:not(:first-child){margin-top:9px}
+.filter-pills{display:flex;flex-wrap:wrap;gap:4px}
+.filter-pills .pill{padding:4px 9px;border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:3px;cursor:pointer;font-family:'Chakra Petch',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.3px;transition:all .12s}
+.filter-pills .pill:hover{border-color:#555}
+.filter-pills .pill.on{border-color:var(--accent);background:#c9a24e25;color:var(--accent);font-weight:700}
+.filter-summary{font-size:11px;color:var(--dim);margin-top:6px;font-style:italic}
+.picker-bar .filter-label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;font-family:'Chakra Petch',sans-serif;padding:0 4px}
+.f-pill{padding:4px 9px;border-radius:4px;border:1.5px solid var(--border);background:transparent;color:var(--dim);font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:10px;cursor:pointer;transition:all .15s;text-transform:uppercase;letter-spacing:0.5px}
+.f-pill:hover{border-color:#555}
+.f-pill.on{color:#fff;border-color:var(--accent);background:#c9a24e25}
+
+/* Modal listing variants */
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px}
+.u-card{background:var(--card2);border:1.5px solid var(--border);border-radius:6px;padding:6px;cursor:pointer;text-align:center;transition:all .12s}
+.u-card:hover{border-color:var(--accent);background:#c9a24e15}
+.u-card.disabled{opacity:0.3;cursor:not-allowed;background:#0a0a0e}
+.u-card img{width:80px;height:80px;border-radius:5px;background:#0a0a10;object-fit:cover;display:block;margin:0 auto 4px}
+.u-card .uname-s{font-family:'Chakra Petch',sans-serif;font-size:11px;font-weight:600;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.u-card .ualter-s{font-size:9px;color:var(--accent);font-style:italic;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.u-card .tag-strip{font-size:9px;color:var(--dim);margin-top:2px;line-height:1.2}
+
+.gear-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px}
+.g-card{background:var(--card2);border:1.5px solid var(--border);border-radius:6px;padding:8px 10px;cursor:pointer;transition:all .12s;display:grid;grid-template-columns:48px 1fr;gap:8px;align-items:start;position:relative}
+.g-card:hover{border-color:var(--accent);background:#c9a24e10}
+.g-card.equipped-elsewhere{border-style:dashed;opacity:0.9;background:#f0b8420a}
+.g-card .g-img{width:48px;height:48px;background:#0a0a10;border-radius:5px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.g-card .g-img img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.g-card .g-img.placeholder{font-size:9px;color:var(--dim);font-family:'Chakra Petch',sans-serif}
+.g-card .g-info{min-width:0;display:flex;flex-direction:column;gap:2px}
+.g-card .gnm{font-family:'Chakra Petch',sans-serif;font-size:12px;font-weight:600;line-height:1.2}
+.g-card .gstats{font-size:10px;color:var(--text);font-family:'Chakra Petch',sans-serif;font-weight:500}
+.g-card .gstats .stat{display:inline-block;margin-right:6px}
+.g-card .geff{font-size:10px;color:var(--dim);line-height:1.3}
+.g-card .gbond{font-size:9px;color:var(--accent);font-style:italic}
+.g-card .gmeta{font-size:9px;color:var(--dim);font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:0.5px}
+.g-card .equipped-tag{font-size:9px;color:var(--warn);font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:0.5px;font-weight:600}
+.g-card .step-mini{position:absolute;top:5px;right:6px;font-size:9px;padding:1px 4px;border-radius:3px;font-weight:700;font-family:'Chakra Petch',sans-serif}
+.g-card .step-mini.s-S{background:var(--orange);color:#1a1a1a}
+.g-card .step-mini.s-A{background:var(--purple);color:#fff}
+.g-card .step-mini.s-B{background:var(--blue);color:#fff}
+.g-card .step-mini.s-C{background:var(--green);color:#1a1a1a}
+.g-card .step-mini.s-SS{background:#f5b342;color:#1a1a1a}
+
+.t-list{display:flex;flex-direction:column;gap:4px}
+.t-card{background:var(--card2);border:1.5px solid var(--border);border-radius:6px;padding:8px 10px;cursor:pointer;transition:all .12s;display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center}
+.t-card:hover{border-color:var(--accent);background:#c9a24e10}
+.t-card .tnm{font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:600;line-height:1.2}
+.t-card .tef{font-size:11px;color:var(--dim);line-height:1.3}
+.t-card .ttag{font-size:9px;font-family:'Chakra Petch',sans-serif;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;text-align:right;white-space:nowrap}
+.t-card.tier-S{border-left:3px solid var(--orange)}
+.t-card.tier-A{border-left:3px solid var(--purple)}
+.t-card.tier-B{border-left:3px solid var(--blue)}
+.t-card.tier-C{border-left:3px solid var(--green)}
+
+/* --- Footer --- */
+.footer{margin-top:24px;font-size:11px;color:#444;text-align:center;line-height:1.6}
+
+/* === Responsive === */
+@media(max-width:1100px){
+  .team-grid{grid-template-columns:1fr;gap:10px}
+  .unit-panel{padding:10px}
+}
+@media(max-width:900px){
+  body{padding-left:0!important;padding-bottom:90px}
+  .mgg-sidenav{position:static;width:100%;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px;border-right:none;border-bottom:1px solid #2c3038;padding:10px 14px;overflow:visible}
+  .mgg-sidenav .mgg-brand{border-bottom:none;padding:4px 8px;font-size:15px}
+  .mgg-sidenav nav{flex-direction:row;flex-wrap:wrap;gap:4px}
+  .mgg-sidenav nav a{padding:4px 10px;font-size:13px}
+  .wrap{padding:14px 10px}
+  h1{font-size:22px}
+  .gear-grid{grid-template-columns:repeat(5,1fr);gap:4px}
+  .stat-pool{gap:4px}
+  .pool-pill .v{font-size:16px}
+  .modal{padding:6px}
+  .modal-content{max-height:96vh}
+  .modal-body{padding:8px 10px}
+  .unit-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:4px}
+  .u-card img{width:64px;height:64px}
+  .u-card .uname-s{font-size:10px}
+  .gear-list{grid-template-columns:1fr;gap:4px}
+}
+@media(max-width:480px){
+  h1{font-size:19px}
+  .gear-grid{grid-template-columns:repeat(5,1fr);gap:3px}
+  .slot .slot-name{font-size:7px}
+  .slot .gear-name{font-size:8px}
+  .slot .step-badge{font-size:7px}
+  .pool-pill .v{font-size:14px}
+}
+</style>
+</head>
+<body>
+<aside class="mgg-sidenav">
+  <a class="mgg-brand" href="index.html">MGG Wiki</a>
+  <nav>
+    <a href="units/index.html">Units</a>
+    <a href="keywords/index.html">Keywords</a>
+    <a href="gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="talent-simulator.html">Talent Simulator</a>
+    <a href="team-planner.html" class="current">Team Planner</a>
+    <a href="search-unit.html">Search · Units</a>
+    <a href="search-talent.html">Search · Talents</a>
+    <a href="news.html">News</a>
+  </nav>
+</aside>
+
+<div class="wrap">
+  <h1>🛡️ Team Planner</h1>
+  <div class="sub">Guild of Monster Girls · 3-unit build · stat &amp; status stacking display</div>
+
+  <div id="loading" class="warn-banner">Loading team-planner-data.js...</div>
+
+  <div id="app" style="display:none">
+
+    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+      <button onclick="resetAll()" class="ghost">Reset team</button>
+      <button onclick="exportBuild()" class="ghost">Export</button>
+      <button onclick="importBuild()" class="ghost">Import</button>
+      <span style="flex:1"></span>
+      <span style="font-size:10px;color:var(--dim);align-self:center;font-family:'Chakra Petch',sans-serif">
+        Auto-saved to local storage
+      </span>
+    </div>
+
+    <div class="team-grid" id="teamGrid">
+      <!-- 3 unit panels rendered by JS -->
+    </div>
+
+    <div id="insightPool" class="pool-card collapsed">
+      <!-- Insight pool rendered by JS -->
+    </div>
+
+    <div class="card team-summary">
+      <div class="card-title">⚙ Team aggregate &amp; stacking <span style="color:var(--dim);font-size:10px;font-weight:500;text-transform:none;letter-spacing:0.5px">— sum of all sources across the 3 mains</span></div>
+      <div id="teamAggregate"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Shared modal -->
+<div id="modal" class="modal" style="display:none" onclick="if(event.target===this)closeModal()">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="title" id="modalTitle">Picker</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="footer">
+  Datamine: Guild of Monster Girls (幻想少女公会) v1.0.0.9 · Internal MGG Wiki tooling.
+</div>
+
+<script src="team-planner-data.js"></script>
+<script>
+'use strict';
+
+// ============================================================================
+// State
+// ============================================================================
+const STORAGE_KEY = 'mgg_team_planner_v1';
+const SLOT_ORDER = ['Main','Off','Head','Body','Gloves','Belt','Shoes','Necklace','Ring','Badge'];
+const RUNE_SLOT_COUNT = 10;
+const RAW_STATS = ['STR','SPI','AGI','HP','SPD','Tough','Luck','Mana'];
+// In-game rarity names for the Step letter codes — match how the game UI labels gear/runes.
+const RARITY_NAMES = {C:'Normal', B:'Rare', A:'Epic', S:'Legendary', SS:'Mythic'};
+
+// Gear filter categories — mirrors the in-game Gear Filter UI (5 tabs, multi-select).
+//   Basic  → matched against gear's own properties (cls / stats with value > 0)
+//   Value/Mechanic/Timing/Status → matched against gear.filterTags (denormalized
+//     from the gear's bonds via Tag_EN + PositiveTags_EN columns).
+// Within a category: OR (gear matches if it has ≥1 of the selected pills).
+// Across categories with selections: AND.
+const GEAR_FILTER_CATEGORIES = {
+  Basic: {
+    Class: ['Warrior', 'Archer', 'Mage', 'Priest'],
+    Stats: ['STR', 'SPI', 'AGI', 'HP', 'SPD', 'Luck', 'Tough', 'Mana'],
+  },
+  Value: ['Increase DMG', 'Reduce DMG Taken', 'HP Granted', 'HP Drain',
+    'STR', 'SPI', 'AGI', 'ATK', 'DEF', 'Weakness', 'SPD', 'Luck', 'HP', 'Toughness',
+    'HP Lost', 'Current Toughness', 'Toughness Lost',
+    'Max Mana', 'Current Mana', 'Starting Mana', 'Action Mana', 'Hit Mana',
+    'Extra Action', 'Extra Targets', 'Counter Range',
+    'Counters', 'Follow-Ups', 'Skill Uses'],
+  Mechanic: ['HP Gain', 'HP Loss', 'HP Gain Bonus', 'HP Loss Bonus', 'HP Loss Resist',
+    'Overflow HP', 'Mana Gain', 'Mana Loss', 'Mana Gain Bonus', 'Mana Loss Resist',
+    'Toughness Gain', 'Toughness Loss', 'Ally Count', 'Enemy Count',
+    'At Low HP', 'At High HP', 'Ally Low HP', 'Ally High HP', 'Enemy Low HP', 'Enemy High HP',
+    'Increase Stacks', 'Reduce Stacks', 'Immune Status', 'Consume Status', 'Trigger Status',
+    'With Status', 'No Status', 'Absorb Effect', 'Change Target', 'Act First'],
+  Timing: ['Battle Start', 'Turn Start', 'Action Start', 'Action End', 'Basic Attack',
+    'Basic Heal', 'Cast Skill', 'Attacking', 'Healing', 'Following Up',
+    'Countering', 'Bonus Heal', 'Counter Heal', 'Deal DMG', 'Heal',
+    'Take Hit', 'Receive Healing', 'Take DMG', 'HP Restored', 'Take Basic Attack',
+    'Take Skill', 'Take Follow-Up', 'Take Counter', 'Exposed', 'Ally Exposed',
+    'Enemy Exposed', 'Defeated', 'Ally Defeated', 'Enemy Defeated', 'Defeat Target'],
+  Status: ['Buffs', 'Debuffs', 'Instant', 'Shield',
+    'Bloodlust', 'Haste', 'Growth', 'Regen', 'Soothe',
+    'Faith', 'Thorns', 'Precision', 'Vulnerable', 'Chill',
+    'Slow', 'Expose', 'Burn', 'Shock', 'Hinder',
+    'Taunt', 'Stun', 'Inspire', 'Decay', 'Reversal',
+    'Cleanse', 'Fortitude', 'Fear'],
+};
+
+// state.mains[i] = {
+//   unitId,
+//   gear:{slotName: {id, star:0-3, legacy:bool} | null},   // per-slot object (NEW shape)
+//   runes:[ {id, star:0-3} | null × 10 ],                  // generic indexed slots (NEW)
+//   talents:[tid|null × 4],
+//   supports:{Trait,Title,Perk}
+// }
+// state.insightStars: { [insightId]: 0-3 }  — global pool, shared edit surface
+//   star=0 means insight not unlocked → no propagation; star>=1 means active
+// state.poolCollapsed: bool — UI fold state for the global Insight Pool section
+function emptyMain(){
+  return {
+    unitId: null,
+    gear: Object.fromEntries(SLOT_ORDER.map(s=>[s,null])),
+    runes: Array.from({length:RUNE_SLOT_COUNT}, ()=>null),
+    talents: [null,null,null,null],
+    supports: {Trait:null, Title:null, Perk:null}
+  };
+}
+let state = {
+  mains:[emptyMain(), emptyMain(), emptyMain()],
+  insightStars: {},
+  poolCollapsed: true,
+  schema: 2,
+};
+
+// Migration: gear used to be {slot: gearId|null}; now {slot: {id, star, legacy}|null}.
+function migrateGearSlot(v){
+  if(v == null) return null;
+  if(typeof v === 'string') return {id: v, star: 0, legacy: false};
+  if(typeof v === 'object' && 'id' in v){
+    return {id: v.id, star: v.star ?? 0, legacy: v.legacy ?? false};
+  }
+  return null;
+}
+function migrateRuneSlot(v){
+  if(v == null) return null;
+  if(typeof v === 'string') return {id: v, star: 0};
+  if(typeof v === 'object' && 'id' in v){
+    return {id: v.id, star: v.star ?? 0};
+  }
+  return null;
+}
+
+function saveState(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+}
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return;
+    const s = JSON.parse(raw);
+    if(s && Array.isArray(s.mains) && s.mains.length===3){
+      state = s;
+      state.insightStars = state.insightStars || {};
+      if(typeof state.poolCollapsed !== 'boolean') state.poolCollapsed = true;
+      // Schema migration: v1 used 0=off, 1/2/3=★/★★/★★★ for insight stars.
+      // v2 uses null=off, 0=base, 1/2/3=base+N. Convert: 0→delete, 1→0, 2→1, 3→2.
+      if((state.schema || 1) < 2){
+        const migrated = {};
+        for(const k in state.insightStars){
+          const v = state.insightStars[k];
+          if(typeof v === 'number' && v >= 1 && v <= 3) migrated[k] = v - 1;
+          // 0 (off) → drop; null/undefined → drop
+        }
+        state.insightStars = migrated;
+        state.schema = 2;
+      }
+      state.mains.forEach(m=>{
+        if(!m.gear) m.gear={};
+        SLOT_ORDER.forEach(s=>{ m.gear[s] = migrateGearSlot(m.gear[s] ?? null); });
+        if(!Array.isArray(m.runes) || m.runes.length!==RUNE_SLOT_COUNT){
+          m.runes = Array.from({length:RUNE_SLOT_COUNT}, (_,i)=>{
+            return Array.isArray(m.runes) && i < m.runes.length ? migrateRuneSlot(m.runes[i]) : null;
+          });
+        }else{
+          m.runes = m.runes.map(migrateRuneSlot);
+        }
+        if(!Array.isArray(m.talents) || m.talents.length!==4) m.talents=[null,null,null,null];
+        if(!m.supports) m.supports={Trait:null,Title:null,Perk:null};
+        ['Trait','Title','Perk'].forEach(t=>{ if(!(t in m.supports)) m.supports[t]=null; });
+      });
+    }
+  }catch(e){}
+}
+
+// ============================================================================
+// Data accessors (from window.TEAM_PLANNER)
+// ============================================================================
+let DATA = null;
+const idx = {
+  unitById: new Map(),
+  // slot → list of gear (sorted by step then name)
+  gearBySlot: new Map(),
+  // bond name CN → bond record
+  bondByName: new Map(),
+  // unit id → {Trait:subskillId, Title:..., Perk:...}
+  unitSupports: new Map(),
+  // subskill id → list of unit ids that own it (Trait/Title/Perk)
+  subskillSources: new Map(),
+};
+
+function buildIndex(){
+  const STEP_ORDER = {SS:0, S:1, A:2, B:3, C:4};
+  for(const u of DATA.units){ idx.unitById.set(u.id, u); }
+  for(const slot of SLOT_ORDER){ idx.gearBySlot.set(slot, []); }
+  for(const gid in DATA.gear){
+    const g = DATA.gear[gid];
+    const arr = idx.gearBySlot.get(g.slot);
+    if(arr) arr.push(g);
+  }
+  for(const slot of SLOT_ORDER){
+    idx.gearBySlot.get(slot).sort((a,b)=>{
+      const sa = STEP_ORDER[a.step] ?? 9, sb = STEP_ORDER[b.step] ?? 9;
+      if(sa!==sb) return sa-sb;
+      return a.name.localeCompare(b.name);
+    });
+  }
+  for(const nm in DATA.bonds){ idx.bondByName.set(nm, DATA.bonds[nm]); }
+  // unit support map (each unit's own Perk/Trait/Title sub-skill ids)
+  for(const u of DATA.units){
+    idx.unitSupports.set(u.id, {Trait:u.trait, Title:u.title, Perk:u.perk});
+    for(const k of ['Trait','Title','Perk']){
+      const sid = u[k.toLowerCase()];
+      if(!sid) continue;
+      if(!idx.subskillSources.has(sid)) idx.subskillSources.set(sid, []);
+      idx.subskillSources.get(sid).push(u.id);
+    }
+  }
+}
+
+// ============================================================================
+// Aggregation: compute per-unit stats + team totals
+// ============================================================================
+// Per-class raw-stat → combat-pool routing. All 4 classes verified in-game by user.
+//   Mage:    ATK←SPI, DEF←AGI, Weak←STR
+//   Warrior: ATK←STR, DEF←SPI, Weak←AGI
+//   Archer:  ATK←AGI, DEF←STR, Weak←SPI
+//   Priest:  ATK←SPI, DEF←STR, Weak←AGI
+const CLASS_ROUTE = {
+  Mage:    {ATK:'SPI', DEF:'AGI', WEAK:'STR', confirmed:true},
+  Warrior: {ATK:'STR', DEF:'SPI', WEAK:'AGI', confirmed:true},
+  Archer:  {ATK:'AGI', DEF:'STR', WEAK:'SPI', confirmed:true},
+  Priest:  {ATK:'SPI', DEF:'STR', WEAK:'AGI', confirmed:true},
+};
+
+// Stat keyword -> raw stat key (for parsing bond/talent text)
+// Used only for the "stacking" extraction (status output) — NOT base aggregation,
+// since base aggregation comes from typed numeric columns.
+const STAT_TEXT_TO_KEY = {
+  'STR':'STR','Strength':'STR','力量':'STR',
+  'SPI':'SPI','Spirit':'SPI','精神':'SPI','INT':'SPI',
+  'AGI':'AGI','Agility':'AGI','敏捷':'AGI','DEX':'AGI',
+  'HP':'HP','Max HP':'HP','生命':'HP','CONS':'HP',
+  'SPD':'SPD','Speed':'SPD','速度':'SPD',
+  'Tough':'Tough','Toughness':'Tough','韧性':'Tough',
+  'Luck':'Luck','LUK':'Luck','幸运':'Luck',
+  'Mana':'Mana','Max Mana':'Mana','Action Mana':'Mana','Starting Mana':'Mana',
+  'ATK':'ATK','DEF':'DEF','Weakness':'WEAK',
+};
+
+// Status keywords we detect in effect strings (Chill, Burn, etc.) — drives stacking display.
+function getStatusList(){
+  if(!DATA?.statuses) return [];
+  return Object.values(DATA.statuses).map(s=>s.name).filter(n=>n && !n.startsWith('[CN'));
+}
+
+// Compute per-main raw stat totals from base + gear.
+// Talent / support stat additions are extracted separately (parsed from effect text)
+// and shown in the stacking panel rather than rolled silently into the raw totals,
+// because effect text is heterogeneous and partial-parse risks misleading numbers.
+function computeUnitStats(main){
+  const u = main.unitId ? idx.unitById.get(main.unitId) : null;
+  const stats = {STR:0,SPI:0,AGI:0,HP:0,SPD:0,Tough:0,Luck:0,Mana:0,
+                 ATK:0,DEF:0,WEAK:0};
+  if(!u) return {unit:null, raw:stats, sources:{base:{}, gear:{}}, bondsActive:[], routeWarn:false};
+
+  // Base from BasicAttrDataTable
+  const base = {
+    STR: u.base.InitialSTR, SPI: u.base.InitialINT, AGI: u.base.InitialDEX,
+    HP: u.base.InitialCONS, SPD: u.base.initialSPD, Tough: u.base.initialTough,
+    Luck: 0, Mana: 0,
+    ATK: u.base.initialAttack, DEF: u.base.initialDefence, WEAK: u.base.initialWeak,
+  };
+  for(const k of Object.keys(base)){ stats[k] += base[k]; }
+
+  // Gear stats (raw) — sums column values regardless of star (no scaling formula yet).
+  // Star/legacy are tracked + displayed but don't multiply RAW stat values until the
+  // in-game star-scaling formula is verified.
+  //
+  // Bond piece counts DO scale with star + legacy per in-game mechanic:
+  //   1★ → Pure (basic-1) bond gets +1 piece
+  //   2★ → 1★ effect + Title (basic-2) bond gets +1 piece
+  //   3★ → 1★+2★ effects + Enhance (special) bond gets +1 piece
+  //   legacy → ALL three bonds on this gear get +1 piece (stacks with star)
+  const STAR_BONUS_BY_SOURCE = { Pure: 1, Title: 2, Enhance: 3 };
+  const gearTotals = {STR:0,SPI:0,AGI:0,HP:0,SPD:0,Tough:0,Luck:0,Mana:0};
+  const bondCounts = new Map(); // bond CN name → piece count (across all 3 bond fields per gear)
+  for(const slot of SLOT_ORDER){
+    const slotState = main.gear[slot];
+    if(!slotState) continue;
+    const g = DATA.gear[slotState.id];
+    if(!g) continue;
+    for(const k of Object.keys(g.stats)){ gearTotals[k] += g.stats[k]; }
+    const star = slotState.star || 0;
+    const legacy = !!slotState.legacy;
+    const bondsOnGear = g.bonds || (g.bond ? [g.bond] : []);
+    for(const br of bondsOnGear){
+      const starThreshold = STAR_BONUS_BY_SOURCE[br.source] || 99;
+      const starBonus = star >= starThreshold ? 1 : 0;
+      const legacyBonus = legacy ? 1 : 0;
+      const pieces = (br.count || 1) + starBonus + legacyBonus;
+      bondCounts.set(br.name, (bondCounts.get(br.name) || 0) + pieces);
+    }
+  }
+  for(const k of Object.keys(gearTotals)){ stats[k] += gearTotals[k]; }
+
+  // Class routing — gear raw stats also flow into pool stats per class mapping.
+  const route = CLASS_ROUTE[u.cls] || null;
+  if(route){
+    stats.ATK  += gearTotals[route.ATK] || 0;
+    stats.DEF  += gearTotals[route.DEF] || 0;
+    stats.WEAK += gearTotals[route.WEAK] || 0;
+  }
+
+  // Active bonds: for each bond in bondCounts, find the highest tier ≤ count.
+  const bondsActive = [];
+  for(const [bondName, count] of bondCounts){
+    const b = idx.bondByName.get(bondName);
+    if(!b) continue;
+    const eligible = b.tiers.filter(t=>t.pieces<=count);
+    bondsActive.push({
+      bond: b, name: bondName, count,
+      tiers: b.tiers,
+      activeTier: eligible.length ? eligible[eligible.length-1] : null,
+    });
+  }
+  bondsActive.sort((a,b)=>b.count-a.count);
+
+  return {
+    unit: u, raw: stats,
+    sources: {base, gear:gearTotals},
+    bondsActive,
+    routeWarn: route ? !route.confirmed : true,
+  };
+}
+
+// Extract "+N <stat-or-status>" hits from a single effect string.
+// Returns array of {keyword, amount, kind:'stat'|'status'}.
+//
+// Conservative — only fires on application-style phrases ("Apply N stacks of X",
+// "+N STR per ..."), not threshold/condition phrases ("per 15 stacks of Chill",
+// "if 5+ stacks of Burn"). False negatives preferred over false positives, since
+// inflated numbers mislead build comparisons more than missing ones.
+const STATUSES_LIST = []; // populated after data load
+const APPLY_VERBS = '(?:Apply|Gain|Grant|Restore|Deal|Inflict|Lose|Take|Receive|Add)';
+function extractStacking(text){
+  if(!text) return [];
+  const out = [];
+  // A. Verb-led: "Apply 2 stacks of Chill" / "Take +2 stacks of Chill"
+  const reA = new RegExp(APPLY_VERBS + '\\s+\\+?(\\d+)\\s+stacks?\\s+of\\s+([A-Z][a-zA-Z]+)', 'g');
+  let m;
+  while((m = reA.exec(text)) !== null){
+    const n = parseInt(m[1]); const kw = m[2];
+    if(STATUSES_LIST.includes(kw)) out.push({keyword:kw, amount:n, kind:'status'});
+  }
+  // B. "+N stacks of Chill" with explicit + sign (no verb required, signals an apply)
+  const reB = /\+(\d+)\s+stacks?\s+of\s+([A-Z][a-zA-Z]+)/g;
+  while((m = reB.exec(text)) !== null){
+    const n = parseInt(m[1]); const kw = m[2];
+    if(STATUSES_LIST.includes(kw)) out.push({keyword:kw, amount:n, kind:'status'});
+  }
+  // C. "+N STR" / "+1 SPD" stat additions, with lookahead to skip thresholds.
+  // Stop word list: per/every/for-every are threshold markers we must NOT capture.
+  const reC = /\+(\d+)\s+([A-Za-z][A-Za-z ]{1,30}?)(?=[.,;:)]|$|\s+(?:to|on|at|when|after|each|until|while)\b)/g;
+  while((m = reC.exec(text)) !== null){
+    const n = parseInt(m[1]); const kw = m[2].trim();
+    if(kw in STAT_TEXT_TO_KEY) out.push({keyword:STAT_TEXT_TO_KEY[kw], amount:n, kind:'stat'});
+  }
+  // D. Verb-led status without "stacks of" wording: "Apply 2 Chill"
+  const reD = new RegExp(APPLY_VERBS + '\\s+\\+?(\\d+)\\s+([A-Z][a-zA-Z]+)\\b', 'g');
+  while((m = reD.exec(text)) !== null){
+    const n = parseInt(m[1]); const kw = m[2];
+    if(STATUSES_LIST.includes(kw)){
+      // Avoid double-counting if reA/reB already caught the same span (heuristic: skip if the next word is "stacks")
+      const after = text.slice(m.index + m[0].length, m.index + m[0].length + 12);
+      if(/^\s*stacks?\s+of/i.test(after)) continue;
+      out.push({keyword:kw, amount:n, kind:'status'});
+    }
+  }
+  return out;
+}
+
+function aggregateTeam(){
+  const perUnit = state.mains.map(computeUnitStats);
+
+  // Team total raw + pool stats
+  const teamTotal = {STR:0,SPI:0,AGI:0,HP:0,SPD:0,Tough:0,Luck:0,Mana:0,ATK:0,DEF:0,WEAK:0};
+  for(const pu of perUnit){
+    for(const k in pu.raw) teamTotal[k] += pu.raw[k];
+  }
+
+  // Stacking categories: collect every effect-text source from talents, supports, bonds (active tier),
+  // sub-skill native passives (each main's own Perk/Trait/Title), then run extractStacking on each.
+  // group by (keyword, kind)
+  const stackMap = new Map(); // key=`${kind}:${keyword}` → {kind, keyword, amount, sources:[{label,amount}]}
+
+  function addStack(items, srcLabel){
+    for(const it of items){
+      const key = `${it.kind}:${it.keyword}`;
+      if(!stackMap.has(key)) stackMap.set(key, {kind:it.kind, keyword:it.keyword, amount:0, sources:[]});
+      const ent = stackMap.get(key);
+      ent.amount += it.amount;
+      ent.sources.push({label:srcLabel, amount:it.amount});
+    }
+  }
+
+  state.mains.forEach((m, i) => {
+    const u = m.unitId ? idx.unitById.get(m.unitId) : null;
+    const tag = u ? (u.alter ? `${u.alter} ${u.name}` : u.name) : `Main ${i+1}`;
+    // unit's own Perk/Trait/Title (only if unit selected)
+    if(u){
+      for(const k of ['perk','trait','title']){
+        const sid = u[k]; if(!sid) continue;
+        const ss = DATA.subskills[sid]; if(!ss) continue;
+        addStack(extractStacking(ss.effect), `${tag} · ${k[0].toUpperCase()+k.slice(1)} (own)`);
+      }
+    }
+    // talents
+    m.talents.forEach((tid, ti) => {
+      if(!tid) return;
+      const t = DATA.talents[tid]; if(!t) return;
+      addStack(extractStacking(t.effect), `${tag} · Talent #${ti+1}: ${t.name}`);
+    });
+    // supports — each support contributes the SOURCE unit's named passive's effect
+    for(const k of ['Trait','Title','Perk']){
+      const srcUnitId = m.supports[k]; if(!srcUnitId) continue;
+      const srcU = idx.unitById.get(srcUnitId); if(!srcU) continue;
+      const sid = srcU[k.toLowerCase()]; if(!sid) continue;
+      const ss = DATA.subskills[sid]; if(!ss) continue;
+      addStack(extractStacking(ss.effect), `${tag} · Support ${k} ← ${srcU.alter?srcU.alter+' ':''}${srcU.name}`);
+    }
+    // active bond tiers
+    for(const ba of (perUnit[i].bondsActive || [])){
+      if(!ba.activeTier) continue;
+      addStack(extractStacking(ba.activeTier.effect), `${tag} · Bond [${ba.bond.name}] ${ba.count}pc`);
+    }
+    // rune effects (any rune at star >= 0 contributes its description)
+    (m.runes || []).forEach((rs, ri) => {
+      if(!rs) return;
+      const r = DATA.runes ? DATA.runes[rs.id] : null;
+      if(!r) return;
+      addStack(extractStacking(r.desc || ''), `${tag} · Rune #${ri+1}: ${r.name}${rs.star?' '+'★'.repeat(rs.star):''}`);
+    });
+  });
+
+  // === Insight propagation: for each insight with level !== null (active),
+  // find eligible mains (origin OR class/family/elem match) and apply effect
+  // (with star bump) to each. ===
+  const insightApplications = []; // {insightId, ins, eligibleMains:[idx], level}
+  if(DATA.insights){
+    for(const insightId in (state.insightStars || {})){
+      const level = state.insightStars[insightId];
+      if(level === null || level === undefined) continue; // off
+      const ins = DATA.insights[insightId];
+      if(!ins) continue;
+      const eligible = [];
+      state.mains.forEach((m2, j) => {
+        const u2 = m2.unitId ? idx.unitById.get(m2.unitId) : null;
+        if(u2 && insightAppliesTo(ins, u2)) eligible.push(j);
+      });
+      if(eligible.length === 0) continue;
+      insightApplications.push({insightId, ins, level, eligibleMains: eligible});
+      const boostedEffect = applyInsightStar(ins.effect, level);
+      for(const j of eligible){
+        const u2 = idx.unitById.get(state.mains[j].unitId);
+        const tag2 = u2.alter ? `${u2.alter} ${u2.name}` : u2.name;
+        const lvlLabel = level === 0 ? '☆' : '★'.repeat(level);
+        addStack(extractStacking(boostedEffect), `${tag2} · Insight ${lvlLabel}: ${ins.name}`);
+      }
+    }
+  }
+
+  // bond pieces summary across team
+  const teamBondPieces = new Map();
+  perUnit.forEach((pu, i) => {
+    for(const ba of (pu.bondsActive || [])){
+      const cur = teamBondPieces.get(ba.name) || {bond:ba.bond, total:0, perUnit:[0,0,0]};
+      cur.total += ba.count; cur.perUnit[i] = ba.count;
+      teamBondPieces.set(ba.name, cur);
+    }
+  });
+
+  return {perUnit, teamTotal, stackMap, teamBondPieces, insightApplications};
+}
+
+// ============================================================================
+// Rendering
+// ============================================================================
+const $ = (id) => document.getElementById(id);
+const e = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+// Scroll position cache — preserves scrollTop on inner overflow containers (insight
+// lists, pool list) across re-renders. Without this, clicking a star button would
+// jump the user back to the top of the list because innerHTML replacement resets it.
+const _scrollCache = new Map();
+function saveScrollPositions(){
+  document.querySelectorAll('[data-scroll-key]').forEach(el => {
+    _scrollCache.set(el.dataset.scrollKey, el.scrollTop);
+  });
+}
+function restoreScrollPositions(){
+  document.querySelectorAll('[data-scroll-key]').forEach(el => {
+    if(_scrollCache.has(el.dataset.scrollKey)){
+      el.scrollTop = _scrollCache.get(el.dataset.scrollKey);
+    }
+  });
+}
+
+function renderTeam(){
+  saveScrollPositions();
+  const grid = $('teamGrid');
+  grid.innerHTML = '';
+  const aggr = aggregateTeam();
+  state.mains.forEach((m, i) => {
+    grid.appendChild(renderUnitPanel(m, i, aggr.perUnit[i]));
+  });
+  renderInsightPool(aggr);
+  renderTeamAggregate(aggr);
+  restoreScrollPositions();
+}
+
+// Global Insight Pool: lists ALL 165 insights so the player can mark which ones
+// they own (from leveled units not currently fielded). Each insight applies to
+// any fielded main matching its restriction → propagates as pre-buff.
+function renderInsightPool(aggr){
+  const root = $('insightPool');
+  if(!root || !DATA.insights) return;
+  // build/reuse search + filter UI; preserve input value across renders if focused
+  const stored = root._poolUI || (root._poolUI = {search:'', filterCls:'', filterFamily:'', filterElem:'', onlyActive:false});
+
+  const allIns = Object.values(DATA.insights);
+  const fielded = state.mains.map(m => m.unitId).filter(Boolean);
+
+  // For each insight: determine eligibility against fielded mains, current level, status
+  const enriched = allIns.map(ins => {
+    const lvl = state.insightStars[ins.id]; // null/undefined = off
+    const isActive = (lvl !== null && lvl !== undefined);
+    const eligibleMains = state.mains
+      .map((m, j) => {
+        const u = m.unitId ? idx.unitById.get(m.unitId) : null;
+        return u && insightAppliesTo(ins, u) ? j+1 : null;
+      })
+      .filter(x => x !== null);
+    return {ins, lvl, isActive, eligibleMains};
+  });
+
+  // Filtering
+  const filtered = enriched.filter(({ins, isActive, eligibleMains}) => {
+    if(stored.onlyActive && !isActive && eligibleMains.length === 0) return false;
+    if(stored.filterCls && ins.cls !== stored.filterCls) return false;
+    if(stored.filterFamily && ins.race !== stored.filterFamily) return false;
+    if(stored.filterElem && ins.subRace !== stored.filterElem) return false;
+    if(stored.search){
+      const q = stored.search.toLowerCase();
+      if(!(ins.name+ins.effect+(ins.id||'')+ins.cls+ins.race+ins.subRace).toLowerCase().includes(q)) return false;
+    }
+    return true;
+  });
+
+  const activeCount = enriched.filter(x => x.isActive).length;
+  const applyingCount = enriched.filter(x => x.isActive && x.eligibleMains.length).length;
+  const eligibleAvailable = enriched.filter(x => x.eligibleMains.length).length;
+
+  const collapsed = state.poolCollapsed;
+  let html = `<div class="pool-header" onclick="togglePoolCollapsed()">
+    <span>📚 Insight pool · ${activeCount} owned · ${applyingCount} active on team · ${eligibleAvailable} eligible (whether owned or not)</span>
+    <span class="chevron">${collapsed ? '▶' : '▼'}</span>
+  </div>
+  <div class="pool-body">
+    <div class="pool-tools">
+      <input class="search" placeholder="Search insight name, effect, restriction..." oninput="window._poolSearch(this.value)" value="${e(stored.search)}">
+      <span class="filter-label">Class</span>` +
+      ['','Mage','Warrior','Archer','Priest'].map(c=>`<button class="f-pill ${stored.filterCls===c?'on':''}" onclick="window._poolFilterCls('${c}')">${c||'All'}</button>`).join('') +
+      `<span class="filter-label">Family</span>` +
+      ['','Spirit','Construct','Demon','Undead','Divine'].map(r=>`<button class="f-pill ${stored.filterFamily===r?'on':''}" onclick="window._poolFilterFamily('${r}')">${r||'All'}</button>`).join('') +
+      `<span class="filter-label">Element</span>` +
+      ['','Light','Dark','Fire','Water','Wind','Earth'].map(el=>`<button class="f-pill ${stored.filterElem===el?'on':''}" onclick="window._poolFilterElem('${el}')">${el||'All'}</button>`).join('') +
+      `<button class="f-pill ${stored.onlyActive?'on':''}" onclick="window._poolToggleActive()">only active / eligible</button>
+    </div>
+    <div class="pool-summary">${filtered.length} of 165 insights shown · level ≥ 0 propagates pre-buff to all eligible mains</div>
+    <div class="pool-list" data-scroll-key="pool-list">` +
+    filtered.slice(0, 200).map(({ins, lvl, isActive, eligibleMains}) => {
+      const restrictBits = [];
+      if(ins.cls) restrictBits.push(`<span class="tag">${e(ins.cls)}</span>`);
+      if(ins.race) restrictBits.push(`<span class="tag">${e(ins.race)}</span>`);
+      if(ins.subRace) restrictBits.push(`<span class="tag">${e(ins.subRace)}</span>`);
+      const restrictHtml = restrictBits.length ? restrictBits.join('') : '<span class="tag" style="color:var(--good)">no restriction (any)</span>';
+      const originUnit = ins.origin ? idx.unitById.get(ins.origin) : null;
+      const originLbl = originUnit ? `${originUnit.alter?originUnit.alter+' ':''}${originUnit.name} (${originUnit.cls}/${originUnit.elem})` : ins.origin;
+      const appliesLbl = eligibleMains.length
+        ? `Applies to fielded: Main ${eligibleMains.join(', ')}`
+        : '';
+      const baseEffect = ins.effect || '';
+      const scaledEffect = isActive ? applyInsightStar(baseEffect, lvl) : baseEffect;
+      let effectHTML;
+      if(isActive && lvl > 0 && scaledEffect !== baseEffect){
+        effectHTML = e(scaledEffect).replace(/(\d+)/, m => `<span class="star-bump">${m}</span>`);
+      }else{
+        effectHTML = e(scaledEffect);
+      }
+      const iconHTML = ins.icon
+        ? `<div class="pr-icon"><img src="${e(ins.icon)}" alt=""></div>`
+        : `<div class="pr-icon"></div>`;
+      return `<div class="pool-row ${isActive?'active':''}">
+        ${iconHTML}
+        <div class="pr-body">
+          <div class="pr-head">
+            <div class="pr-name">${e(ins.name)}</div>
+            <span class="pr-step s-${ins.step}">${e(ins.step)}</span>
+          </div>
+          <div class="pr-restrict">${restrictHtml}</div>
+          <div class="pr-effect">${effectHTML}</div>
+          <div class="pr-origin">from: ${e(originLbl)}</div>
+          ${appliesLbl ? `<div class="pr-applies">✓ ${e(appliesLbl)}</div>` : ''}
+          ${insightLevelWidgetHTML(lvl, 'setInsightStar', [ins.id])}
+        </div>
+      </div>`;
+    }).join('') +
+    (filtered.length>200 ? `<div style="color:var(--dim);font-size:10px;text-align:center;padding:8px;grid-column:1/-1">+${filtered.length-200} more — refine search</div>` : '') +
+    `</div>
+  </div>`;
+
+  root.className = 'pool-card' + (collapsed ? ' collapsed' : '');
+  root.innerHTML = html;
+
+  window._poolSearch = (v) => { stored.search = v; renderInsightPool(aggr); };
+  window._poolFilterCls = (v) => { stored.filterCls = v; renderInsightPool(aggr); };
+  window._poolFilterFamily = (v) => { stored.filterFamily = v; renderInsightPool(aggr); };
+  window._poolFilterElem = (v) => { stored.filterElem = v; renderInsightPool(aggr); };
+  window._poolToggleActive = () => { stored.onlyActive = !stored.onlyActive; renderInsightPool(aggr); };
+}
+
+function renderUnitPanel(main, idxN, pu){
+  const panel = document.createElement('div');
+  panel.className = 'unit-panel';
+  const u = main.unitId ? idx.unitById.get(main.unitId) : null;
+
+  // Header
+  const header = document.createElement('div');
+  header.className = 'unit-panel-header';
+  header.innerHTML = `<span>Main ${idxN+1}</span>${u?`<span style="color:var(--accent)"><button class="ghost" onclick="clearMain(${idxN})">clear</button></span>`:''}`;
+  panel.appendChild(header);
+
+  // Unit picker / display
+  const unitBox = document.createElement('div');
+  unitBox.className = 'unit-selected-mini' + (u?'':' empty');
+  unitBox.onclick = () => openUnitPicker(idxN);
+  if(u){
+    unitBox.innerHTML = `
+      ${u.icon ? `<img class="portrait" src="${e(u.icon)}" alt="">` : `<div class="portrait" style="display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:9px;font-family:'Chakra Petch',sans-serif">no img</div>`}
+      <div class="info">
+        <div class="uname">${e(u.name)}</div>
+        ${u.alter ? `<div class="ualter">${e(u.alter)}</div>` : ''}
+        <div class="utags">
+          <span class="tag-pill tag-step-${e(u.step)}">${e(u.step)}</span>
+          <span class="tag-pill tag-cls">${e(u.cls)}</span>
+          <span class="tag-pill tag-elem">${e(u.elem)}</span>
+          <span class="tag-pill tag-race">${e(u.family)}</span>
+        </div>
+      </div>`;
+  }else{
+    unitBox.innerHTML = `Click to select unit`;
+  }
+  panel.appendChild(unitBox);
+
+  // Stat pool (ATK/DEF/Weak)
+  if(u){
+    const pool = document.createElement('div');
+    pool.className = 'stat-pool';
+    pool.innerHTML = `
+      <div class="pool-pill atk"><div class="lbl">ATK</div><div class="v">${pu.raw.ATK}</div></div>
+      <div class="pool-pill def"><div class="lbl">DEF</div><div class="v">${pu.raw.DEF}</div></div>
+      <div class="pool-pill weak"><div class="lbl">Weak</div><div class="v">${pu.raw.WEAK}</div></div>`;
+    panel.appendChild(pool);
+    if(pu.routeWarn){
+      const w = document.createElement('div');
+      w.className = 'pool-warn';
+      w.textContent = `⚠ ${u.cls} stat→pool routing not yet verified in-game; pool numbers may be off. (Mage routing is confirmed.)`;
+      panel.appendChild(w);
+    }
+
+    // Raw stats
+    const stats = document.createElement('div');
+    stats.className = 'stat-block';
+    const baseSrc = pu.sources.base, gearSrc = pu.sources.gear;
+    const rows = RAW_STATS.map(k => {
+      const total = pu.raw[k];
+      const baseV = baseSrc[k] || 0, gearV = gearSrc[k] || 0;
+      const breakdown = [];
+      if(baseV) breakdown.push(`${baseV} base`);
+      if(gearV) breakdown.push(`+${gearV} gear`);
+      return `<div class="stat-row">
+        <span class="label">${k}</span>
+        <span class="val">${total}<span class="delta">${breakdown.length?` (${breakdown.join(' · ')})`:''}</span></span>
+      </div>`;
+    }).join('');
+    stats.innerHTML = rows;
+    panel.appendChild(stats);
+  }
+
+  // === Insight (tabs by unit attribute, mirroring in-game UI) ===
+  if(u){
+    panel.appendChild(sectionTitle('Insight', 'pre-buff'));
+
+    // Bucket insights this unit benefits from, by attribute axis.
+    const buckets = getInsightBuckets(u);
+    // Sort each bucket: own insight first, then by step (S>A>B>C), then name.
+    const STEP_RANK = {S:0, A:1, B:2, C:3};
+    for(const k of Object.keys(buckets)){
+      buckets[k].insights.sort((a, b) => {
+        if(a.origin === u.id && b.origin !== u.id) return -1;
+        if(b.origin === u.id && a.origin !== u.id) return 1;
+        const sr = (STEP_RANK[a.step] ?? 9) - (STEP_RANK[b.step] ?? 9);
+        if(sr !== 0) return sr;
+        return a.name.localeCompare(b.name);
+      });
+    }
+
+    // Active tab — store on main state. Default to first non-empty.
+    if(!main.insightTab) main.insightTab = null;
+    const availableTabs = ['cls','family','elem'].filter(k => buckets[k].insights.length > 0);
+    if(availableTabs.length === 0){
+      const emptyDiv = document.createElement('div');
+      emptyDiv.className = 'insight-empty-msg';
+      emptyDiv.textContent = 'No insights match any of this unit\'s attributes.';
+      panel.appendChild(emptyDiv);
+    }else{
+      if(!availableTabs.includes(main.insightTab)) main.insightTab = availableTabs[0];
+
+      const ATTR_FIELD = {cls:'cls', family:'race', elem:'subRace'}; // which insight column each tab filters by
+      const tabs = document.createElement('div');
+      tabs.className = 'insight-tabs';
+      const tabsHTML = availableTabs.map(tabKey => {
+        const bucket = buckets[tabKey];
+        const total = bucket.insights.length;
+        const owned = bucket.insights.filter(i => (state.insightStars[i.id] || 0) >= 1).length;
+        const cntCls = owned === total ? '' : (owned > 0 ? 'partial' : '');
+        const onCls = main.insightTab === tabKey ? 'on' : '';
+        return `<button class="tab ${onCls}" onclick="setInsightTab(${idxN},'${tabKey}')">${e(bucket.label)} <span class="cnt ${cntCls}">${owned}/${total}</span></button>`;
+      }).join('');
+      tabs.innerHTML = tabsHTML;
+      panel.appendChild(tabs);
+
+      // Bulk action buttons — operate on the CURRENT tab's bucket only.
+      const bulk = document.createElement('div');
+      bulk.style.cssText = 'display:flex;gap:5px;margin:4px 0 6px';
+      bulk.innerHTML =
+        `<button class="ghost" style="padding:3px 8px;font-size:9px" onclick="setAllInsightsForBucket(${idxN},'${main.insightTab}',3)" title="set all insights in this tab to ★★★">All ★★★</button>` +
+        `<button class="ghost" style="padding:3px 8px;font-size:9px" onclick="setAllInsightsForBucket(${idxN},'${main.insightTab}',null)" title="disable all insights in this tab">All Off</button>` +
+        `<span style="flex:1"></span>` +
+        `<span style="font-size:9px;color:var(--dim);font-family:'Chakra Petch',sans-serif;align-self:center">applies to <b>${e(buckets[main.insightTab].label)}</b> tab only</span>`;
+      panel.appendChild(bulk);
+
+      // List for active tab
+      const activeBucket = buckets[main.insightTab];
+      const list = document.createElement('div');
+      list.className = 'insight-list';
+      list.dataset.scrollKey = `insight-m${idxN}-${main.insightTab}`;
+      list.innerHTML = activeBucket.insights.map(ins => {
+        const lvl = state.insightStars[ins.id]; // null/undefined = off; 0..3 = active
+        const isActive = (lvl !== null && lvl !== undefined);
+        const isOwn = ins.origin === u.id;
+        const originUnit = ins.origin ? idx.unitById.get(ins.origin) : null;
+        const originLabel = isOwn ? '(own)' : (originUnit ? `${originUnit.alter?originUnit.alter+' ':''}${originUnit.name}` : ins.origin);
+        const fielded = state.mains.some(m2 => m2.unitId === ins.origin);
+        let prefix = '';
+        if(main.insightTab === 'cls' && ins.cls) prefix = `${ins.cls} Girls `;
+        else if(main.insightTab === 'family' && ins.race) prefix = `${ins.race} Girls `;
+        else if(main.insightTab === 'elem' && ins.subRace) prefix = `${ins.subRace} Girls `;
+        // Apply star bump if active
+        const baseEffect = ins.effect || '';
+        const scaledEffect = isActive ? applyInsightStar(baseEffect, lvl) : baseEffect;
+        // Highlight bumped value if changed
+        let effectHTML;
+        if(isActive && lvl > 0 && scaledEffect !== baseEffect){
+          // Find the changed digit and wrap with star-bump span
+          effectHTML = e(scaledEffect).replace(/(\d+)/, m => `<span class="star-bump">${m}</span>`);
+        }else{
+          effectHTML = e(scaledEffect);
+        }
+        const rowClass = 'insight-row' + (isOwn ? ' own' : '') + (isActive ? ' active' : '');
+        const iconHTML = ins.icon
+          ? `<div class="ir-icon"><img src="${e(ins.icon)}" alt=""></div>`
+          : `<div class="ir-icon placeholder">${e(ins.id.split('_').pop() || '?')}</div>`;
+        return `<div class="${rowClass}">
+          ${iconHTML}
+          <div class="ir-body">
+            <div class="ir-head">
+              <div class="ir-name">${e(ins.name)}</div>
+              <div class="ir-origin ${isOwn?'own':''}">${e(originLabel)}${fielded && !isOwn?' · fielded':''}</div>
+            </div>
+            <div class="ir-effect">${prefix?`<span class="girl-prefix">${e(prefix)}</span>`:''}${effectHTML}</div>
+            <div class="ir-control">${insightLevelWidgetHTML(lvl, 'setInsightStar', [ins.id])}</div>
+          </div>
+        </div>`;
+      }).join('') || `<div class="insight-empty-msg">No insights in this attribute bucket.</div>`;
+      panel.appendChild(list);
+    }
+  }
+
+  // === Equipment row: Bond | Gear (2×5) | Rune (2×5), 1:1:1 ===
+  panel.appendChild(sectionTitle('Equipment', 'bond · gear · rune'));
+  const eqRow = document.createElement('div');
+  eqRow.className = 'eq-row';
+
+  // --- Bond column ---
+  const bondCol = document.createElement('div');
+  bondCol.className = 'eq-col';
+  const bondsActive = pu.bondsActive || [];
+  const activeCount = bondsActive.filter(b => b.activeTier).length;
+  const bondListHTML = bondsActive.length
+    ? bondsActive.map(ba => {
+        const tiers = ba.tiers || ba.bond.tiers || [];
+        const maxTier = tiers.length ? tiers[tiers.length - 1] : null;
+        const isActive = !!ba.activeTier;
+        // Denominator = bond's MAX tier (stable regardless of current count).
+        const denomLabel = maxTier ? `${ba.count}/${maxTier.pieces}pc` : `${ba.count}pc`;
+        const effLabel = ba.activeTier
+          ? `<b>${ba.activeTier.pieces}pc:</b> ${e(ba.activeTier.effect)}`
+          : '';
+        return `<div class="bond-mini-row ${isActive?'active':'inactive'}">
+          <div class="h">
+            <span class="bnm">${e(ba.bond.name)}</span>
+            <span class="pcs">${e(denomLabel)}</span>
+          </div>
+          ${effLabel ? `<div class="ef">${effLabel}</div>` : ''}
+        </div>`;
+      }).join('')
+    : '<div class="bond-mini-empty">No bonds active.<br>Equip gear with matching set names.</div>';
+  bondCol.innerHTML = `
+    <div class="eq-sub-title">Bonds <span class="hint">${activeCount} active / ${bondsActive.length} pieces</span></div>
+    <div class="bond-mini-list" data-scroll-key="bond-m${idxN}">${bondListHTML}</div>`;
+  eqRow.appendChild(bondCol);
+
+  // --- Gear column (2 × 5 = 10 slots) ---
+  const gearCol = document.createElement('div');
+  gearCol.className = 'eq-col';
+  const gearFilled = SLOT_ORDER.filter(s => main.gear[s]).length;
+  const gearGrid = document.createElement('div');
+  gearGrid.className = 'gear-grid';
+  for(const slot of SLOT_ORDER){
+    const slotState = main.gear[slot];
+    const g = slotState ? DATA.gear[slotState.id] : null;
+    const cell = document.createElement('div');
+    cell.className = 'slot ' + (g ? `filled s-${g.step}` : 'empty');
+    cell.onclick = (ev) => {
+      const t = ev.target;
+      if(t.classList && (t.classList.contains('clear-btn') || t.classList.contains('pip') || t.classList.contains('legacy-btn') || t.closest('.star-pips') || t.closest('.legacy-btn'))) return;
+      openGearPicker(idxN, slot);
+    };
+    if(g){
+      const star = slotState.star || 0, legacy = !!slotState.legacy;
+      const allBonds = g.bonds || (g.bond ? [g.bond] : []);
+      const bondPieces = allBonds.map(br => {
+        const t = ({Pure:1,Title:2,Enhance:3})[br.source] || 99;
+        const sb = star >= t ? 1 : 0;
+        const lb = legacy ? 1 : 0;
+        const pieces = (br.count||1) + sb + lb;
+        const bondEN = (DATA.bonds[br.name]?.name) || br.name;
+        return `${bondEN}[${pieces}]`;
+      }).join(' · ');
+      cell.title = `${g.name} (${RARITY_NAMES[g.step] || g.step})${star?' · '+star+'★':''}${legacy?' · legacy':''}\nBonds: ${bondPieces}\n— click to swap`;
+    }else{
+      cell.title = `${slot} — click to pick`;
+    }
+    cell.innerHTML = g
+      ? `<button class="clear-btn" onclick="clearGear(${idxN},'${slot}');event.stopPropagation()" title="remove">×</button>
+         <span class="step-badge" title="${RARITY_NAMES[g.step] || g.step}">${e(g.step)}</span>
+         ${g.icon ? `<img class="gear-img" src="${e(g.icon)}" alt="">` : ''}
+         <div class="gear-name">${e(g.name)}</div>
+         <div class="ctl-strip">
+           ${pipsHTML(slotState.star || 0, 'setGearStar', [idxN, slot])}
+           <button class="legacy-btn ${slotState.legacy?'on':''}" onclick="toggleGearLegacy(${idxN},'${slot}');event.stopPropagation()" title="legacy toggle">L</button>
+         </div>`
+      : `<div class="slot-name">${e(slot)}</div>
+         <div class="gear-name">+ pick</div>`;
+    gearGrid.appendChild(cell);
+  }
+  gearCol.innerHTML = `<div class="eq-sub-title">Gear <span class="hint">${gearFilled}/10</span></div>`;
+  gearCol.appendChild(gearGrid);
+  eqRow.appendChild(gearCol);
+
+  // --- Rune column (2 × 5 = 10 slots) ---
+  const runeCol = document.createElement('div');
+  runeCol.className = 'eq-col';
+  const runeFilled = main.runes.filter(r => r).length;
+  const runeGrid = document.createElement('div');
+  runeGrid.className = 'rune-grid';
+  for(let ri=0; ri<RUNE_SLOT_COUNT; ri++){
+    const slotState = main.runes[ri];
+    const r = slotState ? DATA.runes[slotState.id] : null;
+    const cell = document.createElement('div');
+    cell.className = 'rune-cell ' + (r ? `filled s-${r.step}` : 'empty');
+    cell.onclick = (ev) => {
+      const t = ev.target;
+      if(t.classList && (t.classList.contains('clear-btn') || t.classList.contains('pip') || t.closest('.star-pips'))) return;
+      openRunePicker(idxN, ri);
+    };
+    cell.title = r ? `${r.name} (${RARITY_NAMES[r.step] || r.step}) ${slotState.star?'· '+slotState.star+'★':''} — click to swap` : `Rune ${ri+1} — click to pick`;
+    cell.innerHTML = r
+      ? `<button class="clear-btn" onclick="clearRune(${idxN},${ri});event.stopPropagation()" title="remove">×</button>
+         <span class="step-badge" title="${RARITY_NAMES[r.step] || r.step}">${e(r.step)}</span>
+         ${r.icon ? `<img class="rune-img" src="${e(r.icon)}" alt="">` : ''}
+         <div class="rune-name">${e(r.name)}</div>
+         <div class="ctl-strip">
+           ${pipsHTML(slotState.star || 0, 'setRuneStar', [idxN, ri])}
+         </div>`
+      : `<div class="slot-name">Rune ${ri+1}</div>
+         <div class="rune-name">+ pick</div>`;
+    runeGrid.appendChild(cell);
+  }
+  runeCol.innerHTML = `<div class="eq-sub-title">Runes <span class="hint">${runeFilled}/10</span></div>`;
+  runeCol.appendChild(runeGrid);
+  eqRow.appendChild(runeCol);
+
+  panel.appendChild(eqRow);
+
+  // === Talents ===
+  panel.appendChild(sectionTitle('Talents', `${main.talents.filter(x=>x).length}/4`));
+  const tRows = document.createElement('div');
+  tRows.className = 'row-slots';
+  main.talents.forEach((tid, i) => {
+    const t = tid ? DATA.talents[tid] : null;
+    const row = document.createElement('div');
+    row.className = 'row-slot ' + (t ? 'filled' : 'empty');
+    row.onclick = (ev) => { if(ev.target.classList.contains('x')) return; openTalentPicker(idxN, i); };
+    row.innerHTML = t
+      ? `<span class="idx">${i+1}</span>
+         <div class="body"><div class="nm">${e(t.name)}</div><div class="ef">${e(t.effect)}</div></div>
+         <span class="x" onclick="clearTalent(${idxN},${i});event.stopPropagation()">×</span>`
+      : `<span class="idx">${i+1}</span>
+         <div class="body"><div class="nm" style="color:var(--dim);font-style:italic">+ pick talent</div></div>
+         <span></span>`;
+    tRows.appendChild(row);
+  });
+  panel.appendChild(tRows);
+
+  // === Supports ===
+  panel.appendChild(sectionTitle('Support layer', 'Trait · Title · Perk'));
+  const sRows = document.createElement('div');
+  sRows.className = 'row-slots';
+  for(const k of ['Trait','Title','Perk']){
+    const srcId = main.supports[k];
+    const srcU = srcId ? idx.unitById.get(srcId) : null;
+    const ss = srcU ? DATA.subskills[srcU[k.toLowerCase()]] : null;
+    const row = document.createElement('div');
+    row.className = 'row-slot support ' + (srcU ? 'filled' : 'empty');
+    row.onclick = (ev) => { if(ev.target.classList.contains('x')) return; openSupportPicker(idxN, k); };
+    row.innerHTML = srcU && ss
+      ? `<span class="idx">${k.slice(0,1)}</span>
+         <div class="body">
+           <div class="nm">${e(ss.name)} <span class="src-tag">← ${e(srcU.alter?srcU.alter+' ':'')}${e(srcU.name)}</span></div>
+           <div class="ef">${e(ss.effect)}</div>
+         </div>
+         <span class="x" onclick="clearSupport(${idxN},'${k}');event.stopPropagation()">×</span>`
+      : `<span class="idx">${k.slice(0,1)}</span>
+         <div class="body"><div class="nm" style="color:var(--dim);font-style:italic">+ pick ${k.toLowerCase()} source</div></div>
+         <span></span>`;
+    sRows.appendChild(row);
+  }
+  panel.appendChild(sRows);
+
+  return panel;
+}
+
+function sectionTitle(label, hint){
+  const d = document.createElement('div');
+  d.className = 'section-title';
+  d.innerHTML = `${e(label)}${hint?`<span class="hint">${e(hint)}</span>`:''}`;
+  return d;
+}
+
+function renderTeamAggregate(aggr){
+  const root = $('teamAggregate');
+  // 1. Team total stats
+  let html = '<div class="aggr-grid">';
+  // Pool
+  html += `<div class="aggr-card">
+    <div class="h">Pool stats (sum)</div>
+    <div class="row"><span class="l">ATK</span><span class="v">${aggr.teamTotal.ATK}</span></div>
+    <div class="row"><span class="l">DEF</span><span class="v">${aggr.teamTotal.DEF}</span></div>
+    <div class="row"><span class="l">Weakness</span><span class="v">${aggr.teamTotal.WEAK}</span></div>
+  </div>`;
+  // Raw
+  html += `<div class="aggr-card">
+    <div class="h">Raw stats (sum)</div>` +
+    RAW_STATS.map(k=>`<div class="row"><span class="l">${k}</span><span class="v">${aggr.teamTotal[k]}</span></div>`).join('') +
+    `</div>`;
+  // Per-unit summary
+  state.mains.forEach((m, i) => {
+    const u = m.unitId ? idx.unitById.get(m.unitId) : null;
+    const pu = aggr.perUnit[i];
+    if(!u){
+      html += `<div class="aggr-card"><div class="h">Main ${i+1}</div><div style="color:var(--dim);font-style:italic;font-size:11px;padding:4px 0">empty</div></div>`;
+    }else{
+      html += `<div class="aggr-card">
+        <div class="h">Main ${i+1}: ${e(u.name)}</div>
+        <div class="row"><span class="l">HP</span><span class="v">${pu.raw.HP}</span></div>
+        <div class="row"><span class="l">ATK / DEF / Weak</span><span class="v">${pu.raw.ATK} / ${pu.raw.DEF} / ${pu.raw.WEAK}</span></div>
+        <div class="row"><span class="l">SPD</span><span class="v">${pu.raw.SPD}</span></div>
+        <div class="row"><span class="l">Tough</span><span class="v">${pu.raw.Tough}</span></div>
+      </div>`;
+    }
+  });
+  html += '</div>';
+
+  // 2. Status / stat stacking
+  const stacks = Array.from(aggr.stackMap.values());
+  // Order: stat first, then status. Within each, sort by total amount desc.
+  const stats = stacks.filter(s=>s.kind==='stat').sort((a,b)=>Math.abs(b.amount)-Math.abs(a.amount));
+  const statuses = stacks.filter(s=>s.kind==='status').sort((a,b)=>{
+    const ka = (DATA.statuses[Object.keys(DATA.statuses).find(id=>DATA.statuses[id].name===a.keyword)] || {});
+    return Math.abs(b.amount)-Math.abs(a.amount);
+  });
+
+  html += `<div class="card-title" style="margin-top:10px">Status stacking <span style="color:var(--dim);font-size:9px;font-weight:500;text-transform:none;letter-spacing:0.5px">— extracted from talent/support/bond effect text. Numbers are per-trigger (not per-turn); read effect description for the trigger condition.</span></div>`;
+  if(statuses.length === 0){
+    html += `<div style="color:var(--dim);font-size:11px;font-style:italic;padding:8px 0">No status references detected. Equip talents/supports/bond gear to see stacking output.</div>`;
+  }else{
+    html += '<div class="status-stack">';
+    for(const s of statuses){
+      const st = Object.values(DATA.statuses).find(x=>x.name===s.keyword) || {tag:'Unknown', effect:''};
+      const cls = st.tag === 'Buff' ? 'buff' : st.tag === 'Debuff' ? 'debuff' : 'instant';
+      html += `<div class="status-card ${cls}">
+        <div class="nm"><span>${e(s.keyword)}</span><span class="pts">+${s.amount}</span></div>
+        <div class="ef">${e(st.effect || '')}</div>
+        <div class="src">` +
+          s.sources.map(src=>`<div class="src-line">+<span class="src-pts">${src.amount}</span> · ${e(src.label)}</div>`).join('') +
+        `</div>
+      </div>`;
+    }
+    html += '</div>';
+  }
+
+  // 3. Stat stacking from effect text (talent/bond stat-mods that aren't in raw column sums)
+  if(stats.length){
+    html += `<div class="card-title" style="margin-top:14px">Stat additions from effects <span style="color:var(--dim);font-size:9px;font-weight:500;text-transform:none;letter-spacing:0.5px">— numbers parsed from talent/bond/support description text. Combine with the raw-stat column above.</span></div>`;
+    html += '<div class="status-stack">';
+    for(const s of stats){
+      html += `<div class="status-card buff">
+        <div class="nm"><span>${e(s.keyword)}</span><span class="pts">+${s.amount}</span></div>
+        <div class="src">` +
+          s.sources.map(src=>`<div class="src-line">+<span class="src-pts">${src.amount}</span> · ${e(src.label)}</div>`).join('') +
+        `</div>
+      </div>`;
+    }
+    html += '</div>';
+  }
+
+  // (Bond pieces are tracked per-unit only — bonds don't pool team-wide. Effects from
+  // each unit's active bond tier still feed into the team stacking display above.)
+
+  root.innerHTML = html;
+}
+
+// ============================================================================
+// Modal pickers
+// ============================================================================
+function openModal(title, bodyHTML){
+  $('modalTitle').textContent = title;
+  $('modalBody').innerHTML = bodyHTML;
+  $('modal').style.display = 'flex';
+}
+function closeModal(){ $('modal').style.display = 'none'; }
+
+// --- Unit picker (for main slot OR support source) ---
+let _unitPickerCb = null;
+function openUnitPicker(mainIdx){
+  const blockedFromOtherMain = new Set(); // not blocked for choosing a main
+  showUnitPicker(`Main ${mainIdx+1}: select unit`, blockedFromOtherMain, (uid)=>{
+    state.mains[mainIdx].unitId = uid;
+    saveState(); renderTeam();
+  });
+}
+
+function showUnitPicker(title, blockedSet, onPick){
+  _unitPickerCb = onPick;
+  let curStep = '', curCls = '', search = '';
+
+  const computeFiltered = () => DATA.units.filter(u =>
+    (!curStep || u.step===curStep) &&
+    (!curCls || u.cls===curCls) &&
+    (!search || (u.name+u.alter+u.cls+u.race+u.elem+u.terrain).toLowerCase().includes(search.toLowerCase()))
+  );
+
+  const renderListHTML = () => {
+    const filtered = computeFiltered();
+    return `<div style="font-size:12px;color:var(--dim);margin-bottom:6px">${filtered.length} units</div>
+      <div class="unit-grid">` +
+      filtered.map(u => {
+        const blocked = blockedSet.has(u.id);
+        return `<div class="u-card ${blocked?'disabled':''}" ${blocked?'':`data-unit-id="${e(u.id)}"`} title="${blocked?'already used as a support source':''}">
+          ${u.icon ? `<img src="${e(u.icon)}" alt="">` : `<div style="width:80px;height:80px;background:#0a0a10;border-radius:5px;margin:0 auto 4px;display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:10px">no img</div>`}
+          <div class="uname-s">${e(u.name)}</div>
+          ${u.alter ? `<div class="ualter-s">${e(u.alter)}</div>` : ''}
+          <div class="tag-strip">${e(RARITY_NAMES[u.step] || u.step)} · ${e(u.cls)} · ${e(u.elem)}</div>
+        </div>`;
+      }).join('') +
+      `</div>`;
+  };
+
+  const shellHTML = `<div class="picker-bar">
+      <input class="search" placeholder="Search by name, race, element..." value="">
+      <span class="filter-label">Rarity</span>` +
+      ['','S','A','B','C'].map(s=>`<button class="f-pill ${curStep===s?'on':''}" data-step="${e(s)}" title="${RARITY_NAMES[s] || 'All rarities'}">${s ? RARITY_NAMES[s] : 'All'}</button>`).join('') +
+      `<span class="filter-label">Class</span>` +
+      ['','Mage','Warrior','Archer','Priest'].map(c=>`<button class="f-pill ${curCls===c?'on':''}" data-cls="${e(c)}">${c||'All'}</button>`).join('') +
+    `</div>
+    <div class="picker-list-area"></div>`;
+  openModal(title, shellHTML);
+
+  const modalBody = $('modalBody');
+  const searchInput = modalBody.querySelector('input.search');
+  const stepBtns = modalBody.querySelectorAll('.f-pill[data-step]');
+  const clsBtns = modalBody.querySelectorAll('.f-pill[data-cls]');
+  const listArea = modalBody.querySelector('.picker-list-area');
+
+  const updateList = () => { listArea.innerHTML = renderListHTML(); };
+
+  searchInput.addEventListener('input', (ev) => { search = ev.target.value; updateList(); });
+  stepBtns.forEach(btn => btn.addEventListener('click', () => {
+    curStep = btn.dataset.step;
+    stepBtns.forEach(b => b.classList.toggle('on', b.dataset.step === curStep));
+    updateList();
+  }));
+  clsBtns.forEach(btn => btn.addEventListener('click', () => {
+    curCls = btn.dataset.cls;
+    clsBtns.forEach(b => b.classList.toggle('on', b.dataset.cls === curCls));
+    updateList();
+  }));
+  listArea.addEventListener('click', (ev) => {
+    const card = ev.target.closest('.u-card');
+    if(!card || card.classList.contains('disabled')) return;
+    const uid = card.dataset.unitId; if(!uid) return;
+    if(_unitPickerCb) _unitPickerCb(uid);
+    closeModal();
+  });
+
+  updateList();
+  searchInput.focus();
+}
+
+// Gear class compatibility: gear.cls is a CSV ("All-Class" / "Mage" / "Warrior,Priest").
+function gearCompatible(g, unitCls){
+  if(!unitCls) return true;
+  if(g.cls === 'All-Class' || !g.cls) return true;
+  return g.cls.split(',').map(s=>s.trim()).includes(unitCls);
+}
+
+// Find which (main, slot) currently equips this gear ID across the whole team.
+function findGearOwner(gid){
+  for(let i=0;i<state.mains.length;i++){
+    for(const s of SLOT_ORDER){
+      const cur = state.mains[i].gear[s];
+      if(cur && cur.id === gid) return {mainIdx:i, slot:s};
+    }
+  }
+  return null;
+}
+
+// Place a gear, enforcing team-wide uniqueness: if it's already equipped on
+// another (main, slot), strip it from there before placing.
+// Preserves star/legacy state when moved (carries from previous slot).
+function setGearUnique(mainIdx, slot, gid){
+  const prev = findGearOwner(gid);
+  let star = 0, legacy = false;
+  if(prev){
+    const old = state.mains[prev.mainIdx].gear[prev.slot];
+    if(old){ star = old.star || 0; legacy = old.legacy || false; }
+    state.mains[prev.mainIdx].gear[prev.slot] = null;
+  }
+  state.mains[mainIdx].gear[slot] = {id: gid, star, legacy};
+}
+
+// Rune helpers — runes are unique across team like gear; 10 generic slots per unit.
+function findRuneOwner(rid){
+  for(let i=0;i<state.mains.length;i++){
+    const arr = state.mains[i].runes || [];
+    for(let j=0;j<arr.length;j++){
+      if(arr[j] && arr[j].id === rid) return {mainIdx:i, runeIdx:j};
+    }
+  }
+  return null;
+}
+function setRuneUnique(mainIdx, runeIdx, rid){
+  const prev = findRuneOwner(rid);
+  let star = 0;
+  if(prev){
+    const old = state.mains[prev.mainIdx].runes[prev.runeIdx];
+    if(old){ star = old.star || 0; }
+    state.mains[prev.mainIdx].runes[prev.runeIdx] = null;
+  }
+  state.mains[mainIdx].runes[runeIdx] = {id: rid, star};
+}
+
+// Star + legacy mutators (called from inline onclick handlers; stop-propagation in caller).
+function setGearStar(mainIdx, slot, lvl){
+  const cur = state.mains[mainIdx].gear[slot];
+  if(!cur) return;
+  cur.star = (cur.star === lvl) ? Math.max(0, lvl-1) : lvl;
+  saveState(); renderTeam();
+}
+function toggleGearLegacy(mainIdx, slot){
+  const cur = state.mains[mainIdx].gear[slot];
+  if(!cur) return;
+  cur.legacy = !cur.legacy;
+  saveState(); renderTeam();
+}
+function setRuneStar(mainIdx, runeIdx, lvl){
+  const cur = state.mains[mainIdx].runes[runeIdx];
+  if(!cur) return;
+  cur.star = (cur.star === lvl) ? Math.max(0, lvl-1) : lvl;
+  saveState(); renderTeam();
+}
+// lvl: null|undefined → Off (delete entry); integer 0..3 → active at level
+function setInsightStar(insightId, lvl){
+  if(lvl === null || lvl === undefined){
+    delete state.insightStars[insightId];
+  }else{
+    state.insightStars[insightId] = parseInt(lvl);
+  }
+  saveState(); renderTeam();
+}
+function setInsightTab(mainIdx, tabKey){
+  state.mains[mainIdx].insightTab = tabKey;
+  saveState(); renderTeam();
+}
+
+// Bucket all insights an EN-attribute matches for a given unit.
+// Mirrors the per-unit-panel bucketing logic so it stays consistent.
+function getInsightBuckets(unit){
+  const buckets = {
+    cls:    { label: unit.cls,    insights: [] },
+    family: { label: unit.family, insights: [] },
+    elem:   { label: unit.elem,   insights: [] },
+  };
+  if(!DATA.insights) return buckets;
+  for(const insightId in DATA.insights){
+    const ins = DATA.insights[insightId];
+    if(ins.cls && ins.cls === unit.cls) buckets.cls.insights.push(ins);
+    else if(ins.race && ins.race === unit.family) buckets.family.insights.push(ins);
+    else if(ins.subRace && ins.subRace === unit.elem) buckets.elem.insights.push(ins);
+    else if(ins.origin === unit.id) buckets.cls.insights.push(ins);
+  }
+  return buckets;
+}
+
+// Bulk-apply: set every insight in <unit, tab>'s visible bucket to `level`.
+//   level === null/undefined → Off (delete entry)
+//   level integer 0..3       → active at that level
+function setAllInsightsForBucket(mainIdx, tabKey, level){
+  const u = state.mains[mainIdx].unitId ? idx.unitById.get(state.mains[mainIdx].unitId) : null;
+  if(!u) return;
+  const buckets = getInsightBuckets(u);
+  const bucket = buckets[tabKey];
+  if(!bucket || !bucket.insights.length) return;
+  for(const ins of bucket.insights){
+    if(level === null || level === undefined){
+      delete state.insightStars[ins.id];
+    }else{
+      state.insightStars[ins.id] = parseInt(level);
+    }
+  }
+  saveState(); renderTeam();
+}
+function clearRune(mainIdx, runeIdx){
+  state.mains[mainIdx].runes[runeIdx] = null;
+  saveState(); renderTeam();
+}
+function togglePoolCollapsed(){
+  state.poolCollapsed = !state.poolCollapsed;
+  saveState(); renderTeam();
+}
+
+// Insight propagation — does an insight apply to a given main?
+//   - origin unit always benefits
+//   - else: at least one non-empty restriction must match
+//   - Class restriction: insight.cls non-empty, match main.cls
+//   - Race restriction: insight.race non-empty, match main.family (Type column = race-family)
+//   - SubRace restriction: in this dataset SubRace column carries element values
+//     (Wind/Light/etc.) — match main.elem
+//   - Element column on insight is always "Any" in current data, ignored.
+// `unit` is the unit-object from DATA.units (has id/cls/family/elem).
+function insightAppliesTo(ins, unit){
+  if(!unit || !unit.id) return false;
+  if(ins.origin && ins.origin === unit.id) return true;
+  if(ins.cls && unit.cls === ins.cls) return true;
+  if(ins.race && unit.family === ins.race) return true;
+  if(ins.subRace && unit.elem === ins.subRace) return true;
+  return false;
+}
+
+// Helper: serialize args for inline onclick (strings → quoted, numbers → as-is).
+function _argList(args){
+  return (args || []).map(a => {
+    if(a === null || a === undefined) return 'null';
+    if(typeof a === 'string') return `'${String(a).replace(/'/g, "\\'")}'`;
+    return String(a);
+  }).join(',');
+}
+
+// 5-state insight level widget [Off / ☆ / ★ / ★★ / ★★★]
+//   Off = disabled (no propagation)
+//   ☆ (level 0) = active at base value
+//   ★ (level 1) = base + 1
+//   ★★ = base + 2
+//   ★★★ = base + 3 (Max Star)
+// fnName takes (...args, level) where level is null for Off, integer 0-3 otherwise.
+function insightLevelWidgetHTML(currentLevel, fnName, args){
+  const argList = _argList(args);
+  const sep = argList ? ',' : '';
+  const buttons = [
+    { val: 'null',   label: 'Off',   isOn: currentLevel === null || currentLevel === undefined },
+    { val: '0',      label: '☆',     isOn: currentLevel === 0 },
+    { val: '1',      label: '★',     isOn: currentLevel === 1 },
+    { val: '2',      label: '★★',    isOn: currentLevel === 2 },
+    { val: '3',      label: '★★★',   isOn: currentLevel === 3 },
+  ];
+  let html = '<span class="lvl-widget" onclick="event.stopPropagation()">';
+  for(const b of buttons){
+    const cls = b.isOn ? 'on' : '';
+    html += `<button class="${cls}" onclick="${fnName}(${argList}${sep}${b.val});event.stopPropagation()">${b.label}</button>`;
+  }
+  html += '</span>';
+  return html;
+}
+
+// Compact star pips (3 dots) — used inside small gear/rune cells. 4-state (0..3).
+// Click pip-N → sets to N. Click pip-N when current === N → sets to N-1 (cycle down).
+function pipsHTML(currentStar, fnName, args){
+  const argList = _argList(args);
+  const sep = argList ? ',' : '';
+  let html = '<span class="star-pips" onclick="event.stopPropagation()">';
+  for(let i=1;i<=3;i++){
+    const cls = i <= currentStar ? 'on' : '';
+    html += `<span class="pip ${cls}" onclick="${fnName}(${argList}${sep}${i});event.stopPropagation()" title="set ${i}★ (click again to lower)"></span>`;
+  }
+  html += '</span>';
+  return html;
+}
+
+// Apply insight star bump: bump first integer in the effect text by `level`.
+// Per game mechanic: each star adds +1 to the value (regardless of which value).
+// level === null → return effect unchanged with "(off)" sentinel handled by caller.
+function applyInsightStar(effect, level){
+  if(level == null) return effect;
+  if(typeof level !== 'number' || level === 0) return effect;
+  let replaced = false;
+  return effect.replace(/(\d+)/, (m, n) => {
+    if(replaced) return m;
+    replaced = true;
+    return String(parseInt(n) + level);
+  });
+}
+
+// --- Gear picker ---
+// Render shell once (search input + filter pills), then update only the list+info
+// section on each filter change. This keeps the search input element stable so it
+// retains focus on every keystroke instead of losing it after each character.
+function openGearPicker(mainIdx, slot){
+  const main = state.mains[mainIdx];
+  const u = main.unitId ? idx.unitById.get(main.unitId) : null;
+  let curStep = '', search = '', showIncompatible = false;
+  const list = idx.gearBySlot.get(slot) || [];
+  const incompatCount = u ? list.filter(g => !gearCompatible(g, u.cls)).length : 0;
+
+  // Filter category state — fresh per modal session.
+  const catFilters = {
+    BasicClass: new Set(),
+    BasicStats: new Set(),
+    Value: new Set(),
+    Mechanic: new Set(),
+    Timing: new Set(),
+    Status: new Set(),
+  };
+  let expandedCat = null; // 'Basic' | 'Value' | 'Mechanic' | 'Timing' | 'Status' | null
+
+  const matchesCategoryFilters = (g) => {
+    // Tag-based categories: gear must have ≥1 selected tag for each non-empty category.
+    for(const cat of ['Value', 'Mechanic', 'Timing', 'Status']){
+      const set = catFilters[cat];
+      if(!set.size) continue;
+      const tags = g.filterTags || [];
+      let any = false;
+      for(const t of set){ if(tags.includes(t)){ any = true; break; } }
+      if(!any) return false;
+    }
+    // Basic.Class — gear's class field is CSV; OR within selection
+    if(catFilters.BasicClass.size){
+      const gearClasses = (g.cls || '').split(',').map(s=>s.trim()).filter(Boolean);
+      let any = (g.cls === 'All-Class');
+      for(const c of catFilters.BasicClass){
+        if(gearClasses.includes(c)){ any = true; break; }
+      }
+      if(!any) return false;
+    }
+    // Basic.Stats — gear has stat[X] > 0
+    if(catFilters.BasicStats.size){
+      let any = false;
+      for(const s of catFilters.BasicStats){
+        if((g.stats?.[s] || 0) > 0){ any = true; break; }
+      }
+      if(!any) return false;
+    }
+    return true;
+  };
+
+  const computeFiltered = () => {
+    const compatList = list.filter(g => showIncompatible || !u || gearCompatible(g, u.cls));
+    return compatList.filter(g =>
+      (!curStep || g.step===curStep) &&
+      (!search || (g.name+(g.bond?.name||'')+g.effect+g.cls).toLowerCase().includes(search.toLowerCase())) &&
+      matchesCategoryFilters(g)
+    );
+  };
+
+  const totalSelectedCount = () => Object.values(catFilters).reduce((sum, s) => sum + s.size, 0);
+  const catSelectedCount = (cat) => {
+    if(cat === 'Basic') return catFilters.BasicClass.size + catFilters.BasicStats.size;
+    return catFilters[cat]?.size || 0;
+  };
+
+  const renderListHTML = () => {
+    const filtered = computeFiltered();
+    return `<div style="font-size:11px;color:var(--dim);margin-bottom:6px">Slot: ${e(slot)} · ${filtered.length} items${u?` · class filter: ${e(u.cls)}`:''}</div>
+      <div class="gear-list">` +
+      filtered.slice(0, 300).map(g => {
+        const stats = Object.entries(g.stats).filter(([,v])=>v).map(([k,v])=>`<span class="stat">${k}+${v}</span>`).join('');
+        const owner = findGearOwner(g.id);
+        const equippedTag = owner ? `<div class="equipped-tag">⚠ Equipped on Main ${owner.mainIdx+1}${owner.mainIdx===mainIdx && owner.slot===slot ? ' (this slot)' : ''} — picking will move it here</div>` : '';
+        const cardClass = 'g-card' + (owner && !(owner.mainIdx===mainIdx && owner.slot===slot) ? ' equipped-elsewhere' : '');
+        const incompat = u && !gearCompatible(g, u.cls);
+        const allBonds = g.bonds || (g.bond ? [g.bond] : []);
+        const bondLine = allBonds.length
+          ? `<div class="gbond">Bonds: ${allBonds.map(b => `${e(idx.bondByName.get(b.name)?.name || b.name)}[${b.count}]`).join(' · ')}</div>`
+          : '';
+        return `<div class="${cardClass}" data-gear-id="${e(g.id)}">
+          <span class="step-mini s-${g.step}">${e(g.step)}</span>
+          <div class="g-img${g.icon?'':' placeholder'}">${g.icon?`<img src="${e(g.icon)}" alt="">`:'no img'}</div>
+          <div class="g-info">
+            <div class="gnm">${e(g.name)}</div>
+            <div class="gmeta">${e(g.cls)}${g.elem?` · ${e(g.elem)}`:''}</div>
+            ${stats ? `<div class="gstats">${stats}</div>` : ''}
+            ${bondLine}
+            ${g.effect ? `<div class="geff">${e(g.effect)}</div>` : ''}
+            ${incompat ? `<div class="equipped-tag" style="color:var(--bad)">⚠ Restricted to ${e(g.cls)} — won't apply on ${e(u.cls)}</div>` : ''}
+            ${equippedTag}
+          </div>
+        </div>`;
+      }).join('') +
+      (filtered.length>300 ? `<div style="grid-column:1/-1;color:var(--dim);font-size:10px;text-align:center;padding:8px">+${filtered.length-300} more — refine search to see them</div>` : '') +
+      `</div>`;
+  };
+
+  // Filter category UI HTML helpers — render the 5-category button row and the
+  // currently-expanded panel inline below the row.
+  const renderCatRowHTML = () => {
+    const cats = ['Basic', 'Value', 'Mechanic', 'Timing', 'Status'];
+    const buttons = cats.map(cat => {
+      const cnt = catSelectedCount(cat);
+      const cntHTML = cnt > 0 ? `<span class="cnt">${cnt}</span>` : '';
+      const expanded = expandedCat === cat ? 'expanded' : '';
+      return `<button class="filter-cat-btn ${expanded}" data-cat="${cat}">${cat} ${cntHTML}</button>`;
+    }).join('');
+    const total = totalSelectedCount();
+    const clearBtn = total > 0 ? `<button class="filter-cat-clear" data-clear>clear ${total} filter${total>1?'s':''}</button>` : '';
+    return buttons + clearBtn;
+  };
+  const renderCatPanelHTML = () => {
+    if(!expandedCat) return '';
+    const cat = expandedCat;
+    const renderPills = (groupKey, values) => `<div class="filter-pills">` +
+      values.map(v => `<button class="pill ${catFilters[groupKey].has(v)?'on':''}" data-pill data-group="${e(groupKey)}" data-value="${e(v)}">${e(v)}</button>`).join('') +
+      `</div>`;
+    if(cat === 'Basic'){
+      return `<div class="filter-cat-panel">
+        <div class="sub-title">Class</div>
+        ${renderPills('BasicClass', GEAR_FILTER_CATEGORIES.Basic.Class)}
+        <div class="sub-title">Has stat &gt; 0</div>
+        ${renderPills('BasicStats', GEAR_FILTER_CATEGORIES.Basic.Stats)}
+      </div>`;
+    }
+    return `<div class="filter-cat-panel">
+      <div class="sub-title">${cat} — gear bond tags · OR within category, AND across categories</div>
+      ${renderPills(cat, GEAR_FILTER_CATEGORIES[cat])}
+    </div>`;
+  };
+
+  // Render shell once: stable input + filter pill buttons + filter category row + empty list container.
+  const shellHTML = `<div class="picker-bar">
+      <input class="search" placeholder="Search by name, bond, effect..." value="">
+      <span class="filter-label">Rarity</span>` +
+      ['','SS','S','A','B','C'].map(s=>`<button class="f-pill ${curStep===s?'on':''}" data-step="${e(s)}" title="${RARITY_NAMES[s] || 'All rarities'}">${s ? RARITY_NAMES[s] : 'All'}</button>`).join('') +
+      (u && incompatCount>0 ? `<span class="filter-label">Class</span>
+        <button class="f-pill" data-incompat title="${u.cls}-only is the default; toggle to also show ${incompatCount} gear(s) restricted to other classes">show incompatible (${incompatCount})</button>` : '') +
+    `</div>
+    <div class="filter-cat-row" data-cat-row>${renderCatRowHTML()}</div>
+    <div data-cat-panel-area>${renderCatPanelHTML()}</div>
+    <div class="picker-list-area" data-scroll-key="gpListArea"></div>`;
+  openModal(`Pick gear: ${slot}`, shellHTML);
+
+  // Wire up handlers against the now-stable DOM nodes.
+  const modalBody = $('modalBody');
+  const searchInput = modalBody.querySelector('input.search');
+  const stepBtns = modalBody.querySelectorAll('.f-pill[data-step]');
+  const incompatBtn = modalBody.querySelector('.f-pill[data-incompat]');
+  const catRow = modalBody.querySelector('[data-cat-row]');
+  const catPanelArea = modalBody.querySelector('[data-cat-panel-area]');
+  const listArea = modalBody.querySelector('.picker-list-area');
+
+  const updateList = () => { listArea.innerHTML = renderListHTML(); };
+  const updateCatRow = () => { catRow.innerHTML = renderCatRowHTML(); };
+  const updateCatPanel = () => { catPanelArea.innerHTML = renderCatPanelHTML(); };
+
+  searchInput.addEventListener('input', (ev) => {
+    search = ev.target.value;
+    updateList();
+  });
+  stepBtns.forEach(btn => btn.addEventListener('click', () => {
+    curStep = btn.dataset.step;
+    stepBtns.forEach(b => b.classList.toggle('on', b.dataset.step === curStep));
+    updateList();
+  }));
+  if(incompatBtn){
+    incompatBtn.addEventListener('click', () => {
+      showIncompatible = !showIncompatible;
+      incompatBtn.classList.toggle('on', showIncompatible);
+      updateList();
+    });
+  }
+  // Filter category buttons — toggle expansion (only one open at a time) + clear-all.
+  catRow.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('.filter-cat-btn');
+    if(btn){
+      const cat = btn.dataset.cat;
+      expandedCat = (expandedCat === cat) ? null : cat;
+      updateCatRow();
+      updateCatPanel();
+      return;
+    }
+    if(ev.target.closest('[data-clear]')){
+      for(const k of Object.keys(catFilters)) catFilters[k].clear();
+      updateCatRow();
+      updateCatPanel();
+      updateList();
+    }
+  });
+  // Pill toggles — event-delegated on the panel area.
+  catPanelArea.addEventListener('click', (ev) => {
+    const pill = ev.target.closest('[data-pill]');
+    if(!pill) return;
+    const group = pill.dataset.group, value = pill.dataset.value;
+    const set = catFilters[group];
+    if(!set) return;
+    if(set.has(value)) set.delete(value); else set.add(value);
+    pill.classList.toggle('on', set.has(value));
+    updateCatRow();   // refresh count badges
+    updateList();
+  });
+  // Click delegation for picking a gear card.
+  listArea.addEventListener('click', (ev) => {
+    const card = ev.target.closest('.g-card');
+    if(!card) return;
+    const gid = card.dataset.gearId;
+    setGearUnique(mainIdx, slot, gid); saveState(); renderTeam(); closeModal();
+  });
+
+  updateList();
+  searchInput.focus();
+}
+
+function clearGear(mainIdx, slot){
+  state.mains[mainIdx].gear[slot] = null; saveState(); renderTeam();
+}
+
+// --- Rune picker (stable shell + list-only refresh) ---
+function openRunePicker(mainIdx, runeIdx){
+  let curStep = '', search = '';
+  const list = Object.values(DATA.runes || {});
+  const STEP_RANK = {SS:0,S:1,A:2,B:3,C:4};
+  list.sort((a,b) => (STEP_RANK[a.step] ?? 9) - (STEP_RANK[b.step] ?? 9) || a.name.localeCompare(b.name));
+
+  const computeFiltered = () => list.filter(r =>
+    (!curStep || r.step===curStep) &&
+    (!search || (r.name+(r.desc||'')+(r.effect||'')).toLowerCase().includes(search.toLowerCase()))
+  );
+
+  const renderListHTML = () => {
+    const filtered = computeFiltered();
+    return `<div style="font-size:11px;color:var(--dim);margin-bottom:6px">Rune slot ${runeIdx+1} · ${filtered.length} runes</div>
+      <div class="gear-list">` +
+      filtered.slice(0, 200).map(r => {
+        const owner = findRuneOwner(r.id);
+        const equippedTag = owner && !(owner.mainIdx===mainIdx && owner.runeIdx===runeIdx)
+          ? `<div class="equipped-tag">⚠ Equipped on Main ${owner.mainIdx+1} rune #${owner.runeIdx+1} — picking will move it here</div>` : '';
+        const cardClass = 'g-card' + (owner && !(owner.mainIdx===mainIdx && owner.runeIdx===runeIdx) ? ' equipped-elsewhere' : '');
+        return `<div class="${cardClass}" data-rune-id="${e(r.id)}">
+          <span class="step-mini s-${r.step}">${e(r.step)}</span>
+          <div class="g-img${r.icon?'':' placeholder'}">${r.icon?`<img src="${e(r.icon)}" alt="">`:'no img'}</div>
+          <div class="g-info">
+            <div class="gnm">${e(r.name)}</div>
+            <div class="gmeta">${e((r.type||[]).join('/'))}${r.elem?` · ${e(r.elem)}`:''}${r.material?` · mat: ${e(r.material)}`:''}</div>
+            ${r.effect ? `<div class="gbond">Function: ${e(r.effect)}</div>` : ''}
+            ${r.desc ? `<div class="geff">${e(r.desc)}</div>` : ''}
+            ${equippedTag}
+          </div>
+        </div>`;
+      }).join('') +
+      (filtered.length>200 ? `<div style="grid-column:1/-1;color:var(--dim);font-size:10px;text-align:center;padding:8px">+${filtered.length-200} more — refine search</div>` : '') +
+      `</div>`;
+  };
+
+  const shellHTML = `<div class="picker-bar">
+      <input class="search" placeholder="Search rune by name, effect, function..." value="">
+      <span class="filter-label">Rarity</span>` +
+      ['','S','A','B','C'].map(s=>`<button class="f-pill ${curStep===s?'on':''}" data-step="${e(s)}" title="${RARITY_NAMES[s] || 'All rarities'}">${s ? RARITY_NAMES[s] : 'All'}</button>`).join('') +
+    `</div>
+    <div class="picker-list-area"></div>`;
+  openModal(`Pick rune: slot ${runeIdx+1}`, shellHTML);
+
+  const modalBody = $('modalBody');
+  const searchInput = modalBody.querySelector('input.search');
+  const stepBtns = modalBody.querySelectorAll('.f-pill[data-step]');
+  const listArea = modalBody.querySelector('.picker-list-area');
+
+  const updateList = () => { listArea.innerHTML = renderListHTML(); };
+
+  searchInput.addEventListener('input', (ev) => { search = ev.target.value; updateList(); });
+  stepBtns.forEach(btn => btn.addEventListener('click', () => {
+    curStep = btn.dataset.step;
+    stepBtns.forEach(b => b.classList.toggle('on', b.dataset.step === curStep));
+    updateList();
+  }));
+  listArea.addEventListener('click', (ev) => {
+    const card = ev.target.closest('.g-card');
+    if(!card) return;
+    setRuneUnique(mainIdx, runeIdx, card.dataset.runeId); saveState(); renderTeam(); closeModal();
+  });
+
+  updateList();
+  searchInput.focus();
+}
+
+// --- Talent picker (stable shell + list-only refresh) ---
+function openTalentPicker(mainIdx, talentSlot){
+  const main = state.mains[mainIdx];
+  const u = main.unitId ? idx.unitById.get(main.unitId) : null;
+  let mode = 'rollable', search = ''; // 'rollable' | 'all'
+
+  const tier = (id) => {
+    const m = id.match(/_(\d{3})$/);
+    if(!m) return 'S';
+    return ({'001':'C','002':'B','003':'A','004':'S'})[m[1]] || 'S';
+  };
+  const isRollable = (t) => {
+    if(!u) return true;
+    if(t.specify) return t.specify === u.id;
+    if(t.race && t.race !== u.race) return false;
+    if(t.cls && t.cls !== u.cls) return false;
+    if(t.elem && t.elem !== u.elem) return false;
+    return true;
+  };
+
+  const computeFiltered = () => {
+    const all = Object.entries(DATA.talents);
+    return all
+      .filter(([id,t]) => (mode==='all' || isRollable(t)))
+      .filter(([id,t]) => !search || (t.name+t.effect).toLowerCase().includes(search.toLowerCase()));
+  };
+
+  const renderListHTML = () => {
+    const filtered = computeFiltered();
+    return `<div style="font-size:12px;color:var(--dim);margin-bottom:6px">Slot ${talentSlot+1}/4 · ${filtered.length} talents${u?` · for ${e(u.name)}`:' · no unit selected (showing all)'}</div>
+      <div class="t-list">` +
+      filtered.slice(0, 200).map(([id, t]) => `
+        <div class="t-card tier-${tier(id)}" data-talent-id="${e(id)}">
+          <div>
+            <div class="tnm">${e(t.name)}</div>
+            <div class="tef">${e(t.effect)}</div>
+          </div>
+          <div class="ttag">${e(RARITY_NAMES[tier(id)] || tier(id))}${t.specify?` · ${e(t.specify)}`:t.race?` · ${e(t.race)}`:t.cls?` · ${e(t.cls)}`:t.elem?` · ${e(t.elem)}`:''}</div>
+        </div>`).join('') +
+      (filtered.length>200 ? `<div style="color:var(--dim);font-size:11px;text-align:center;padding:8px">+${filtered.length-200} more — refine search</div>` : '') +
+      `</div>`;
+  };
+
+  const shellHTML = `<div class="picker-bar">
+      <input class="search" placeholder="Search talent..." value="">
+      <span class="filter-label">Pool</span>
+      <button class="f-pill ${mode==='rollable'?'on':''}" data-mode="rollable">Rollable</button>
+      <button class="f-pill ${mode==='all'?'on':''}" data-mode="all">All (transferable)</button>
+    </div>
+    <div class="picker-list-area"></div>`;
+  openModal(`Pick talent · slot ${talentSlot+1}`, shellHTML);
+
+  const modalBody = $('modalBody');
+  const searchInput = modalBody.querySelector('input.search');
+  const modeBtns = modalBody.querySelectorAll('.f-pill[data-mode]');
+  const listArea = modalBody.querySelector('.picker-list-area');
+
+  const updateList = () => { listArea.innerHTML = renderListHTML(); };
+
+  searchInput.addEventListener('input', (ev) => { search = ev.target.value; updateList(); });
+  modeBtns.forEach(btn => btn.addEventListener('click', () => {
+    mode = btn.dataset.mode;
+    modeBtns.forEach(b => b.classList.toggle('on', b.dataset.mode === mode));
+    updateList();
+  }));
+  listArea.addEventListener('click', (ev) => {
+    const card = ev.target.closest('.t-card');
+    if(!card) return;
+    state.mains[mainIdx].talents[talentSlot] = card.dataset.talentId;
+    saveState(); renderTeam(); closeModal();
+  });
+
+  updateList();
+  searchInput.focus();
+}
+
+// --- Support picker (pick source unit; the specific Trait/Title/Perk slot fixes which passive is borrowed) ---
+function openSupportPicker(mainIdx, slotKind){
+  // Block source-unit candidates per CLAUDE.md support-layer rules:
+  // (1) all fielded mains (a main can't also be a support source)
+  // (2) any unit already assigned as a support source on ANY slot of ANY main (except the current slot itself)
+  const blocked = new Set();
+  state.mains.forEach((m, i) => {
+    if(m.unitId) blocked.add(m.unitId);
+    for(const k of ['Trait','Title','Perk']){
+      if(i===mainIdx && k===slotKind) continue;
+      const s = m.supports[k]; if(s) blocked.add(s);
+    }
+  });
+  showUnitPicker(`Pick ${slotKind} source for Main ${mainIdx+1}`, blocked, (srcUid) => {
+    state.mains[mainIdx].supports[slotKind] = srcUid;
+    saveState(); renderTeam();
+  });
+}
+
+// ============================================================================
+// Mutations
+// ============================================================================
+function clearMain(i){
+  if(!confirm('Clear this main slot (unit, gear, talents, supports)?')) return;
+  state.mains[i] = emptyMain();
+  saveState(); renderTeam();
+}
+function clearTalent(i, t){
+  state.mains[i].talents[t] = null; saveState(); renderTeam();
+}
+function clearSupport(i, k){
+  state.mains[i].supports[k] = null; saveState(); renderTeam();
+}
+function resetAll(){
+  if(!confirm('Reset the whole team?')) return;
+  state = {mains:[emptyMain(), emptyMain(), emptyMain()]};
+  saveState(); renderTeam();
+}
+function exportBuild(){
+  const json = JSON.stringify(state, null, 2);
+  navigator.clipboard?.writeText(json).then(
+    () => alert('Build copied to clipboard.'),
+    () => prompt('Copy this build JSON:', json)
+  );
+}
+function importBuild(){
+  const txt = prompt('Paste build JSON:');
+  if(!txt) return;
+  try{
+    const s = JSON.parse(txt);
+    if(s && Array.isArray(s.mains) && s.mains.length===3){ state = s; saveState(); renderTeam(); }
+    else alert('Invalid build JSON.');
+  }catch(e){ alert('Parse error: '+e.message); }
+}
+
+// expose to inline handlers
+Object.assign(window, {
+  clearMain, clearTalent, clearSupport, clearGear, clearRune,
+  resetAll, exportBuild, importBuild,
+  openUnitPicker, openGearPicker, openTalentPicker, openSupportPicker, openRunePicker, closeModal,
+  setGearStar, toggleGearLegacy, setRuneStar, setInsightStar, setInsightTab, setAllInsightsForBucket, togglePoolCollapsed,
+});
+
+// ============================================================================
+// Boot
+// ============================================================================
+function boot(){
+  if(!window.TEAM_PLANNER){
+    $('loading').textContent = 'team-planner-data.js failed to load.';
+    return;
+  }
+  DATA = window.TEAM_PLANNER;
+  STATUSES_LIST.length = 0;
+  for(const n of getStatusList()) STATUSES_LIST.push(n);
+  buildIndex();
+  loadState();
+  $('loading').style.display = 'none';
+  $('app').style.display = 'block';
+  renderTeam();
+}
+if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+else boot();
+</script>
+</body>
+</html>

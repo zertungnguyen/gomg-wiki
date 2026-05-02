@@ -1,0 +1,16 @@
+# Cloudflare Pages — per-path response headers
+# Format: https://developers.cloudflare.com/pages/configuration/headers/
+
+# Long-cache static assets (icons, generated data blobs)
+/assets/*
+  Cache-Control: public, max-age=604800, immutable
+
+# Talent / team-planner data — embedded in HTML, but if loaded standalone keep cacheable
+/talent-simulator-data.*
+  Cache-Control: public, max-age=86400
+/team-planner-data.*
+  Cache-Control: public, max-age=86400
+
+# HTML pages — short cache so news/build updates show up promptly
+/*.html
+  Cache-Control: public, max-age=300, must-revalidate
