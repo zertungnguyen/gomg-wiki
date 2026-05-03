@@ -136,7 +136,6 @@ table.results th.col-icon, table.results td.col-icon {
 }
 .gear-icon { width: 36px; height: 36px; display: block; image-rendering: pixelated; image-rendering: crisp-edges; border-radius: 4px; background: var(--bg-alt); flex-shrink: 0; }
 .gear-icon.placeholder { display: flex; align-items: center; justify-content: center; color: var(--fg-dim); font-size: 8px; }
-.gear-eff { font-size: 12px; color: var(--fg-dim); line-height: 1.4; max-width: 380px; }
 table.results td { vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--border); }
 table.results td.col-name { font-weight: 600; color: var(--fg); white-space: nowrap; }
 table.results td.col-meta { color: var(--fg-dim); font-size: 12px; white-space: nowrap; }
@@ -166,7 +165,7 @@ table.results td.col-meta { color: var(--fg-dim); font-size: 12px; white-space: 
 <div class="page">
 <main class="content">
 <h1>Search Gear</h1>
-<p>Filter 1234 gear pieces using the same 5-tab structure as the in-game <em>Codex → Gear → Filter</em> UI. <strong>Basic</strong> scans the gear's own columns (rarity / class / stat keyword / slot); <strong>Value / Mechanic / Timing / Status</strong> scan the bond effect text referenced by the gear's three bond slots (Pure / Title / Enhance). Pills within a sub-group OR; across sub-groups and across tabs AND.</p>
+<p>Filter 1234 gear pieces using the same 5-tab structure as the in-game <em>Codex → Gear → Filter</em> UI. <strong>Basic</strong> scans the gear's own columns (rarity / class / stat keyword / slot); <strong>Value / Mechanic / Timing / Status</strong> scan the bond effect text + tag CSV referenced by the gear's three bond slots (Pure / Title / Enhance). Pills within a sub-group OR; across sub-groups and across tabs AND.</p>
 
 <div class="search-mode-row">
   <div class="mode-control">
@@ -222,7 +221,7 @@ table.results td.col-meta { color: var(--fg-dim); font-size: 12px; white-space: 
 <div id="resultsWrap">
 <table class="results">
 <thead><tr>
-  <th>Step</th><th class="col-icon"></th><th>Slot</th><th>Name</th><th>Class</th><th>Stats</th><th>Bonds</th><th>Description</th>
+  <th>Step</th><th class="col-icon"></th><th>Slot</th><th>Name</th><th>Class</th><th>Stats</th><th>Bonds</th>
 </tr></thead>
 <tbody id="tbody"></tbody>
 </table>
@@ -492,13 +491,12 @@ function render() {
       <td class="col-meta">${g.cls || "—"}</td>
       <td><div class="gear-stats">${stats || "<span style=\"color:var(--fg-dim)\">—</span>"}</div></td>
       <td><div class="gear-bonds">${bonds || "<span style=\"color:var(--fg-dim);font-size:11px\">—</span>"}</div></td>
-      <td><div class="gear-eff">${g.effect || "<span style=\"color:var(--fg-dim)\">—</span>"}</div></td>
     `;
     tbody.appendChild(tr);
   }
   if (filtered.length > 500) {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td colspan="8" style="text-align:center;color:var(--fg-dim);padding:12px">… ${filtered.length - 500} more — narrow your filters to see them.</td>`;
+    tr.innerHTML = `<td colspan="7" style="text-align:center;color:var(--fg-dim);padding:12px">… ${filtered.length - 500} more — narrow your filters to see them.</td>`;
     tbody.appendChild(tr);
   }
 }
