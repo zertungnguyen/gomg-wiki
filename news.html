@@ -24,12 +24,14 @@
 <main class="content">
 <h1>News</h1>
 <p><em>Wiki update log — most recent first. Each entry summarizes what changed in the published site.</em></p>
-<h2>2026-05-03 — Team Planner mechanism fixes</h2>
-<p>Three follow-up fixes to the <a href="team-planner.html">Team Planner</a>:</p>
+<h2>2026-05-03 — Team Planner: mechanism fixes, collapsible Insight, stats panel split</h2>
+<p>Updates to the <a href="team-planner.html">Team Planner</a>:</p>
 <ul>
 <li><strong>Mana stats split into 4 distinct values</strong> — Starting Mana / Max Mana / Action Mana / Hit Mana now tracked separately with their actual game defaults (0 / 30 / 10 / 2). Effect text like "+10 Starting Mana, +5 Max Mana" from passives, bonds, and talents now routes to the correct stat instead of being lumped into a single "Mana" total. False-positive guards added so threshold phrasing ("per 15 Max Mana", "% of Max Mana", "Mana Loss Resist") and bare "Gain N Mana" combat events are NOT counted as stat deltas.</li>
 <li><strong>Class→pool routing warning removed</strong> — all four classes (Mage / Warrior / Archer / Priest) verified in-game. The "(Mage routing confirmed; others are guesses)" caution that appeared on every Warrior/Archer/Priest unit panel is gone since the underlying mappings have been correct for some time.</li>
 <li><strong>Triggered effects tagged in breakdown</strong> — sources like <code>[Skill] +N Max Mana after casting skill</code> or <code>Gain +N Hit Mana at low HP</code> are still summed into the totals (sandbox aggregates the maximum-stacking-output potential), but the breakdown row now shows a <code>(triggered)</code> tag so it's easy to spot which contributions only fire under specific conditions.</li>
+<li><strong>Insight detail list collapsible per main</strong> — the Insight section header is now a click-to-toggle. Default is collapsed: only the per-attribute tab counts (e.g. <code>Archer 15/15</code>, <code>Construct 0/6</code>, <code>Wind 15/15</code>) stay visible so you can see at a glance how saturated each axis is. Click the section header (▶) to expand the bulk action buttons + scrollable insight list when you actually want to dial individual stars. State persists per main across reloads.</li>
+<li><strong>Stats panel split into Showing / Hidden sections + Follow-Up DMG added</strong> — primary stat block now has a "Showing Stats" subheader (STR / SPI / AGI / HP / SPD / Tough / Luck / Start Mana / Max Mana) and a "Hidden Stats" subheader below for derived combat stats (Action Mana / Hit Mana / Follow-Up DMG). Follow-Up DMG is the first new derived stat parsed from kit text — patterns like <code>Deal +N Follow-Up DMG</code>, <code>Deal N more Follow-Up DMG</code> (bonds, insights), and <code>Take N less Follow-Up DMG</code> (mitigation) are summed into the unit's total and team aggregate. Percentage forms (<code>+N% Follow-Up DMG</code>) and Follow-Up COUNT (<code>+N Follow-Up attacks</code>) are out of scope for this batch — more Hidden Stats land incrementally.</li>
 </ul>
 <h2>2026-05-01 — Team Planner launched</h2>
 <p>New tool: <a href="team-planner.html">Team Planner</a>. 3-unit build sandbox for stacking-numbers comparison.</p>

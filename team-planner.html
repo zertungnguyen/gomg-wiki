@@ -237,6 +237,7 @@ button.ghost{padding:5px 10px;font-size:10px;background:transparent}
 
 /* --- Stat readout per unit --- */
 .stat-block{background:var(--card2);border-radius:6px;padding:10px 12px;margin-top:6px}
+.stat-block .stat-section-header{font-family:'Chakra Petch',sans-serif;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--accent);padding-bottom:3px;margin-bottom:2px;border-bottom:1px solid var(--border)}
 .stat-block .stat-row{display:flex;justify-content:space-between;align-items:baseline;padding:4px 0;font-size:13px;border-bottom:1px solid #1a1a24;flex-wrap:wrap;gap:4px}
 .stat-block .stat-row:last-child{border-bottom:none}
 .stat-block .label{color:var(--dim);font-family:'Chakra Petch',sans-serif;letter-spacing:0.5px;font-size:12px;text-transform:uppercase;flex-shrink:0}
@@ -477,16 +478,28 @@ const RUNE_SLOT_COUNT = 10;
 // Raw stats tracked per unit + summed at team level. Mana is split into 4 distinct
 // game mechanics with their documented defaults: Starting=0, Max=30, Action=10, Hit=2.
 // Gear's InitialMagic column = Starting Mana (it's the only Mana stat gear can carry).
-const RAW_STATS = ['STR','SPI','AGI','HP','SPD','Tough','Luck','StartMana','MaxMana','ActMana','HitMana'];
+//
+// Stats are partitioned into two display rows:
+//   Showing Stats — primary stat block always visible at top of unit panel.
+//   Hidden Stats  — secondary stats below (mana details, derived combat stats).
+//                   Currently sparse; more entries land incrementally as parse
+//                   coverage for new mechanics (Counter DMG, Skill DMG bonuses,
+//                   etc.) is verified.
+const SHOWING_STATS = ['STR','SPI','AGI','HP','SPD','Tough','Luck','StartMana','MaxMana'];
+const HIDDEN_STATS  = ['ActMana','HitMana','FollowUpDmg'];
+const RAW_STATS = [...SHOWING_STATS, ...HIDDEN_STATS];
 // Display labels for stat keys whose internal name doesn't match the in-game UI label.
 const STAT_LABEL = {
-  StartMana: 'Start Mana',
-  MaxMana:   'Max Mana',
-  ActMana:   'Action Mana',
-  HitMana:   'Hit Mana',
+  StartMana:   'Start Mana',
+  MaxMana:     'Max Mana',
+  ActMana:     'Action Mana',
+  HitMana:     'Hit Mana',
+  FollowUpDmg: 'Follow-Up DMG',
 };
 // Game-wide defaults for Mana mechanics (no per-unit Mana column in DataTables —
-// values are constants in code, modifiable by passives/talents/bonds).
+// values are constants in code, modifiable by passives/talents/bonds). Follow-Up
+// DMG default 0; Archer's "+1 base" + "ATK/DEF differential" components are runtime
+// combat formulas, not stored stats — only kit-based modifiers are summed here.
 const MANA_DEFAULTS = {StartMana: 0, MaxMana: 30, ActMana: 10, HitMana: 2};
 // In-game rarity names for the Step letter codes — match how the game UI labels gear/runes.
 const RARITY_NAMES = {C:'Normal', B:'Rare', A:'Epic', S:'Legendary', SS:'Mythic'};
@@ -706,7 +719,7 @@ function getStatusList(){
 function computeUnitStats(main){
   const u = main.unitId ? idx.unitById.get(main.unitId) : null;
   const stats = {STR:0,SPI:0,AGI:0,HP:0,SPD:0,Tough:0,Luck:0,
-                 StartMana:0,MaxMana:0,ActMana:0,HitMana:0,
+                 StartMana:0,MaxMana:0,ActMana:0,HitMana:0,FollowUpDmg:0,
                  ATK:0,DEF:0,WEAK:0};
   if(!u) return {unit:null, raw:stats, sources:{base:{}, gear:{}}, bondsActive:[], routeWarn:false};
 
@@ -717,6 +730,7 @@ function computeUnitStats(main){
     Luck: 0,
     StartMana: MANA_DEFAULTS.StartMana, MaxMana: MANA_DEFAULTS.MaxMana,
     ActMana: MANA_DEFAULTS.ActMana, HitMana: MANA_DEFAULTS.HitMana,
+    FollowUpDmg: 0,
     ATK: u.base.initialAttack, DEF: u.base.initialDefence, WEAK: u.base.initialWeak,
   };
   for(const k of Object.keys(base)){ stats[k] += base[k]; }
@@ -732,7 +746,7 @@ function computeUnitStats(main){
   //   legacy → ALL three bonds on this gear get +1 piece (stacks with star)
   const STAR_BONUS_BY_SOURCE = { Pure: 1, Title: 2, Enhance: 3 };
   const gearTotals = {STR:0,SPI:0,AGI:0,HP:0,SPD:0,Tough:0,Luck:0,
-                      StartMana:0,MaxMana:0,ActMana:0,HitMana:0};
+                      StartMana:0,MaxMana:0,ActMana:0,HitMana:0,FollowUpDmg:0};
   const bondCounts = new Map(); // bond CN name → piece count (across all 3 bond fields per gear)
   for(const slot of SLOT_ORDER){
     const slotState = main.gear[slot];
@@ -867,6 +881,34 @@ function extractStacking(text){
   while((m = reE3.exec(text)) !== null){
     out.push({keyword:MANA_QUAL[m[2].charAt(0).toUpperCase()+m[2].slice(1).toLowerCase()], amount:-parseInt(m[1]), kind:'stat'});
   }
+  // F. Follow-Up DMG modifiers — distinct phrasing from generic stat patterns:
+  //   F1. "Deal +N Follow-Up DMG"   (BD40102, BD10403, talents — leading "+" form)
+  //   F2. "Deal N more Follow-Up DMG"  (JN01502 bond, XD insight relics — no "+" but "more")
+  //   F3. "[-−]N Follow-Up DMG" or "Take N less Follow-Up DMG"  (JN60168 bond, BD10519)
+  // Skips: "+N% Follow-Up DMG" (percentage — out of scope for now); "per N Follow-Up DMG"
+  // (threshold form — guarded by negative-lookahead on % and word "per" before the digit).
+  // Follow-Up COUNT (e.g. "+N Follow-Up attacks") is a separate stat — defer to next batch.
+  const reF1 = /Deal\s+\+(\d+)(?!%)\s+(?:more\s+)?Follow-Up\s+DMG\b/gi;
+  while((m = reF1.exec(text)) !== null){
+    out.push({keyword:'FollowUpDmg', amount:parseInt(m[1]), kind:'stat'});
+  }
+  const reF2 = /Deal\s+(\d+)\s+more\s+Follow-Up\s+DMG\b/gi;
+  while((m = reF2.exec(text)) !== null){
+    // Skip if this same span was already caught by F1 (the "Deal +N more" double-form).
+    const start = m.index;
+    if(/Deal\s+\+\d+\s+more\s+Follow-Up\s+DMG/i.test(text.slice(Math.max(0,start-2), start + m[0].length + 2))){
+      continue;
+    }
+    out.push({keyword:'FollowUpDmg', amount:parseInt(m[1]), kind:'stat'});
+  }
+  const reF3a = /(?<!per\s)[-−]\s*(\d+)(?!%)\s+Follow-Up\s+DMG\b/gi;
+  while((m = reF3a.exec(text)) !== null){
+    out.push({keyword:'FollowUpDmg', amount:-parseInt(m[1]), kind:'stat'});
+  }
+  const reF3b = /Take\s+(\d+)\s+less\s+Follow-Up\s+DMG\b/gi;
+  while((m = reF3b.exec(text)) !== null){
+    out.push({keyword:'FollowUpDmg', amount:-parseInt(m[1]), kind:'stat'});
+  }
   return out;
 }
 
@@ -875,18 +917,25 @@ function aggregateTeam(){
 
   // Team total raw + pool stats
   const teamTotal = {STR:0,SPI:0,AGI:0,HP:0,SPD:0,Tough:0,Luck:0,
-                     StartMana:0,MaxMana:0,ActMana:0,HitMana:0,
+                     StartMana:0,MaxMana:0,ActMana:0,HitMana:0,FollowUpDmg:0,
                      ATK:0,DEF:0,WEAK:0};
-  for(const pu of perUnit){
-    for(const k in pu.raw) teamTotal[k] += pu.raw[k];
-  }
+  // teamTotal is summed AFTER the per-source aggregation loop below — some stats
+  // (Follow-Up DMG and any future "rolled-from-text" stats) are accumulated into
+  // perUnit[i].raw inside addStack and need to be visible to this sum.
 
   // Stacking categories: collect every effect-text source from talents, supports, bonds (active tier),
   // sub-skill native passives (each main's own Perk/Trait/Title), then run extractStacking on each.
   // group by (keyword, kind)
   const stackMap = new Map(); // key=`${kind}:${keyword}` → {kind, keyword, amount, sources:[{label,amount}]}
 
-  function addStack(items, srcLabel, srcText){
+  // Stat keys whose parsed-from-text deltas ALSO roll into the owning unit's raw stat
+  // (and thus into teamTotal). Most stat-mods stay display-only in the stacking panel
+  // (see computeUnitStats comment about partial-parse risks); these are the exceptions
+  // where the parse coverage is solid enough to trust the rolled total.
+  const STATS_ROLLED_INTO_RAW = new Set(['FollowUpDmg']);
+  const perMainStatDelta = state.mains.map(() => ({}));
+
+  function addStack(items, srcLabel, srcText, mainIdx){
     const triggered = detectTriggered(srcText);
     for(const it of items){
       const key = `${it.kind}:${it.keyword}`;
@@ -894,6 +943,11 @@ function aggregateTeam(){
       const ent = stackMap.get(key);
       ent.amount += it.amount;
       ent.sources.push({label:srcLabel, amount:it.amount, triggered});
+      // Per-main roll-up for the trusted-parse stat keys.
+      if(it.kind === 'stat' && STATS_ROLLED_INTO_RAW.has(it.keyword) && mainIdx !== undefined && mainIdx !== null){
+        const d = perMainStatDelta[mainIdx];
+        d[it.keyword] = (d[it.keyword] || 0) + it.amount;
+      }
     }
   }
 
@@ -905,14 +959,14 @@ function aggregateTeam(){
       for(const k of ['perk','trait','title']){
         const sid = u[k]; if(!sid) continue;
         const ss = DATA.subskills[sid]; if(!ss) continue;
-        addStack(extractStacking(ss.effect), `${tag} · ${k[0].toUpperCase()+k.slice(1)} (own)`, ss.effect);
+        addStack(extractStacking(ss.effect), `${tag} · ${k[0].toUpperCase()+k.slice(1)} (own)`, ss.effect, i);
       }
     }
     // talents
     m.talents.forEach((tid, ti) => {
       if(!tid) return;
       const t = DATA.talents[tid]; if(!t) return;
-      addStack(extractStacking(t.effect), `${tag} · Talent #${ti+1}: ${t.name}`, t.effect);
+      addStack(extractStacking(t.effect), `${tag} · Talent #${ti+1}: ${t.name}`, t.effect, i);
     });
     // supports — each support contributes the SOURCE unit's named passive's effect
     for(const k of ['Trait','Title','Perk']){
@@ -920,19 +974,19 @@ function aggregateTeam(){
       const srcU = idx.unitById.get(srcUnitId); if(!srcU) continue;
       const sid = srcU[k.toLowerCase()]; if(!sid) continue;
       const ss = DATA.subskills[sid]; if(!ss) continue;
-      addStack(extractStacking(ss.effect), `${tag} · Support ${k} ← ${srcU.alter?srcU.alter+' ':''}${srcU.name}`, ss.effect);
+      addStack(extractStacking(ss.effect), `${tag} · Support ${k} ← ${srcU.alter?srcU.alter+' ':''}${srcU.name}`, ss.effect, i);
     }
     // active bond tiers
     for(const ba of (perUnit[i].bondsActive || [])){
       if(!ba.activeTier) continue;
-      addStack(extractStacking(ba.activeTier.effect), `${tag} · Bond [${ba.bond.name}] ${ba.count}pc`, ba.activeTier.effect);
+      addStack(extractStacking(ba.activeTier.effect), `${tag} · Bond [${ba.bond.name}] ${ba.count}pc`, ba.activeTier.effect, i);
     }
     // rune effects (any rune at star >= 0 contributes its description)
     (m.runes || []).forEach((rs, ri) => {
       if(!rs) return;
       const r = DATA.runes ? DATA.runes[rs.id] : null;
       if(!r) return;
-      addStack(extractStacking(r.desc || ''), `${tag} · Rune #${ri+1}: ${r.name}${rs.star?' '+'★'.repeat(rs.star):''}`, r.desc || '');
+      addStack(extractStacking(r.desc || ''), `${tag} · Rune #${ri+1}: ${r.name}${rs.star?' '+'★'.repeat(rs.star):''}`, r.desc || '', i);
     });
   });
 
@@ -958,8 +1012,24 @@ function aggregateTeam(){
         const u2 = idx.unitById.get(state.mains[j].unitId);
         const tag2 = u2.alter ? `${u2.alter} ${u2.name}` : u2.name;
         const lvlLabel = level === 0 ? '☆' : '★'.repeat(level);
-        addStack(extractStacking(boostedEffect), `${tag2} · Insight ${lvlLabel}: ${ins.name}`);
+        addStack(extractStacking(boostedEffect), `${tag2} · Insight ${lvlLabel}: ${ins.name}`, boostedEffect, j);
       }
+    }
+  }
+
+  // Roll trusted-parse stat deltas into each owning unit's raw stat block.
+  // Done AFTER the source-aggregation loop (and AFTER insight propagation) so
+  // both unit-kit and applied insights contribute. teamTotal is summed below
+  // from the rolled perUnit raw, so it picks these up automatically.
+  for(let i = 0; i < perUnit.length; i++){
+    const d = perMainStatDelta[i];
+    for(const k in d){
+      perUnit[i].raw[k] = (perUnit[i].raw[k] || 0) + d[k];
+    }
+  }
+  for(const pu of perUnit){
+    for(const k in pu.raw){
+      if(k in teamTotal) teamTotal[k] += pu.raw[k];
     }
   }
 
@@ -1166,28 +1236,51 @@ function renderUnitPanel(main, idxN, pu){
       <div class="pool-pill weak"><div class="lbl">Weak</div><div class="v">${pu.raw.WEAK}</div></div>`;
     panel.appendChild(pool);
 
-    // Raw stats
+    // Raw stats — split into 2 sections (Showing / Hidden). Both render as one
+    // .stat-block visually; a small subheader divides them. Hidden Stats grow
+    // incrementally as parse coverage for additional mechanics is verified.
     const stats = document.createElement('div');
     stats.className = 'stat-block';
     const baseSrc = pu.sources.base, gearSrc = pu.sources.gear;
-    const rows = RAW_STATS.map(k => {
+    const renderRow = (k) => {
       const total = pu.raw[k];
       const baseV = baseSrc[k] || 0, gearV = gearSrc[k] || 0;
       const breakdown = [];
       if(baseV) breakdown.push(`${baseV} base`);
       if(gearV) breakdown.push(`+${gearV} gear`);
+      // Trusted-parse stats: derived total may differ from base+gear because
+      // text-parsed deltas roll into raw. Hint that diff in the breakdown.
+      const derived = total - baseV - gearV;
+      if(derived !== 0) breakdown.push(`${derived>0?'+':''}${derived} text`);
       return `<div class="stat-row">
         <span class="label">${STAT_LABEL[k] || k}</span>
         <span class="val">${total}<span class="delta">${breakdown.length?` (${breakdown.join(' · ')})`:''}</span></span>
       </div>`;
-    }).join('');
-    stats.innerHTML = rows;
+    };
+    const showingRows = SHOWING_STATS.map(renderRow).join('');
+    const hiddenRows  = HIDDEN_STATS.map(renderRow).join('');
+    stats.innerHTML =
+      `<div class="stat-section-header">Showing Stats</div>` +
+      showingRows +
+      `<div class="stat-section-header" style="margin-top:8px">Hidden Stats</div>` +
+      hiddenRows;
     panel.appendChild(stats);
   }
 
   // === Insight (tabs by unit attribute, mirroring in-game UI) ===
   if(u){
-    panel.appendChild(sectionTitle('Insight', 'pre-buff'));
+    // Collapse state: tabs (with per-category counts) stay visible; only the
+    // bulk-action row + scrollable list collapse. Default collapsed because the
+    // detail list is dense and the at-a-glance counts on the tabs are usually
+    // enough day-to-day.
+    if(typeof main.insightCollapsed !== 'boolean') main.insightCollapsed = true;
+    const insightTitle = document.createElement('div');
+    insightTitle.className = 'section-title insight-section-title';
+    insightTitle.style.cssText = 'cursor:pointer;display:flex;align-items:center;gap:6px';
+    insightTitle.onclick = () => toggleInsightCollapsed(idxN);
+    insightTitle.title = main.insightCollapsed ? 'Click to expand insight detail list' : 'Click to collapse insight detail list';
+    insightTitle.innerHTML = `<span>Insight</span><span class="hint" style="float:none">pre-buff</span><span style="flex:1"></span><span class="chevron" style="font-size:10px;color:var(--dim)">${main.insightCollapsed ? '▶' : '▼'}</span>`;
+    panel.appendChild(insightTitle);
 
     // Bucket insights this unit benefits from, by attribute axis.
     const buckets = getInsightBuckets(u);
@@ -1227,6 +1320,11 @@ function renderUnitPanel(main, idxN, pu){
       }).join('');
       tabs.innerHTML = tabsHTML;
       panel.appendChild(tabs);
+
+    // When collapsed, tabs (with per-category counts) stay visible above —
+    // bulk action row + insight detail list are skipped entirely. Equipment
+    // and the rest of the panel still render below this block.
+    if(!main.insightCollapsed){
 
       // Bulk action buttons — operate on the CURRENT tab's bucket only.
       const bulk = document.createElement('div');
@@ -1282,6 +1380,7 @@ function renderUnitPanel(main, idxN, pu){
         </div>`;
       }).join('') || `<div class="insight-empty-msg">No insights in this attribute bucket.</div>`;
       panel.appendChild(list);
+    } // end if(!main.insightCollapsed)
     }
   }
 
@@ -1468,10 +1567,15 @@ function renderTeamAggregate(aggr){
     <div class="row"><span class="l">DEF</span><span class="v">${aggr.teamTotal.DEF}</span></div>
     <div class="row"><span class="l">Weakness</span><span class="v">${aggr.teamTotal.WEAK}</span></div>
   </div>`;
-  // Raw
+  // Raw — split into Showing Stats / Hidden Stats subsections.
+  const aggrRow = (k) => `<div class="row"><span class="l">${STAT_LABEL[k] || k}</span><span class="v">${aggr.teamTotal[k]}</span></div>`;
   html += `<div class="aggr-card">
-    <div class="h">Raw stats (sum)</div>` +
-    RAW_STATS.map(k=>`<div class="row"><span class="l">${STAT_LABEL[k] || k}</span><span class="v">${aggr.teamTotal[k]}</span></div>`).join('') +
+    <div class="h">Showing Stats (sum)</div>` +
+    SHOWING_STATS.map(aggrRow).join('') +
+    `</div>`;
+  html += `<div class="aggr-card">
+    <div class="h">Hidden Stats (sum)</div>` +
+    HIDDEN_STATS.map(aggrRow).join('') +
     `</div>`;
   // Per-unit summary
   state.mains.forEach((m, i) => {
@@ -1711,6 +1815,11 @@ function setInsightStar(insightId, lvl){
 }
 function setInsightTab(mainIdx, tabKey){
   state.mains[mainIdx].insightTab = tabKey;
+  saveState(); renderTeam();
+}
+function toggleInsightCollapsed(mainIdx){
+  const m = state.mains[mainIdx];
+  m.insightCollapsed = !m.insightCollapsed;
   saveState(); renderTeam();
 }
 
@@ -2265,7 +2374,7 @@ Object.assign(window, {
   clearMain, clearTalent, clearSupport, clearGear, clearRune,
   resetAll, exportBuild, importBuild,
   openUnitPicker, openGearPicker, openTalentPicker, openSupportPicker, openRunePicker, closeModal,
-  setGearStar, toggleGearLegacy, setRuneStar, setInsightStar, setInsightTab, setAllInsightsForBucket, togglePoolCollapsed,
+  setGearStar, toggleGearLegacy, setRuneStar, setInsightStar, setInsightTab, toggleInsightCollapsed, setAllInsightsForBucket, togglePoolCollapsed,
 });
 
 // ============================================================================
