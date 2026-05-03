@@ -23,31 +23,8 @@
 <div class="page">
 <main class="content">
 <h1>Grand Magician</h1>
-<p><em>&lt;魔术大师&gt;</em></p>
-<p><strong>ID:</strong> <code>M13305</code> · <strong>Step:</strong> S · <strong>Weight:</strong> 10 · <strong>CharacterRole:</strong> 输出 / DPS</p>
-<!-- imagery:start -->
-
-<h2>Animated</h2>
-<div class="anim-grid">
-<figure><div class="thumb"><img src="../assets/icons/animated/idle/M13305.gif" alt="M13305 idle"></div><figcaption>Idle</figcaption></figure>
-<figure><div class="thumb"><img src="../assets/icons/animated/walk/M13305.gif" alt="M13305 walk"></div><figcaption>Walk</figcaption></figure>
-<figure><div class="thumb"><img src="../assets/icons/animated/celebrate/M13305.gif" alt="M13305 celebrate"></div><figcaption>Celebrate</figcaption></figure>
-<figure><div class="thumb"><img src="../assets/icons/animated/special/M13305.gif" alt="M13305 special"></div><figcaption>Special (Ult)</figcaption></figure>
-<figure><div class="thumb"><img src="../assets/icons/animated/death/M13305.gif" alt="M13305 death"></div><figcaption>Death</figcaption></figure>
-<figure><div class="thumb"><img src="../assets/icons/animated/abnormal/M13305.gif" alt="M13305 abnormal"></div><figcaption>Abnormal</figcaption></figure>
-<figure><div class="thumb"><img src="../assets/icons/animated/_single/M13305.gif" alt="M13305 _single"></div><figcaption>Alt idle</figcaption></figure>
-</div>
-<h2>Still</h2>
-<div class="still-grid">
-<figure><div class="thumb"><img src="../assets/icons/Header/M13305.png" alt="M13305 Avatar (Header)"></div><figcaption>Avatar (Header)</figcaption></figure>
-<figure><div class="thumb"><img src="../assets/icons/ActorAnim/Role/M13305.png" alt="M13305 Battle sprite"></div><figcaption>Battle sprite</figcaption></figure>
-<figure><div class="thumb"><img src="../assets/icons/ActorAnim/RoleDraw/M13305.png" alt="M13305 Illustration (RoleDraw)"></div><figcaption>Illustration (RoleDraw)</figcaption></figure>
-<figure><div class="thumb"><img src="../assets/icons/RoleCard/MD13305.png" alt="M13305 Card art (RoleCard)"></div><figcaption>Card art (RoleCard)</figcaption></figure>
-<figure><div class="thumb"><img src="../assets/icons/SkillHeader/MD13305.png" alt="M13305 Skill banner (SkillHeader)"></div><figcaption>Skill banner (SkillHeader)</figcaption></figure>
-</div>
-<!-- imagery:end -->
-
-<h2>Thuộc tính (Class · Type · Element · Terrain)</h2>
+<p><strong>ID:</strong> <code>M13305</code> · <strong>Step:</strong> S · <strong>Weight:</strong> 10 · <strong>CharacterRole:</strong> DPS</p>
+<h2>Attributes (Class · Type · Element · Terrain)</h2>
 <table>
 <thead>
 <tr>
@@ -59,18 +36,18 @@
 </thead>
 <tbody>
 <tr>
-<td><strong><a href="../keywords/class-mage.html">Mage</a></strong> (法师)</td>
-<td><strong><a href="../keywords/race-spirit.html">Spirit</a></strong> (生灵)</td>
-<td><strong><a href="../keywords/element-dark.html">Dark</a></strong> (暗系)</td>
-<td><strong><a href="../keywords/terrain-forest.html">Forest</a></strong> (森林)</td>
+<td><strong><a href="../keywords/class-mage.html">Mage</a></strong></td>
+<td><strong><a href="../keywords/race-spirit.html">Spirit</a></strong></td>
+<td><strong><a href="../keywords/element-dark.html">Dark</a></strong></td>
+<td><strong><a href="../keywords/terrain-forest.html">Forest</a></strong></td>
 </tr>
 </tbody>
 </table>
 <blockquote>
-<p><strong>Race name</strong> (used for talent filter): <code>兔耳族 / Leporine</code> (race name <code>兔耳族</code> ≠ Type race-family <code>生灵</code>).</p>
+<p><strong>Race name</strong> (used for talent filter): <code>Leporine</code> (race name ≠ Type race-family <code>Spirit</code>).</p>
 </blockquote>
 <h2>Codex (Insight)</h2>
-<p><strong>魔术大全 / Stage Magic</strong> (<code>XD14001_013</code>)</p>
+<p><strong>Stage Magic</strong> (<code>XD14001_013</code>)</p>
 <table>
 <thead>
 <tr>
@@ -85,7 +62,7 @@
 </tr>
 <tr>
 <td>Type</td>
-<td>专属 / Unique</td>
+<td>Unique</td>
 </tr>
 <tr>
 <td>Race lock</td>
@@ -93,15 +70,15 @@
 </tr>
 <tr>
 <td>Element/Class lock</td>
-<td>不限</td>
+<td>Any</td>
 </tr>
 <tr>
 <td>MaxLevel</td>
 <td><strong>3</strong></td>
 </tr>
 <tr>
-<td>Effect (canonical CN / EN, base value at L1)</td>
-<td>造成技能伤害+1。 / Deal 1 more skill DMG.</td>
+<td>Effect (base value at L1)</td>
+<td>Deal 1 more skill DMG.</td>
 </tr>
 <tr>
 <td>SpecifyRoleIDs</td>
@@ -201,7 +178,7 @@
 <td>—</td>
 <td>—</td>
 <td>—</td>
-<td><strong>0</strong> <em>(game default)</em></td>
+<td><strong>10</strong> <em>(game default)</em></td>
 </tr>
 <tr>
 <td><strong><a href="../keywords/mechanic-max-mana.html">Max Mana</a></strong></td>
@@ -215,7 +192,7 @@
 </tbody>
 </table>
 <blockquote>
-<p>Sum of 5 axes from <code>BasicAttrDataTable</code> filtered by <code>Type='职业'/'元素'/'种族'/'地型'/'位阶'</code>. HP/STR/SPI/AGI don't have keyword pages so labels stay plain.</p>
+<p>Sum of 5 axes from <code>BasicAttrDataTable</code> filtered by <code>Type_EN ∈ {Class, Elements, Race, Terrain, Tier}</code>. HP/STR/SPI/AGI don't have keyword pages so labels stay plain.</p>
 </blockquote>
 <p><strong>Combat-stat mapping (<a href="../keywords/class-mage.html">Mage</a> class):</strong> <a href="../keywords/stat-atk.html">ATK</a> pool ← SPI · <a href="../keywords/stat-def.html">DEF</a> pool ← AGI · <a href="../keywords/stat-weakness.html">Weakness</a> ← STR. The <code>initialAttack/Defence/Weak</code> from BasicAttr per-axis adds to the mapped raw stat (not separate combat stats).</p>
 <table>
@@ -270,7 +247,7 @@
 <p>Higher-level stats = base + level growth + Insight + passive/talent modifiers + gear. Growth formula per <code>BasicAttrDataTable.GrowthType1..10</code> (cycle of 10) — exact application rule TBD pending in-game datapoint verification.</p>
 </blockquote>
 <h2>Skill (Active)</h2>
-<p><strong>表演终章 / Grand Finale</strong> (<code>UniqueDataTable.M13305</code>)</p>
+<p><strong>Grand Finale</strong> (<code>UniqueDataTable.M13305</code>)</p>
 <table>
 <thead>
 <tr>
@@ -281,15 +258,15 @@
 <tbody>
 <tr>
 <td>SkillType</td>
-<td>攻击 / Attack</td>
+<td>Attack</td>
 </tr>
 <tr>
 <td>TargetType</td>
-<td>敌方 / Enemy</td>
+<td>Enemy</td>
 </tr>
 <tr>
 <td>Target</td>
-<td>全体目标 / All Targets</td>
+<td>All Targets</td>
 </tr>
 <tr>
 <td>MaxTarget</td>
@@ -313,48 +290,42 @@
 </tr>
 <tr>
 <td>ActionType</td>
-<td>特殊攻击 / Special Attack</td>
+<td>Special Attack</td>
 </tr>
 </tbody>
 </table>
 <p><strong>Effect:</strong></p>
 <blockquote>
-<p>魔术大师为本次表演谢幕，对敌方全体目标造成<strong>8</strong>点伤害，每少<strong>1</strong>名目标使本次造成伤害+<strong>100</strong>%，对仅存目标造成伤害再次+<strong>100</strong>%。</p>
-<p><em>Takes a final bow for the performance. Deals </em><em>8</em><em> DMG to all enemies. For every </em><em>1</em><em> fewer enemies, deals +</em><em>100</em><em>% DMG. Deals an extra +</em><em>100</em><em>% DMG to the sole survivor.</em></p>
+<p>Takes a final bow for the performance. Deals <strong>8</strong> DMG to all enemies. For every <strong>1</strong> fewer enemies, deals +<strong>100</strong>% DMG. Deals an extra +<strong>100</strong>% DMG to the sole survivor.</p>
 </blockquote>
 <h2>Attack (Normal Attack)</h2>
-<p><strong>普通攻击 / Normal Attack</strong> (<code>BD30001</code>) — UnlockStar 1</p>
+<p><strong>Normal Attack</strong> (<code>BD30001</code>) — UnlockStar 1</p>
 <blockquote>
-<p>优先对敌方前排目标造成<strong>1</strong>点伤害。</p>
-<p><em>Targets the front enemy first. Deals </em><em>1</em><em> DMG.</em></p>
+<p>Targets the front enemy first. Deals <strong>1</strong> DMG.</p>
 <p><em>(Value0=1.)</em></p>
 </blockquote>
 <h2>Race</h2>
-<p><strong>兔耳族 / Leporine</strong> (<code>BD20105</code>) — UnlockStar 2</p>
+<p><strong>Leporine</strong> (<code>BD20105</code>) — UnlockStar 2</p>
 <blockquote>
-<p>受到攻击时敌方追击次数视为-<strong>3</strong>。</p>
-<p><em>Enemy Follow-Up attacks count as -</em><em>3</em><em>.</em></p>
+<p>Enemy Follow-Up attacks count as -<strong>3</strong>.</p>
 <p><em>(Value0=3.)</em></p>
 </blockquote>
 <h2>Trait</h2>
-<p><strong>缜密 / Meticulous</strong> (<code>BD10517</code>) — UnlockStar 3</p>
+<p><strong>Meticulous</strong> (<code>BD10517</code>) — UnlockStar 3</p>
 <blockquote>
-<p>【技能】行动开始前如果本回合没受到攻击则使自身造成技能伤害+<strong>1</strong>。</p>
-<p><em>[Skill] Deal +</em><em>1</em><em> skill DMG at action start if not attacked this turn.</em></p>
+<p>[Skill] Deal +<strong>1</strong> skill DMG at action start if not attacked this turn.</p>
 <p><em>(Value0=1.)</em></p>
 </blockquote>
 <h2>Title</h2>
-<p><strong>施法者 / Caster</strong> (<code>BD51020</code>) — UnlockStar 4</p>
+<p><strong>Caster</strong> (<code>BD51020</code>) — UnlockStar 4</p>
 <blockquote>
-<p>【技能】造成技能伤害+<strong>6</strong>。</p>
-<p><em>[Skill] Deal +</em><em>6</em><em> skill DMG.</em></p>
+<p>[Skill] Deal +<strong>6</strong> skill DMG.</p>
 <p><em>(Value0=6.)</em></p>
 </blockquote>
 <h2>Perk</h2>
-<p><strong>幕后黑手 / Mastermind</strong> (<code>BD40948</code>) — UnlockStar 5</p>
+<p><strong>Mastermind</strong> (<code>BD40948</code>) — UnlockStar 5</p>
 <blockquote>
-<p>【获得】行动开始前如果本回合没受到攻击则使自身获得<strong>3</strong>点魔力。</p>
-<p><em>[Gain] Gain </em><em>3</em><em> Mana at action start if not attacked this turn.</em></p>
+<p>[Gain] Gain <strong>3</strong> Mana at action start if not attacked this turn.</p>
 <p><em>(Value0=3.)</em></p>
 </blockquote>
 <h2>Level-up Materials</h2>
@@ -362,52 +333,45 @@
 <thead>
 <tr>
 <th>Slot</th>
-<th>CN</th>
-<th>EN</th>
+<th>Material</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>1</td>
-<td>魔力结晶</td>
 <td>Mana Crystal</td>
 </tr>
 <tr>
 <td>2</td>
-<td>奶油菇</td>
 <td>Cream Shroom</td>
 </tr>
 <tr>
 <td>3</td>
-<td>孢子菇</td>
 <td>Spore Shroom</td>
 </tr>
 <tr>
 <td>4</td>
-<td>魔力菇</td>
 <td>Mana Shroom</td>
 </tr>
 </tbody>
 </table>
 <h2>Talents</h2>
-<p>Talent unlocks ở <strong>5★</strong>, dùng <strong>天赋果实 / Talent Fruit</strong> để mở + reroll. Pool eligible cho unit này = <strong>100</strong> total = 1 exclusive + 10 race + 21 class + 10 element + 58 generic.</p>
+<p>Talents unlock at <strong>5★</strong>, rolled / rerolled with <strong>Talent Fruit</strong>. Eligible pool for this unit = <strong>100</strong> total = 1 exclusive + 10 race + 21 class + 10 element + 58 generic.</p>
 <blockquote>
 <p><strong>Format:</strong> Effect column = canonical <code>TalentDataTable.Effect_EN</code> with <strong>highest-tier values filled</strong> (bold). <code>Tiers</code> column lists which tiers the talent has (e.g. <code>CBAS</code>, <code>AS</code>, <code>S</code>). Per-tier values in italic at end as <code>Value0[/Value1[/Value2]]</code>. Talent names are canonical from <code>Name_EN</code> — do NOT paraphrase.</p>
 </blockquote>
 <h3>Exclusive (1)</h3>
-<p><strong>TF01025 — 巅峰对决 / Peak Showdown</strong> (tiers: S)
-- Effect: 对仅存目标造成全部伤害+15，仅存目标对自身造成全部伤害-5。
+<p><strong>TF01025 — Peak Showdown</strong> (tiers: S)
 - <em>Deal +15 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> to the sole surviving enemy. Take -5 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> from them.</em></p>
 <blockquote>
 <p><em>(per-tier values: S: 15/5)</em></p>
 </blockquote>
-<h3>Race-restricted: Leporine 兔耳族 (10 talents across 5 base IDs)</h3>
+<h3>Race-restricted: Leporine (10 talents across 5 base IDs)</h3>
 <table>
 <thead>
 <tr>
 <th>Base ID</th>
-<th>CN</th>
-<th>EN</th>
+<th>Name</th>
 <th>Tiers</th>
 <th>Effect (highest-tier filled) &amp; per-tier values</th>
 </tr>
@@ -415,48 +379,42 @@
 <tbody>
 <tr>
 <td>TF13901</td>
-<td>活泼好动</td>
 <td><strong>Hyperactive</strong></td>
 <td>S</td>
 <td><strong>+10 <a href="../keywords/stat-spd.html">SPD</a>. Take 1 extra actions per turn when <a href="../keywords/stat-spd.html">SPD</a> is at least 200.</strong> <em>(S: 10/200/1)</em></td>
 </tr>
 <tr>
 <td>TF13902</td>
-<td>无害伪装</td>
 <td><strong>Harmless Look</strong></td>
 <td>CBAS</td>
 <td><strong>Take -8 <a href="../keywords/mechanic-total-dmg.html">total DMG</a>.</strong> <em>(C: 2 · B: 4 · A: 6 · S: 8)</em></td>
 </tr>
 <tr>
 <td>TF13903</td>
-<td>提前预警</td>
 <td><strong>Early Warning</strong></td>
 <td>S</td>
 <td><strong>Take -3 counters.</strong> <em>(S: 3)</em></td>
 </tr>
 <tr>
 <td>TF13904</td>
-<td>和平主义</td>
 <td><strong>Pacifist</strong></td>
 <td>AS</td>
 <td><strong>Deal -10 <a href="../keywords/mechanic-total-dmg.html">total DMG</a>. Deal +1 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> after taking DMG.</strong> <em>(A: 20/1 · S: 10/1)</em></td>
 </tr>
 <tr>
 <td>TF13905</td>
-<td>虽远必诛</td>
 <td><strong>Long Reach</strong></td>
 <td>AS</td>
 <td><strong>Deal +4 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> to the farthest enemy. Effect increases by 2 per 1 distance.</strong> <em>(A: 2/1/1 · S: 4/1/2)</em></td>
 </tr>
 </tbody>
 </table>
-<h3>Class-restricted: Mage 法师 (21 talents across 10 base IDs)</h3>
+<h3>Class-restricted: Mage (21 talents across 10 base IDs)</h3>
 <table>
 <thead>
 <tr>
 <th>Base ID</th>
-<th>CN</th>
-<th>EN</th>
+<th>Name</th>
 <th>Tiers</th>
 <th>Effect (highest-tier filled) &amp; per-tier values</th>
 </tr>
@@ -464,83 +422,72 @@
 <tbody>
 <tr>
 <td>TF10201</td>
-<td>天赋异禀</td>
 <td><strong>Gifted</strong></td>
 <td>AS</td>
 <td><strong>+20 <a href="../keywords/mechanic-max-mana.html">Max Mana</a>. Gain 20% of <a href="../keywords/mechanic-max-mana.html">Max Mana</a> as <a href="../keywords/mechanic-action-mana.html">Action Mana</a>.</strong> <em>(A: 10/10 · S: 20/20)</em></td>
 </tr>
 <tr>
 <td>TF10202</td>
-<td>施法演示</td>
 <td><strong>Spell Demo</strong></td>
 <td>S</td>
 <td><strong>After casting a skill, grant other allies +1 skill DMG.</strong> <em>(S: 1)</em></td>
 </tr>
 <tr>
 <td>TF10203</td>
-<td>法师联盟</td>
 <td><strong>Mage Guild</strong></td>
 <td>AS</td>
 <td><strong>+2 <a href="../keywords/mechanic-action-mana.html">Action Mana</a>. Gain +1 <a href="../keywords/mechanic-action-mana.html">Action Mana</a> per <a href="../keywords/class-mage.html">Mage</a> ally.</strong> <em>(A: 1/1 · S: 2/1)</em></td>
 </tr>
 <tr>
 <td>TF10204</td>
-<td>技能穿透</td>
 <td><strong>Spell Pierce</strong></td>
 <td>CBAS</td>
 <td><strong>Ignore 40 <a href="../keywords/stat-def.html">DEF</a> when casting skill.</strong> <em>(C: 10 · B: 20 · A: 30 · S: 40)</em></td>
 </tr>
 <tr>
 <td>TF10205</td>
-<td>多重施法</td>
 <td><strong>Multicast</strong></td>
 <td>AS</td>
 <td><strong>+2 Multi-hit skill hits but deal -50% skill DMG.</strong> <em>(A: 1/50 · S: 2/50)</em></td>
 </tr>
 <tr>
 <td>TF10206</td>
-<td>诅咒专精</td>
 <td><strong>Curse Focus</strong></td>
 <td>CBAS</td>
 <td><strong>Apply +4 <a href="../keywords/mechanic-stacks.html">stacks</a> of debuffs but apply -2 <a href="../keywords/mechanic-stacks.html">stacks</a> of buffs.</strong> <em>(C: 1/2 · B: 2/2 · A: 3/2 · S: 4/2)</em></td>
 </tr>
 <tr>
 <td>TF10207</td>
-<td>魔具大师</td>
 <td><strong>Tool Master</strong></td>
 <td>AS</td>
 <td><strong>Gain +4 <a href="../keywords/stat-all-stats.html">all stats</a> from Off Hand gear. Off Hand gear's Basic Bond level +2.</strong> <em>(A: 2/1 · S: 4/2)</em></td>
 </tr>
 <tr>
 <td>TF10208</td>
-<td>魔力共振</td>
 <td><strong>Mana Resonate</strong></td>
 <td>S</td>
 <td><strong>+1 Basic attack targets this turn after casting a skill.</strong> <em>(S: 1)</em></td>
 </tr>
 <tr>
 <td>TF10209</td>
-<td>毁灭风暴</td>
 <td><strong>Ruin Storm</strong></td>
 <td>S</td>
 <td><strong>Deal +1 multi-hit skill hits and +10 skill DMG to the nearest enemy.</strong> <em>(S: 1/10)</em></td>
 </tr>
 <tr>
 <td>TF10210</td>
-<td>魔力禁锢</td>
 <td><strong>Mana Lock</strong></td>
 <td>AS</td>
 <td><strong>All enemies lose 4 <a href="../keywords/mechanic-action-mana.html">Action Mana</a>.</strong> <em>(A: 2 · S: 4)</em></td>
 </tr>
 </tbody>
 </table>
-<h3>Element-restricted: Dark 暗系 (10 talents across 6 base IDs)</h3>
+<h3>Element-restricted: Dark (10 talents across 6 base IDs)</h3>
 <table>
 <thead>
 <tr>
 <th>Base ID</th>
-<th>CN</th>
-<th>EN</th>
+<th>Name</th>
 <th>Tiers</th>
 <th>Effect (highest-tier filled) &amp; per-tier values</th>
 </tr>
@@ -548,42 +495,36 @@
 <tbody>
 <tr>
 <td>TF11501</td>
-<td>黑暗笼罩</td>
 <td><strong>Dark Shroud</strong></td>
 <td>AS</td>
 <td><strong>Apply +2 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/instant-decay.html">Decay</a>. Apply 2 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/instant-decay.html">Decay</a> to all enemies at turn start.</strong> <em>(A: 1/1 · S: 2/2)</em></td>
 </tr>
 <tr>
 <td>TF11502</td>
-<td>恐怖威压</td>
 <td><strong>Terror Aura</strong></td>
 <td>AS</td>
 <td><strong>Apply +2 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/instant-fear.html">Fear</a>. Enemies with <a href="../keywords/mechanic-weakness-exposed.html">Weakness exposed</a> gain -8 <a href="../keywords/stat-toughness.html">Toughness</a>.</strong> <em>(A: 1/4 · S: 2/8)</em></td>
 </tr>
 <tr>
 <td>TF11503</td>
-<td>轮回不止</td>
 <td><strong>Endless Cycle</strong></td>
 <td>S</td>
 <td><strong>Apply +1 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/instant-reversal.html">Reversal</a>. Apply +2 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/instant-reversal.html">Reversal</a> at turn start.</strong> <em>(S: 1/2)</em></td>
 </tr>
 <tr>
 <td>TF11504</td>
-<td>药剂研发</td>
 <td><strong>Potion Craft</strong></td>
 <td>AS</td>
 <td><strong>Apply +2 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-hinder.html">Hinder</a>. Inflict +1 HP Loss per 30 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-hinder.html">Hinder</a> applied.</strong> <em>(A: 1/60/1 · S: 2/30/1)</em></td>
 </tr>
 <tr>
 <td>TF11505</td>
-<td>如影随形</td>
 <td><strong>Shadow Follow</strong></td>
 <td>AS</td>
 <td><strong>Apply +2 <a href="../keywords/debuff-taunt.html">Taunt</a> <a href="../keywords/mechanic-stacks.html">stacks</a>. Deal +1 Follow-Up DMG per 40 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-taunt.html">Taunt</a> on target.</strong> <em>(A: 1/80/1 · S: 2/40/1)</em></td>
 </tr>
 <tr>
 <td>TF11506</td>
-<td>阴影潜行</td>
 <td><strong>Shadow Lurk</strong></td>
 <td>S</td>
 <td><strong>Immune to 5 instances of DMG.</strong> <em>(S: 5)</em></td>
@@ -595,8 +536,7 @@
 <thead>
 <tr>
 <th>Base ID</th>
-<th>CN</th>
-<th>EN</th>
+<th>Name</th>
 <th>Tiers</th>
 <th>Effect (highest-tier filled) &amp; per-tier values</th>
 </tr>
@@ -604,133 +544,114 @@
 <tbody>
 <tr>
 <td>TF10001</td>
-<td>强而有力</td>
 <td><strong>Strong</strong></td>
 <td>CBAS</td>
 <td><strong>+16 STR. Effect doubles if STR is at least 100.</strong> <em>(C: 4/100 · B: 8/100 · A: 12/100 · S: 16/100)</em></td>
 </tr>
 <tr>
 <td>TF10002</td>
-<td>头脑清晰</td>
 <td><strong>Clear Mind</strong></td>
 <td>CBAS</td>
 <td><strong>+16 SPI. Effect doubles if SPI is at least 100.</strong> <em>(C: 4/100 · B: 8/100 · A: 12/100 · S: 16/100)</em></td>
 </tr>
 <tr>
 <td>TF10003</td>
-<td>反应迅速</td>
 <td><strong>Quick Reflexes</strong></td>
 <td>CBAS</td>
 <td><strong>+16 AGI. Effect doubles if AGI is at least 100.</strong> <em>(C: 4/100 · B: 8/100 · A: 12/100 · S: 16/100)</em></td>
 </tr>
 <tr>
 <td>TF10004</td>
-<td>身材紧实</td>
 <td><strong>Fit Body</strong></td>
 <td>CBAS</td>
 <td><strong>+16 HP. Effect doubles if HP is at least 100.</strong> <em>(C: 4/100 · B: 8/100 · A: 12/100 · S: 16/100)</em></td>
 </tr>
 <tr>
 <td>TF10005</td>
-<td>意志强韧</td>
 <td><strong>Strong Will</strong></td>
 <td>CBAS</td>
 <td><strong>+16 <a href="../keywords/stat-toughness.html">Toughness</a>. Effect doubles if <a href="../keywords/stat-toughness.html">Toughness</a> is at least 100.</strong> <em>(C: 4/100 · B: 8/100 · A: 12/100 · S: 16/100)</em></td>
 </tr>
 <tr>
 <td>TF10006</td>
-<td>四肢灵活</td>
 <td><strong>Nimble Limbs</strong></td>
 <td>CBAS</td>
 <td><strong>+16 <a href="../keywords/stat-spd.html">SPD</a>. Effect doubles if <a href="../keywords/stat-spd.html">SPD</a> is at least 100.</strong> <em>(C: 4/100 · B: 8/100 · A: 12/100 · S: 16/100)</em></td>
 </tr>
 <tr>
 <td>TF10007</td>
-<td>严阵以待</td>
 <td><strong>Battle Ready</strong></td>
 <td>CBAS</td>
 <td><strong>Take -12 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> when in front position.</strong> <em>(C: 3 · B: 6 · A: 9 · S: 12)</em></td>
 </tr>
 <tr>
 <td>TF10008</td>
-<td>好运连连</td>
 <td><strong>Lucky Streak</strong></td>
 <td>CBAS</td>
 <td><strong>+8 <a href="../keywords/stat-luck.html">Luck</a>. Effect doubles if <a href="../keywords/stat-luck.html">Luck</a> is at least 50.</strong> <em>(C: 2/50 · B: 4/50 · A: 6/50 · S: 8/50)</em></td>
 </tr>
 <tr>
 <td>TF10009</td>
-<td>核心位置</td>
 <td><strong>Core Position</strong></td>
 <td>CBAS</td>
 <td><strong>Deal +8 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> when in mid position.</strong> <em>(C: 2 · B: 4 · A: 6 · S: 8)</em></td>
 </tr>
 <tr>
 <td>TF10010</td>
-<td>玻璃大炮</td>
 <td><strong>Glass Cannon</strong></td>
 <td>CBAS</td>
 <td><strong>Deal +12 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> but take +5 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> when in back position.</strong> <em>(C: 3/5 · B: 6/5 · A: 9/5 · S: 12/5)</em></td>
 </tr>
 <tr>
 <td>TF10011</td>
-<td>魔力爆发</td>
 <td><strong>Mana Surge</strong></td>
 <td>CB</td>
 <td><strong>Gain 30 Mana at turn 2 start.</strong> <em>(C: 4/30 · B: 2/30)</em></td>
 </tr>
 <tr>
 <td>TF10012</td>
-<td>生命重组</td>
 <td><strong>Life Rebuild</strong></td>
 <td>CB</td>
 <td><strong>Gain 100 HP at turn 2 start.</strong> <em>(C: 4/100 · B: 2/100)</em></td>
 </tr>
 <tr>
 <td>TF10013</td>
-<td>意识重塑</td>
 <td><strong>Mind Reshape</strong></td>
 <td>CB</td>
 <td><strong>Gain 100 <a href="../keywords/stat-toughness.html">Toughness</a> at turn 2 start.</strong> <em>(C: 4/100 · B: 2/100)</em></td>
 </tr>
 <tr>
 <td>TF10014</td>
-<td>谋而后动</td>
 <td><strong>Think First</strong></td>
 <td>AS</td>
 <td><strong>Cannot act on turn 1 but gain +8 <a href="../keywords/mechanic-action-mana.html">Action Mana</a> on subsequent turns.</strong> <em>(A: 4 · S: 8)</em></td>
 </tr>
 <tr>
 <td>TF10015</td>
-<td>调动情绪</td>
 <td><strong>Mood Control</strong></td>
 <td>AS</td>
 <td><strong>Cannot act on turn 1 but gain +4 <a href="../keywords/mechanic-hit-mana.html">Hit Mana</a> on subsequent turns.</strong> <em>(A: 2 · S: 4)</em></td>
 </tr>
 <tr>
 <td>TF10016</td>
-<td>废物利用</td>
 <td><strong>Scrap Use</strong></td>
 <td>AS</td>
 <td><strong>Gain +2 <a href="../keywords/stat-all-stats.html">all stats</a> per Bronze Bond.</strong> <em>(A: 1 · S: 2)</em></td>
 </tr>
 <tr>
 <td>TF10017</td>
-<td>东拼西凑</td>
 <td><strong>Patchwork</strong></td>
 <td>AS</td>
 <td><strong>Gain +2 <a href="../keywords/stat-all-stats.html">all stats</a> per Silver Bond.</strong> <em>(A: 1 · S: 2)</em></td>
 </tr>
 <tr>
 <td>TF10018</td>
-<td>羁绊大师</td>
 <td><strong>Bond Master</strong></td>
 <td>AS</td>
 <td><strong>Gain +2 <a href="../keywords/stat-all-stats.html">all stats</a> per Gold Bond.</strong> <em>(A: 1 · S: 2)</em></td>
 </tr>
 <tr>
 <td>TF10019</td>
-<td>装备精通</td>
 <td><strong>Gear Expert</strong></td>
 <td>AS</td>
 <td><strong>Gain +2 <a href="../keywords/stat-all-stats.html">all stats</a> from each Orange+ gear.</strong> <em>(A: 1 · S: 2)</em></td>
