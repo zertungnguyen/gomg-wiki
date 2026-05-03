@@ -121,7 +121,16 @@ table.results td.col-img { width: 48px; padding: 4px 8px; }
  * text, so combining them produces conflicting logic the user rarely wants). */
 .gear-filter-col.tab-disabled { opacity: 0.45; pointer-events: none; position: relative; }
 .gear-filter-col.tab-disabled::after { content: "Suspended while Tags field is active"; position: absolute; bottom: 6px; left: 12px; right: 12px; font-size: 9.5px; color: var(--fg-dim); font-style: italic; text-align: center; pointer-events: none; }
+/* Hide the suspension-text overlay when the column is also collapsed —
+ * otherwise the absolute-positioned ::after overlaps the now-shorter
+ * header-only column. */
+.gear-filter-col.tab-disabled.collapsed::after { display: none; }
 .gear-filter-col.tab-disabled .pill { cursor: not-allowed; }
+/* Header stays clickable even when the col is tab-disabled (so the user
+ * can still collapse a suspended tab to reclaim space). pointer-events:none
+ * on the column blocks pill clicks AND header clicks; restoring pointer-
+ * events on the h3 lets the toggle handler fire. */
+.gear-filter-col.tab-disabled h3 { pointer-events: auto; }
 .bond-search { padding: 6px 10px; background: var(--bg-alt); color: var(--fg); border: 1px solid var(--border); border-radius: 4px; font-size: 13px; width: 280px; }
 .bond-search:focus { outline: none; border-color: var(--accent); }
 .text-search-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; margin-bottom: 10px; }
