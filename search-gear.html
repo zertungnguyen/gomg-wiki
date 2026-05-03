@@ -99,6 +99,11 @@ table.results td.col-img { width: 48px; padding: 4px 8px; }
 .gear-filter-col[data-tab="Status"] .pill.on   { color: #f08c5a; background: rgba(240,140,90,.12); border-color: #f08c5a; }
 .bond-search { padding: 6px 10px; background: var(--bg-alt); color: var(--fg); border: 1px solid var(--border); border-radius: 4px; font-size: 13px; width: 280px; }
 .bond-search:focus { outline: none; border-color: var(--accent); }
+.text-search-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; margin-bottom: 10px; }
+.text-search-row .field { display: flex; flex-direction: column; gap: 4px; min-width: 220px; flex: 1 1 280px; max-width: 360px; }
+.text-search-row .field-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--fg-dim); display: flex; align-items: center; gap: 6px; }
+.text-search-row .field-label .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; background: var(--accent); }
+.text-search-row .bond-search { width: auto; }
 .gear-stats { display: inline-flex; flex-wrap: wrap; gap: 3px; }
 .gear-stats .stat-chip { background: rgba(46,204,113,.12); color: #2ecc71; padding: 1px 6px; border-radius: 3px; font-size: 11px; font-weight: 600; }
 .gear-bonds { display: flex; flex-direction: column; gap: 5px; font-size: 11px; min-width: 220px; max-width: 320px; }
@@ -178,9 +183,15 @@ table.results td.col-meta { color: var(--fg-dim); font-size: 12px; white-space: 
   </div>
 </div>
 
-<div class="search-section">
-  <div class="search-section-title" style="margin-bottom:8px"><span class="dot" style="background:var(--accent)"></span>Bond name</div>
-  <input class="bond-search" id="bondQ" placeholder="Match any bond name (case-insensitive substring)..." />
+<div class="text-search-row">
+  <div class="field">
+    <label class="field-label" for="gearQ"><span class="dot"></span>Search gear name</label>
+    <input class="bond-search" id="gearQ" placeholder="Match gear name (case-insensitive substring)..." />
+  </div>
+  <div class="field">
+    <label class="field-label" for="bondQ"><span class="dot"></span>Search bond name</label>
+    <input class="bond-search" id="bondQ" placeholder="Match any of the gear's three bonds..." />
+  </div>
 </div>
 
 <div class="controls-row">
@@ -253,6 +264,7 @@ const CATS = {
 const sel = {};
 for (const cat of Object.keys(CATS)) sel[cat] = new Set();
 let bondQ = "";
+let gearQ = "";
 
 // Mappings from in-game label → internal data
 const RARITY_TO_STEPS = {
@@ -289,6 +301,10 @@ function bondNameMatch(g, q) {
   const lq = q.toLowerCase();
   for (const b of g.bonds) if ((b.name || "").toLowerCase().includes(lq)) return true;
   return false;
+}
+function gearNameMatch(g, q) {
+  if (!q) return true;
+  return (g.name || "").toLowerCase().includes(q.toLowerCase());
 }
 
 // Build the combined effect-text blob for a gear: the effect-text bond columns
@@ -358,6 +374,7 @@ function render() {
     if (!bondTextAnyMatch(g, sel.Timing)) return false;
     if (!bondTextAnyMatch(g, sel.Status)) return false;
     if (!bondNameMatch(g, bondQ)) return false;
+    if (!gearNameMatch(g, gearQ)) return false;
     return true;
   });
   filtered.sort((a, b) => {
@@ -419,9 +436,11 @@ function render() {
 document.getElementById("clearBtn").onclick = () => {
   for (const cat of Object.keys(sel)) sel[cat].clear();
   bondQ = ""; document.getElementById("bondQ").value = "";
+  gearQ = ""; document.getElementById("gearQ").value = "";
   render();
 };
 document.getElementById("bondQ").oninput = (ev) => { bondQ = ev.target.value; render(); };
+document.getElementById("gearQ").oninput = (ev) => { gearQ = ev.target.value; render(); };
 
 render();
 </script>
