@@ -91,7 +91,13 @@ table.results td.col-img { width: 48px; padding: 4px 8px; }
 @media (max-width: 800px)  { .search-mode-row { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 520px)  { .search-mode-row { grid-template-columns: 1fr; } .search-mode-row .mode-control { grid-column: 1 / -1; } }
 .gear-filter-col { border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; min-width: 0; background: rgba(255,255,255,.015); }
-.gear-filter-col h3 { margin: 0 0 8px 0; padding: 0 0 4px 0; border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); }
+.gear-filter-col h3 { margin: 0 0 8px 0; padding: 0 0 4px 0; border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
+.gear-filter-col h3 .col-title { flex: 1; }
+.gear-filter-col h3 .col-count { font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 8px; background: var(--accent); color: #1a1a1a; min-width: 16px; text-align: center; display: none; letter-spacing: 0; text-transform: none; }
+.gear-filter-col h3 .col-count.has-picks { display: inline-block; }
+.gear-filter-col h3 .col-chevron { font-size: 10px; color: var(--fg-dim); transition: transform .15s; }
+.gear-filter-col.collapsed h3 .col-chevron { transform: rotate(-90deg); }
+.gear-filter-col.collapsed .col-body { display: none; }
 .gear-filter-col h4 { margin: 8px 0 4px 0; padding: 0; border: none; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--fg-dim); font-weight: 600; }
 .gear-filter-col h4:first-of-type { margin-top: 4px; }
 .gear-filter-col .pills { gap: 4px; }
@@ -197,27 +203,57 @@ table.results td.col-meta { color: var(--fg-dim); font-size: 12px; white-space: 
 
 <div class="gear-filter-grid">
   <div class="gear-filter-col" data-tab="Basic">
-    <h3>Basic</h3>
-    <h4>Rarity</h4><div class="pills" id="pills-BasicRarity"></div>
-    <h4>Class</h4><div class="pills" id="pills-BasicClass"></div>
-    <h4>Stat keyword</h4><div class="pills" id="pills-BasicStat"></div>
-    <h4>Slot</h4><div class="pills" id="pills-BasicSlot"></div>
+    <h3 data-toggle="Basic">
+      <span class="col-title">Basic</span>
+      <span class="col-count" data-count="Basic">0</span>
+      <span class="col-chevron">▼</span>
+    </h3>
+    <div class="col-body">
+      <h4>Rarity</h4><div class="pills" id="pills-BasicRarity"></div>
+      <h4>Class</h4><div class="pills" id="pills-BasicClass"></div>
+      <h4>Stat keyword</h4><div class="pills" id="pills-BasicStat"></div>
+      <h4>Slot</h4><div class="pills" id="pills-BasicSlot"></div>
+    </div>
   </div>
   <div class="gear-filter-col" data-tab="Value">
-    <h3>Value</h3>
-    <div class="pills" id="pills-Value"></div>
+    <h3 data-toggle="Value">
+      <span class="col-title">Value</span>
+      <span class="col-count" data-count="Value">0</span>
+      <span class="col-chevron">▼</span>
+    </h3>
+    <div class="col-body">
+      <div class="pills" id="pills-Value"></div>
+    </div>
   </div>
   <div class="gear-filter-col" data-tab="Mechanic">
-    <h3>Mechanic</h3>
-    <div class="pills" id="pills-Mechanic"></div>
+    <h3 data-toggle="Mechanic">
+      <span class="col-title">Mechanic</span>
+      <span class="col-count" data-count="Mechanic">0</span>
+      <span class="col-chevron">▼</span>
+    </h3>
+    <div class="col-body">
+      <div class="pills" id="pills-Mechanic"></div>
+    </div>
   </div>
   <div class="gear-filter-col" data-tab="Timing">
-    <h3>Timing</h3>
-    <div class="pills" id="pills-Timing"></div>
+    <h3 data-toggle="Timing">
+      <span class="col-title">Timing</span>
+      <span class="col-count" data-count="Timing">0</span>
+      <span class="col-chevron">▼</span>
+    </h3>
+    <div class="col-body">
+      <div class="pills" id="pills-Timing"></div>
+    </div>
   </div>
   <div class="gear-filter-col" data-tab="Status">
-    <h3>Status</h3>
-    <div class="pills" id="pills-Status"></div>
+    <h3 data-toggle="Status">
+      <span class="col-title">Status</span>
+      <span class="col-count" data-count="Status">0</span>
+      <span class="col-chevron">▼</span>
+    </h3>
+    <div class="col-body">
+      <div class="pills" id="pills-Status"></div>
+    </div>
   </div>
 </div>
 
@@ -310,6 +346,22 @@ const sel = {};
 for (const cat of Object.keys(CATS)) sel[cat] = new Set();
 let bondQ = "";
 let gearQ = "";
+// Per-tab collapse state. Defaults expanded; toggled by clicking the header.
+// Keyed by the data-tab value (Basic / Value / Mechanic / Timing / Status).
+const collapsed = { Basic: false, Value: false, Mechanic: false, Timing: false, Status: false };
+// Map of which CATS belong to each tab — drives the count badge math.
+const TAB_TO_CATS = {
+  Basic:    ["BasicRarity", "BasicClass", "BasicStat", "BasicSlot"],
+  Value:    ["Value"],
+  Mechanic: ["Mechanic"],
+  Timing:   ["Timing"],
+  Status:   ["Status"],
+};
+function tabCount(tab) {
+  let n = 0;
+  for (const cat of TAB_TO_CATS[tab] || []) n += (sel[cat] ? sel[cat].size : 0);
+  return n;
+}
 // Tag search: array of comma-separated tag strings the user typed. Each tag
 // is a case-insensitive substring matched against bond text. AND across tags
 // (every typed tag must match somewhere); whether "somewhere" means the same
@@ -464,6 +516,20 @@ function render() {
     if (col) col.classList.toggle("tab-disabled", tagsActive);
   }
 
+  // Per-tab collapse state + count badge update. Runs every render so badges
+  // reflect the current sel state and the chevron animates with the class.
+  for (const tab of Object.keys(collapsed)) {
+    const col = document.querySelector('.gear-filter-col[data-tab="' + tab + '"]');
+    if (!col) continue;
+    col.classList.toggle("collapsed", !!collapsed[tab]);
+    const badge = col.querySelector('.col-count[data-count="' + tab + '"]');
+    if (badge) {
+      const n = tabCount(tab);
+      badge.textContent = n;
+      badge.classList.toggle("has-picks", n > 0);
+    }
+  }
+
   for (const cat of Object.keys(CATS)) {
     const wrap = document.getElementById("pills-" + cat);
     if (!wrap) continue;
@@ -612,6 +678,14 @@ document.getElementById("gearQ").oninput = (ev) => { gearQ = ev.target.value; re
 document.querySelectorAll('input[name="searchMode"]').forEach(radio => {
   radio.addEventListener("change", (ev) => {
     if (ev.target.checked) { searchMode = ev.target.value; render(); }
+  });
+});
+
+// Filter-column header click → toggle that tab's collapse state.
+document.querySelectorAll('.gear-filter-col h3[data-toggle]').forEach(h => {
+  h.addEventListener("click", () => {
+    const tab = h.dataset.toggle;
+    if (tab in collapsed) { collapsed[tab] = !collapsed[tab]; render(); }
   });
 });
 
