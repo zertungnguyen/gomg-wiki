@@ -274,6 +274,8 @@ button.ghost{padding:5px 10px;font-size:10px;background:transparent}
 .status-card .src{font-size:10px;color:var(--dim);font-style:italic;margin-top:2px;border-top:1px dashed var(--border);padding-top:4px}
 .status-card .src-line{padding:1px 0;font-style:normal}
 .status-card .src-line .src-pts{color:var(--accent);font-weight:700}
+.status-card .src-line.triggered{opacity:0.78}
+.status-card .src-line .trig-tag{color:var(--warn);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-left:3px}
 
 .bond-list{display:flex;flex-direction:column;gap:6px}
 .bond-row{display:grid;grid-template-columns:1fr 50px 2fr;gap:8px;align-items:center;padding:5px 8px;background:var(--card2);border-radius:5px;border-left:3px solid var(--border);font-size:11px}
@@ -472,7 +474,20 @@ button.ghost{padding:5px 10px;font-size:10px;background:transparent}
 const STORAGE_KEY = 'mgg_team_planner_v1';
 const SLOT_ORDER = ['Main','Off','Head','Body','Gloves','Belt','Shoes','Necklace','Ring','Badge'];
 const RUNE_SLOT_COUNT = 10;
-const RAW_STATS = ['STR','SPI','AGI','HP','SPD','Tough','Luck','Mana'];
+// Raw stats tracked per unit + summed at team level. Mana is split into 4 distinct
+// game mechanics with their documented defaults: Starting=0, Max=30, Action=10, Hit=2.
+// Gear's InitialMagic column = Starting Mana (it's the only Mana stat gear can carry).
+const RAW_STATS = ['STR','SPI','AGI','HP','SPD','Tough','Luck','StartMana','MaxMana','ActMana','HitMana'];
+// Display labels for stat keys whose internal name doesn't match the in-game UI label.
+const STAT_LABEL = {
+  StartMana: 'Start Mana',
+  MaxMana:   'Max Mana',
+  ActMana:   'Action Mana',
+  HitMana:   'Hit Mana',
+};
+// Game-wide defaults for Mana mechanics (no per-unit Mana column in DataTables —
+// values are constants in code, modifiable by passives/talents/bonds).
+const MANA_DEFAULTS = {StartMana: 0, MaxMana: 30, ActMana: 10, HitMana: 2};
 // In-game rarity names for the Step letter codes — match how the game UI labels gear/runes.
 const RARITY_NAMES = {C:'Normal', B:'Rare', A:'Epic', S:'Legendary', SS:'Mythic'};
 
@@ -670,7 +685,11 @@ const STAT_TEXT_TO_KEY = {
   'SPD':'SPD','Speed':'SPD','速度':'SPD',
   'Tough':'Tough','Toughness':'Tough','韧性':'Tough',
   'Luck':'Luck','LUK':'Luck','幸运':'Luck',
-  'Mana':'Mana','Max Mana':'Mana','Action Mana':'Mana','Starting Mana':'Mana',
+  // Mana variants — 4 distinct game mechanics. Bare "Mana" is intentionally NOT mapped
+  // because it appears in event phrasing ("Gain N Mana", "Mana gained +N") that is
+  // NOT a persistent stat delta. The reg C extractor only matches a key in this dict,
+  // so unqualified "+N Mana" hits will be skipped.
+  'Max Mana':'MaxMana','Starting Mana':'StartMana','Action Mana':'ActMana','Hit Mana':'HitMana',
   'ATK':'ATK','DEF':'DEF','Weakness':'WEAK',
 };
 
@@ -686,15 +705,18 @@ function getStatusList(){
 // because effect text is heterogeneous and partial-parse risks misleading numbers.
 function computeUnitStats(main){
   const u = main.unitId ? idx.unitById.get(main.unitId) : null;
-  const stats = {STR:0,SPI:0,AGI:0,HP:0,SPD:0,Tough:0,Luck:0,Mana:0,
+  const stats = {STR:0,SPI:0,AGI:0,HP:0,SPD:0,Tough:0,Luck:0,
+                 StartMana:0,MaxMana:0,ActMana:0,HitMana:0,
                  ATK:0,DEF:0,WEAK:0};
   if(!u) return {unit:null, raw:stats, sources:{base:{}, gear:{}}, bondsActive:[], routeWarn:false};
 
-  // Base from BasicAttrDataTable
+  // Base from BasicAttrDataTable + game-wide Mana defaults
   const base = {
     STR: u.base.InitialSTR, SPI: u.base.InitialINT, AGI: u.base.InitialDEX,
     HP: u.base.InitialCONS, SPD: u.base.initialSPD, Tough: u.base.initialTough,
-    Luck: 0, Mana: 0,
+    Luck: 0,
+    StartMana: MANA_DEFAULTS.StartMana, MaxMana: MANA_DEFAULTS.MaxMana,
+    ActMana: MANA_DEFAULTS.ActMana, HitMana: MANA_DEFAULTS.HitMana,
     ATK: u.base.initialAttack, DEF: u.base.initialDefence, WEAK: u.base.initialWeak,
   };
   for(const k of Object.keys(base)){ stats[k] += base[k]; }
@@ -709,14 +731,20 @@ function computeUnitStats(main){
   //   3★ → 1★+2★ effects + Enhance (special) bond gets +1 piece
   //   legacy → ALL three bonds on this gear get +1 piece (stacks with star)
   const STAR_BONUS_BY_SOURCE = { Pure: 1, Title: 2, Enhance: 3 };
-  const gearTotals = {STR:0,SPI:0,AGI:0,HP:0,SPD:0,Tough:0,Luck:0,Mana:0};
+  const gearTotals = {STR:0,SPI:0,AGI:0,HP:0,SPD:0,Tough:0,Luck:0,
+                      StartMana:0,MaxMana:0,ActMana:0,HitMana:0};
   const bondCounts = new Map(); // bond CN name → piece count (across all 3 bond fields per gear)
   for(const slot of SLOT_ORDER){
     const slotState = main.gear[slot];
     if(!slotState) continue;
     const g = DATA.gear[slotState.id];
     if(!g) continue;
-    for(const k of Object.keys(g.stats)){ gearTotals[k] += g.stats[k]; }
+    // Gear's own Mana stat (sidecar key "Mana" = EquipDataTable.InitialMagic)
+    // is Starting Mana — gear can't carry Max/Action/Hit Mana columns.
+    for(const k of Object.keys(g.stats)){
+      const target = k === 'Mana' ? 'StartMana' : k;
+      if(target in gearTotals) gearTotals[target] += g.stats[k];
+    }
     const star = slotState.star || 0;
     const legacy = !!slotState.legacy;
     const bondsOnGear = g.bonds || (g.bond ? [g.bond] : []);
@@ -760,6 +788,20 @@ function computeUnitStats(main){
   };
 }
 
+// Detect whether an effect text describes a CONDITIONAL / TRIGGERED bonus rather than
+// an always-active stat boost. The sandbox still sums these into totals (planner shows
+// max-stacking-output potential), but the breakdown row is tagged so the user can see
+// which contributions only fire under specific conditions.
+//
+// Bracket prefixes ([Skill]/[Gain]/[Trigger]/[Cast]) and trigger phrases were sampled
+// from real talent / sub-skill / bond effect text in the datamine.
+function detectTriggered(text){
+  if(!text) return false;
+  if(/^\s*\[(?:Skill|Gain|Trigger|Cast)\]/i.test(text)) return true;
+  if(/(?:after\s+(?:casting|applying|hit|attack)|at\s+battle\s+start|at\s+turn\s+start|at\s+action\s+start|at\s+the\s+start\s+of|at\s+low\s+HP|at\s+high\s+HP|on\s+subsequent\s+turns|on\s+hit|when\s+struck|Cannot\s+act\s+on\s+turn|when\s+target|before\s+action|per\s+(?:Mage|Warrior|Archer|Priest|\w+)\s+(?:ally|enemy))/i.test(text)) return true;
+  return false;
+}
+
 // Extract "+N <stat-or-status>" hits from a single effect string.
 // Returns array of {keyword, amount, kind:'stat'|'status'}.
 //
@@ -787,7 +829,9 @@ function extractStacking(text){
   }
   // C. "+N STR" / "+1 SPD" stat additions, with lookahead to skip thresholds.
   // Stop word list: per/every/for-every are threshold markers we must NOT capture.
-  const reC = /\+(\d+)\s+([A-Za-z][A-Za-z ]{1,30}?)(?=[.,;:)]|$|\s+(?:to|on|at|when|after|each|until|while)\b)/g;
+  // Continuation words (but/and/or) are accepted as terminators so phrasings like
+  // "+4 Hit Mana but -2 Action Mana" still capture the first clause.
+  const reC = /\+(\d+)\s+([A-Za-z][A-Za-z ]{1,30}?)(?=[.,;:)]|$|\s+(?:to|on|at|when|after|each|until|while|but|and|or)\b)/g;
   while((m = reC.exec(text)) !== null){
     const n = parseInt(m[1]); const kw = m[2].trim();
     if(kw in STAT_TEXT_TO_KEY) out.push({keyword:STAT_TEXT_TO_KEY[kw], amount:n, kind:'stat'});
@@ -803,6 +847,26 @@ function extractStacking(text){
       out.push({keyword:kw, amount:n, kind:'status'});
     }
   }
+  // E. Mana-specific extras: handle phrasings reg C can't, since the 4 Mana mechanics
+  // appear in bond/talent text in forms beyond the leading-"+" pattern.
+  //   E1. Negative delta: "-2 Action Mana" / "−3 Max Mana" (BD40936_000, multi-clause talents)
+  //   E2. Verb-led positive: "Gain 5 Starting Mana" (typical bond phrasing — JN10608, JN61005, etc.)
+  //   E3. Verb-led negative: "lose 6 Starting Mana" (JN60379)
+  // Restricted to the 4 Mana qualifiers to avoid false positives on generic stat verbs.
+  const MANA_QUAL = {Max:'MaxMana', Starting:'StartMana', Action:'ActMana', Hit:'HitMana'};
+  const reE1 = /[-−]\s*(\d+)\s+(Max|Starting|Action|Hit)\s+Mana\b/g;
+  while((m = reE1.exec(text)) !== null){
+    out.push({keyword:MANA_QUAL[m[2]], amount:-parseInt(m[1]), kind:'stat'});
+  }
+  // Verb-led positive — exclude clauses already starting with "+" (caught by reg C).
+  const reE2 = /(?:^|[^+\w])(?:Gain|Restore)\s+(\d+)\s+(Max|Starting|Action|Hit)\s+Mana\b/gi;
+  while((m = reE2.exec(text)) !== null){
+    out.push({keyword:MANA_QUAL[m[2].charAt(0).toUpperCase()+m[2].slice(1).toLowerCase()], amount:parseInt(m[1]), kind:'stat'});
+  }
+  const reE3 = /\bLose\s+(\d+)\s+(Max|Starting|Action|Hit)\s+Mana\b/gi;
+  while((m = reE3.exec(text)) !== null){
+    out.push({keyword:MANA_QUAL[m[2].charAt(0).toUpperCase()+m[2].slice(1).toLowerCase()], amount:-parseInt(m[1]), kind:'stat'});
+  }
   return out;
 }
 
@@ -810,7 +874,9 @@ function aggregateTeam(){
   const perUnit = state.mains.map(computeUnitStats);
 
   // Team total raw + pool stats
-  const teamTotal = {STR:0,SPI:0,AGI:0,HP:0,SPD:0,Tough:0,Luck:0,Mana:0,ATK:0,DEF:0,WEAK:0};
+  const teamTotal = {STR:0,SPI:0,AGI:0,HP:0,SPD:0,Tough:0,Luck:0,
+                     StartMana:0,MaxMana:0,ActMana:0,HitMana:0,
+                     ATK:0,DEF:0,WEAK:0};
   for(const pu of perUnit){
     for(const k in pu.raw) teamTotal[k] += pu.raw[k];
   }
@@ -820,13 +886,14 @@ function aggregateTeam(){
   // group by (keyword, kind)
   const stackMap = new Map(); // key=`${kind}:${keyword}` → {kind, keyword, amount, sources:[{label,amount}]}
 
-  function addStack(items, srcLabel){
+  function addStack(items, srcLabel, srcText){
+    const triggered = detectTriggered(srcText);
     for(const it of items){
       const key = `${it.kind}:${it.keyword}`;
       if(!stackMap.has(key)) stackMap.set(key, {kind:it.kind, keyword:it.keyword, amount:0, sources:[]});
       const ent = stackMap.get(key);
       ent.amount += it.amount;
-      ent.sources.push({label:srcLabel, amount:it.amount});
+      ent.sources.push({label:srcLabel, amount:it.amount, triggered});
     }
   }
 
@@ -838,14 +905,14 @@ function aggregateTeam(){
       for(const k of ['perk','trait','title']){
         const sid = u[k]; if(!sid) continue;
         const ss = DATA.subskills[sid]; if(!ss) continue;
-        addStack(extractStacking(ss.effect), `${tag} · ${k[0].toUpperCase()+k.slice(1)} (own)`);
+        addStack(extractStacking(ss.effect), `${tag} · ${k[0].toUpperCase()+k.slice(1)} (own)`, ss.effect);
       }
     }
     // talents
     m.talents.forEach((tid, ti) => {
       if(!tid) return;
       const t = DATA.talents[tid]; if(!t) return;
-      addStack(extractStacking(t.effect), `${tag} · Talent #${ti+1}: ${t.name}`);
+      addStack(extractStacking(t.effect), `${tag} · Talent #${ti+1}: ${t.name}`, t.effect);
     });
     // supports — each support contributes the SOURCE unit's named passive's effect
     for(const k of ['Trait','Title','Perk']){
@@ -853,19 +920,19 @@ function aggregateTeam(){
       const srcU = idx.unitById.get(srcUnitId); if(!srcU) continue;
       const sid = srcU[k.toLowerCase()]; if(!sid) continue;
       const ss = DATA.subskills[sid]; if(!ss) continue;
-      addStack(extractStacking(ss.effect), `${tag} · Support ${k} ← ${srcU.alter?srcU.alter+' ':''}${srcU.name}`);
+      addStack(extractStacking(ss.effect), `${tag} · Support ${k} ← ${srcU.alter?srcU.alter+' ':''}${srcU.name}`, ss.effect);
     }
     // active bond tiers
     for(const ba of (perUnit[i].bondsActive || [])){
       if(!ba.activeTier) continue;
-      addStack(extractStacking(ba.activeTier.effect), `${tag} · Bond [${ba.bond.name}] ${ba.count}pc`);
+      addStack(extractStacking(ba.activeTier.effect), `${tag} · Bond [${ba.bond.name}] ${ba.count}pc`, ba.activeTier.effect);
     }
     // rune effects (any rune at star >= 0 contributes its description)
     (m.runes || []).forEach((rs, ri) => {
       if(!rs) return;
       const r = DATA.runes ? DATA.runes[rs.id] : null;
       if(!r) return;
-      addStack(extractStacking(r.desc || ''), `${tag} · Rune #${ri+1}: ${r.name}${rs.star?' '+'★'.repeat(rs.star):''}`);
+      addStack(extractStacking(r.desc || ''), `${tag} · Rune #${ri+1}: ${r.name}${rs.star?' '+'★'.repeat(rs.star):''}`, r.desc || '');
     });
   });
 
@@ -1098,12 +1165,6 @@ function renderUnitPanel(main, idxN, pu){
       <div class="pool-pill def"><div class="lbl">DEF</div><div class="v">${pu.raw.DEF}</div></div>
       <div class="pool-pill weak"><div class="lbl">Weak</div><div class="v">${pu.raw.WEAK}</div></div>`;
     panel.appendChild(pool);
-    if(pu.routeWarn){
-      const w = document.createElement('div');
-      w.className = 'pool-warn';
-      w.textContent = `⚠ ${u.cls} stat→pool routing not yet verified in-game; pool numbers may be off. (Mage routing is confirmed.)`;
-      panel.appendChild(w);
-    }
 
     // Raw stats
     const stats = document.createElement('div');
@@ -1116,7 +1177,7 @@ function renderUnitPanel(main, idxN, pu){
       if(baseV) breakdown.push(`${baseV} base`);
       if(gearV) breakdown.push(`+${gearV} gear`);
       return `<div class="stat-row">
-        <span class="label">${k}</span>
+        <span class="label">${STAT_LABEL[k] || k}</span>
         <span class="val">${total}<span class="delta">${breakdown.length?` (${breakdown.join(' · ')})`:''}</span></span>
       </div>`;
     }).join('');
@@ -1410,7 +1471,7 @@ function renderTeamAggregate(aggr){
   // Raw
   html += `<div class="aggr-card">
     <div class="h">Raw stats (sum)</div>` +
-    RAW_STATS.map(k=>`<div class="row"><span class="l">${k}</span><span class="v">${aggr.teamTotal[k]}</span></div>`).join('') +
+    RAW_STATS.map(k=>`<div class="row"><span class="l">${STAT_LABEL[k] || k}</span><span class="v">${aggr.teamTotal[k]}</span></div>`).join('') +
     `</div>`;
   // Per-unit summary
   state.mains.forEach((m, i) => {
@@ -1451,7 +1512,7 @@ function renderTeamAggregate(aggr){
         <div class="nm"><span>${e(s.keyword)}</span><span class="pts">+${s.amount}</span></div>
         <div class="ef">${e(st.effect || '')}</div>
         <div class="src">` +
-          s.sources.map(src=>`<div class="src-line">+<span class="src-pts">${src.amount}</span> · ${e(src.label)}</div>`).join('') +
+          s.sources.map(src=>`<div class="src-line${src.triggered?' triggered':''}">+<span class="src-pts">${src.amount}</span> · ${e(src.label)}${src.triggered?' <span class="trig-tag">(triggered)</span>':''}</div>`).join('') +
         `</div>
       </div>`;
     }
@@ -1460,13 +1521,14 @@ function renderTeamAggregate(aggr){
 
   // 3. Stat stacking from effect text (talent/bond stat-mods that aren't in raw column sums)
   if(stats.length){
+    const labelize = (k) => STAT_LABEL[k] || k;
     html += `<div class="card-title" style="margin-top:14px">Stat additions from effects <span style="color:var(--dim);font-size:9px;font-weight:500;text-transform:none;letter-spacing:0.5px">— numbers parsed from talent/bond/support description text. Combine with the raw-stat column above.</span></div>`;
     html += '<div class="status-stack">';
     for(const s of stats){
       html += `<div class="status-card buff">
-        <div class="nm"><span>${e(s.keyword)}</span><span class="pts">+${s.amount}</span></div>
+        <div class="nm"><span>${e(labelize(s.keyword))}</span><span class="pts">${s.amount>=0?'+':''}${s.amount}</span></div>
         <div class="src">` +
-          s.sources.map(src=>`<div class="src-line">+<span class="src-pts">${src.amount}</span> · ${e(src.label)}</div>`).join('') +
+          s.sources.map(src=>`<div class="src-line${src.triggered?' triggered':''}">${src.amount>=0?'+':''}<span class="src-pts">${src.amount}</span> · ${e(src.label)}${src.triggered?' <span class="trig-tag">(triggered)</span>':''}</div>`).join('') +
         `</div>
       </div>`;
     }

@@ -24,6 +24,13 @@
 <main class="content">
 <h1>News</h1>
 <p><em>Wiki update log — most recent first. Each entry summarizes what changed in the published site.</em></p>
+<h2>2026-05-03 — Team Planner mechanism fixes</h2>
+<p>Three follow-up fixes to the <a href="team-planner.html">Team Planner</a>:</p>
+<ul>
+<li><strong>Mana stats split into 4 distinct values</strong> — Starting Mana / Max Mana / Action Mana / Hit Mana now tracked separately with their actual game defaults (0 / 30 / 10 / 2). Effect text like "+10 Starting Mana, +5 Max Mana" from passives, bonds, and talents now routes to the correct stat instead of being lumped into a single "Mana" total. False-positive guards added so threshold phrasing ("per 15 Max Mana", "% of Max Mana", "Mana Loss Resist") and bare "Gain N Mana" combat events are NOT counted as stat deltas.</li>
+<li><strong>Class→pool routing warning removed</strong> — all four classes (Mage / Warrior / Archer / Priest) verified in-game. The "(Mage routing confirmed; others are guesses)" caution that appeared on every Warrior/Archer/Priest unit panel is gone since the underlying mappings have been correct for some time.</li>
+<li><strong>Triggered effects tagged in breakdown</strong> — sources like <code>[Skill] +N Max Mana after casting skill</code> or <code>Gain +N Hit Mana at low HP</code> are still summed into the totals (sandbox aggregates the maximum-stacking-output potential), but the breakdown row now shows a <code>(triggered)</code> tag so it's easy to spot which contributions only fire under specific conditions.</li>
+</ul>
 <h2>2026-05-01 — Team Planner launched</h2>
 <p>New tool: <a href="team-planner.html">Team Planner</a>. 3-unit build sandbox for stacking-numbers comparison.</p>
 <ul>
@@ -31,7 +38,7 @@
 <li><strong>10 gear slots per unit</strong> (Main, Off, Head, Body, Gloves, Belt, Shoes, Necklace, Ring, Badge). Picker shows the full 1,234-item pool filtered by slot, sortable by Step (SS/S/A/B/C), with per-item stat strip + bond name + special effect text.</li>
 <li><strong>4 talent slots per unit</strong> with rollable-vs-all toggle. Rollable mode applies the unit's roll-pool restrictions (SpecifyRoleIDs / Race / Class / Element); All mode unlocks the full 588-talent transferable pool.</li>
 <li><strong>3 support slots per unit</strong> (Trait / Title / Perk) — pick a <em>source unit</em> whose corresponding passive is borrowed. Source-unit constraints enforced per the game rules: a fielded main can't also be a support source, and any source unit used on one slot is locked from being a source on any other slot anywhere on the team. Up to 12 distinct units per Trio comp.</li>
-<li><strong>Per-unit stat readout</strong> — raw stats (STR / SPI / AGI / HP / SPD / Tough / Luck / Mana) with breakdown (base + gear delta), pool stats (ATK / DEF / Weakness) with class-specific routing. Mage stat→pool routing is confirmed; Warrior / Archer / Priest are guesses (warning shown on the unit panel until verified in-game).</li>
+<li><strong>Per-unit stat readout</strong> — raw stats (STR / SPI / AGI / HP / SPD / Tough / Luck / Mana) with breakdown (base + gear delta), pool stats (ATK / DEF / Weakness) with class-specific routing. All four class→pool routings verified in-game.</li>
 <li><strong>Team aggregate panel</strong> — sums everything across the 3 mains:</li>
 <li>Pool stat totals (ATK / DEF / Weakness) and raw stat totals</li>
 <li><strong>Status stacking</strong> — per-status total of detected applies (e.g., "+7 Chill" = sum of every "Apply N stacks of Chill" / "+N stacks of Chill" found across the team's talents, supports, bonds, and own passives), with per-source breakdown so you can see where each number came from. Filters out threshold phrasing ("per 15 stacks of Chill") to avoid false positives.</li>
