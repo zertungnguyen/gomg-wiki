@@ -96,8 +96,15 @@ table.results td.col-img { width: 48px; padding: 4px 8px; }
 .gear-bonds .bnd-head .nm { color: var(--accent); font-weight: 600; }
 .gear-bonds .bnd-head .ct { color: var(--fg-dim); }
 .gear-bonds .bnd-summary { font-size: 11px; color: var(--fg-dim); line-height: 1.35; margin-top: 1px; }
-.col-icon { width: 44px; padding: 4px 6px !important; }
-.gear-icon { width: 36px; height: 36px; display: block; image-rendering: pixelated; image-rendering: crisp-edges; border-radius: 4px; background: var(--bg-alt); }
+/* Lock icon column width: tables in #resultsWrap can shrink columns under
+ * narrow viewports, which collapsed the 36px thumbnail to a slit. Setting
+ * width AND min-width on both <th> and <td>, plus white-space:nowrap on
+ * <td>, keeps the icon visible at every viewport. */
+table.results th.col-icon, table.results td.col-icon {
+  width: 52px; min-width: 52px; max-width: 52px;
+  padding: 4px 6px !important; white-space: nowrap;
+}
+.gear-icon { width: 36px; height: 36px; display: block; image-rendering: pixelated; image-rendering: crisp-edges; border-radius: 4px; background: var(--bg-alt); flex-shrink: 0; }
 .gear-icon.placeholder { display: flex; align-items: center; justify-content: center; color: var(--fg-dim); font-size: 8px; }
 .gear-upg { display: inline-flex; flex-wrap: wrap; gap: 3px; }
 .gear-upg .u-chip { background: rgba(231,76,60,.12); color: #e74c3c; padding: 1px 6px; border-radius: 3px; font-size: 10px; }
@@ -152,7 +159,7 @@ table.results td.col-meta { color: var(--fg-dim); font-size: 12px; white-space: 
 <div id="resultsWrap">
 <table class="results">
 <thead><tr>
-  <th>Step</th><th></th><th>Slot</th><th>Name</th><th>Class</th><th>Stats</th><th>UpgradeAttr</th><th>Bonds</th><th>Description</th>
+  <th>Step</th><th class="col-icon"></th><th>Slot</th><th>Name</th><th>Class</th><th>Stats</th><th>UpgradeAttr</th><th>Bonds</th><th>Description</th>
 </tr></thead>
 <tbody id="tbody"></tbody>
 </table>
