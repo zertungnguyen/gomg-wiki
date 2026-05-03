@@ -298,6 +298,29 @@ button.ghost{padding:5px 10px;font-size:10px;background:transparent}
 .picker-bar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;align-items:center;position:sticky;top:0;background:var(--card);padding:8px 0;z-index:5}
 .picker-bar input.search{flex:1;min-width:160px;padding:6px 10px;background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:5px;font-size:13px}
 .picker-bar input.search:focus{outline:none;border-color:var(--accent)}
+/* --- Picker text-search row (gear name / bond name / tags) --- */
+.picker-text-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:6px}
+@media(max-width:720px){.picker-text-row{grid-template-columns:1fr}}
+.picker-text-row .ptr-field{display:flex;flex-direction:column;gap:3px;min-width:0}
+.picker-text-row .ptr-label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;font-family:'Chakra Petch',sans-serif}
+.picker-text-row .ptr-hint{font-size:9px;color:var(--dim);font-style:italic;text-transform:none;letter-spacing:0;margin-left:3px}
+.picker-text-row input.search{width:100%;padding:6px 9px;background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:5px;font-size:12px}
+.picker-text-row input.search:focus{outline:none;border-color:var(--accent)}
+/* Tag autocomplete dropdown anchored to the tags field. */
+.picker-tag-auto{position:absolute;top:100%;left:0;right:0;background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 5px 5px;max-height:200px;overflow-y:auto;z-index:30;box-shadow:0 4px 12px rgba(0,0,0,.5);display:none}
+.picker-tag-auto.open{display:block}
+.picker-tag-auto .ac-item{display:block;width:100%;text-align:left;padding:5px 9px;font-size:12px;background:transparent;border:none;color:var(--text);cursor:pointer;font-family:'Chakra Petch',sans-serif}
+.picker-tag-auto .ac-item:hover{background:#c9a24e15;color:var(--accent)}
+.picker-tag-auto .ac-empty{padding:8px 9px;color:var(--dim);font-size:10px;font-style:italic}
+/* Search-mode radio row (Cross-bond / One-bond) */
+.picker-mode-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px;padding:6px 9px;background:var(--card2);border:1px solid var(--border);border-radius:5px}
+.picker-mode-row .picker-mode-title{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;font-family:'Chakra Petch',sans-serif;font-weight:600}
+.picker-mode-row .opt{display:inline-flex;align-items:center;gap:4px;font-size:11px;cursor:pointer;color:var(--text)}
+.picker-mode-row .opt input[type="radio"]{margin:0;cursor:pointer}
+.picker-mode-row .picker-mode-hint{font-size:9px;color:var(--dim);font-style:italic;margin-left:auto}
+/* Per-card deduped tag chips */
+.g-card .gtags{display:flex;flex-wrap:wrap;gap:2px;margin-top:2px}
+.g-card .gtags .gtag-chip{background:rgba(255,255,255,.05);color:var(--dim);padding:0 5px;border-radius:3px;font-size:9.5px;border:1px solid var(--border);font-family:'Chakra Petch',sans-serif;letter-spacing:0.3px}
 
 /* --- Gear picker filter categories (Basic/Value/Mechanic/Timing/Status) --- */
 .filter-cat-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;align-items:center}
@@ -514,7 +537,10 @@ const RARITY_NAMES = {C:'Normal', B:'Rare', A:'Epic', S:'Legendary', SS:'Mythic'
 const GEAR_FILTER_CATEGORIES = {
   Basic: {
     Class: ['Warrior', 'Archer', 'Mage', 'Priest'],
-    Stats: ['STR', 'SPI', 'AGI', 'HP', 'SPD', 'Luck', 'Tough', 'Mana'],
+    // Stat keyword — matches the in-game Filter Basic tab. The OR predicate
+    // (gear has stat > 0 OR upgradeAttr includes stat) lives in the picker JS.
+    // Mana-related keywords are folded into 'Starting Mana' to match search-gear.
+    Stats: ['STR', 'SPI', 'AGI', 'HP', 'SPD', 'Luck', 'Toughness', 'Starting Mana'],
   },
   Value: ['Increase DMG', 'Reduce DMG Taken', 'HP Granted', 'HP Drain',
     'STR', 'SPI', 'AGI', 'ATK', 'DEF', 'Weakness', 'SPD', 'Luck', 'HP', 'Toughness',
@@ -1956,12 +1982,78 @@ function applyInsightStar(effect, level){
 // Render shell once (search input + filter pills), then update only the list+info
 // section on each filter change. This keeps the search input element stable so it
 // retains focus on every keystroke instead of losing it after each character.
+// === Picker bond-text helpers (synced with search-gear behavior) ===
+// Combined effect-text for ONE bond: basicDesc + Tag/PositiveTags/NegativeTags
+// (skipping [CN:]) + every tier's filled effect. Matches search-gear's
+// singleBondText so substring scans behave identically across the two pages.
+// Cached on the DATA.bonds entry after first compute.
+function pickerSingleBondText(bondName){
+  const bd = DATA.bonds ? DATA.bonds[bondName] : null;
+  if(!bd) return '';
+  if(bd._pickerText !== undefined) return bd._pickerText;
+  const parts = [];
+  if(bd.basicDesc) parts.push(bd.basicDesc);
+  // Tag arrays (lists) — concat with comma. Already [CN:]-filtered at build time.
+  for(const arr of [bd.tags, bd.positiveTags, bd.negativeTags]){
+    if(arr && arr.length) parts.push(arr.filter(t => t && !t.startsWith('[CN:')).join(','));
+  }
+  for(const t of (bd.tiers || [])){ if(t.effect) parts.push(t.effect); }
+  bd._pickerText = parts.join(' \n ').toLowerCase();
+  return bd._pickerText;
+}
+function pickerGearBondText(g){
+  if(g._pickerText !== undefined) return g._pickerText;
+  const parts = [];
+  for(const b of (g.bonds || [])){
+    const bd = DATA.bonds ? DATA.bonds[b.name] : null;
+    if(!bd) continue;
+    if(bd.basicDesc) parts.push(bd.basicDesc);
+    for(const arr of [bd.tags, bd.positiveTags, bd.negativeTags]){
+      if(arr && arr.length) parts.push(arr.filter(t => t && !t.startsWith('[CN:')).join(','));
+    }
+    for(const t of (bd.tiers || [])){ if(t.effect) parts.push(t.effect); }
+  }
+  g._pickerText = parts.join(' \n ').toLowerCase();
+  return g._pickerText;
+}
+// Distinct sorted tag list across all bonds — for the tag-search autocomplete.
+let _pickerAllTags = null;
+function pickerAllTags(){
+  if(_pickerAllTags) return _pickerAllTags;
+  const set = new Set();
+  if(DATA.bonds){
+    for(const bd of Object.values(DATA.bonds)){
+      for(const arr of [bd.tags, bd.positiveTags, bd.negativeTags]){
+        if(!arr) continue;
+        for(const t of arr){
+          if(t && !t.startsWith('[CN:')) set.add(t);
+        }
+      }
+    }
+  }
+  _pickerAllTags = Array.from(set).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+  return _pickerAllTags;
+}
+// Basic.Stat OR predicate — matches search-gear's STAT_KW_PREDICATES.
+const PICKER_STAT_KW = {
+  'STR':  g => (g.stats?.STR  > 0) || (g.upgradeAttr || []).includes('STR'),
+  'SPI':  g => (g.stats?.SPI  > 0) || (g.upgradeAttr || []).includes('SPI'),
+  'AGI':  g => (g.stats?.AGI  > 0) || (g.upgradeAttr || []).includes('AGI'),
+  'HP':   g => (g.stats?.HP   > 0) || (g.upgradeAttr || []).includes('HP'),
+  'SPD':  g => (g.stats?.SPD  > 0) || (g.upgradeAttr || []).includes('SPD'),
+  'Luck': g => (g.stats?.Luck > 0) || (g.upgradeAttr || []).includes('Luck'),
+  'Toughness':     g => (g.stats?.Tough > 0) || (g.upgradeAttr || []).includes('Toughness'),
+  'Starting Mana': g => (g.stats?.Mana  > 0) || (g.upgradeAttr || []).includes('Starting Mana'),
+};
+
 function openGearPicker(mainIdx, slot){
   const main = state.mains[mainIdx];
   const u = main.unitId ? idx.unitById.get(main.unitId) : null;
-  let curStep = '', search = '', showIncompatible = false;
+  let curStep = '', gearQ = '', bondQ = '', tagsRaw = '', tagQuery = [], showIncompatible = false;
+  let pickerSearchMode = 'cross-bond'; // 'cross-bond' | 'one-bond'
   const list = idx.gearBySlot.get(slot) || [];
   const incompatCount = u ? list.filter(g => !gearCompatible(g, u.cls)).length : 0;
+  const allTags = pickerAllTags();
 
   // Filter category state — fresh per modal session.
   const catFilters = {
@@ -1974,49 +2066,103 @@ function openGearPicker(mainIdx, slot){
   };
   let expandedCat = null; // 'Basic' | 'Value' | 'Mechanic' | 'Timing' | 'Status' | null
 
+  // Bond-text predicate (used by Value/Mechanic/Timing/Status tabs + tag search).
+  const picksAnyInText = (picks, lowerText) => {
+    if(!picks || picks.size === 0) return true;
+    for(const p of picks){ if(lowerText.includes(p.toLowerCase())) return true; }
+    return false;
+  };
+  const allTagsInText = (lowerText) => {
+    for(const t of tagQuery){ if(!lowerText.includes(t.toLowerCase())) return false; }
+    return true;
+  };
+  const gearMatchesOneBond = (g) => {
+    const tabs = ['Value','Mechanic','Timing','Status'];
+    const activeTabs = tabs.filter(t => catFilters[t].size > 0);
+    const hasTags = tagQuery.length > 0;
+    if(activeTabs.length === 0 && !hasTags) return true;
+    for(const b of (g.bonds || [])){
+      const text = pickerSingleBondText(b.name);
+      if(!text) continue;
+      let pass = true;
+      for(const t of activeTabs){ if(!picksAnyInText(catFilters[t], text)){ pass = false; break; } }
+      if(pass && hasTags && !allTagsInText(text)) pass = false;
+      if(pass) return true;
+    }
+    return false;
+  };
+
   const matchesCategoryFilters = (g) => {
-    // Tag-based categories: gear must have ≥1 selected tag for each non-empty category.
-    for(const cat of ['Value', 'Mechanic', 'Timing', 'Status']){
-      const set = catFilters[cat];
-      if(!set.size) continue;
-      const tags = g.filterTags || [];
-      let any = false;
-      for(const t of set){ if(tags.includes(t)){ any = true; break; } }
-      if(!any) return false;
-    }
-    // Basic.Class — gear's class field is CSV; OR within selection
+    // Basic.Class — gear's class field is CSV; All-Class always passes.
     if(catFilters.BasicClass.size){
-      const gearClasses = (g.cls || '').split(',').map(s=>s.trim()).filter(Boolean);
-      let any = (g.cls === 'All-Class');
-      for(const c of catFilters.BasicClass){
-        if(gearClasses.includes(c)){ any = true; break; }
+      if(g.cls !== 'All-Class'){
+        const gearClasses = (g.cls || '').split(',').map(s=>s.trim()).filter(Boolean);
+        let any = false;
+        for(const c of catFilters.BasicClass){ if(gearClasses.includes(c)){ any = true; break; } }
+        if(!any) return false;
       }
-      if(!any) return false;
     }
-    // Basic.Stats — gear has stat[X] > 0
+    // Basic.Stats — OR predicate (gear stat > 0 OR upgradeAttr includes the keyword).
     if(catFilters.BasicStats.size){
       let any = false;
       for(const s of catFilters.BasicStats){
-        if((g.stats?.[s] || 0) > 0){ any = true; break; }
+        const pred = PICKER_STAT_KW[s];
+        if(pred && pred(g)){ any = true; break; }
       }
       if(!any) return false;
+    }
+    // The 4 bond-text tabs + tag-search are joined by searchMode.
+    if(pickerSearchMode === 'one-bond'){
+      if(!gearMatchesOneBond(g)) return false;
+    }else{
+      const blob = pickerGearBondText(g);
+      for(const cat of ['Value','Mechanic','Timing','Status']){
+        if(!picksAnyInText(catFilters[cat], blob)) return false;
+      }
+      if(tagQuery.length > 0 && !allTagsInText(blob)) return false;
     }
     return true;
   };
 
   const computeFiltered = () => {
     const compatList = list.filter(g => showIncompatible || !u || gearCompatible(g, u.cls));
-    return compatList.filter(g =>
-      (!curStep || g.step===curStep) &&
-      (!search || (g.name+(g.bond?.name||'')+g.effect+g.cls).toLowerCase().includes(search.toLowerCase())) &&
-      matchesCategoryFilters(g)
-    );
+    const lq = gearQ.toLowerCase();
+    const lb = bondQ.toLowerCase();
+    return compatList.filter(g => {
+      if(curStep && g.step !== curStep) return false;
+      if(lq && !(g.name || '').toLowerCase().includes(lq)) return false;
+      if(lb){
+        const bondNames = (g.bonds || []).map(b => (b.name || '').toLowerCase());
+        if(!bondNames.some(n => n.includes(lb))) return false;
+      }
+      return matchesCategoryFilters(g);
+    });
   };
 
   const totalSelectedCount = () => Object.values(catFilters).reduce((sum, s) => sum + s.size, 0);
   const catSelectedCount = (cat) => {
     if(cat === 'Basic') return catFilters.BasicClass.size + catFilters.BasicStats.size;
     return catFilters[cat]?.size || 0;
+  };
+
+  // Aggregate + dedup tags across a gear's 3 bonds (Pure / Title / Enhance).
+  // Same logic as search-gear's per-row tag chip render.
+  const gearUniqueTags = (g) => {
+    const seen = new Set();
+    const out = [];
+    for(const b of (g.bonds || [])){
+      const bd = DATA.bonds ? DATA.bonds[b.name] : null;
+      if(!bd) continue;
+      for(const arr of [bd.tags, bd.positiveTags, bd.negativeTags]){
+        if(!arr) continue;
+        for(const t of arr){
+          if(t && !t.startsWith('[CN:') && !seen.has(t)){
+            seen.add(t); out.push(t);
+          }
+        }
+      }
+    }
+    return out;
   };
 
   const renderListHTML = () => {
@@ -2033,6 +2179,10 @@ function openGearPicker(mainIdx, slot){
         const bondLine = allBonds.length
           ? `<div class="gbond">Bonds: ${allBonds.map(b => `${e(idx.bondByName.get(b.name)?.name || b.name)}[${b.count}]`).join(' · ')}</div>`
           : '';
+        const tagList = gearUniqueTags(g);
+        const tagsHTML = tagList.length
+          ? `<div class="gtags">${tagList.map(t => `<span class="gtag-chip">${e(t)}</span>`).join('')}</div>`
+          : '';
         return `<div class="${cardClass}" data-gear-id="${e(g.id)}">
           <span class="step-mini s-${g.step}">${e(g.step)}</span>
           <div class="g-img${g.icon?'':' placeholder'}">${g.icon?`<img src="${e(g.icon)}" alt="">`:'no img'}</div>
@@ -2041,7 +2191,7 @@ function openGearPicker(mainIdx, slot){
             <div class="gmeta">${e(g.cls)}</div>
             ${stats ? `<div class="gstats">${stats}</div>` : ''}
             ${bondLine}
-            ${g.effect ? `<div class="geff">${e(g.effect)}</div>` : ''}
+            ${tagsHTML}
             ${incompat ? `<div class="equipped-tag" style="color:var(--bad)">⚠ Restricted to ${e(g.cls)} — won't apply on ${e(u.cls)}</div>` : ''}
             ${equippedTag}
           </div>
@@ -2085,9 +2235,31 @@ function openGearPicker(mainIdx, slot){
     </div>`;
   };
 
-  // Render shell once: stable input + filter pill buttons + filter category row + empty list container.
-  const shellHTML = `<div class="picker-bar">
-      <input class="search" placeholder="Search by name, bond, effect..." value="">
+  // Render shell once: 3 text fields + search-mode radio + rarity pills +
+  // filter cat row + list. Synced with search-gear UX, adapted for the
+  // narrow inline picker (collapse-on-click for the 5 cat panels).
+  const shellHTML = `<div class="picker-text-row">
+      <div class="ptr-field">
+        <label class="ptr-label">Gear name</label>
+        <input class="search" data-q="gear" placeholder="Substring of gear name..." value="" autocomplete="off">
+      </div>
+      <div class="ptr-field">
+        <label class="ptr-label">Bond name</label>
+        <input class="search" data-q="bond" placeholder="Match any of the gear's 3 bonds..." value="" autocomplete="off">
+      </div>
+      <div class="ptr-field" style="position:relative">
+        <label class="ptr-label">Tags <span class="ptr-hint">(comma-separated)</span></label>
+        <input class="search" data-q="tags" placeholder="e.g. Increase DMG, Battle Start..." value="" autocomplete="off">
+        <div class="picker-tag-auto" data-tag-auto></div>
+      </div>
+    </div>
+    <div class="picker-mode-row">
+      <span class="picker-mode-title">Bond text mode</span>
+      <label class="opt"><input type="radio" name="pickerMode-${mainIdx}-${slot}" value="cross-bond" checked> Cross-bond</label>
+      <label class="opt"><input type="radio" name="pickerMode-${mainIdx}-${slot}" value="one-bond"> One-bond strict</label>
+      <span class="picker-mode-hint">Affects Value / Mechanic / Timing / Status + Tags.</span>
+    </div>
+    <div class="picker-bar">
       <span class="filter-label">Rarity</span>` +
       ['','SS','S','A','B','C'].map(s=>`<button class="f-pill ${curStep===s?'on':''}" data-step="${e(s)}" title="${RARITY_NAMES[s] || 'All rarities'}">${s ? RARITY_NAMES[s] : 'All'}</button>`).join('') +
       (u && incompatCount>0 ? `<span class="filter-label">Class</span>
@@ -2100,7 +2272,11 @@ function openGearPicker(mainIdx, slot){
 
   // Wire up handlers against the now-stable DOM nodes.
   const modalBody = $('modalBody');
-  const searchInput = modalBody.querySelector('input.search');
+  const gearInput = modalBody.querySelector('input[data-q="gear"]');
+  const bondInput = modalBody.querySelector('input[data-q="bond"]');
+  const tagsInput = modalBody.querySelector('input[data-q="tags"]');
+  const tagsAuto  = modalBody.querySelector('[data-tag-auto]');
+  const modeRadios = modalBody.querySelectorAll(`input[name="pickerMode-${mainIdx}-${slot}"]`);
   const stepBtns = modalBody.querySelectorAll('.f-pill[data-step]');
   const incompatBtn = modalBody.querySelector('.f-pill[data-incompat]');
   const catRow = modalBody.querySelector('[data-cat-row]');
@@ -2111,10 +2287,51 @@ function openGearPicker(mainIdx, slot){
   const updateCatRow = () => { catRow.innerHTML = renderCatRowHTML(); };
   const updateCatPanel = () => { catPanelArea.innerHTML = renderCatPanelHTML(); };
 
-  searchInput.addEventListener('input', (ev) => {
-    search = ev.target.value;
+  gearInput.addEventListener('input', (ev) => { gearQ = ev.target.value; updateList(); });
+  bondInput.addEventListener('input', (ev) => { bondQ = ev.target.value; updateList(); });
+
+  // Tag input + autocomplete.
+  const parseTagInput = (raw) => raw.split(',').map(s=>s.trim()).filter(Boolean);
+  const currentPartial = (raw) => { const i = raw.lastIndexOf(','); return (i>=0 ? raw.slice(i+1) : raw).trim(); };
+  const closeTagAuto = () => { tagsAuto.classList.remove('open'); tagsAuto.innerHTML = ''; };
+  const refreshTagAuto = () => {
+    const partial = currentPartial(tagsInput.value);
+    if(!partial){ closeTagAuto(); return; }
+    const lower = partial.toLowerCase();
+    const already = new Set(parseTagInput(tagsInput.value).slice(0, -1).map(t => t.toLowerCase()));
+    const matches = allTags.filter(t => t.toLowerCase().includes(lower) && !already.has(t.toLowerCase())).slice(0, 10);
+    tagsAuto.innerHTML = matches.length
+      ? matches.map(t => `<button class="ac-item" type="button" data-tag="${e(t)}">${e(t)}</button>`).join('')
+      : '<div class="ac-empty">No tags match.</div>';
+    tagsAuto.classList.add('open');
+  };
+  const selectTag = (tag) => {
+    const raw = tagsInput.value;
+    const i = raw.lastIndexOf(',');
+    const prefix = i >= 0 ? raw.slice(0, i+1) + ' ' : '';
+    tagsInput.value = prefix + tag + ', ';
+    tagsRaw = tagsInput.value;
+    tagQuery = parseTagInput(tagsRaw);
+    closeTagAuto();
+    tagsInput.focus();
+    updateList();
+  };
+  tagsInput.addEventListener('input', () => {
+    tagsRaw = tagsInput.value;
+    tagQuery = parseTagInput(tagsRaw);
+    refreshTagAuto();
     updateList();
   });
+  tagsInput.addEventListener('focus', refreshTagAuto);
+  tagsInput.addEventListener('blur', () => setTimeout(closeTagAuto, 150));
+  tagsAuto.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('.ac-item');
+    if(btn) selectTag(btn.dataset.tag);
+  });
+
+  modeRadios.forEach(r => r.addEventListener('change', (ev) => {
+    if(ev.target.checked){ pickerSearchMode = ev.target.value; updateList(); }
+  }));
   stepBtns.forEach(btn => btn.addEventListener('click', () => {
     curStep = btn.dataset.step;
     stepBtns.forEach(b => b.classList.toggle('on', b.dataset.step === curStep));
