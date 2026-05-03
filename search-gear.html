@@ -89,17 +89,13 @@ table.results td.col-img { width: 48px; padding: 4px 8px; }
 .bond-search:focus { outline: none; border-color: var(--accent); }
 .gear-stats { display: inline-flex; flex-wrap: wrap; gap: 3px; }
 .gear-stats .stat-chip { background: rgba(46,204,113,.12); color: #2ecc71; padding: 1px 6px; border-radius: 3px; font-size: 11px; font-weight: 600; }
-.gear-bonds { display: flex; flex-direction: column; gap: 6px; font-size: 11px; min-width: 240px; max-width: 340px; }
+.gear-bonds { display: flex; flex-direction: column; gap: 5px; font-size: 11px; min-width: 220px; max-width: 320px; }
 .gear-bonds .bnd { border-left: 2px solid var(--border); padding-left: 6px; }
 .gear-bonds .bnd-head { display: flex; gap: 4px; align-items: baseline; flex-wrap: wrap; }
 .gear-bonds .bnd-head .src { color: var(--fg-dim); font-size: 10px; min-width: 48px; text-transform: uppercase; letter-spacing: 0.5px; }
 .gear-bonds .bnd-head .nm { color: var(--accent); font-weight: 600; }
 .gear-bonds .bnd-head .ct { color: var(--fg-dim); }
-.gear-bonds .bnd-tiers { display: flex; flex-direction: column; gap: 1px; margin-top: 2px; padding-left: 52px; font-size: 10.5px; color: var(--fg-dim); line-height: 1.35; }
-.gear-bonds .bnd-tier { display: flex; gap: 4px; }
-.gear-bonds .bnd-tier .pcs { min-width: 32px; color: var(--fg); font-weight: 600; font-size: 10px; }
-.gear-bonds .bnd-tier.active { color: var(--fg); }
-.gear-bonds .bnd-tier.active .pcs { color: var(--accent); }
+.gear-bonds .bnd-summary { font-size: 11px; color: var(--fg-dim); line-height: 1.35; margin-top: 1px; }
 .col-icon { width: 44px; padding: 4px 6px !important; }
 .gear-icon { width: 36px; height: 36px; display: block; image-rendering: pixelated; image-rendering: crisp-edges; border-radius: 4px; background: var(--bg-alt); }
 .gear-icon.placeholder { display: flex; align-items: center; justify-content: center; color: var(--fg-dim); font-size: 8px; }
@@ -247,17 +243,16 @@ function render() {
     const escAttr = s => String(s || "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
     const bonds = (g.bonds || []).map(b => {
       const bd = BOND_DATA[b.name];
-      let tiersHTML = "";
-      if (bd && bd.tiers && bd.tiers.length) {
-        tiersHTML = `<div class="bnd-tiers">` + bd.tiers.map(t => {
-          const isActive = b.count >= t.pieces;
-          return `<div class="bnd-tier${isActive ? " active" : ""}"><span class="pcs">${t.pieces}pc</span><span>${t.effect || ""}</span></div>`;
-        }).join("") + `</div>`;
-      }
-      const titleAttr = bd && bd.basicDesc ? ` title="${escAttr(bd.basicDesc)}"` : "";
-      return `<div class="bnd"${titleAttr}>
+      // Overall bond summary: BasicDescription_EN (1-line semantic). All 805
+      // bonds have this populated; fall back to first tier's full effect text
+      // only if BasicDescription is somehow empty (defensive).
+      let summary = "";
+      if (bd && bd.basicDesc) summary = bd.basicDesc;
+      else if (bd && bd.tiers && bd.tiers.length) summary = bd.tiers[0].effect || "";
+      const summaryHTML = summary ? `<div class="bnd-summary">${summary}</div>` : "";
+      return `<div class="bnd">
         <div class="bnd-head"><span class="src">${b.source}</span><span class="nm">${b.name}</span><span class="ct">[${b.count}]</span></div>
-        ${tiersHTML}
+        ${summaryHTML}
       </div>`;
     }).join("");
     const areaLine = g.area ? `<div class="gear-area">${g.areaType}${g.areaType && g.area ? " · " : ""}${g.area}</div>` : "";
