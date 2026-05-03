@@ -462,7 +462,7 @@ button.ghost{padding:5px 10px;font-size:10px;background:transparent}
 </div>
 
 <div class="footer">
-  Datamine: Guild of Monster Girls (幻想少女公会) v1.0.0.9 · Internal MGG Wiki tooling.
+  Datamine: Guild of Monster Girls v1.0.0.9 · Internal GMG Wiki tooling.
 </div>
 
 <script src="team-planner-data.js"></script>
@@ -687,17 +687,18 @@ const CLASS_ROUTE = {
   Priest:  {ATK:'SPI', DEF:'STR', WEAK:'AGI', confirmed:true},
 };
 
-// Stat keyword -> raw stat key (for parsing bond/talent text)
-// Used only for the "stacking" extraction (status output) — NOT base aggregation,
-// since base aggregation comes from typed numeric columns.
+// Stat keyword -> raw stat key (for parsing bond/talent text).
+// EN-only: source effect text in the sidecar comes from `*_EN` columns of the
+// datatables, so CN aliases here would be dead weight. Keep abbreviation +
+// long-form variants because both forms appear in EN effect text.
 const STAT_TEXT_TO_KEY = {
-  'STR':'STR','Strength':'STR','力量':'STR',
-  'SPI':'SPI','Spirit':'SPI','精神':'SPI','INT':'SPI',
-  'AGI':'AGI','Agility':'AGI','敏捷':'AGI','DEX':'AGI',
-  'HP':'HP','Max HP':'HP','生命':'HP','CONS':'HP',
-  'SPD':'SPD','Speed':'SPD','速度':'SPD',
-  'Tough':'Tough','Toughness':'Tough','韧性':'Tough',
-  'Luck':'Luck','LUK':'Luck','幸运':'Luck',
+  'STR':'STR','Strength':'STR',
+  'SPI':'SPI','Spirit':'SPI','INT':'SPI',
+  'AGI':'AGI','Agility':'AGI','DEX':'AGI',
+  'HP':'HP','Max HP':'HP','CONS':'HP',
+  'SPD':'SPD','Speed':'SPD',
+  'Tough':'Tough','Toughness':'Tough',
+  'Luck':'Luck','LUK':'Luck',
   // Mana variants — 4 distinct game mechanics. Bare "Mana" is intentionally NOT mapped
   // because it appears in event phrasing ("Gain N Mana", "Mana gained +N") that is
   // NOT a persistent stat delta. The reg C extractor only matches a key in this dict,
