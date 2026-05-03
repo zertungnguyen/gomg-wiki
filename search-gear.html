@@ -77,6 +77,19 @@ table.results td.col-img { width: 48px; padding: 4px 8px; }
  * Mechanic / Timing / Status). On narrow viewports the grid wraps to fewer
  * columns. */
 .gear-filter-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 14px; }
+
+/* Bond-text search-mode radio row. Same column template as the filter grid
+ * below; col 1 is left blank (Basic doesn't read bond text) so the control
+ * visually spans cols 2..5 — the 4 tabs the mode actually affects. */
+.search-mode-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 8px; }
+.search-mode-row .mode-control { grid-column: 2 / -1; display: flex; gap: 18px; flex-wrap: wrap; align-items: center; padding: 8px 14px; background: rgba(255,255,255,.025); border: 1px solid var(--border); border-radius: 6px; }
+.search-mode-row .mode-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--fg-dim); font-weight: 600; }
+.search-mode-row .mode-control label.opt { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; cursor: pointer; color: var(--fg); }
+.search-mode-row .mode-control input[type="radio"] { margin: 0; cursor: pointer; }
+.search-mode-row .mode-control .hint { font-size: 10.5px; color: var(--fg-dim); margin-left: auto; font-style: italic; }
+@media (max-width: 1280px) { .search-mode-row { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 800px)  { .search-mode-row { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px)  { .search-mode-row { grid-template-columns: 1fr; } .search-mode-row .mode-control { grid-column: 1 / -1; } }
 .gear-filter-col { border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; min-width: 0; background: rgba(255,255,255,.015); }
 .gear-filter-col h3 { margin: 0 0 8px 0; padding: 0 0 4px 0; border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); }
 .gear-filter-col h4 { margin: 8px 0 4px 0; padding: 0; border: none; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--fg-dim); font-weight: 600; }
@@ -156,6 +169,15 @@ table.results td.col-meta { color: var(--fg-dim); font-size: 12px; white-space: 
 <main class="content">
 <h1>Search Gear</h1>
 <p>Filter 1234 gear pieces using the same 5-tab structure as the in-game <em>Codex → Gear → Filter</em> UI. <strong>Basic</strong> scans the gear's own columns (rarity / class / stat keyword / slot); <strong>Value / Mechanic / Timing / Status</strong> scan the bond effect text referenced by the gear's three bond slots (Pure / Title / Enhance). Pills within a sub-group OR; across sub-groups and across tabs AND.</p>
+
+<div class="search-mode-row">
+  <div class="mode-control">
+    <span class="mode-title">Bond text search mode</span>
+    <label class="opt"><input type="radio" name="searchMode" value="cross-bond" checked> Cross-bond search</label>
+    <label class="opt"><input type="radio" name="searchMode" value="one-bond"> One-bond search</label>
+    <span class="hint">Applies to Value / Mechanic / Timing / Status only.</span>
+  </div>
+</div>
 
 <div class="gear-filter-grid">
   <div class="gear-filter-col" data-tab="Basic">
@@ -265,6 +287,14 @@ const sel = {};
 for (const cat of Object.keys(CATS)) sel[cat] = new Set();
 let bondQ = "";
 let gearQ = "";
+// "cross-bond" — picks across the 4 bond-text tabs may match in DIFFERENT bonds
+//                of the same gear (loose AND, the original behavior).
+// "one-bond"   — strict mode: picks across all 4 tabs must all match within the
+//                SAME single bond's effect text. Useful when looking for combos
+//                like "gear with a Battle Start Chill bond" rather than "gear
+//                whose 3 bonds collectively mention Battle Start somewhere AND
+//                Chill somewhere".
+let searchMode = "cross-bond";
 
 // Mappings from in-game label → internal data
 const RARITY_TO_STEPS = {
@@ -309,8 +339,8 @@ function gearNameMatch(g, q) {
 
 // Build the combined effect-text blob for a gear: the effect-text bond columns
 // referenced by Pure / Title / Enhance, all tier-effect strings from those bonds,
-// plus their basicDesc lines. Used by Value/Mechanic/Timing/Status filters
-// (substring scan, lowercase). Cached on the gear object after first compute.
+// plus their basicDesc lines. Used by cross-bond mode of the Value/Mechanic/
+// Timing/Status filters (substring scan, lowercase). Cached on the gear object.
 function gearBondText(g) {
   if (g._bondText !== undefined) return g._bondText;
   const parts = [];
@@ -327,6 +357,44 @@ function bondTextAnyMatch(g, picks) {
   if (picks.size === 0) return true;
   const text = gearBondText(g);
   for (const p of picks) if (text.includes(p.toLowerCase())) return true;
+  return false;
+}
+
+// Combined effect-text for ONE bond (basicDesc + every tier's effect). Used by
+// one-bond / strict mode. Cached on BOND_DATA entry.
+function singleBondText(bondName) {
+  const bd = BOND_DATA[bondName];
+  if (!bd) return "";
+  if (bd._text !== undefined) return bd._text;
+  const parts = [];
+  if (bd.basicDesc) parts.push(bd.basicDesc);
+  for (const t of (bd.tiers || [])) if (t.effect) parts.push(t.effect);
+  bd._text = parts.join(" \n ").toLowerCase();
+  return bd._text;
+}
+
+// Pass predicate for a single bond text against one tab's pick set.
+function picksAnyInText(picks, lowerText) {
+  if (picks.size === 0) return true;
+  for (const p of picks) if (lowerText.includes(p.toLowerCase())) return true;
+  return false;
+}
+
+// Strict (one-bond) match: at least one of the gear's bonds must satisfy ALL
+// four tab predicates against its own text alone.
+function gearMatchesOneBond(g) {
+  const tabs = ["Value", "Mechanic", "Timing", "Status"];
+  const activeTabs = tabs.filter(t => sel[t].size > 0);
+  if (activeTabs.length === 0) return true;
+  for (const b of (g.bonds || [])) {
+    const text = singleBondText(b.name);
+    if (!text) continue;
+    let allPass = true;
+    for (const t of activeTabs) {
+      if (!picksAnyInText(sel[t], text)) { allPass = false; break; }
+    }
+    if (allPass) return true;
+  }
   return false;
 }
 
@@ -369,10 +437,14 @@ function render() {
       }
       if (!any) return false;
     }
-    if (!bondTextAnyMatch(g, sel.Value)) return false;
-    if (!bondTextAnyMatch(g, sel.Mechanic)) return false;
-    if (!bondTextAnyMatch(g, sel.Timing)) return false;
-    if (!bondTextAnyMatch(g, sel.Status)) return false;
+    if (searchMode === "one-bond") {
+      if (!gearMatchesOneBond(g)) return false;
+    } else {
+      if (!bondTextAnyMatch(g, sel.Value)) return false;
+      if (!bondTextAnyMatch(g, sel.Mechanic)) return false;
+      if (!bondTextAnyMatch(g, sel.Timing)) return false;
+      if (!bondTextAnyMatch(g, sel.Status)) return false;
+    }
     if (!bondNameMatch(g, bondQ)) return false;
     if (!gearNameMatch(g, gearQ)) return false;
     return true;
@@ -437,10 +509,17 @@ document.getElementById("clearBtn").onclick = () => {
   for (const cat of Object.keys(sel)) sel[cat].clear();
   bondQ = ""; document.getElementById("bondQ").value = "";
   gearQ = ""; document.getElementById("gearQ").value = "";
+  // Search mode is intentionally NOT reset on Clear — it's a viewing
+  // preference, not a filter selection.
   render();
 };
 document.getElementById("bondQ").oninput = (ev) => { bondQ = ev.target.value; render(); };
 document.getElementById("gearQ").oninput = (ev) => { gearQ = ev.target.value; render(); };
+document.querySelectorAll('input[name="searchMode"]').forEach(radio => {
+  radio.addEventListener("change", (ev) => {
+    if (ev.target.checked) { searchMode = ev.target.value; render(); }
+  });
+});
 
 render();
 </script>
