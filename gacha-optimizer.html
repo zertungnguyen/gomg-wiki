@@ -9,9 +9,9 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0e0e12;--card:#16161d;--card2:#1c1c26;--border:#2a2a3a;--text:#e0dfe6;--dim:#6b6b80;--accent:#c9a24e;--accent2:#e8c36a;--green:#2ecc71;--red:#e74c3c;--blue:#3498db;--purple:#9b59b6}
 body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-.wrap{max-width:880px;margin:0 auto;padding:20px 16px}
+.wrap{max-width:920px;margin:0 auto;padding:20px 16px}
 h1{font-family:'Chakra Petch',sans-serif;font-size:28px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:4px}
-.sub{color:var(--dim);font-size:13px;margin-bottom:24px}
+.sub{color:var(--dim);font-size:13px;margin-bottom:18px}
 .section{margin-bottom:20px}
 .section-title{font-family:'Chakra Petch',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
 .section-title .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
@@ -47,10 +47,32 @@ td:nth-child(2){text-align:left}
 .tag-Class{background:#c9a24e20;color:#c9a24e}.tag-Type{background:#2ecc7120;color:#2ecc71}.tag-Element{background:#e74c3c20;color:#e74c3c}.tag-Terrain{background:#3498db20;color:#3498db}
 .pct-hi{color:var(--green);font-weight:700}.pct-mid{color:var(--accent);font-weight:600}.pct-lo{font-weight:500}
 .s3{color:var(--accent);font-weight:700}
+.s-target-on{color:var(--accent);font-weight:700}
 .none-tag{color:var(--dim);font-style:italic;font-size:11px}
 .unit-names{font-size:10px;color:var(--dim);margin-top:4px;line-height:1.5}
 .tbl-wrap{border:1px solid var(--border);border-radius:10px;overflow:hidden;max-height:70vh;overflow-y:auto}
 .footer{margin-top:10px;font-size:11px;color:#444;text-align:right}
+
+/* Mode toggle (Unit-Optimizer / Shard-Optimizer) */
+.mode-toggle{display:flex;gap:0;margin-bottom:14px;padding:4px;background:var(--card);border:1px solid var(--border);border-radius:10px}
+.mode-toggle .mode-opt{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;border-radius:7px;cursor:pointer;transition:all .15s;font-family:'Chakra Petch',sans-serif;font-size:14px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--dim);user-select:none}
+.mode-toggle .mode-opt input[type="radio"]{display:none}
+.mode-toggle .mode-opt:hover{color:var(--text)}
+.mode-toggle .mode-opt.checked{background:var(--accent);color:#1a1a1a}
+.mode-toggle .mode-opt .mode-icon{font-size:18px}
+
+/* Mode-specific config panel */
+.mode-panel{padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:18px;display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.mode-panel .panel-label{font-family:'Chakra Petch',sans-serif;font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:1.5px;margin-right:4px}
+.mode-panel .tier-opt{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;border:1.5px solid var(--border);cursor:pointer;font-size:13px;color:var(--dim);transition:all .15s;user-select:none}
+.mode-panel .tier-opt input[type="radio"]{display:none}
+.mode-panel .tier-opt:hover{border-color:#555;color:var(--text)}
+.mode-panel .tier-opt.checked{color:var(--accent);background:#c9a24e18;border-color:var(--accent);font-weight:600}
+.mode-panel .shard-input-group{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--dim)}
+.mode-panel .shard-input-group input{width:64px;padding:5px 8px;background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:5px;font-size:13px;font-family:'Chakra Petch',sans-serif;text-align:right}
+.mode-panel .shard-input-group input:focus{outline:none;border-color:var(--accent)}
+.mode-panel .shard-input-group .star-lbl{font-family:'Chakra Petch',sans-serif;font-weight:600;color:var(--text);min-width:24px}
+.mode-panel .shard-help{flex-basis:100%;font-size:10px;color:var(--dim);font-style:italic;margin-top:2px}
 </style>
 
 <style>
@@ -121,7 +143,35 @@ body > .wrap thead th { top: 0 !important; z-index: 5 !important; }
 
 <div class="wrap">
 <h1>⚔ MGG Gacha Optimizer</h1>
-<div class="sub">Guild of Monster Girls — 128 units · includes Desert terrain</div>
+<div class="sub">Guild of Monster Girls — 128 standard recruit units. Pick today's available tags, see the best filter combo for either unit-quality % or expected shards per pull.</div>
+
+<div class="mode-toggle">
+  <label class="mode-opt checked" data-mode="unit">
+    <input type="radio" name="optMode" value="unit" checked>
+    <span class="mode-icon">⚔</span><span>Unit-Optimizer</span>
+  </label>
+  <label class="mode-opt" data-mode="shard">
+    <input type="radio" name="optMode" value="shard">
+    <span class="mode-icon">💎</span><span>Shard-Optimizer</span>
+  </label>
+</div>
+
+<div id="unitModePanel" class="mode-panel">
+  <span class="panel-label">Target tier</span>
+  <label class="tier-opt checked" data-tier="3"><input type="radio" name="targetTier" value="3" checked> 3★</label>
+  <label class="tier-opt" data-tier="2"><input type="radio" name="targetTier" value="2"> 2★</label>
+  <label class="tier-opt" data-tier="1"><input type="radio" name="targetTier" value="1"> 1★</label>
+  <label class="tier-opt" data-tier="0"><input type="radio" name="targetTier" value="0"> 0★</label>
+</div>
+
+<div id="shardModePanel" class="mode-panel" style="display:none">
+  <span class="panel-label">Shards per pull (by tier)</span>
+  <span class="shard-input-group"><span class="star-lbl">3★</span><input type="number" id="shard3" value="100" min="0" step="1"></span>
+  <span class="shard-input-group"><span class="star-lbl">2★</span><input type="number" id="shard2" value="30" min="0" step="1"></span>
+  <span class="shard-input-group"><span class="star-lbl">1★</span><input type="number" id="shard1" value="10" min="0" step="1"></span>
+  <span class="shard-input-group"><span class="star-lbl">0★</span><input type="number" id="shard0" value="1" min="0" step="1"></span>
+  <span class="shard-help">Default values are illustrative — adjust to match the in-game shard table you observe. Computation uses gacha pool weights (S=10, A=100, B=1000, C=10000) for the per-unit pull probability.</span>
+</div>
 
 <div class="section cat-Class"><div class="section-title"><span class="dot"></span>Class</div><div class="pills" id="pills-Class"></div></div>
 <div class="section cat-Type"><div class="section-title"><span class="dot"></span>Type</div><div class="pills" id="pills-Type"></div></div>
@@ -135,14 +185,14 @@ body > .wrap thead th { top: 0 !important; z-index: 5 !important; }
 </div>
 
 <div id="bestBox" class="best" style="display:none">
-  <div class="label">Best pick</div>
+  <div class="label" id="bestLabel">Best pick</div>
   <div class="row"><span class="pct" id="bestPct"></span><span class="info" id="bestInfo"></span></div>
 </div>
 
 <div id="emptyMsg" class="empty">Select today's available tags to start</div>
 <div id="tblWrap" class="tbl-wrap" style="display:none">
 <table>
-<thead><tr><th>#</th><th>Combo</th><th>3★ %</th><th>3★</th><th>2★</th><th>1★</th><th>0★</th><th>Total</th></tr></thead>
+<thead><tr id="thead-row"></tr></thead>
 <tbody id="tbody"></tbody>
 </table>
 </div>
@@ -158,42 +208,166 @@ ALL.Class.forEach(a=>F[a]="cls");ALL.Type.forEach(a=>F[a]="type");ALL.Element.fo
 const CAT={};
 Object.entries(ALL).forEach(([c,as])=>as.forEach(a=>CAT[a]=c));
 
+// Pool weight per Step (per CLAUDE.md: S=10, A=100, B=1000, C=10000 — inverse to rarity).
+// Indexed by star integer (3=S, 2=A, 1=B, 0=C). Only used by Shard-Optimizer mode.
+const STEP_WEIGHT = {3: 10, 2: 100, 1: 1000, 0: 10000};
+
 let available=[];
 let maxPicks=3;
+let mode = "unit";          // "unit" | "shard"
+let targetTier = 3;         // 3 / 2 / 1 / 0  (only used in unit mode)
+let shardPerTier = {3:100, 2:30, 1:10, 0:1};
 
 function combs(arr,k){if(k===0)return[[]];if(arr.length<k)return[];const r=[];function go(s,c){if(c.length===k){r.push([...c]);return}for(let i=s;i<=arr.length-(k-c.length);i++){c.push(arr[i]);go(i+1,c);c.pop()}}go(0,[]);return r}
 function conflict(attrs){const fs={};for(const a of attrs){const f=F[a];if(fs[f]&&fs[f]!==a)return true;fs[f]=a}return false}
 function match(u,attrs){return attrs.every(a=>u[F[a]]===a)}
-function analyze(attrs){const m=UNITS.filter(u=>match(u,attrs));const t=m.length,s3=m.filter(u=>u.star===3).length,s2=m.filter(u=>u.star===2).length,s1=m.filter(u=>u.star===1).length,s0=m.filter(u=>u.star===0).length;return{attrs,total:t,s3,s2,s1,s0,pct:t>0?s3/t*100:0,names3:m.filter(u=>u.star===3).map(u=>u.name)}}
+
+// Compute everything we need per combo. Both modes share the per-tier counts;
+// shard mode additionally computes weight-based expected shards per pull.
+function analyze(attrs){
+  const m=UNITS.filter(u=>match(u,attrs));
+  const t=m.length;
+  const counts=[0,0,0,0]; // index by star: counts[3]=s3, counts[2]=s2, ...
+  let totalWeight=0;
+  let expShards=0;
+  for(const u of m){
+    counts[u.star]++;
+    const w=STEP_WEIGHT[u.star];
+    totalWeight+=w;
+  }
+  if(totalWeight>0){
+    for(const u of m){
+      const w=STEP_WEIGHT[u.star];
+      expShards += (w / totalWeight) * (shardPerTier[u.star] || 0);
+    }
+  }
+  const namesByTier={
+    3: m.filter(u=>u.star===3).map(u=>u.name),
+    2: m.filter(u=>u.star===2).map(u=>u.name),
+    1: m.filter(u=>u.star===1).map(u=>u.name),
+    0: m.filter(u=>u.star===0).map(u=>u.name),
+  };
+  return {
+    attrs,
+    total:t,
+    s3:counts[3], s2:counts[2], s1:counts[1], s0:counts[0],
+    namesByTier,
+    targetCount: counts[targetTier],
+    targetPct: t>0 ? counts[targetTier]/t*100 : 0,
+    expShards,
+  };
+}
+
+const TIER_LABEL = {3: "3★", 2: "2★", 1: "1★", 0: "0★"};
+
+function setMode(newMode){
+  mode = newMode;
+  // Toggle UI
+  document.querySelectorAll('.mode-toggle .mode-opt').forEach(el => {
+    el.classList.toggle('checked', el.dataset.mode === newMode);
+  });
+  document.getElementById('unitModePanel').style.display = (newMode === 'unit') ? '' : 'none';
+  document.getElementById('shardModePanel').style.display = (newMode === 'shard') ? '' : 'none';
+  render();
+}
+
+function setTargetTier(t){
+  targetTier = t;
+  document.querySelectorAll('.mode-panel .tier-opt').forEach(el => {
+    el.classList.toggle('checked', parseInt(el.dataset.tier) === t);
+  });
+  render();
+}
+
+function setShardValue(tier, val){
+  shardPerTier[tier] = (val >= 0 ? val : 0);
+  render();
+}
+
+function buildHeaderRow(){
+  // Order: # | Combo | (mode-specific main metric) | 3★ | 2★ | 1★ | 0★ | Total
+  const headers = ['#','Combo'];
+  if(mode === 'shard'){
+    headers.push('Exp. shards/pull');
+  }else{
+    headers.push(`${TIER_LABEL[targetTier]} %`);
+  }
+  headers.push('3★','2★','1★','0★','Total');
+  const row = document.getElementById('thead-row');
+  row.innerHTML = headers.map(h => `<th>${h}</th>`).join('');
+}
 
 function render(){
   const mp=Math.min(maxPicks,available.length);
   document.getElementById("maxVal").textContent=mp;
   document.getElementById("maxPicks").max=Math.min(available.length,5);
-  if(!available.length){document.getElementById("emptyMsg").style.display="";document.getElementById("tblWrap").style.display="none";document.getElementById("bestBox").style.display="none";document.getElementById("footer").textContent="";return}
+  buildHeaderRow();
+  if(!available.length){
+    document.getElementById("emptyMsg").style.display="";
+    document.getElementById("tblWrap").style.display="none";
+    document.getElementById("bestBox").style.display="none";
+    document.getElementById("footer").textContent="";
+    return;
+  }
   const results=[];
-  for(let k=0;k<=mp;k++){const cs=k===0?[[]]:combs(available,k);for(const c of cs){if(conflict(c))continue;const r=analyze(c);results.push(r)}}
-  results.sort((a,b)=>b.pct-a.pct||b.s3-a.s3);
+  for(let k=0;k<=mp;k++){
+    const cs=k===0?[[]]:combs(available,k);
+    for(const c of cs){
+      if(conflict(c))continue;
+      results.push(analyze(c));
+    }
+  }
+  // Mode-specific ranking.
+  if(mode === 'shard'){
+    results.sort((a,b)=>b.expShards-a.expShards || b.total-a.total);
+  }else{
+    results.sort((a,b)=>b.targetPct-a.targetPct || b.targetCount-a.targetCount);
+  }
   const best=results[0];
   document.getElementById("emptyMsg").style.display="none";
   document.getElementById("tblWrap").style.display="";
   document.getElementById("bestBox").style.display="";
-  document.getElementById("bestPct").textContent=best.pct.toFixed(1)+"%";
-  document.getElementById("bestInfo").textContent=(best.attrs.length?best.attrs.join(" + "):"None")+" → "+best.s3+"× 3★ / "+best.total+" total";
+  // Best-pick display adapts per mode.
+  if(mode === 'shard'){
+    document.getElementById("bestLabel").textContent = "Best pick (Shard-Optimizer)";
+    document.getElementById("bestPct").textContent = best.expShards.toFixed(2);
+    document.getElementById("bestInfo").textContent = (best.attrs.length ? best.attrs.join(" + ") : "None") + ` → ${best.expShards.toFixed(2)} shards/pull (pool: ${best.total} units)`;
+  }else{
+    const tl = TIER_LABEL[targetTier];
+    document.getElementById("bestLabel").textContent = `Best pick (Unit-Optimizer · target ${tl})`;
+    document.getElementById("bestPct").textContent = best.targetPct.toFixed(1)+"%";
+    document.getElementById("bestInfo").textContent = (best.attrs.length ? best.attrs.join(" + ") : "None") + ` → ${best.targetCount}× ${tl} / ${best.total} total`;
+  }
+
   const tbody=document.getElementById("tbody");
   tbody.innerHTML="";
   results.forEach((r,i)=>{
     const tr=document.createElement("tr");
     if(i===0)tr.className="top";
     const tags=r.attrs.length?r.attrs.map(a=>`<span class="tag tag-${CAT[a]}">${a}</span>`).join(""):`<span class="none-tag">None</span>`;
-    const pc=r.pct>=40?"pct-hi":r.pct>=25?"pct-mid":"pct-lo";
-    tr.innerHTML=`<td>${i+1}</td><td><div>${tags}</div><div class="unit-names" style="display:none">3★: ${r.names3.join(", ")||"—"}</div></td><td class="${pc}">${r.total?r.pct.toFixed(1):"—"}</td><td class="s3">${r.s3}</td><td>${r.s2}</td><td>${r.s1}</td><td>${r.s0}</td><td>${r.total}</td>`;
+    let mainCell;
+    if(mode === 'shard'){
+      mainCell = `<td class="s3">${r.expShards.toFixed(2)}</td>`;
+    }else{
+      const pc = r.targetPct >= 40 ? "pct-hi" : r.targetPct >= 25 ? "pct-mid" : "pct-lo";
+      mainCell = `<td class="${pc}">${r.total ? r.targetPct.toFixed(1) : "—"}</td>`;
+    }
+    // Highlight the target-tier count column in unit mode.
+    const cellCls = (tier) => (mode === 'unit' && targetTier === tier) ? 'class="s-target-on"' : '';
+    const namesHTML = `3★: ${r.namesByTier[3].join(", ")||"—"}` +
+      (mode === 'shard' || targetTier !== 3
+        ? `<br>2★: ${r.namesByTier[2].join(", ")||"—"}<br>1★: ${r.namesByTier[1].join(", ")||"—"}<br>0★: ${r.namesByTier[0].join(", ")||"—"}`
+        : "");
+    tr.innerHTML=`<td>${i+1}</td><td><div>${tags}</div><div class="unit-names" style="display:none">${namesHTML}</div></td>${mainCell}<td ${cellCls(3)}>${r.s3}</td><td ${cellCls(2)}>${r.s2}</td><td ${cellCls(1)}>${r.s1}</td><td ${cellCls(0)}>${r.s0}</td><td>${r.total}</td>`;
     tr.onclick=()=>{const n=tr.querySelector(".unit-names");n.style.display=n.style.display==="none"?"block":"none"};
     tbody.appendChild(tr);
   });
-  document.getElementById("footer").textContent=results.length+" combinations · click row for 3★ names";
+  document.getElementById("footer").textContent=results.length+" combinations · click row to expand unit names";
 }
 
+// === Wire up controls ===
+
+// Tag pills
 Object.entries(ALL).forEach(([cat,attrs])=>{
   const box=document.getElementById("pills-"+cat);
   attrs.forEach(a=>{
@@ -207,7 +381,29 @@ Object.entries(ALL).forEach(([cat,attrs])=>{
     box.appendChild(btn);
   });
 });
+
+// Max picks slider
 document.getElementById("maxPicks").oninput=e=>{maxPicks=+e.target.value;render()};
+
+// Mode toggle (Unit / Shard)
+document.querySelectorAll('.mode-toggle input[name="optMode"]').forEach(r => {
+  r.addEventListener('change', ev => { if(ev.target.checked) setMode(ev.target.value); });
+});
+
+// Target-tier sub-radio (Unit mode)
+document.querySelectorAll('.mode-panel input[name="targetTier"]').forEach(r => {
+  r.addEventListener('change', ev => { if(ev.target.checked) setTargetTier(parseInt(ev.target.value)); });
+});
+
+// Shard-per-tier inputs (Shard mode)
+[3,2,1,0].forEach(tier => {
+  const inp = document.getElementById('shard'+tier);
+  inp.addEventListener('input', ev => {
+    const v = parseFloat(ev.target.value);
+    setShardValue(tier, isNaN(v) ? 0 : v);
+  });
+});
+
 render();
 </script>
 <style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
