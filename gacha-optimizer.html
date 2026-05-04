@@ -165,12 +165,12 @@ body > .wrap thead th { top: 0 !important; z-index: 5 !important; }
 </div>
 
 <div id="shardModePanel" class="mode-panel" style="display:none">
-  <span class="panel-label">Shards per pull (by tier)</span>
-  <span class="shard-input-group"><span class="star-lbl">3★</span><input type="number" id="shard3" value="100" min="0" step="1"></span>
-  <span class="shard-input-group"><span class="star-lbl">2★</span><input type="number" id="shard2" value="30" min="0" step="1"></span>
-  <span class="shard-input-group"><span class="star-lbl">1★</span><input type="number" id="shard1" value="10" min="0" step="1"></span>
+  <span class="panel-label">Shards per duplicate (by tier)</span>
+  <span class="shard-input-group"><span class="star-lbl">3★</span><input type="number" id="shard3" value="50" min="0" step="1"></span>
+  <span class="shard-input-group"><span class="star-lbl">2★</span><input type="number" id="shard2" value="10" min="0" step="1"></span>
+  <span class="shard-input-group"><span class="star-lbl">1★</span><input type="number" id="shard1" value="2" min="0" step="1"></span>
   <span class="shard-input-group"><span class="star-lbl">0★</span><input type="number" id="shard0" value="1" min="0" step="1"></span>
-  <span class="shard-help">Default values are illustrative — adjust to match the in-game shard table you observe. Computation uses gacha pool weights (S=10, A=100, B=1000, C=10000) for the per-unit pull probability.</span>
+  <span class="shard-help">Defaults match the documented dup-conversion table (50 / 10 / 2 / 1) from <code>visualise-session/mechanics/duplicate-shards.md</code> — same numbers for Standard and Alter pools (Alter side adds an exchange-shop step on top). Note: a duplicate fires only when the rolled unit is already owned; this estimator treats the filtered pool as fully duplicate, which is the realistic case once you've been farming the daily-tag pool for a while. Computation uses gacha pool weights (S=10, A=100, B=1000, C=10000) for the per-unit pull probability.</span>
 </div>
 
 <div class="section cat-Class"><div class="section-title"><span class="dot"></span>Class</div><div class="pills" id="pills-Class"></div></div>
@@ -216,7 +216,10 @@ let available=[];
 let maxPicks=3;
 let mode = "unit";          // "unit" | "shard"
 let targetTier = 3;         // 3 / 2 / 1 / 0  (only used in unit mode)
-let shardPerTier = {3:100, 2:30, 1:10, 0:1};
+// Defaults from visualise-session/mechanics/duplicate-shards.md — duplicate
+// recruit pulls auto-convert at S=50, A=10, B=2, C=1 (same numbers for Standard
+// and Alter pools; Alter pool adds an exchange-shop step on top of these).
+let shardPerTier = {3:50, 2:10, 1:2, 0:1};
 
 function combs(arr,k){if(k===0)return[[]];if(arr.length<k)return[];const r=[];function go(s,c){if(c.length===k){r.push([...c]);return}for(let i=s;i<=arr.length-(k-c.length);i++){c.push(arr[i]);go(i+1,c);c.pop()}}go(0,[]);return r}
 function conflict(attrs){const fs={};for(const a of attrs){const f=F[a];if(fs[f]&&fs[f]!==a)return true;fs[f]=a}return false}
