@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Search Runes — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.search-section { margin-bottom: 14px; }
+.search-section-title {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+  margin-bottom: 6px; color: var(--fg-dim);
+  display: flex; align-items: center; gap: 8px;
+}
+.search-section-title .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill {
+  padding: 5px 12px; border-radius: 4px; border: 1.5px solid var(--border);
+  background: transparent; color: var(--fg-dim); font-size: 13px;
+  cursor: pointer; user-select: none; transition: all .15s;
+}
+.pill:hover { border-color: #555; }
+.pill.on { color: #fff; border-color: currentColor; }
+.cat-Class .dot { background: #f5b342; }
+.cat-Type .dot { background: #2ecc71; }
+.cat-Element .dot { background: #e74c3c; }
+.cat-Terrain .dot { background: #4ea1ff; }
+.cat-Step .dot, .cat-Tier .dot { background: #c290e8; }
+.cat-UnitType .dot, .cat-Restricted .dot, .cat-Exclusive .dot { background: #aaa; }
+.cat-Race .dot { background: #f08c5a; }
+.cat-Class .pill.on { color: #f5b342; background: rgba(245,179,66,.12); border-color: #f5b342; }
+.cat-Type .pill.on { color: #2ecc71; background: rgba(46,204,113,.12); border-color: #2ecc71; }
+.cat-Element .pill.on { color: #e74c3c; background: rgba(231,76,60,.12); border-color: #e74c3c; }
+.cat-Terrain .pill.on { color: #4ea1ff; background: rgba(78,161,255,.12); border-color: #4ea1ff; }
+.cat-Step .pill.on, .cat-Tier .pill.on { color: #c290e8; background: rgba(194,144,232,.12); border-color: #c290e8; }
+.cat-UnitType .pill.on, .cat-Restricted .pill.on, .cat-Exclusive .pill.on { color: #fff; background: rgba(255,255,255,.08); border-color: #ccc; }
+.cat-Race .pill.on { color: #f08c5a; background: rgba(240,140,90,.12); border-color: #f08c5a; }
+.controls-row { display: flex; align-items: center; gap: 12px; margin: 16px 0 8px 0; }
+.btn-clear {
+  padding: 6px 14px; background: var(--bg-alt); color: var(--fg);
+  border: 1px solid var(--border); border-radius: 4px; cursor: pointer; font-size: 13px;
+}
+.btn-clear:hover { border-color: var(--accent); }
+.results-meta { color: var(--fg-dim); font-size: 13px; }
+#resultsWrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table.results { font-size: 13px; min-width: 100%; border-collapse: collapse; }
+table.results thead th {
+  background: var(--bg-alt); position: sticky; top: 0; z-index: 2;
+  text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .5px;
+  padding: 8px 10px; border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+table.results td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+table.results tbody tr:hover { background: var(--bg-alt); }
+.badge {
+  display: inline-block; padding: 2px 9px; border-radius: 3px;
+  font-size: 11px; font-weight: 700; letter-spacing: .3px;
+}
+.b-Orange { background: rgba(245,179,66,.18); color: #f5b342; }
+.b-Purple { background: rgba(194,144,232,.18); color: #c290e8; }
+.b-Blue   { background: rgba(78,161,255,.18); color: #4ea1ff; }
+.b-Green  { background: rgba(108,192,144,.18); color: #6cc090; }
+.tag {
+  display: inline-block; padding: 1px 7px; border-radius: 3px;
+  font-size: 11px; font-weight: 600; margin-right: 4px;
+}
+.t-cls { background: rgba(245,179,66,.15); color: #f5b342; }
+.t-typ { background: rgba(46,204,113,.15); color: #2ecc71; }
+.t-elem { background: rgba(231,76,60,.15); color: #e74c3c; }
+.t-terr { background: rgba(78,161,255,.15); color: #4ea1ff; }
+.t-race { background: rgba(240,140,90,.15); color: #f08c5a; }
+.t-var { background: rgba(255,255,255,.06); color: var(--fg-dim); }
+.empty { padding: 32px 16px; text-align: center; color: var(--fg-dim); font-size: 14px; }
+img.unit-avatar { width: 40px; height: 40px; display: block; image-rendering: pixelated; image-rendering: crisp-edges; border-radius: 4px; background: var(--bg-alt); }
+table.results td.col-img { width: 48px; padding: 4px 8px; }
+
+/* 3-tab filter grid mirroring Codex → Runes → Filter (Rarity + Material in-
+ * game) plus a third Tags tab sourced from RuneDataTable.FilterTags_EN. The
+ * tags facet is wiki-side (the visible in-game filter is Rarity + Material
+ * only) but useful for narrowing 41 atomic effect-tags. */
+.rune-filter-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+.rune-filter-col { border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; min-width: 0; background: rgba(255,255,255,.015); }
+.rune-filter-col h3 { margin: 0 0 8px 0; padding: 0 0 4px 0; border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
+.rune-filter-col h3 .col-title { flex: 1; }
+.rune-filter-col h3 .col-count { font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 8px; background: var(--accent); color: #1a1a1a; min-width: 16px; text-align: center; display: none; letter-spacing: 0; text-transform: none; }
+.rune-filter-col h3 .col-count.has-picks { display: inline-block; }
+.rune-filter-col h3 .col-chevron { font-size: 10px; color: var(--fg-dim); transition: transform .15s; }
+.rune-filter-col.collapsed h3 .col-chevron { transform: rotate(-90deg); }
+.rune-filter-col.collapsed .col-body { display: none; }
+.rune-filter-col h4 { margin: 8px 0 4px 0; padding: 0; border: none; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--fg-dim); font-weight: 600; }
+.rune-filter-col h4:first-of-type { margin-top: 4px; }
+.rune-filter-col .pills { gap: 4px; }
+.rune-filter-col .pill { font-size: 11px; padding: 3px 7px; }
+@media (max-width: 1100px) { .rune-filter-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 720px)  { .rune-filter-grid { grid-template-columns: 1fr; } }
+.rune-filter-col[data-tab="Rarity"] h3   { color: #c290e8; }
+.rune-filter-col[data-tab="Rarity"] .pill.on { color: #c290e8; background: rgba(194,144,232,.12); border-color: #c290e8; }
+.rune-filter-col[data-tab="Material"] h3 { color: #f5b342; }
+.rune-filter-col[data-tab="Material"] .pill.on { color: #f5b342; background: rgba(245,179,66,.12); border-color: #f5b342; }
+.rune-filter-col[data-tab="Tags"] h3     { color: #4ea1ff; }
+.rune-filter-col[data-tab="Tags"] .pill.on { color: #4ea1ff; background: rgba(78,161,255,.12); border-color: #4ea1ff; }
+.rune-filter-col.tab-disabled { opacity: 0.45; pointer-events: none; position: relative; }
+.rune-filter-col.tab-disabled::after { content: "Suspended while Tags field is active"; position: absolute; bottom: 6px; left: 12px; right: 12px; font-size: 9.5px; color: var(--fg-dim); font-style: italic; text-align: center; pointer-events: none; }
+.rune-filter-col.tab-disabled.collapsed::after { display: none; }
+.rune-filter-col.tab-disabled .pill { cursor: not-allowed; }
+.rune-filter-col.tab-disabled h3 { pointer-events: auto; }
+.bond-search { padding: 6px 10px; background: var(--bg-alt); color: var(--fg); border: 1px solid var(--border); border-radius: 4px; font-size: 13px; width: 280px; }
+.bond-search:focus { outline: none; border-color: var(--accent); }
+.text-search-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; margin-bottom: 10px; }
+.text-search-row .field { display: flex; flex-direction: column; gap: 4px; min-width: 220px; flex: 1 1 280px; max-width: 360px; position: relative; }
+.text-search-row .field-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--fg-dim); display: flex; align-items: center; gap: 6px; }
+.text-search-row .field-label .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; background: var(--accent); }
+.text-search-row .bond-search { width: auto; }
+.tag-autocomplete { position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-alt); border: 1px solid var(--border); border-top: none; border-radius: 0 0 4px 4px; max-height: 220px; overflow-y: auto; z-index: 30; box-shadow: 0 4px 12px rgba(0,0,0,.5); display: none; }
+.tag-autocomplete.open { display: block; }
+.tag-autocomplete .ac-item { display: block; width: 100%; text-align: left; padding: 5px 10px; font-size: 12px; background: transparent; border: none; color: var(--fg); cursor: pointer; }
+.tag-autocomplete .ac-item:hover, .tag-autocomplete .ac-item.active { background: rgba(255,255,255,.06); color: var(--accent); }
+.tag-autocomplete .ac-empty { padding: 8px 10px; color: var(--fg-dim); font-size: 11px; font-style: italic; }
+.text-search-row .field-hint { font-size: 10px; color: var(--fg-dim); font-style: italic; margin-top: -2px; }
+table.results td.col-name { font-weight: 600; color: var(--fg); }
+.rune-effect { color: var(--fg); line-height: 1.4; max-width: 280px; }
+.rune-mat { display: inline-flex; flex-direction: column; gap: 2px; }
+.rune-mat .mat-name { color: #f5b342; font-weight: 600; font-size: 12px; }
+.rune-mat .mat-effect { color: var(--fg-dim); font-size: 11px; font-style: italic; }
+.rune-tags { display: flex; flex-wrap: wrap; gap: 3px; max-width: 220px; }
+.rune-tags .tag-chip { background: rgba(255,255,255,.05); color: var(--fg-dim); padding: 1px 6px; border-radius: 3px; font-size: 10.5px; border: 1px solid var(--border); white-space: nowrap; }
+.rune-area { font-size: 11px; color: var(--fg-dim); line-height: 1.35; max-width: 160px; }
+.rune-area .area-type { color: var(--fg); font-weight: 600; display: block; }
+table.results td { vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--border); }
+.t-step-S  { background: rgba(245,179,66,.15); color: #f5b342; }
+.t-step-A  { background: rgba(194,144,232,.15); color: #c290e8; }
+.t-step-B  { background: rgba(78,161,255,.15); color: #4ea1ff; }
+.t-step-C  { background: rgba(110,110,110,.15); color: #aaa; }
+table.results th.col-step, table.results td.col-step {
+  width: 90px; min-width: 90px; max-width: 90px; padding: 6px 8px !important; white-space: nowrap;
+}
+.col-rune-id { color: var(--fg-dim); font-size: 10.5px; font-family: "SF Mono", Consolas, Menlo, monospace; }
+</style>
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="index.html">GMG Wiki</a>
+  <nav>
+    <a href="units/index.html">Units</a>
+    <a href="keywords/index.html">Keywords</a>
+    <a href="gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="talent-simulator.html">Talent Simulator</a>
+    <a href="team-planner.html">Team Planner</a>
+    <a href="search-unit.html">Search · Units</a>
+    <a href="search-talent.html">Search · Talents</a>
+    <a href="search-gear.html">Search · Gear</a>
+    <a href="search-runes.html" class="current">Search · Runes</a>
+    <a href="news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>Search Runes</h1>
+<p>Filter 124 runes from <code>RuneDataTable</code>. <strong>Rarity</strong> + <strong>Material</strong> mirror the in-game <em>Codex → Runes → Filter</em> dialog. <strong>Tags</strong> is a wiki-side facet drawn from <code>FilterTags_EN</code> (~41 atomic effect tags). Pills within a tab OR; across tabs AND. The <em>Effect</em> column shows what stat the rune grants when equipped; the <em>Material</em> column shows the always-on bonus a same-material set gives. <em>Hover a Material pill above to see the 3-tier Resonance ladder.</em></p>
+
+<div class="rune-filter-grid">
+  <div class="rune-filter-col" data-tab="Rarity">
+    <h3 data-toggle="Rarity">
+      <span class="col-title">Rarity</span>
+      <span class="col-count" data-count="Rarity">0</span>
+      <span class="col-chevron">▼</span>
+    </h3>
+    <div class="col-body">
+      <div class="pills" id="pills-Rarity"></div>
+    </div>
+  </div>
+  <div class="rune-filter-col" data-tab="Material">
+    <h3 data-toggle="Material">
+      <span class="col-title">Material</span>
+      <span class="col-count" data-count="Material">0</span>
+      <span class="col-chevron">▼</span>
+    </h3>
+    <div class="col-body">
+      <div class="pills" id="pills-Material"></div>
+    </div>
+  </div>
+  <div class="rune-filter-col" data-tab="Tags">
+    <h3 data-toggle="Tags">
+      <span class="col-title">Tags</span>
+      <span class="col-count" data-count="Tags">0</span>
+      <span class="col-chevron">▼</span>
+    </h3>
+    <div class="col-body">
+      <div class="pills" id="pills-Tags"></div>
+    </div>
+  </div>
+</div>
+
+<div class="text-search-row">
+  <div class="field">
+    <label class="field-label" for="nameQ"><span class="dot"></span>Search rune name</label>
+    <input class="bond-search" id="nameQ" placeholder="Match rune name (case-insensitive substring)..." />
+  </div>
+  <div class="field">
+    <label class="field-label" for="effQ"><span class="dot"></span>Search effect text</label>
+    <input class="bond-search" id="effQ" placeholder="Match Description_EN (e.g. SPD, Mana, +2)..." />
+  </div>
+  <div class="field">
+    <label class="field-label" for="tagsQ"><span class="dot"></span>Search tags</label>
+    <input class="bond-search" id="tagsQ" placeholder="Comma-separated, e.g. Increase DMG, Bloodlust..." autocomplete="off" />
+    <div class="tag-autocomplete" id="tagsAuto"></div>
+    <div class="field-hint">All tags must match (AND). Suspends the Tags pills above while active.</div>
+  </div>
+</div>
+
+<div class="controls-row">
+  <button class="btn-clear" id="clearBtn">Clear all</button>
+  <span class="results-meta" id="meta"></span>
+</div>
+
+<div id="resultsWrap">
+<table class="results">
+<thead><tr>
+  <th class="col-step">Step</th><th>Rune</th><th>Effect</th><th>Material</th><th>Tags</th><th>Area</th>
+</tr></thead>
+<tbody id="tbody"></tbody>
+</table>
+</div>
+<div id="emptyMsg" class="empty" style="display:none">No runes match the selected filters.</div>
+
+<script>
+const RUNES = [{"id": "F40001_001", "name": "Ruin Rune", "step": "S", "weight": 5, "material": "Copper", "materialEffect": "Amplify", "element": "World", "areaType": "World", "area": "Any", "type": ["Attribute", "Special"], "effect": "Deal 2 more total DMG.", "score": 40, "tags": ["Attacking", "Increase DMG"]}, {"id": "F40002_001", "name": "Eternal Rune", "step": "S", "weight": 5, "material": "Copper", "materialEffect": "Amplify", "element": "World", "areaType": "World", "area": "Any", "type": ["Attribute", "Special"], "effect": "Take 2 less total DMG.", "score": 40, "tags": ["Take Hit", "Reduce DMG Taken"]}, {"id": "F40003_001", "name": "Nature Rune", "step": "S", "weight": 5, "material": "Copper", "materialEffect": "Amplify", "element": "World", "areaType": "World", "area": "Any", "type": ["Attribute", "Special"], "effect": "+2 more total HP restored to targets.", "score": 40, "tags": ["Healing", "HP Granted"]}, {"id": "F20003_001", "name": "Luck Rune", "step": "S", "weight": 5, "material": "Copper", "materialEffect": "Amplify", "element": "World", "areaType": "World", "area": "Any", "type": ["Attribute", "Special"], "effect": "LUK +4.", "score": 40, "tags": ["Luck"]}, {"id": "F30004_001", "name": "Ascetic Rune", "step": "S", "weight": 1, "material": "Copper", "materialEffect": "Amplify", "element": "World", "areaType": "World", "area": "Any", "type": ["Attribute", "Special", "Rare"], "effect": "Gain 10 Max Mana.", "score": 0, "tags": ["Max Mana"]}, {"id": "F30001_001", "name": "Mana Rune", "step": "A", "weight": 50, "material": "Copper", "materialEffect": "Amplify", "element": "World", "areaType": "World", "area": "Any", "type": ["Attribute", "Special"], "effect": "Init Mana +2.", "score": 30, "tags": ["Starting Mana"]}, {"id": "F30002_001", "name": "Resilience Rune", "step": "A", "weight": 50, "material": "Copper", "materialEffect": "Amplify", "element": "World", "areaType": "World", "area": "Any", "type": ["Attribute", "Special"], "effect": "Tough +6.", "score": 30, "tags": ["Toughness"]}, {"id": "F20001_001", "name": "SPD Rune", "step": "B", "weight": 500, "material": "Copper", "materialEffect": "Amplify", "element": "World", "areaType": "World", "area": "Any", "type": ["Attribute", "Special"], "effect": "SPD +4.", "score": 25, "tags": ["SPD"]}, {"id": "F20002_001", "name": "HP Rune", "step": "B", "weight": 500, "material": "Copper", "materialEffect": "Amplify", "element": "World", "areaType": "World", "area": "Any", "type": ["Attribute", "Special"], "effect": "HP +4.", "score": 25, "tags": ["HP"]}, {"id": "F10001_001", "name": "ATK Rune", "step": "C", "weight": 5000, "material": "Copper", "materialEffect": "Amplify", "element": "World", "areaType": "World", "area": "Any", "type": ["Attribute", "Special"], "effect": "Gain 2 ATK.", "score": 20, "tags": ["STR", "SPI", "AGI"]}, {"id": "F10002_001", "name": "DEF Rune", "step": "C", "weight": 5000, "material": "Copper", "materialEffect": "Amplify", "element": "World", "areaType": "World", "area": "Any", "type": ["Attribute", "Special"], "effect": "Gain 2 DEF.", "score": 20, "tags": ["STR", "SPI", "AGI"]}, {"id": "F40001_006", "name": "Ruin Rune", "step": "S", "weight": 5, "material": "Maplewood", "materialEffect": "Agile", "element": "World", "areaType": "Plains", "area": "Dawnstep Plains", "type": ["Attribute", "Special"], "effect": "Deal 2 more total DMG.", "score": 40, "tags": ["Attacking", "Increase DMG", "Action End", "Precision", "Follow-Up"]}, {"id": "F40002_006", "name": "Eternal Rune", "step": "S", "weight": 5, "material": "Maplewood", "materialEffect": "Agile", "element": "World", "areaType": "Plains", "area": "Dawnstep Plains", "type": ["Attribute", "Special"], "effect": "Take 2 less total DMG.", "score": 40, "tags": ["Take Hit", "Reduce DMG Taken", "Action End", "Precision", "Follow-Up", "Increase DMG"]}, {"id": "F40003_006", "name": "Nature Rune", "step": "S", "weight": 5, "material": "Maplewood", "materialEffect": "Agile", "element": "World", "areaType": "Plains", "area": "Dawnstep Plains", "type": ["Attribute", "Special"], "effect": "+2 more total HP restored to targets.", "score": 40, "tags": ["Healing", "HP Granted", "Action End", "Precision", "Follow-Up", "Increase DMG"]}, {"id": "F20003_006", "name": "Luck Rune", "step": "S", "weight": 5, "material": "Maplewood", "materialEffect": "Agile", "element": "World", "areaType": "Plains", "area": "Dawnstep Plains", "type": ["Attribute", "Special"], "effect": "LUK +4.", "score": 40, "tags": ["Luck", "Action End", "Precision", "Follow-Up", "Increase DMG"]}, {"id": "F30001_006", "name": "Mana Rune", "step": "A", "weight": 50, "material": "Maplewood", "materialEffect": "Agile", "element": "World", "areaType": "Plains", "area": "Dawnstep Plains", "type": ["Attribute", "Special"], "effect": "Init Mana +2.", "score": 30, "tags": ["Starting Mana", "Action End", "Precision", "Follow-Up", "Increase DMG"]}, {"id": "F30002_006", "name": "Resilience Rune", "step": "A", "weight": 50, "material": "Maplewood", "materialEffect": "Agile", "element": "World", "areaType": "Plains", "area": "Dawnstep Plains", "type": ["Attribute", "Special"], "effect": "Tough +6.", "score": 30, "tags": ["Toughness", "Action End", "Precision", "Follow-Up", "Increase DMG"]}, {"id": "F20001_006", "name": "SPD Rune", "step": "B", "weight": 500, "material": "Maplewood", "materialEffect": "Agile", "element": "World", "areaType": "Plains", "area": "Dawnstep Plains", "type": ["Attribute", "Special"], "effect": "SPD +4.", "score": 25, "tags": ["SPD", "Action End", "Precision", "Follow-Up", "Increase DMG"]}, {"id": "F20002_006", "name": "HP Rune", "step": "B", "weight": 500, "material": "Maplewood", "materialEffect": "Agile", "element": "World", "areaType": "Plains", "area": "Dawnstep Plains", "type": ["Attribute", "Special"], "effect": "HP +4.", "score": 25, "tags": ["HP", "Action End", "Precision", "Follow-Up", "Increase DMG"]}, {"id": "F10001_006", "name": "ATK Rune", "step": "C", "weight": 5000, "material": "Maplewood", "materialEffect": "Agile", "element": "World", "areaType": "Plains", "area": "Dawnstep Plains", "type": ["Attribute", "Special"], "effect": "Gain 2 ATK.", "score": 20, "tags": ["STR", "SPI", "AGI", "Action End", "Precision", "Follow-Up", "Increase DMG"]}, {"id": "F10002_006", "name": "DEF Rune", "step": "C", "weight": 5000, "material": "Maplewood", "materialEffect": "Agile", "element": "World", "areaType": "Plains", "area": "Dawnstep Plains", "type": ["Attribute", "Special"], "effect": "Gain 2 DEF.", "score": 20, "tags": ["STR", "SPI", "AGI", "Action End", "Precision", "Follow-Up", "Increase DMG"]}, {"id": "F40001_005", "name": "Ruin Rune", "step": "S", "weight": 5, "material": "Bloodstone", "materialEffect": "Vengeance", "element": "World", "areaType": "Plains", "area": "Boundless Steppe", "type": ["Attribute", "Special"], "effect": "Deal 2 more total DMG.", "score": 40, "tags": ["Attacking", "Increase DMG", "Take Counter", "HP Gain"]}, {"id": "F40002_005", "name": "Eternal Rune", "step": "S", "weight": 5, "material": "Bloodstone", "materialEffect": "Vengeance", "element": "World", "areaType": "Plains", "area": "Boundless Steppe", "type": ["Attribute", "Special"], "effect": "Take 2 less total DMG.", "score": 40, "tags": ["Take Hit", "Reduce DMG Taken", "Countering", "Increase DMG", "HP Gain"]}, {"id": "F40003_005", "name": "Nature Rune", "step": "S", "weight": 5, "material": "Bloodstone", "materialEffect": "Vengeance", "element": "World", "areaType": "Plains", "area": "Boundless Steppe", "type": ["Attribute", "Special"], "effect": "+2 more total HP restored to targets.", "score": 40, "tags": ["Healing", "HP Granted", "Countering", "Increase DMG", "Take Hit", "HP Gain"]}, {"id": "F20003_005", "name": "Luck Rune", "step": "S", "weight": 5, "material": "Bloodstone", "materialEffect": "Vengeance", "element": "World", "areaType": "Plains", "area": "Boundless Steppe", "type": ["Attribute", "Special"], "effect": "LUK +4.", "score": 40, "tags": ["Luck", "Countering", "Increase DMG", "Take Hit", "HP Gain"]}, {"id": "F30001_005", "name": "Mana Rune", "step": "A", "weight": 50, "material": "Bloodstone", "materialEffect": "Vengeance", "element": "World", "areaType": "Plains", "area": "Boundless Steppe", "type": ["Attribute", "Special"], "effect": "Init Mana +2.", "score": 30, "tags": ["Starting Mana", "Countering", "Increase DMG", "Take Hit", "HP Gain"]}, {"id": "F30002_005", "name": "Resilience Rune", "step": "A", "weight": 50, "material": "Bloodstone", "materialEffect": "Vengeance", "element": "World", "areaType": "Plains", "area": "Boundless Steppe", "type": ["Attribute", "Special"], "effect": "Tough +6.", "score": 30, "tags": ["Toughness", "Countering", "Increase DMG", "Take Hit", "HP Gain"]}, {"id": "F20001_005", "name": "SPD Rune", "step": "B", "weight": 500, "material": "Bloodstone", "materialEffect": "Vengeance", "element": "World", "areaType": "Plains", "area": "Boundless Steppe", "type": ["Attribute", "Special"], "effect": "SPD +4.", "score": 25, "tags": ["SPD", "Countering", "Increase DMG", "Take Hit", "HP Gain"]}, {"id": "F20002_005", "name": "HP Rune", "step": "B", "weight": 500, "material": "Bloodstone", "materialEffect": "Vengeance", "element": "World", "areaType": "Plains", "area": "Boundless Steppe", "type": ["Attribute", "Special"], "effect": "HP +4.", "score": 25, "tags": ["HP", "Countering", "Increase DMG", "Take Hit", "HP Gain"]}, {"id": "F10001_005", "name": "ATK Rune", "step": "C", "weight": 5000, "material": "Bloodstone", "materialEffect": "Vengeance", "element": "World", "areaType": "Plains", "area": "Boundless Steppe", "type": ["Attribute", "Special"], "effect": "Gain 2 ATK.", "score": 20, "tags": ["STR", "SPI", "AGI", "Countering", "Increase DMG", "Take Hit", "HP Gain"]}, {"id": "F10002_005", "name": "DEF Rune", "step": "C", "weight": 5000, "material": "Bloodstone", "materialEffect": "Vengeance", "element": "World", "areaType": "Plains", "area": "Boundless Steppe", "type": ["Attribute", "Special"], "effect": "Gain 2 DEF.", "score": 20, "tags": ["STR", "SPI", "AGI", "Countering", "Increase DMG", "Take Hit", "HP Gain"]}, {"id": "F40001_011", "name": "Ruin Rune", "step": "S", "weight": 5, "material": "Totem", "materialEffect": "Primal", "element": "World", "areaType": "Plains", "area": "Crimson Highlands", "type": ["Attribute", "Special"], "effect": "Deal 2 more total DMG.", "score": 40, "tags": ["Attacking", "Increase DMG", "Bloodlust", "Increase Stacks"]}, {"id": "F40002_011", "name": "Eternal Rune", "step": "S", "weight": 5, "material": "Totem", "materialEffect": "Primal", "element": "World", "areaType": "Plains", "area": "Crimson Highlands", "type": ["Attribute", "Special"], "effect": "Take 2 less total DMG.", "score": 40, "tags": ["Take Hit", "Reduce DMG Taken", "Attacking", "Bloodlust", "Increase Stacks"]}, {"id": "F40003_011", "name": "Nature Rune", "step": "S", "weight": 5, "material": "Totem", "materialEffect": "Primal", "element": "World", "areaType": "Plains", "area": "Crimson Highlands", "type": ["Attribute", "Special"], "effect": "+2 more total HP restored to targets.", "score": 40, "tags": ["Healing", "HP Granted", "Attacking", "Bloodlust", "Increase Stacks"]}, {"id": "F20003_011", "name": "Luck Rune", "step": "S", "weight": 5, "material": "Totem", "materialEffect": "Primal", "element": "World", "areaType": "Plains", "area": "Crimson Highlands", "type": ["Attribute", "Special"], "effect": "LUK +4.", "score": 40, "tags": ["Luck", "Attacking", "Bloodlust", "Increase Stacks"]}, {"id": "F30003_011", "name": "Heroic Rune", "step": "S", "weight": 1, "material": "Totem", "materialEffect": "Primal", "element": "World", "areaType": "Plains", "area": "Crimson Highlands", "type": ["Attribute", "Special", "Rare"], "effect": "Gain 2 ally count.", "score": 40, "tags": ["Ally Count", "Attacking", "Bloodlust", "Increase Stacks"]}, {"id": "F30001_011", "name": "Mana Rune", "step": "A", "weight": 50, "material": "Totem", "materialEffect": "Primal", "element": "World", "areaType": "Plains", "area": "Crimson Highlands", "type": ["Attribute", "Special"], "effect": "Init Mana +2.", "score": 30, "tags": ["Starting Mana", "Attacking", "Bloodlust", "Increase Stacks"]}, {"id": "F30002_011", "name": "Resilience Rune", "step": "A", "weight": 50, "material": "Totem", "materialEffect": "Primal", "element": "World", "areaType": "Plains", "area": "Crimson Highlands", "type": ["Attribute", "Special"], "effect": "Tough +6.", "score": 30, "tags": ["Toughness", "Attacking", "Bloodlust", "Increase Stacks"]}, {"id": "F20001_011", "name": "SPD Rune", "step": "B", "weight": 500, "material": "Totem", "materialEffect": "Primal", "element": "World", "areaType": "Plains", "area": "Crimson Highlands", "type": ["Attribute", "Special"], "effect": "SPD +4.", "score": 25, "tags": ["SPD", "Attacking", "Bloodlust", "Increase Stacks"]}, {"id": "F20002_011", "name": "HP Rune", "step": "B", "weight": 500, "material": "Totem", "materialEffect": "Primal", "element": "World", "areaType": "Plains", "area": "Crimson Highlands", "type": ["Attribute", "Special"], "effect": "HP +4.", "score": 25, "tags": ["HP", "Attacking", "Bloodlust", "Increase Stacks"]}, {"id": "F10001_011", "name": "ATK Rune", "step": "C", "weight": 5000, "material": "Totem", "materialEffect": "Primal", "element": "World", "areaType": "Plains", "area": "Crimson Highlands", "type": ["Attribute", "Special"], "effect": "Gain 2 ATK.", "score": 20, "tags": ["STR", "SPI", "AGI", "Attacking", "Bloodlust", "Increase Stacks"]}, {"id": "F10002_011", "name": "DEF Rune", "step": "C", "weight": 5000, "material": "Totem", "materialEffect": "Primal", "element": "World", "areaType": "Plains", "area": "Crimson Highlands", "type": ["Attribute", "Special"], "effect": "Gain 2 DEF.", "score": 20, "tags": ["STR", "SPI", "AGI", "Attacking", "Bloodlust", "Increase Stacks"]}, {"id": "F40001_003", "name": "Ruin Rune", "step": "S", "weight": 5, "material": "Adamant", "materialEffect": "Solidness", "element": "World", "areaType": "Forest", "area": "Wandering Woods", "type": ["Attribute", "Special"], "effect": "Deal 2 more total DMG.", "score": 40, "tags": ["Attacking", "Increase DMG", "Take Basic Attack", "Reduce DMG Taken", "HP Loss Resist"]}, {"id": "F40002_003", "name": "Eternal Rune", "step": "S", "weight": 5, "material": "Adamant", "materialEffect": "Solidness", "element": "World", "areaType": "Forest", "area": "Wandering Woods", "type": ["Attribute", "Special"], "effect": "Take 2 less total DMG.", "score": 40, "tags": ["Take Hit", "Reduce DMG Taken", "Take Basic Attack", "Reduce DMG Taken", "HP Loss Resist"]}, {"id": "F40003_003", "name": "Nature Rune", "step": "S", "weight": 5, "material": "Adamant", "materialEffect": "Solidness", "element": "World", "areaType": "Forest", "area": "Wandering Woods", "type": ["Attribute", "Special"], "effect": "+2 more total HP restored to targets.", "score": 40, "tags": ["Healing", "HP Granted", "Take Basic Attack", "Reduce DMG Taken", "HP Loss Resist"]}, {"id": "F20003_003", "name": "Luck Rune", "step": "S", "weight": 5, "material": "Adamant", "materialEffect": "Solidness", "element": "World", "areaType": "Forest", "area": "Wandering Woods", "type": ["Attribute", "Special"], "effect": "LUK +4.", "score": 25, "tags": ["Luck", "Take Basic Attack", "Reduce DMG Taken", "HP Loss Resist"]}, {"id": "F30001_003", "name": "Mana Rune", "step": "A", "weight": 50, "material": "Adamant", "materialEffect": "Solidness", "element": "World", "areaType": "Forest", "area": "Wandering Woods", "type": ["Attribute", "Special"], "effect": "Init Mana +2.", "score": 30, "tags": ["Starting Mana", "Take Basic Attack", "Reduce DMG Taken", "HP Loss Resist"]}, {"id": "F30002_003", "name": "Resilience Rune", "step": "A", "weight": 50, "material": "Adamant", "materialEffect": "Solidness", "element": "World", "areaType": "Forest", "area": "Wandering Woods", "type": ["Attribute", "Special"], "effect": "Tough +6.", "score": 30, "tags": ["Toughness", "Take Basic Attack", "Reduce DMG Taken", "HP Loss Resist"]}, {"id": "F20001_003", "name": "SPD Rune", "step": "B", "weight": 500, "material": "Adamant", "materialEffect": "Solidness", "element": "World", "areaType": "Forest", "area": "Wandering Woods", "type": ["Attribute", "Special"], "effect": "SPD +4.", "score": 25, "tags": ["SPD", "Take Basic Attack", "Reduce DMG Taken", "HP Loss Resist"]}, {"id": "F20002_003", "name": "HP Rune", "step": "B", "weight": 500, "material": "Adamant", "materialEffect": "Solidness", "element": "World", "areaType": "Forest", "area": "Wandering Woods", "type": ["Attribute", "Special"], "effect": "HP +4.", "score": 25, "tags": ["HP", "Take Basic Attack", "Reduce DMG Taken", "HP Loss Resist"]}, {"id": "F10001_003", "name": "ATK Rune", "step": "C", "weight": 5000, "material": "Adamant", "materialEffect": "Solidness", "element": "World", "areaType": "Forest", "area": "Wandering Woods", "type": ["Attribute", "Special"], "effect": "Gain 2 ATK.", "score": 20, "tags": ["STR", "SPI", "AGI", "Take Basic Attack", "Reduce DMG Taken", "HP Loss Resist"]}, {"id": "F10002_003", "name": "DEF Rune", "step": "C", "weight": 5000, "material": "Adamant", "materialEffect": "Solidness", "element": "World", "areaType": "Forest", "area": "Wandering Woods", "type": ["Attribute", "Special"], "effect": "Gain 2 DEF.", "score": 20, "tags": ["STR", "SPI", "AGI", "Take Basic Attack", "Reduce DMG Taken", "HP Loss Resist"]}, {"id": "F40001_008", "name": "Ruin Rune", "step": "S", "weight": 5, "material": "Dragonbone", "materialEffect": "Deter", "element": "World", "areaType": "Forest", "area": "Shadowveil Grove", "type": ["Attribute", "Special"], "effect": "Deal 2 more total DMG.", "score": 40, "tags": ["Attacking", "Increase DMG", "Enemy Exposed", "Attacking", "Increase DMG", "Battle Start", "Toughness Loss"]}, {"id": "F40002_008", "name": "Eternal Rune", "step": "S", "weight": 5, "material": "Dragonbone", "materialEffect": "Deter", "element": "World", "areaType": "Forest", "area": "Shadowveil Grove", "type": ["Attribute", "Special"], "effect": "Take 2 less total DMG.", "score": 40, "tags": ["Take Hit", "Reduce DMG Taken", "Enemy Exposed", "Attacking", "Increase DMG", "Battle Start", "Toughness Loss"]}, {"id": "F40003_008", "name": "Nature Rune", "step": "S", "weight": 5, "material": "Dragonbone", "materialEffect": "Deter", "element": "World", "areaType": "Forest", "area": "Shadowveil Grove", "type": ["Attribute", "Special"], "effect": "+2 more total HP restored to targets.", "score": 40, "tags": ["Healing", "HP Granted", "Enemy Exposed", "Attacking", "Increase DMG", "Battle Start", "Toughness Loss"]}, {"id": "F20003_008", "name": "Luck Rune", "step": "S", "weight": 5, "material": "Dragonbone", "materialEffect": "Deter", "element": "World", "areaType": "Forest", "area": "Shadowveil Grove", "type": ["Attribute", "Special"], "effect": "LUK +4.", "score": 40, "tags": ["Luck", "Enemy Exposed", "Attacking", "Increase DMG", "Battle Start", "Toughness Loss"]}, {"id": "F40005_008", "name": "Dragon Rune", "step": "S", "weight": 1, "material": "Dragonbone", "materialEffect": "Deter", "element": "World", "areaType": "Forest", "area": "Shadowveil Grove", "type": ["Attribute", "Special", "Rare"], "effect": "Gain 1 Hit Mana.", "score": 40, "tags": ["Hit Mana", "Enemy Exposed", "Attacking", "Increase DMG", "Battle Start", "Toughness Loss"]}, {"id": "F30001_008", "name": "Mana Rune", "step": "A", "weight": 50, "material": "Dragonbone", "materialEffect": "Deter", "element": "World", "areaType": "Forest", "area": "Shadowveil Grove", "type": ["Attribute", "Special"], "effect": "Init Mana +2.", "score": 30, "tags": ["Starting Mana", "Enemy Exposed", "Attacking", "Increase DMG", "Battle Start", "Toughness Loss"]}, {"id": "F30002_008", "name": "Resilience Rune", "step": "A", "weight": 50, "material": "Dragonbone", "materialEffect": "Deter", "element": "World", "areaType": "Forest", "area": "Shadowveil Grove", "type": ["Attribute", "Special"], "effect": "Tough +6.", "score": 30, "tags": ["Toughness", "Enemy Exposed", "Attacking", "Increase DMG", "Battle Start", "Toughness Loss"]}, {"id": "F20001_008", "name": "SPD Rune", "step": "B", "weight": 500, "material": "Dragonbone", "materialEffect": "Deter", "element": "World", "areaType": "Forest", "area": "Shadowveil Grove", "type": ["Attribute", "Special"], "effect": "SPD +4.", "score": 25, "tags": ["SPD", "Enemy Exposed", "Attacking", "Increase DMG", "Battle Start", "Toughness Loss"]}, {"id": "F20002_008", "name": "HP Rune", "step": "B", "weight": 500, "material": "Dragonbone", "materialEffect": "Deter", "element": "World", "areaType": "Forest", "area": "Shadowveil Grove", "type": ["Attribute", "Special"], "effect": "HP +4.", "score": 25, "tags": ["HP", "Enemy Exposed", "Attacking", "Increase DMG", "Battle Start", "Toughness Loss"]}, {"id": "F10001_008", "name": "ATK Rune", "step": "C", "weight": 5000, "material": "Dragonbone", "materialEffect": "Deter", "element": "World", "areaType": "Forest", "area": "Shadowveil Grove", "type": ["Attribute", "Special"], "effect": "Gain 2 ATK.", "score": 20, "tags": ["STR", "SPI", "AGI", "Enemy Exposed", "Attacking", "Increase DMG", "Battle Start", "Toughness Loss"]}, {"id": "F10002_008", "name": "DEF Rune", "step": "C", "weight": 5000, "material": "Dragonbone", "materialEffect": "Deter", "element": "World", "areaType": "Forest", "area": "Shadowveil Grove", "type": ["Attribute", "Special"], "effect": "Gain 2 DEF.", "score": 20, "tags": ["STR", "SPI", "AGI", "Enemy Exposed", "Attacking", "Increase DMG", "Battle Start", "Toughness Loss"]}, {"id": "F40001_004", "name": "Ruin Rune", "step": "S", "weight": 5, "material": "Manacrystal", "materialEffect": "Charge", "element": "World", "areaType": "Mounts", "area": "Forsaken Mines", "type": ["Attribute", "Special"], "effect": "Deal 2 more total DMG.", "score": 40, "tags": ["Attacking", "Increase DMG", "Cast Skill", "Mana Gain"]}, {"id": "F40002_004", "name": "Eternal Rune", "step": "S", "weight": 5, "material": "Manacrystal", "materialEffect": "Charge", "element": "World", "areaType": "Mounts", "area": "Forsaken Mines", "type": ["Attribute", "Special"], "effect": "Take 2 less total DMG.", "score": 40, "tags": ["Take Hit", "Reduce DMG Taken", "Cast Skill", "Increase DMG", "Mana Gain"]}, {"id": "F40003_004", "name": "Nature Rune", "step": "S", "weight": 5, "material": "Manacrystal", "materialEffect": "Charge", "element": "World", "areaType": "Mounts", "area": "Forsaken Mines", "type": ["Attribute", "Special"], "effect": "+2 more total HP restored to targets.", "score": 40, "tags": ["Healing", "HP Granted", "Cast Skill", "Increase DMG", "Mana Gain"]}, {"id": "F20003_004", "name": "Luck Rune", "step": "S", "weight": 5, "material": "Manacrystal", "materialEffect": "Charge", "element": "World", "areaType": "Mounts", "area": "Forsaken Mines", "type": ["Attribute", "Special"], "effect": "LUK +4.", "score": 40, "tags": ["Luck", "Cast Skill", "Increase DMG", "Mana Gain"]}, {"id": "F40004_004", "name": "Astral Rune", "step": "S", "weight": 1, "material": "Manacrystal", "materialEffect": "Charge", "element": "World", "areaType": "Mounts", "area": "Forsaken Mines", "type": ["Attribute", "Special", "Rare"], "effect": "Lose 1 Max Mana.", "score": 40, "tags": ["Max Mana", "Cast Skill", "Increase DMG", "Mana Gain"]}, {"id": "F30001_004", "name": "Mana Rune", "step": "A", "weight": 50, "material": "Manacrystal", "materialEffect": "Charge", "element": "World", "areaType": "Mounts", "area": "Forsaken Mines", "type": ["Attribute", "Special"], "effect": "Init Mana +2.", "score": 30, "tags": ["Starting Mana", "Cast Skill", "Increase DMG", "Mana Gain"]}, {"id": "F30002_004", "name": "Resilience Rune", "step": "A", "weight": 50, "material": "Manacrystal", "materialEffect": "Charge", "element": "World", "areaType": "Mounts", "area": "Forsaken Mines", "type": ["Attribute", "Special"], "effect": "Tough +6.", "score": 30, "tags": ["Toughness", "Cast Skill", "Increase DMG", "Mana Gain"]}, {"id": "F20001_004", "name": "SPD Rune", "step": "B", "weight": 500, "material": "Manacrystal", "materialEffect": "Charge", "element": "World", "areaType": "Mounts", "area": "Forsaken Mines", "type": ["Attribute", "Special"], "effect": "SPD +4.", "score": 25, "tags": ["SPD", "Cast Skill", "Increase DMG", "Mana Gain"]}, {"id": "F20002_004", "name": "HP Rune", "step": "B", "weight": 500, "material": "Manacrystal", "materialEffect": "Charge", "element": "World", "areaType": "Mounts", "area": "Forsaken Mines", "type": ["Attribute", "Special"], "effect": "HP +4.", "score": 25, "tags": ["HP", "Cast Skill", "Increase DMG", "Mana Gain"]}, {"id": "F10001_004", "name": "ATK Rune", "step": "C", "weight": 5000, "material": "Manacrystal", "materialEffect": "Charge", "element": "World", "areaType": "Mounts", "area": "Forsaken Mines", "type": ["Attribute", "Special"], "effect": "Gain 2 ATK.", "score": 20, "tags": ["STR", "SPI", "AGI", "Cast Skill", "Increase DMG", "Mana Gain"]}, {"id": "F10002_004", "name": "DEF Rune", "step": "C", "weight": 5000, "material": "Manacrystal", "materialEffect": "Charge", "element": "World", "areaType": "Mounts", "area": "Forsaken Mines", "type": ["Attribute", "Special"], "effect": "Gain 2 DEF.", "score": 20, "tags": ["STR", "SPI", "AGI", "Cast Skill", "Increase DMG", "Mana Gain"]}, {"id": "F40001_009", "name": "Ruin Rune", "step": "S", "weight": 5, "material": "Cogwheel", "materialEffect": "Combo", "element": "World", "areaType": "Mounts", "area": "The Deep Hollows", "type": ["Attribute", "Special"], "effect": "Deal 2 more total DMG.", "score": 40, "tags": ["Attacking", "Increase DMG", "Normal Attack", "Buffs", "Increase Stacks"]}, {"id": "F40002_009", "name": "Eternal Rune", "step": "S", "weight": 5, "material": "Cogwheel", "materialEffect": "Combo", "element": "World", "areaType": "Mounts", "area": "The Deep Hollows", "type": ["Attribute", "Special"], "effect": "Take 2 less total DMG.", "score": 40, "tags": ["Take Hit", "Reduce DMG Taken", "Normal Attack", "Increase DMG", "Buffs", "Increase Stacks"]}, {"id": "F40003_009", "name": "Nature Rune", "step": "S", "weight": 5, "material": "Cogwheel", "materialEffect": "Combo", "element": "World", "areaType": "Mounts", "area": "The Deep Hollows", "type": ["Attribute", "Special"], "effect": "+2 more total HP restored to targets.", "score": 40, "tags": ["Healing", "HP Granted", "Normal Attack", "Increase DMG", "Buffs", "Increase Stacks"]}, {"id": "F20003_009", "name": "Luck Rune", "step": "S", "weight": 5, "material": "Cogwheel", "materialEffect": "Combo", "element": "World", "areaType": "Mounts", "area": "The Deep Hollows", "type": ["Attribute", "Special"], "effect": "LUK +4.", "score": 40, "tags": ["Luck", "Normal Attack", "Increase DMG", "Buffs", "Increase Stacks"]}, {"id": "F30001_009", "name": "Mana Rune", "step": "A", "weight": 50, "material": "Cogwheel", "materialEffect": "Combo", "element": "World", "areaType": "Mounts", "area": "The Deep Hollows", "type": ["Attribute", "Special"], "effect": "Init Mana +2.", "score": 30, "tags": ["Starting Mana", "Normal Attack", "Increase DMG", "Buffs", "Increase Stacks"]}, {"id": "F30002_009", "name": "Resilience Rune", "step": "A", "weight": 50, "material": "Cogwheel", "materialEffect": "Combo", "element": "World", "areaType": "Mounts", "area": "The Deep Hollows", "type": ["Attribute", "Special"], "effect": "Tough +6.", "score": 30, "tags": ["Toughness", "Normal Attack", "Increase DMG", "Buffs", "Increase Stacks"]}, {"id": "F20001_009", "name": "SPD Rune", "step": "B", "weight": 500, "material": "Cogwheel", "materialEffect": "Combo", "element": "World", "areaType": "Mounts", "area": "The Deep Hollows", "type": ["Attribute", "Special"], "effect": "SPD +4.", "score": 25, "tags": ["SPD", "Normal Attack", "Increase DMG", "Buffs", "Increase Stacks"]}, {"id": "F20002_009", "name": "HP Rune", "step": "B", "weight": 500, "material": "Cogwheel", "materialEffect": "Combo", "element": "World", "areaType": "Mounts", "area": "The Deep Hollows", "type": ["Attribute", "Special"], "effect": "HP +4.", "score": 25, "tags": ["HP", "Normal Attack", "Increase DMG", "Buffs", "Increase Stacks"]}, {"id": "F10001_009", "name": "ATK Rune", "step": "C", "weight": 5000, "material": "Cogwheel", "materialEffect": "Combo", "element": "World", "areaType": "Mounts", "area": "The Deep Hollows", "type": ["Attribute", "Special"], "effect": "Gain 2 ATK.", "score": 20, "tags": ["STR", "SPI", "AGI", "Normal Attack", "Increase DMG", "Buffs", "Increase Stacks"]}, {"id": "F10002_009", "name": "DEF Rune", "step": "C", "weight": 5000, "material": "Cogwheel", "materialEffect": "Combo", "element": "World", "areaType": "Mounts", "area": "The Deep Hollows", "type": ["Attribute", "Special"], "effect": "Gain 2 DEF.", "score": 20, "tags": ["STR", "SPI", "AGI", "Normal Attack", "Increase DMG", "Buffs", "Increase Stacks"]}, {"id": "F40001_002", "name": "Ruin Rune", "step": "S", "weight": 5, "material": "Mithril", "materialEffect": "Spell Break", "element": "World", "areaType": "Ocean", "area": "The Sunken Sea", "type": ["Attribute", "Special"], "effect": "Deal 2 more total DMG.", "score": 40, "tags": ["Attacking", "Increase DMG", "Take Skill", "Reduce DMG Taken", "Debuffs", "Reduce Stacks"]}, {"id": "F40002_002", "name": "Eternal Rune", "step": "S", "weight": 5, "material": "Mithril", "materialEffect": "Spell Break", "element": "World", "areaType": "Ocean", "area": "The Sunken Sea", "type": ["Attribute", "Special"], "effect": "Take 2 less total DMG.", "score": 40, "tags": ["Take Hit", "Reduce DMG Taken", "Take Skill", "Debuffs", "Reduce Stacks"]}, {"id": "F40003_002", "name": "Nature Rune", "step": "S", "weight": 5, "material": "Mithril", "materialEffect": "Spell Break", "element": "World", "areaType": "Ocean", "area": "The Sunken Sea", "type": ["Attribute", "Special"], "effect": "+2 more total HP restored to targets.", "score": 40, "tags": ["Healing", "HP Granted", "Take Skill", "Reduce DMG Taken", "Debuffs", "Reduce Stacks"]}, {"id": "F20003_002", "name": "Luck Rune", "step": "S", "weight": 5, "material": "Mithril", "materialEffect": "Spell Break", "element": "World", "areaType": "Ocean", "area": "The Sunken Sea", "type": ["Attribute", "Special"], "effect": "LUK +4.", "score": 25, "tags": ["Luck", "Take Skill", "Reduce DMG Taken", "Debuffs", "Reduce Stacks"]}, {"id": "F30001_002", "name": "Mana Rune", "step": "A", "weight": 50, "material": "Mithril", "materialEffect": "Spell Break", "element": "World", "areaType": "Ocean", "area": "The Sunken Sea", "type": ["Attribute", "Special"], "effect": "Init Mana +2.", "score": 30, "tags": ["Starting Mana", "Take Skill", "Reduce DMG Taken", "Debuffs", "Reduce Stacks"]}, {"id": "F30002_002", "name": "Resilience Rune", "step": "A", "weight": 50, "material": "Mithril", "materialEffect": "Spell Break", "element": "World", "areaType": "Ocean", "area": "The Sunken Sea", "type": ["Attribute", "Special"], "effect": "Tough +6.", "score": 30, "tags": ["Toughness", "Take Skill", "Reduce DMG Taken", "Debuffs", "Reduce Stacks"]}, {"id": "F20001_002", "name": "SPD Rune", "step": "B", "weight": 500, "material": "Mithril", "materialEffect": "Spell Break", "element": "World", "areaType": "Ocean", "area": "The Sunken Sea", "type": ["Attribute", "Special"], "effect": "SPD +4.", "score": 25, "tags": ["SPD", "Take Skill", "Reduce DMG Taken", "Debuffs", "Reduce Stacks"]}, {"id": "F20002_002", "name": "HP Rune", "step": "B", "weight": 500, "material": "Mithril", "materialEffect": "Spell Break", "element": "World", "areaType": "Ocean", "area": "The Sunken Sea", "type": ["Attribute", "Special"], "effect": "HP +4.", "score": 25, "tags": ["HP", "Take Skill", "Reduce DMG Taken", "Debuffs", "Reduce Stacks"]}, {"id": "F10001_002", "name": "ATK Rune", "step": "C", "weight": 5000, "material": "Mithril", "materialEffect": "Spell Break", "element": "World", "areaType": "Ocean", "area": "The Sunken Sea", "type": ["Attribute", "Special"], "effect": "Gain 2 ATK.", "score": 20, "tags": ["STR", "SPI", "AGI", "Take Skill", "Reduce DMG Taken", "Debuffs", "Reduce Stacks"]}, {"id": "F10002_002", "name": "DEF Rune", "step": "C", "weight": 5000, "material": "Mithril", "materialEffect": "Spell Break", "element": "World", "areaType": "Ocean", "area": "The Sunken Sea", "type": ["Attribute", "Special"], "effect": "Gain 2 DEF.", "score": 20, "tags": ["STR", "SPI", "AGI", "Take Skill", "Reduce DMG Taken", "Debuffs", "Reduce Stacks"]}, {"id": "F40001_007", "name": "Ruin Rune", "step": "S", "weight": 5, "material": "Frostgem", "materialEffect": "Frostward", "element": "World", "areaType": "Tundra", "area": "Frostbound Tundra", "type": ["Attribute", "Events", "Special"], "effect": "Deal 2 more total DMG.", "score": 40, "tags": ["Attacking", "Increase DMG", "Chill", "Increase Stacks", "Reduce Stacks"]}, {"id": "F40002_007", "name": "Eternal Rune", "step": "S", "weight": 5, "material": "Frostgem", "materialEffect": "Frostward", "element": "World", "areaType": "Tundra", "area": "Frostbound Tundra", "type": ["Attribute", "Events", "Special"], "effect": "Take 2 less total DMG.", "score": 40, "tags": ["Take Hit", "Reduce DMG Taken", "Chill", "Increase Stacks", "Reduce Stacks"]}, {"id": "F40003_007", "name": "Nature Rune", "step": "S", "weight": 5, "material": "Frostgem", "materialEffect": "Frostward", "element": "World", "areaType": "Tundra", "area": "Frostbound Tundra", "type": ["Attribute", "Events", "Special"], "effect": "+2 more total HP restored to targets.", "score": 40, "tags": ["Healing", "HP Granted", "Chill", "Increase Stacks", "Reduce Stacks"]}, {"id": "F20003_007", "name": "Luck Rune", "step": "S", "weight": 5, "material": "Frostgem", "materialEffect": "Frostward", "element": "World", "areaType": "Tundra", "area": "Frostbound Tundra", "type": ["Attribute", "Events", "Special"], "effect": "LUK +4.", "score": 40, "tags": ["Luck", "Chill", "Increase Stacks", "Reduce Stacks"]}, {"id": "F30001_007", "name": "Mana Rune", "step": "A", "weight": 50, "material": "Frostgem", "materialEffect": "Frostward", "element": "World", "areaType": "Tundra", "area": "Frostbound Tundra", "type": ["Attribute", "Events", "Special"], "effect": "Init Mana +2.", "score": 30, "tags": ["Starting Mana", "Chill", "Increase Stacks", "Reduce Stacks"]}, {"id": "F30002_007", "name": "Resilience Rune", "step": "A", "weight": 50, "material": "Frostgem", "materialEffect": "Frostward", "element": "World", "areaType": "Tundra", "area": "Frostbound Tundra", "type": ["Attribute", "Events", "Special"], "effect": "Tough +6.", "score": 30, "tags": ["Toughness", "Chill", "Increase Stacks", "Reduce Stacks"]}, {"id": "F20001_007", "name": "SPD Rune", "step": "B", "weight": 500, "material": "Frostgem", "materialEffect": "Frostward", "element": "World", "areaType": "Tundra", "area": "Frostbound Tundra", "type": ["Attribute", "Events", "Special"], "effect": "SPD +4.", "score": 25, "tags": ["SPD", "Chill", "Increase Stacks", "Reduce Stacks"]}, {"id": "F20002_007", "name": "HP Rune", "step": "B", "weight": 500, "material": "Frostgem", "materialEffect": "Frostward", "element": "World", "areaType": "Tundra", "area": "Frostbound Tundra", "type": ["Attribute", "Events", "Special"], "effect": "HP +4.", "score": 25, "tags": ["HP", "Chill", "Increase Stacks", "Reduce Stacks"]}, {"id": "F10001_007", "name": "ATK Rune", "step": "C", "weight": 5000, "material": "Frostgem", "materialEffect": "Frostward", "element": "World", "areaType": "Tundra", "area": "Frostbound Tundra", "type": ["Attribute", "Events", "Special"], "effect": "Gain 2 ATK.", "score": 20, "tags": ["STR", "SPI", "AGI", "Chill", "Increase Stacks", "Reduce Stacks"]}, {"id": "F10002_007", "name": "DEF Rune", "step": "C", "weight": 5000, "material": "Frostgem", "materialEffect": "Frostward", "element": "World", "areaType": "Tundra", "area": "Frostbound Tundra", "type": ["Attribute", "Events", "Special"], "effect": "Gain 2 DEF.", "score": 20, "tags": ["STR", "SPI", "AGI", "Chill", "Increase Stacks", "Reduce Stacks"]}, {"id": "F40001_010", "name": "Ruin Rune", "step": "S", "weight": 5, "material": "Seashell", "materialEffect": "Nourish", "element": "World", "areaType": "Beach", "area": "Breezy Shores", "type": ["Attribute", "Special"], "effect": "Deal 2 more total DMG.", "score": 40, "tags": ["Attacking", "Increase DMG", "HP Restored", "Soothe", "Increase Stacks"]}, {"id": "F40002_010", "name": "Eternal Rune", "step": "S", "weight": 5, "material": "Seashell", "materialEffect": "Nourish", "element": "World", "areaType": "Beach", "area": "Breezy Shores", "type": ["Attribute", "Special"], "effect": "Take 2 less total DMG.", "score": 40, "tags": ["Take Hit", "Reduce DMG Taken", "HP Restored", "Soothe", "Increase Stacks"]}, {"id": "F40003_010", "name": "Nature Rune", "step": "S", "weight": 5, "material": "Seashell", "materialEffect": "Nourish", "element": "World", "areaType": "Beach", "area": "Breezy Shores", "type": ["Attribute", "Special"], "effect": "+2 more total HP restored to targets.", "score": 40, "tags": ["Healing", "HP Granted", "HP Restored", "Soothe", "Increase Stacks"]}, {"id": "F20003_010", "name": "Luck Rune", "step": "S", "weight": 5, "material": "Seashell", "materialEffect": "Nourish", "element": "World", "areaType": "Beach", "area": "Breezy Shores", "type": ["Attribute", "Special"], "effect": "LUK +4.", "score": 40, "tags": ["Luck", "HP Restored", "Soothe", "Increase Stacks"]}, {"id": "F30001_010", "name": "Mana Rune", "step": "A", "weight": 50, "material": "Seashell", "materialEffect": "Nourish", "element": "World", "areaType": "Beach", "area": "Breezy Shores", "type": ["Attribute", "Special"], "effect": "Init Mana +2.", "score": 30, "tags": ["Starting Mana", "HP Restored", "Soothe", "Increase Stacks"]}, {"id": "F30002_010", "name": "Resilience Rune", "step": "A", "weight": 50, "material": "Seashell", "materialEffect": "Nourish", "element": "World", "areaType": "Beach", "area": "Breezy Shores", "type": ["Attribute", "Special"], "effect": "Tough +6.", "score": 30, "tags": ["Toughness", "HP Restored", "Soothe", "Increase Stacks"]}, {"id": "F20001_010", "name": "SPD Rune", "step": "B", "weight": 500, "material": "Seashell", "materialEffect": "Nourish", "element": "World", "areaType": "Beach", "area": "Breezy Shores", "type": ["Attribute", "Special"], "effect": "SPD +4.", "score": 25, "tags": ["SPD", "HP Restored", "Soothe", "Increase Stacks"]}, {"id": "F20002_010", "name": "HP Rune", "step": "B", "weight": 500, "material": "Seashell", "materialEffect": "Nourish", "element": "World", "areaType": "Beach", "area": "Breezy Shores", "type": ["Attribute", "Special"], "effect": "HP +4.", "score": 25, "tags": ["HP", "HP Restored", "Soothe", "Increase Stacks"]}, {"id": "F10001_010", "name": "ATK Rune", "step": "C", "weight": 5000, "material": "Seashell", "materialEffect": "Nourish", "element": "World", "areaType": "Beach", "area": "Breezy Shores", "type": ["Attribute", "Special"], "effect": "Gain 2 ATK.", "score": 20, "tags": ["STR", "SPI", "AGI", "HP Restored", "Soothe", "Increase Stacks"]}, {"id": "F10002_010", "name": "DEF Rune", "step": "C", "weight": 5000, "material": "Seashell", "materialEffect": "Nourish", "element": "World", "areaType": "Beach", "area": "Breezy Shores", "type": ["Attribute", "Special"], "effect": "Gain 2 DEF.", "score": 20, "tags": ["STR", "SPI", "AGI", "HP Restored", "Soothe", "Increase Stacks"]}, {"id": "F40001_012", "name": "Ruin Rune", "step": "S", "weight": 5, "material": "Sacred", "materialEffect": "Purity", "element": "World", "areaType": "Desert", "area": "Ashland Wastes", "type": ["Attribute", "Special"], "effect": "Deal 2 more total DMG.", "score": 40, "tags": ["Attacking", "Increase DMG", "Cleanse", "Increase Stacks"]}, {"id": "F40002_012", "name": "Eternal Rune", "step": "S", "weight": 5, "material": "Sacred", "materialEffect": "Purity", "element": "World", "areaType": "Desert", "area": "Ashland Wastes", "type": ["Attribute", "Special"], "effect": "Take 2 less total DMG.", "score": 40, "tags": ["Take Hit", "Reduce DMG Taken", "Cleanse", "Increase Stacks"]}, {"id": "F40003_012", "name": "Nature Rune", "step": "S", "weight": 5, "material": "Sacred", "materialEffect": "Purity", "element": "World", "areaType": "Desert", "area": "Ashland Wastes", "type": ["Attribute", "Special"], "effect": "+2 more total HP restored to targets.", "score": 40, "tags": ["Healing", "HP Granted", "Cleanse", "Increase Stacks"]}, {"id": "F20003_012", "name": "Luck Rune", "step": "S", "weight": 5, "material": "Sacred", "materialEffect": "Purity", "element": "World", "areaType": "Desert", "area": "Ashland Wastes", "type": ["Attribute", "Special"], "effect": "LUK +4.", "score": 40, "tags": ["Luck", "Cleanse", "Increase Stacks"]}, {"id": "F30001_012", "name": "Mana Rune", "step": "A", "weight": 50, "material": "Sacred", "materialEffect": "Purity", "element": "World", "areaType": "Desert", "area": "Ashland Wastes", "type": ["Attribute", "Special"], "effect": "Init Mana +2.", "score": 30, "tags": ["Starting Mana", "Cleanse", "Increase Stacks"]}, {"id": "F30002_012", "name": "Resilience Rune", "step": "A", "weight": 50, "material": "Sacred", "materialEffect": "Purity", "element": "World", "areaType": "Desert", "area": "Ashland Wastes", "type": ["Attribute", "Special"], "effect": "Tough +6.", "score": 30, "tags": ["Toughness", "Cleanse", "Increase Stacks"]}, {"id": "F20001_012", "name": "SPD Rune", "step": "B", "weight": 500, "material": "Sacred", "materialEffect": "Purity", "element": "World", "areaType": "Desert", "area": "Ashland Wastes", "type": ["Attribute", "Special"], "effect": "SPD +4.", "score": 25, "tags": ["SPD", "Cleanse", "Increase Stacks"]}, {"id": "F20002_012", "name": "HP Rune", "step": "B", "weight": 500, "material": "Sacred", "materialEffect": "Purity", "element": "World", "areaType": "Desert", "area": "Ashland Wastes", "type": ["Attribute", "Special"], "effect": "HP +4.", "score": 25, "tags": ["HP", "Cleanse", "Increase Stacks"]}, {"id": "F10001_012", "name": "ATK Rune", "step": "C", "weight": 5000, "material": "Sacred", "materialEffect": "Purity", "element": "World", "areaType": "Desert", "area": "Ashland Wastes", "type": ["Attribute", "Special"], "effect": "Gain 2 ATK.", "score": 20, "tags": ["STR", "SPI", "AGI", "Cleanse", "Increase Stacks"]}, {"id": "F10002_012", "name": "DEF Rune", "step": "C", "weight": 5000, "material": "Sacred", "materialEffect": "Purity", "element": "World", "areaType": "Desert", "area": "Ashland Wastes", "type": ["Attribute", "Special"], "effect": "Gain 2 DEF.", "score": 20, "tags": ["STR", "SPI", "AGI", "Cleanse", "Increase Stacks"]}];
+const MATERIALS = [{"name": "Copper", "effect": "Amplify", "r1": "Base effect increased by 100%.", "r2": "Base effect increased by 100%.", "r3": "Base effect +200%.", "total": 11}, {"name": "Mithril", "effect": "Spell Break", "r1": "Take 1 less skill DMG.", "r2": "Base effect increased by 100%.", "r3": "Take 1 fewer stacks of debuffs.", "total": 10}, {"name": "Adamant", "effect": "Solidness", "r1": "Take 1 less basic DMG.", "r2": "Base effect increased by 100%.", "r3": "Lose 2 less HP.", "total": 10}, {"name": "Manacrystal", "effect": "Charge", "r1": "Deal 1 more skill DMG.", "r2": "Base effect increased by 100%.", "r3": "Gain 1 Mana after casting skill.", "total": 11}, {"name": "Bloodstone", "effect": "Vengeance", "r1": "Deal 1 more Counter DMG.", "r2": "Base effect increased by 100%.", "r3": "Gain 1 HP after taking a hit.", "total": 10}, {"name": "Maplewood", "effect": "Agile", "r1": "Deal 1 more Follow-Up DMG.", "r2": "Base effect increased by 100%.", "r3": "Gain 2 stacks of Precision at action end.", "total": 10}, {"name": "Frostgem", "effect": "Frostward", "r1": "Take 1 fewer stacks of Chill.", "r2": "Base effect increased by 100%.", "r3": "Apply 1 more stacks of Chill.", "total": 10}, {"name": "Dragonbone", "effect": "Deter", "r1": "Deal 1 more total DMG to targets with Weakness exposed.", "r2": "Base effect increased by 100%.", "r3": "All enemies lose 5 Toughness at battle start.", "total": 11}, {"name": "Cogwheel", "effect": "Combo", "r1": "Deal 1 more basic DMG.", "r2": "Base effect increased by 100%.", "r3": "Gain 1 more stack of buffs.", "total": 10}, {"name": "Seashell", "effect": "Nourish", "r1": "Gain 1 stack of Soothe after HP is restored.", "r2": "Base effect increased by 100%.", "r3": "Gain 2 more stacks of Soothe.", "total": 10}, {"name": "Totem", "effect": "Primal", "r1": "Gain 1 stack of Bloodlust after attacking.", "r2": "Base effect increased by 100%.", "r3": "Gain 2 more stacks of Bloodlust.", "total": 11}, {"name": "Sacred", "effect": "Purity", "r1": "Take 1 less total DMG when having no debuffs.", "r2": "Base effect increased by 100%.", "r3": "Apply 1 more stack of Cleanse.", "total": 10}];
+const ALL_TAGS = ["Action End", "AGI", "Ally Count", "Attacking", "Battle Start", "Bloodlust", "Buffs", "Cast Skill", "Chill", "Cleanse", "Countering", "Debuffs", "Enemy Exposed", "Follow-Up", "Healing", "Hit Mana", "HP", "HP Gain", "HP Granted", "HP Loss Resist", "HP Restored", "Increase DMG", "Increase Stacks", "Luck", "Mana Gain", "Max Mana", "Normal Attack", "Precision", "Reduce DMG Taken", "Reduce Stacks", "Soothe", "SPD", "SPI", "Starting Mana", "STR", "Take Basic Attack", "Take Counter", "Take Hit", "Take Skill", "Toughness", "Toughness Loss"];
+
+// Step → in-game rune dialog label. Mirrors visualise-session/runes/filter-
+// values.md (game uses "Normal" on rune dialog vs "Common" on gear).
+const RARITY_LABEL = {S: "Legendary", A: "Epic", B: "Rare", C: "Normal"};
+const RARITY_ORDER = ["S", "A", "B", "C"];
+const STEP_BADGE_CLASS = {S: "t-step-S", A: "t-step-A", B: "t-step-B", C: "t-step-C"};
+
+const FILTERS = {
+  Rarity: new Set(),    // values: "S","A","B","C"
+  Material: new Set(),  // values: "Copper","Mithril",...
+  Tags: new Set(),      // values: tag strings from FilterTags_EN
+};
+
+function buildPills() {
+  const rar = document.getElementById("pills-Rarity");
+  const mat = document.getElementById("pills-Material");
+  const tag = document.getElementById("pills-Tags");
+  rar.innerHTML = ""; mat.innerHTML = ""; tag.innerHTML = "";
+  RARITY_ORDER.forEach(s => {
+    const b = document.createElement("button");
+    b.className = "pill"; b.textContent = RARITY_LABEL[s]; b.dataset.tab = "Rarity"; b.dataset.val = s;
+    b.onclick = () => togglePill("Rarity", s, b);
+    rar.appendChild(b);
+  });
+  MATERIALS.forEach(m => {
+    const b = document.createElement("button");
+    b.className = "pill"; b.textContent = m.name + " · " + m.effect; b.dataset.tab = "Material"; b.dataset.val = m.name;
+    b.title = "R1: " + m.r1 + "  R2: " + m.r2 + "  R3: " + m.r3;
+    b.onclick = () => togglePill("Material", m.name, b);
+    mat.appendChild(b);
+  });
+  ALL_TAGS.forEach(t => {
+    const b = document.createElement("button");
+    b.className = "pill"; b.textContent = t; b.dataset.tab = "Tags"; b.dataset.val = t;
+    b.onclick = () => togglePill("Tags", t, b);
+    tag.appendChild(b);
+  });
+}
+
+function togglePill(tab, val, btn) {
+  if (FILTERS[tab].has(val)) { FILTERS[tab].delete(val); btn.classList.remove("on"); }
+  else { FILTERS[tab].add(val); btn.classList.add("on"); }
+  refreshCounts();
+  render();
+}
+
+function refreshCounts() {
+  ["Rarity","Material","Tags"].forEach(tab => {
+    const el = document.querySelector('[data-count="' + tab + '"]');
+    if (!el) return;
+    const n = FILTERS[tab].size;
+    el.textContent = String(n);
+    el.classList.toggle("has-picks", n > 0);
+  });
+}
+
+function applyFilter(rune, tagsQList) {
+  if (FILTERS.Rarity.size && !FILTERS.Rarity.has(rune.step)) return false;
+  if (FILTERS.Material.size && !FILTERS.Material.has(rune.material)) return false;
+  // Tags: pills (when no text query) → at least one tag pill must be on the rune.
+  if (!tagsQList.length && FILTERS.Tags.size) {
+    let any = false;
+    for (const t of rune.tags) { if (FILTERS.Tags.has(t)) { any = true; break; } }
+    if (!any) return false;
+  }
+  // Tags text query: ALL queried tags must be present (substring match against
+  // the rune's tag list).
+  if (tagsQList.length) {
+    const lower = rune.tags.map(t => t.toLowerCase());
+    for (const q of tagsQList) {
+      const match = lower.some(t => t.includes(q));
+      if (!match) return false;
+    }
+  }
+  return true;
+}
+
+function render() {
+  const tbody = document.getElementById("tbody");
+  const meta = document.getElementById("meta");
+  const empty = document.getElementById("emptyMsg");
+  const nameQ = (document.getElementById("nameQ").value || "").trim().toLowerCase();
+  const effQ  = (document.getElementById("effQ").value  || "").trim().toLowerCase();
+  const tagsQRaw = (document.getElementById("tagsQ").value || "").trim().toLowerCase();
+  const tagsQList = tagsQRaw ? tagsQRaw.split(",").map(s => s.trim()).filter(Boolean) : [];
+
+  // Suspend the Tags pills tab when the Tags text field has content.
+  const tagsCol = document.querySelector('.rune-filter-col[data-tab="Tags"]');
+  if (tagsCol) tagsCol.classList.toggle("tab-disabled", tagsQList.length > 0);
+
+  let rows = RUNES.filter(r => applyFilter(r, tagsQList));
+  if (nameQ) rows = rows.filter(r => (r.name || "").toLowerCase().includes(nameQ));
+  if (effQ)  rows = rows.filter(r => (r.effect || "").toLowerCase().includes(effQ));
+
+  // Sort: Step (S→C), then Material (in-game order), then Name asc.
+  const matIdx = {};
+  MATERIALS.forEach((m, i) => { matIdx[m.name] = i; });
+  const stepIdx = {S:0, A:1, B:2, C:3};
+  rows.sort((a, b) => {
+    const sa = stepIdx[a.step] ?? 9, sb = stepIdx[b.step] ?? 9;
+    if (sa !== sb) return sa - sb;
+    const ma = matIdx[a.material] ?? 99, mb = matIdx[b.material] ?? 99;
+    if (ma !== mb) return ma - mb;
+    return (a.name || "").localeCompare(b.name || "");
+  });
+
+  if (!rows.length) {
+    tbody.innerHTML = ""; empty.style.display = ""; meta.textContent = "0 of " + RUNES.length;
+    return;
+  }
+  empty.style.display = "none";
+  meta.textContent = rows.length + " of " + RUNES.length;
+
+  const html = rows.map(r => {
+    const stepLabel = RARITY_LABEL[r.step] || r.step;
+    const stepCls = STEP_BADGE_CLASS[r.step] || "";
+    const tagsHtml = (r.tags || []).map(t => '<span class="tag-chip">' + escapeHtml(t) + '</span>').join("");
+    const matEffect = r.materialEffect ? '<span class="mat-effect">' + escapeHtml(r.materialEffect) + '</span>' : "";
+    const matHtml = r.material
+      ? '<span class="rune-mat"><span class="mat-name">' + escapeHtml(r.material) + '</span>' + matEffect + '</span>'
+      : "";
+    const areaHtml = r.area
+      ? '<span class="area-type">' + escapeHtml(r.areaType || "") + '</span>' + escapeHtml(r.area)
+      : "";
+    return '<tr>' +
+      '<td class="col-step"><span class="badge ' + stepCls + '">' + escapeHtml(stepLabel) + '</span></td>' +
+      '<td class="col-name">' + escapeHtml(r.name || "") + '<br><span class="col-rune-id">' + escapeHtml(r.id) + '</span></td>' +
+      '<td class="rune-effect">' + escapeHtml(r.effect || "") + '</td>' +
+      '<td>' + matHtml + '</td>' +
+      '<td><div class="rune-tags">' + tagsHtml + '</div></td>' +
+      '<td class="rune-area">' + areaHtml + '</td>' +
+      '</tr>';
+  }).join("");
+  tbody.innerHTML = html;
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+// Collapse-on-click for filter tabs.
+document.querySelectorAll(".rune-filter-col h3").forEach(h => {
+  h.onclick = (ev) => {
+    if (ev.target.closest(".pill")) return;  // shouldn't reach here, but defensive
+    h.parentElement.classList.toggle("collapsed");
+  };
+});
+
+// Wire up text inputs.
+["nameQ", "effQ", "tagsQ"].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener("input", render);
+});
+
+document.getElementById("clearBtn").onclick = () => {
+  ["Rarity","Material","Tags"].forEach(tab => FILTERS[tab].clear());
+  document.querySelectorAll(".pill.on").forEach(b => b.classList.remove("on"));
+  ["nameQ","effQ","tagsQ"].forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
+  closeTagAutocomplete();
+  refreshCounts();
+  render();
+};
+
+// Tag autocomplete (mirrors search-gear).
+let acIndex = -1;
+function closeTagAutocomplete() {
+  const ac = document.getElementById("tagsAuto");
+  ac.classList.remove("open"); ac.innerHTML = ""; acIndex = -1;
+}
+function refreshTagAutocomplete() {
+  const inp = document.getElementById("tagsQ");
+  const ac = document.getElementById("tagsAuto");
+  const raw = (inp.value || "").toLowerCase();
+  // Find the token under the cursor (last comma-separated chunk).
+  const lastChunk = raw.split(",").pop().trim();
+  if (!lastChunk) { closeTagAutocomplete(); return; }
+  const matches = ALL_TAGS
+    .filter(t => t.toLowerCase().includes(lastChunk) && !raw.split(",").map(s=>s.trim()).slice(0,-1).includes(t.toLowerCase()))
+    .slice(0, 12);
+  if (!matches.length) {
+    ac.innerHTML = '<div class="ac-empty">No tag matches.</div>';
+    ac.classList.add("open"); acIndex = -1; return;
+  }
+  ac.innerHTML = matches.map((t, i) =>
+    '<button class="ac-item' + (i === 0 ? " active" : "") + '" data-tag="' + escapeHtml(t) + '">' + escapeHtml(t) + '</button>'
+  ).join("");
+  ac.classList.add("open"); acIndex = 0;
+}
+function selectTag(tag) {
+  const inp = document.getElementById("tagsQ");
+  const parts = (inp.value || "").split(",").map(s => s.trim());
+  parts[parts.length - 1] = tag;
+  inp.value = parts.filter(Boolean).join(", ") + ", ";
+  closeTagAutocomplete();
+  inp.focus();
+  render();
+}
+const tagsInp = document.getElementById("tagsQ");
+const tagsAuto = document.getElementById("tagsAuto");
+tagsInp.addEventListener("input", refreshTagAutocomplete);
+tagsInp.addEventListener("keydown", (ev) => {
+  const items = tagsAuto.querySelectorAll(".ac-item");
+  if (!items.length) return;
+  if (ev.key === "ArrowDown") { ev.preventDefault(); acIndex = (acIndex + 1) % items.length; }
+  else if (ev.key === "ArrowUp") { ev.preventDefault(); acIndex = (acIndex - 1 + items.length) % items.length; }
+  else if (ev.key === "Enter") { ev.preventDefault(); if (acIndex >= 0) selectTag(items[acIndex].dataset.tag); return; }
+  else if (ev.key === "Escape") { closeTagAutocomplete(); return; }
+  else { return; }
+  items.forEach((it, i) => it.classList.toggle("active", i === acIndex));
+});
+tagsInp.onblur = () => { setTimeout(closeTagAutocomplete, 150); };
+tagsAuto.onclick = (ev) => {
+  const btn = ev.target.closest(".ac-item");
+  if (!btn) return;
+  selectTag(btn.dataset.tag);
+};
+
+buildPills();
+render();
+</script>
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.0.0.9 · search-runes.html</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>
