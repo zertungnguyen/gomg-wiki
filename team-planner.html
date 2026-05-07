@@ -259,6 +259,10 @@ button.ghost{padding:5px 10px;font-size:10px;background:transparent}
 .activities-block .ae-row .ae-cond{color:var(--dim);font-size:10px;font-style:italic;display:block;margin-top:1px}
 .activities-block .ae-row a.kw{color:#9bbcff;text-decoration:none;border-bottom:1px dashed #9bbcff66}
 .activities-block .ae-row a.kw:hover{color:#bdd1ff;border-bottom-color:#bdd1ff}
+/* Counter stat rows — single-column (no effect#) layout */
+.activities-block .ae-row.ac-stat-row{grid-template-columns:1fr}
+.activities-block .ae-row.ac-stat-row .ac-stat-label{color:var(--dim);font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;margin-right:6px}
+.activities-block .ae-row.ac-total-row{margin-top:4px;padding-top:5px;border-top:1px dashed var(--border)}
 /* Insight modifier breakdown shown inline as `base+delta=total` */
 .activities-block .ae-row .ae-base{color:var(--text);font-weight:600}
 .activities-block .ae-row .ae-plus{color:#2ecc71;font-weight:600;margin:0 2px}
@@ -1816,12 +1820,9 @@ function renderCounterActivity(u){
   const eff = document.createElement('div');
   eff.className = 'activities-effects';
 
-  function statRow(num, label, base, total, mod, baseAnnotation){
+  function statRow(label, base, total, mod, baseAnnotation){
     const row = document.createElement('div');
-    row.className = 'ae-row';
-    const numEl = document.createElement('span');
-    numEl.className = 'ae-num';
-    numEl.textContent = num;
+    row.className = 'ae-row ac-stat-row';
     const txt = document.createElement('span');
     txt.className = 'ae-text';
     if(mod && mod.delta){
@@ -1839,8 +1840,6 @@ function renderCounterActivity(u){
     } else {
       txt.innerHTML = `<span class="ac-stat-label">${e(label)}</span> <strong>${base}</strong>` +
         (baseAnnotation ? ` <span class="ae-cond" style="display:inline;color:var(--dim);font-style:italic">${e(baseAnnotation)}</span>` : '');
-      // Show "Insight (off)" tag if the unit has an insight whose kind matches
-      // this stat but it's not toggled on, so player knows they can boost it.
       if(insMod && !insActive && insMod.kind === modKindFor(label)){
         const tag = document.createElement('span');
         tag.className = 'ae-insight-tag off';
@@ -1849,7 +1848,6 @@ function renderCounterActivity(u){
         txt.appendChild(tag);
       }
     }
-    row.appendChild(numEl);
     row.appendChild(txt);
     eff.appendChild(row);
   }
@@ -1861,16 +1859,15 @@ function renderCounterActivity(u){
     return null;
   }
 
-  statRow('2.1', 'Counter Range', baseRange, rangeTotal, rangeMod,
+  statRow('Counter Range', baseRange, rangeTotal, rangeMod,
           (u.cls === 'Warrior') ? '(Warrior +1)' : '');
-  statRow('2.2', 'Counter DMG',   baseDmg,   dmgTotal,   dmgMod, '');
-  statRow('2.3', 'Counters',      baseCount, countTotal, countMod, '');
+  statRow('Counter DMG',   baseDmg,   dmgTotal,   dmgMod, '');
+  statRow('Counters',      baseCount, countTotal, countMod, '');
 
-  // Derived row 2.4 — Total Counter DMG = Counters × Counter DMG.
+  // Derived total row — Total Counter DMG = Counters × Counter DMG.
   const totalRow = document.createElement('div');
-  totalRow.className = 'ae-row';
+  totalRow.className = 'ae-row ac-stat-row ac-total-row';
   totalRow.innerHTML =
-    `<span class="ae-num">2.4</span>` +
     `<span class="ae-text"><span class="ac-stat-label">Total Counter DMG</span> ` +
     `<span class="ac-formula" style="color:var(--dim);font-size:10px">${countTotal} × ${dmgTotal} =</span> ` +
     `<strong class="ae-total">${totalDmg}</strong></span>`;
