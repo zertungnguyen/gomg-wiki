@@ -249,57 +249,43 @@
 <blockquote>
 <p>Higher-level stats = base + level growth + Insight + passive/talent modifiers + gear. Growth formula per <code>BasicAttrDataTable.GrowthType1..10</code> (cycle of 10) — exact application rule TBD pending in-game datapoint verification.</p>
 </blockquote>
-<h2>Skill (Active)</h2>
+<h2>Activities</h2>
 <p><strong>Mushroom Spore</strong> (<code>UniqueDataTable.M14102</code>)</p>
 <table>
 <thead>
 <tr>
-<th>Field</th>
-<th>Value</th>
+<th>#</th>
+<th>Trigger Timing</th>
+<th>Trigger</th>
+<th>Target</th>
+<th>Target Condition</th>
+<th>Effect #</th>
+<th>Effect</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>SkillType</td>
-<td>Support</td>
+<td><strong>#1</strong></td>
+<td>Cast Skill</td>
+<td>Skill — Mushroom Spore</td>
+<td>All Enemies</td>
+<td>—</td>
+<td>1.1</td>
+<td><strong>1 DMG</strong></td>
 </tr>
 <tr>
-<td>TargetType</td>
-<td>Enemy</td>
-</tr>
-<tr>
-<td>Target</td>
-<td>All Targets</td>
-</tr>
-<tr>
-<td>MaxTarget</td>
-<td>3</td>
-</tr>
-<tr>
-<td>Times</td>
-<td>1</td>
-</tr>
-<tr>
-<td>Value</td>
-<td>1</td>
-</tr>
-<tr>
-<td>StatusLayer</td>
-<td>1</td>
-</tr>
-<tr>
-<td>ExtraValue1/2/3</td>
-<td>0 / 0 / 0</td>
-</tr>
-<tr>
-<td>ActionType</td>
-<td>Special Attack</td>
+<td>↑</td>
+<td>↑</td>
+<td>↑</td>
+<td>↑</td>
+<td>↑</td>
+<td>1.2</td>
+<td><strong>+1</strong> <a href="../keywords/debuff-hinder.html">Hinder</a></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Effect:</strong></p>
 <blockquote>
-<p>Rapidly spreads toxic spores. Deals <strong>1</strong> DMG to all enemies and applies <strong>1</strong> <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-hinder.html">Hinder</a>.</p>
+<p><strong>Filled description:</strong> Rapidly spreads toxic spores. Deals 1 DMG to all enemies and applies 1 stacks of Hinder.</p>
 </blockquote>
 <h2>Attack (Normal Attack)</h2>
 <p><strong>Basic Heal</strong> (<code>BD30301</code>) — UnlockStar 1</p>

@@ -249,57 +249,38 @@
 <blockquote>
 <p>Higher-level stats = base + level growth + Insight + passive/talent modifiers + gear. Growth formula per <code>BasicAttrDataTable.GrowthType1..10</code> (cycle of 10) — exact application rule TBD pending in-game datapoint verification.</p>
 </blockquote>
-<h2>Skill (Active)</h2>
+<h2>Activities</h2>
 <p><strong>Breeze Spore</strong> (<code>UniqueDataTable.M14208</code>)</p>
 <table>
 <thead>
 <tr>
-<th>Field</th>
-<th>Value</th>
+<th>#</th>
+<th>Trigger Timing</th>
+<th>Trigger</th>
+<th>Target</th>
+<th>Target Condition</th>
+<th>Effect #</th>
+<th>Effect</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>SkillType</td>
-<td>Support</td>
-</tr>
-<tr>
-<td>TargetType</td>
-<td>Ally</td>
-</tr>
-<tr>
-<td>Target</td>
-<td>All Targets</td>
-</tr>
-<tr>
-<td>MaxTarget</td>
-<td>3</td>
-</tr>
-<tr>
-<td>Times</td>
-<td>2</td>
-</tr>
-<tr>
-<td>Value</td>
-<td>1</td>
-</tr>
-<tr>
-<td>StatusLayer</td>
-<td>0</td>
-</tr>
-<tr>
-<td>ExtraValue1/2/3</td>
-<td>10 / 1 / 0</td>
-</tr>
-<tr>
-<td>ActionType</td>
-<td>HP Restore</td>
+<td><strong>#1</strong></td>
+<td>Cast Skill</td>
+<td>Skill — Breeze Spore</td>
+<td>All Allies</td>
+<td>—</td>
+<td>1.1</td>
+<td><strong>+1 HP</strong></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Effect:</strong></p>
+<p><strong>Additional clauses (riders / modifiers, not atomized by Phase 1 parser):</strong></p>
+<ul>
+<li>For every 10 stacks of Haste the unit has, this heal increases by 1.</li>
+</ul>
 <blockquote>
-<p>Continuously releases spores that restores <strong>1</strong> HP <strong>2</strong> times to all allies. For every <strong>10</strong> <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/buff-haste.html">Haste</a> the unit has, this heal increases by <strong>1</strong>.</p>
+<p><strong>Filled description:</strong> Continuously releases spores that restores 1 HP 2 times to all allies. For every 10 stacks of Haste the unit has, this heal increases by 1.</p>
 </blockquote>
 <h2>Attack (Normal Attack)</h2>
 <p><strong>Basic Heal</strong> (<code>BD30301</code>) — UnlockStar 1</p>

@@ -249,57 +249,38 @@
 <blockquote>
 <p>Higher-level stats = base + level growth + Insight + passive/talent modifiers + gear. Growth formula per <code>BasicAttrDataTable.GrowthType1..10</code> (cycle of 10) — exact application rule TBD pending in-game datapoint verification.</p>
 </blockquote>
-<h2>Skill (Active)</h2>
+<h2>Activities</h2>
 <p><strong>Frozen Cocoon</strong> (<code>UniqueDataTable.M22301</code>)</p>
 <table>
 <thead>
 <tr>
-<th>Field</th>
-<th>Value</th>
+<th>#</th>
+<th>Trigger Timing</th>
+<th>Trigger</th>
+<th>Target</th>
+<th>Target Condition</th>
+<th>Effect #</th>
+<th>Effect</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>SkillType</td>
-<td>Attack</td>
-</tr>
-<tr>
-<td>TargetType</td>
-<td>Enemy</td>
-</tr>
-<tr>
-<td>Target</td>
-<td>[CN: 攻击属性最高目标]</td>
-</tr>
-<tr>
-<td>MaxTarget</td>
-<td>1</td>
-</tr>
-<tr>
-<td>Times</td>
-<td>3</td>
-</tr>
-<tr>
-<td>Value</td>
-<td>4</td>
-</tr>
-<tr>
-<td>StatusLayer</td>
-<td>0</td>
-</tr>
-<tr>
-<td>ExtraValue1/2/3</td>
-<td>5 / 0 / 0</td>
-</tr>
-<tr>
-<td>ActionType</td>
-<td>Special Attack</td>
+<td><strong>#1</strong></td>
+<td>Cast Skill</td>
+<td>Skill — Frozen Cocoon</td>
+<td>1 Enemy</td>
+<td>the enemy with highest ATK</td>
+<td>1.1</td>
+<td><strong>3×4 DMG</strong> (12 total)</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Effect:</strong></p>
+<p><strong>Additional clauses (riders / modifiers, not atomized by Phase 1 parser):</strong></p>
+<ul>
+<li>Each hit causes the target to lose 5 HP and applies Chill equal to HP lost.</li>
+</ul>
 <blockquote>
-<p>Wraps enemies in layers of webs. Targets the enemy with highest <a href="../keywords/stat-atk.html">ATK</a> first. Deals <strong>3</strong> hits of <strong>4</strong> DMG. Each hit causes the target to lose <strong>5</strong> HP and applies <a href="../keywords/debuff-chill.html">Chill</a> equal to HP lost.</p>
+<p><strong>Filled description:</strong> Wraps enemies in layers of webs. Targets the enemy with highest ATK first. Deals 3 hits of 4 DMG. Each hit causes the target to lose 5 HP and applies Chill equal to HP lost.</p>
 </blockquote>
 <h2>Attack (Normal Attack)</h2>
 <p><strong>Normal Attack</strong> (<code>BD30001</code>) — UnlockStar 1</p>

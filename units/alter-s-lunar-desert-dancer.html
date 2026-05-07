@@ -248,57 +248,39 @@
 <blockquote>
 <p>Higher-level stats = base + level growth + Insight + passive/talent modifiers + gear. Growth formula per <code>BasicAttrDataTable.GrowthType1..10</code> (cycle of 10) — exact application rule TBD pending in-game datapoint verification.</p>
 </blockquote>
-<h2>Skill (Active)</h2>
+<h2>Activities</h2>
 <p><strong>Lunar Spin</strong> (<code>UniqueDataTable.M12211_000</code>)</p>
 <table>
 <thead>
 <tr>
-<th>Field</th>
-<th>Value</th>
+<th>#</th>
+<th>Trigger Timing</th>
+<th>Trigger</th>
+<th>Target</th>
+<th>Target Condition</th>
+<th>Effect #</th>
+<th>Effect</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>SkillType</td>
-<td>Attack</td>
-</tr>
-<tr>
-<td>TargetType</td>
-<td>Enemy</td>
-</tr>
-<tr>
-<td>Target</td>
-<td>[CN: 魔力最多目标]</td>
-</tr>
-<tr>
-<td>MaxTarget</td>
-<td>1</td>
-</tr>
-<tr>
-<td>Times</td>
-<td>3</td>
-</tr>
-<tr>
-<td>Value</td>
-<td>4</td>
-</tr>
-<tr>
-<td>StatusLayer</td>
-<td>5</td>
-</tr>
-<tr>
-<td>ExtraValue1/2/3</td>
-<td>10 / 1 / 0</td>
-</tr>
-<tr>
-<td>ActionType</td>
-<td>Special Attack</td>
+<td><strong>#1</strong></td>
+<td>Cast Skill</td>
+<td>Skill — Lunar Spin</td>
+<td>1 Enemy</td>
+<td>—</td>
+<td>1.1</td>
+<td><strong>3×4 DMG</strong> (12 total)</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Effect:</strong></p>
+<p><strong>Additional clauses (riders / modifiers, not atomized by Phase 1 parser):</strong></p>
+<ul>
+<li>Targets the enemy with highest Mana first.</li>
+<li>For every 10 stacks of Nullify applied, increases skill DMG by 1.</li>
+</ul>
 <blockquote>
-<p>Spins moon blades to cut. Targets the enemy with highest Mana first. Deals <strong>3</strong> hits of <strong>4</strong> DMG, applying <strong>5</strong> <a href="../keywords/mechanic-stacks.html">stacks</a> of Nullify per hit. For every <strong>10</strong> <a href="../keywords/mechanic-stacks.html">stacks</a> of Nullify applied, increases skill DMG by <strong>1</strong>.</p>
+<p><strong>Filled description:</strong> Spins moon blades to cut. Targets the enemy with highest Mana first. Deals 3 hits of 4 DMG, applying 5 stacks of Nullify per hit. For every 10 stacks of Nullify applied, increases skill DMG by 1.</p>
 </blockquote>
 <h2>Attack (Normal Attack)</h2>
 <p><strong>Normal Attack</strong> (<code>BD30001</code>) — UnlockStar 1</p>
