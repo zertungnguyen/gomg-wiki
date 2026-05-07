@@ -26,6 +26,17 @@
 <main class="content">
 <h1>News</h1>
 <p><em>Wiki update log — most recent first. Each entry summarizes what changed in the published site.</em></p>
+<h2>2026-05-07 — Team Planner: Activities section (active skill breakdown)</h2>
+<p>Each main slot in <a href="team-planner.html">Team Planner</a> now shows an <strong>Activities</strong> block between the unit's Stats panel and Insight section. For every selected unit, the block surfaces the active skill (the "Cast Skill" trigger event) broken into atomic effects so you can see exactly what the skill does without re-reading the in-game tooltip:</p>
+<ul>
+<li><strong>Skill name</strong> + the <code>Cast Skill</code> trigger pill — same vocabulary as the in-game Codex → Gear → Filter Tab 4 (Timing), so future passive/bond/talent rows can use the matching keyword set.</li>
+<li><strong>Target line</strong> combining target type + condition (e.g. <em>"1 Ally · the ally with highest ATK (excluding self)"</em>).</li>
+<li><strong>Effects list</strong> — each row gets a sub-number (1.1, 1.2, 1.3…) with the atomic effect (<code>+14 HP</code>, <code>+14 Inspire</code>, <code>+1 Extra Action</code>). Status keywords link to the matching keyword page (<code>Inspire</code> → <code>instant-inspire.html</code>, etc.). Conditional effects keep their qualifier (<code>only if the target isn't self</code>).</li>
+<li><strong>Riders / modifiers</strong> — DMG modifiers and conditional flavor that don't atomize cleanly (<em>"For each enemy, deals -1 DMG"</em>, <em>"Deals double DMG to nearest enemy"</em>) shown as bullets so they aren't lost.</li>
+<li><strong>Filled description</strong> — the original tooltip text always preserved at the bottom of the block as fallback / verification.</li>
+</ul>
+<p>Coverage: all 166 standard + alter units have an Activities entry. 90 fully atomized (every effect sentence parsed); 76 partially atomized with riders rendered as bullets. Examples to spot-check: <strong>Legion Commander</strong> (3-effect support), <strong>Stellar Archer</strong> (self-target with 3 effects: heal + Follow-Up + Action Mana cost), <strong>Frostbound Holy Blade</strong> (multi-hit 2×2 DMG with 2 conditional rider clauses).</p>
+<p>Pipeline behind it: data extracted by <code>extract_activities.py</code> (Phase 1, internal), wiki rendered by <code>regenerate_activities_section.py</code> (Phase 2 — same flat-table format on each unit's wiki page), web bundled by <code>build_team_planner_data.py</code> reading <code>activities.json</code> (Phase 3, this update).</p>
 <h2>2026-05-07 — Search · Talents fix (was silently empty)</h2>
 <p>The <a href="search-talent.html">Search · Talents</a> page was rendering "Filter 0 talent groups" with no rows shown — silent regression introduced when the markdown table renderer started padding header cells (<code>| IDs         | Icon    | …</code>). The legacy parser for <code>TalentDataTable.md</code> used a strict <code>line.startswith("| IDs |")</code> prefix that no longer matched the padded form. Fixed by routing through the same <code>_parse_md_table</code> helper every other table parser uses (whitespace-tolerant). Page now lists <strong>354 talent groups from 588 raw rows</strong>, 25 races represented, all filter dimensions (tier / restricted-by / exclusive flag) functional.</p>
 <h2>2026-05-07 — Search · Runes added</h2>

@@ -249,57 +249,47 @@
 <blockquote>
 <p>Higher-level stats = base + level growth + Insight + passive/talent modifiers + gear. Growth formula per <code>BasicAttrDataTable.GrowthType1..10</code> (cycle of 10) — exact application rule TBD pending in-game datapoint verification.</p>
 </blockquote>
-<h2>Skill (Active)</h2>
+<h2>Activities</h2>
 <p><strong>Spinning Blade</strong> (<code>UniqueDataTable.M12211</code>)</p>
 <table>
 <thead>
 <tr>
-<th>Field</th>
-<th>Value</th>
+<th>#</th>
+<th>Trigger Timing</th>
+<th>Trigger</th>
+<th>Target</th>
+<th>Target Condition</th>
+<th>Effect #</th>
+<th>Effect</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>SkillType</td>
-<td>Attack</td>
+<td><strong>#1</strong></td>
+<td>Cast Skill</td>
+<td>Skill — Spinning Blade</td>
+<td>All Enemies</td>
+<td>—</td>
+<td>1.1</td>
+<td><strong>7 DMG</strong></td>
 </tr>
 <tr>
-<td>TargetType</td>
-<td>Enemy</td>
-</tr>
-<tr>
-<td>Target</td>
-<td>All Targets</td>
-</tr>
-<tr>
-<td>MaxTarget</td>
-<td>3</td>
-</tr>
-<tr>
-<td>Times</td>
-<td>1</td>
-</tr>
-<tr>
-<td>Value</td>
-<td>7</td>
-</tr>
-<tr>
-<td>StatusLayer</td>
-<td>5</td>
-</tr>
-<tr>
-<td>ExtraValue1/2/3</td>
-<td>2 / 0 / 0</td>
-</tr>
-<tr>
-<td>ActionType</td>
-<td>Special Attack</td>
+<td>↑</td>
+<td>↑</td>
+<td>↑</td>
+<td>↑</td>
+<td>↑</td>
+<td>1.2</td>
+<td><strong>+5</strong> <a href="../keywords/instant-inspire.html">Inspire</a></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Effect:</strong></p>
+<p><strong>Additional clauses (riders / modifiers, not atomized by Phase 1 parser):</strong></p>
+<ul>
+<li>Each cast increases skill DMG by 2.</li>
+</ul>
 <blockquote>
-<p>Throws a spinning giant shuriken. Deals <strong>7</strong> DMG to all enemies. For each enemy hit, gains <strong>5</strong> <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/instant-inspire.html">Inspire</a>. Each cast increases skill DMG by <strong>2</strong>.</p>
+<p><strong>Filled description:</strong> Throws a spinning giant shuriken. Deals 7 DMG to all enemies. For each enemy hit, gains 5 stacks of Inspire. Each cast increases skill DMG by 2.</p>
 </blockquote>
 <h2>Attack (Normal Attack)</h2>
 <p><strong>Normal Attack</strong> (<code>BD30001</code>) — UnlockStar 1</p>

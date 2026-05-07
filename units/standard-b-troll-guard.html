@@ -249,57 +249,34 @@
 <blockquote>
 <p>Higher-level stats = base + level growth + Insight + passive/talent modifiers + gear. Growth formula per <code>BasicAttrDataTable.GrowthType1..10</code> (cycle of 10) — exact application rule TBD pending in-game datapoint verification.</p>
 </blockquote>
-<h2>Skill (Active)</h2>
+<h2>Activities</h2>
 <p><strong>Concussive Blow</strong> (<code>UniqueDataTable.M11106</code>)</p>
 <table>
 <thead>
 <tr>
-<th>Field</th>
-<th>Value</th>
+<th>#</th>
+<th>Trigger Timing</th>
+<th>Trigger</th>
+<th>Target</th>
+<th>Target Condition</th>
+<th>Effect #</th>
+<th>Effect</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>SkillType</td>
-<td>Attack</td>
-</tr>
-<tr>
-<td>TargetType</td>
-<td>Enemy</td>
-</tr>
-<tr>
-<td>Target</td>
+<td><strong>#1</strong></td>
+<td>Cast Skill</td>
+<td>Skill — Concussive Blow</td>
+<td>1 Enemy</td>
 <td>Front Target</td>
-</tr>
-<tr>
-<td>MaxTarget</td>
-<td>1</td>
-</tr>
-<tr>
-<td>Times</td>
-<td>1</td>
-</tr>
-<tr>
-<td>Value</td>
-<td>6</td>
-</tr>
-<tr>
-<td>StatusLayer</td>
-<td>0</td>
-</tr>
-<tr>
-<td>ExtraValue1/2/3</td>
-<td>6 / 0 / 0</td>
-</tr>
-<tr>
-<td>ActionType</td>
-<td>Special Attack</td>
+<td>1.1</td>
+<td><strong>6 DMG</strong></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Effect:</strong></p>
 <blockquote>
-<p>Swings her hammer to smash the ground. Targets the front enemy first. Deals <strong>6</strong> DMG and reduces the target's <a href="../keywords/stat-toughness.html">Toughness</a> by <strong>6</strong>.</p>
+<p><strong>Filled description:</strong> Swings her hammer to smash the ground. Targets the front enemy first. Deals 6 DMG and reduces the target's Toughness by 6.</p>
 </blockquote>
 <h2>Attack (Normal Attack)</h2>
 <p><strong>Normal Attack</strong> (<code>BD30001</code>) — UnlockStar 1</p>

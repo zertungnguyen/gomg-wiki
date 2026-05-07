@@ -243,6 +243,26 @@ button.ghost{padding:5px 10px;font-size:10px;background:transparent}
 .stat-block .label{color:var(--dim);font-family:'Chakra Petch',sans-serif;letter-spacing:0.5px;font-size:12px;text-transform:uppercase;flex-shrink:0}
 .stat-block .val{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:14px;color:var(--text);white-space:nowrap}
 .stat-block .val .delta{color:var(--accent);font-size:11px;margin-left:3px;font-weight:500}
+/* === Activities (active skill) block === */
+.activities-block{background:var(--card2);border-radius:6px;padding:10px 12px;margin-top:6px}
+.activities-block .activities-section-header{font-family:'Chakra Petch',sans-serif;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--accent);padding-bottom:3px;margin-bottom:6px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px}
+.activities-block .activities-section-header .skill-pill{font-size:9px;color:var(--dim);background:var(--card);padding:2px 6px;border-radius:3px;text-transform:none;letter-spacing:0;font-weight:500}
+.activities-block .activities-skill{font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.activities-block .activities-meta{display:grid;grid-template-columns:auto 1fr;gap:3px 8px;font-size:11px;margin-bottom:8px;align-items:baseline}
+.activities-block .activities-meta .ml{color:var(--dim);font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;white-space:nowrap}
+.activities-block .activities-meta .mv{color:var(--text);line-height:1.35}
+.activities-block .activities-effects{display:flex;flex-direction:column;gap:3px;border-top:1px solid #1a1a24;padding-top:6px}
+.activities-block .ae-row{display:grid;grid-template-columns:32px 1fr;gap:6px;align-items:baseline;font-size:12px;line-height:1.35}
+.activities-block .ae-row .ae-num{color:var(--dim);font-family:'Chakra Petch',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.5px}
+.activities-block .ae-row .ae-text{color:var(--text)}
+.activities-block .ae-row .ae-text strong{color:var(--accent);font-weight:700}
+.activities-block .ae-row .ae-cond{color:var(--dim);font-size:10px;font-style:italic;display:block;margin-top:1px}
+.activities-block .ae-row a.kw{color:#9bbcff;text-decoration:none;border-bottom:1px dashed #9bbcff66}
+.activities-block .ae-row a.kw:hover{color:#bdd1ff;border-bottom-color:#bdd1ff}
+.activities-block .activities-riders{margin-top:8px;padding-top:6px;border-top:1px solid #1a1a24}
+.activities-block .activities-riders .ar-label{font-size:9px;color:var(--dim);font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.activities-block .activities-riders ul{margin:0;padding-left:18px;color:var(--dim);font-size:11px;line-height:1.4}
+.activities-block .activities-desc{margin-top:8px;padding-top:6px;border-top:1px solid #1a1a24;font-size:10px;color:var(--dim);font-style:italic;line-height:1.4}
 .stat-pool{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:6px}
 .pool-pill{padding:9px 5px;background:var(--card2);border:1.5px solid var(--border);border-radius:6px;text-align:center}
 .pool-pill .lbl{font-family:'Chakra Petch',sans-serif;font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
@@ -1296,6 +1316,12 @@ function renderUnitPanel(main, idxN, pu){
     panel.appendChild(stats);
   }
 
+  // === Activities (active skill — Cast Skill trigger) ===
+  if(u){
+    const actBlock = renderActivities(u.id);
+    if(actBlock) panel.appendChild(actBlock);
+  }
+
   // === Insight (tabs by unit attribute, mirroring in-game UI) ===
   if(u){
     // Collapse state: tabs (with per-category counts) stay visible; only the
@@ -1583,6 +1609,117 @@ function sectionTitle(label, hint){
   d.className = 'section-title';
   d.innerHTML = `${e(label)}${hint?`<span class="hint">${e(hint)}</span>`:''}`;
   return d;
+}
+
+// Activities section — renders one unit's active skill (Cast Skill trigger)
+// from window.TEAM_PLANNER.activities, populated by extract_activities.py.
+// Keep terms aligned with the Gear Filter Tab 4 (Timing) vocabulary so future
+// passive/bond/talent rows can reuse the same labels.
+function renderActivities(unitId){
+  const a = (DATA.activities || {})[unitId];
+  if(!a) return null;
+  const block = document.createElement('div');
+  block.className = 'activities-block';
+
+  const header = document.createElement('div');
+  header.className = 'activities-section-header';
+  header.innerHTML = `<span>Activities</span><span class="skill-pill">${e(a.triggerTiming)}</span>`;
+  block.appendChild(header);
+
+  const skill = document.createElement('div');
+  skill.className = 'activities-skill';
+  skill.textContent = a.skillName;
+  block.appendChild(skill);
+
+  // Compact meta: Trigger / Target / Condition rows. Trigger restated in case
+  // future iterations distinguish trigger label from skill name.
+  const meta = document.createElement('div');
+  meta.className = 'activities-meta';
+  const condText = a.targetCondition || '';
+  const metaRows = [
+    ['Trigger', `Skill — ${a.skillName}`],
+    ['Target', a.targetLabel + (condText ? ` · ${condText}` : '')],
+  ];
+  meta.innerHTML = metaRows.map(([k,v]) =>
+    `<span class="ml">${e(k)}</span><span class="mv">${e(v)}</span>`
+  ).join('');
+  block.appendChild(meta);
+
+  // Atomized effects
+  if((a.effects || []).length){
+    const eff = document.createElement('div');
+    eff.className = 'activities-effects';
+    a.effects.forEach((ef, i) => {
+      const row = document.createElement('div');
+      row.className = 'ae-row';
+      const num = document.createElement('span');
+      num.className = 'ae-num';
+      num.textContent = `1.${i+1}`;
+      const txt = document.createElement('span');
+      txt.className = 'ae-text';
+      txt.innerHTML = formatActivityEffect(ef);
+      if(ef.condition){
+        const c = document.createElement('span');
+        c.className = 'ae-cond';
+        c.textContent = `only if ${ef.condition}`;
+        txt.appendChild(c);
+      }
+      row.appendChild(num);
+      row.appendChild(txt);
+      eff.appendChild(row);
+    });
+    block.appendChild(eff);
+  }
+
+  // Riders / unparsed sentences (DMG modifiers, conditional flavor) shown as
+  // bullets so the player still sees them but they don't pretend to be atomic.
+  if((a.unparsedSentences || []).length){
+    const riders = document.createElement('div');
+    riders.className = 'activities-riders';
+    riders.innerHTML = `<div class="ar-label">Riders / modifiers</div>` +
+      `<ul>${a.unparsedSentences.map(s => `<li>${e(s)}</li>`).join('')}</ul>`;
+    block.appendChild(riders);
+  }
+
+  if(a.descriptionFilled){
+    const desc = document.createElement('div');
+    desc.className = 'activities-desc';
+    desc.textContent = a.descriptionFilled;
+    block.appendChild(desc);
+  }
+
+  return block;
+}
+
+// Render one activity effect as inline HTML. Status keywords link to the
+// per-keyword wiki page on this site (../keywords/<slug>.html style — but
+// since the team planner is at site root and keyword pages live under
+// keywords/, the relative href is keywords/<slug>.html).
+function formatActivityEffect(ef){
+  const v = ef.value;
+  const k = ef.kind;
+  const sign = (typeof v === 'number' && v >= 0) ? '+' : '';
+  switch(k){
+    case 'status': {
+      const slug = e(ef.keyword || '');
+      const nm = e(ef.status || '');
+      return `<strong>+${v}</strong> <a class="kw" href="keywords/${slug}.html">${nm}</a>`;
+    }
+    case 'heal':              return `<strong>+${v} HP</strong>`;
+    case 'damage':            return `<strong>${v} DMG</strong>`;
+    case 'damage-multi':      return `<strong>${e(String(ef.hits))}×${e(String(ef.per_hit))} DMG</strong> <span style="color:var(--dim);font-size:10px">(${v} total)</span>`;
+    case 'extra-action':      return `<strong>+${v} Extra Action</strong>`;
+    case 'counter-range':     return `<strong>+${v} Counter Range</strong>`;
+    case 'counter-count':     return `<strong>+${v} Counter Attacks</strong>`;
+    case 'followup-count':    return `<strong>+${v} Follow-Up Attacks</strong>`;
+    case 'mana-action-reduce':return `<strong>-${v} Action Mana</strong>`;
+    case 'mana-loss':         return `<strong>-${v} Mana</strong>`;
+    case 'mana-drain':        return `<strong>-${v} Mana</strong> <span style="color:var(--dim);font-size:10px">(drain)</span>`;
+    case 'basic-attack-targets': return `<strong>+${v} Basic Attack Targets</strong>`;
+    case 'basic-attack-dmg':  return `<strong>+${v} Basic Attack DMG</strong>`;
+    case 'stat':              return `<strong>${sign}${v} ${e(ef.stat || '')}</strong>`;
+    default:                  return `<strong>${e(ef.text || '?')}</strong>`;
+  }
 }
 
 function renderTeamAggregate(aggr){

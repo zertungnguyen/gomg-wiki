@@ -248,57 +248,39 @@
 <blockquote>
 <p>Higher-level stats = base + level growth + Insight + passive/talent modifiers + gear. Growth formula per <code>BasicAttrDataTable.GrowthType1..10</code> (cycle of 10) — exact application rule TBD pending in-game datapoint verification.</p>
 </blockquote>
-<h2>Skill (Active)</h2>
+<h2>Activities</h2>
 <p><strong>Soul Sacrifice</strong> (<code>UniqueDataTable.M13202</code>)</p>
 <table>
 <thead>
 <tr>
-<th>Field</th>
-<th>Value</th>
+<th>#</th>
+<th>Trigger Timing</th>
+<th>Trigger</th>
+<th>Target</th>
+<th>Target Condition</th>
+<th>Effect #</th>
+<th>Effect</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>SkillType</td>
-<td>Attack</td>
-</tr>
-<tr>
-<td>TargetType</td>
-<td>Enemy</td>
-</tr>
-<tr>
-<td>Target</td>
-<td>[CN: 生命最低目标]</td>
-</tr>
-<tr>
-<td>MaxTarget</td>
-<td>1</td>
-</tr>
-<tr>
-<td>Times</td>
-<td>1</td>
-</tr>
-<tr>
-<td>Value</td>
-<td>10</td>
-</tr>
-<tr>
-<td>StatusLayer</td>
-<td>0</td>
-</tr>
-<tr>
-<td>ExtraValue1/2/3</td>
-<td>2 / 0 / 0</td>
-</tr>
-<tr>
-<td>ActionType</td>
-<td>Special Attack</td>
+<td><strong>#1</strong></td>
+<td>Cast Skill</td>
+<td>Skill — Soul Sacrifice</td>
+<td>1 Enemy</td>
+<td>—</td>
+<td>1.1</td>
+<td><strong>10 DMG</strong></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Effect:</strong></p>
+<p><strong>Additional clauses (riders / modifiers, not atomized by Phase 1 parser):</strong></p>
+<ul>
+<li>Targets the enemy with lowest HP first.</li>
+<li>Max 2 times per turn.</li>
+</ul>
 <blockquote>
-<p>Sacrifices her own soul. Targets the enemy with lowest HP first. Deals <strong>10</strong> DMG and triggers own defeat effect. Max <strong>2</strong> times per turn.</p>
+<p><strong>Filled description:</strong> Sacrifices her own soul. Targets the enemy with lowest HP first. Deals 10 DMG and triggers own defeat effect. Max 2 times per turn.</p>
 </blockquote>
 <h2>Attack (Normal Attack)</h2>
 <p><strong>Normal Attack</strong> (<code>BD30001</code>) — UnlockStar 1</p>

@@ -249,57 +249,47 @@
 <blockquote>
 <p>Higher-level stats = base + level growth + Insight + passive/talent modifiers + gear. Growth formula per <code>BasicAttrDataTable.GrowthType1..10</code> (cycle of 10) — exact application rule TBD pending in-game datapoint verification.</p>
 </blockquote>
-<h2>Skill (Active)</h2>
+<h2>Activities</h2>
 <p><strong>Fortune Beckon</strong> (<code>UniqueDataTable.M14203</code>)</p>
 <table>
 <thead>
 <tr>
-<th>Field</th>
-<th>Value</th>
+<th>#</th>
+<th>Trigger Timing</th>
+<th>Trigger</th>
+<th>Target</th>
+<th>Target Condition</th>
+<th>Effect #</th>
+<th>Effect</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>SkillType</td>
-<td>Support</td>
+<td><strong>#1</strong></td>
+<td>Cast Skill</td>
+<td>Skill — Fortune Beckon</td>
+<td>1 Ally</td>
+<td>—</td>
+<td>1.1</td>
+<td><strong>+10 HP</strong></td>
 </tr>
 <tr>
-<td>TargetType</td>
-<td>Ally</td>
-</tr>
-<tr>
-<td>Target</td>
-<td>[CN: 受伤最少目标]</td>
-</tr>
-<tr>
-<td>MaxTarget</td>
-<td>1</td>
-</tr>
-<tr>
-<td>Times</td>
-<td>1</td>
-</tr>
-<tr>
-<td>Value</td>
-<td>10</td>
-</tr>
-<tr>
-<td>StatusLayer</td>
-<td>10</td>
-</tr>
-<tr>
-<td>ExtraValue1/2/3</td>
-<td>0 / 0 / 0</td>
-</tr>
-<tr>
-<td>ActionType</td>
-<td>HP Restore</td>
+<td>↑</td>
+<td>↑</td>
+<td>↑</td>
+<td>↑</td>
+<td>↑</td>
+<td>1.2</td>
+<td><strong>+10</strong> <a href="../keywords/instant-inspire.html">Inspire</a></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Effect:</strong></p>
+<p><strong>Additional clauses (riders / modifiers, not atomized by Phase 1 parser):</strong></p>
+<ul>
+<li>Targets the ally with least DMG taken.</li>
+</ul>
 <blockquote>
-<p>Converts life energy into fortune. Targets the ally with least DMG taken. Restores <strong>10</strong> HP and grants <strong>10</strong> <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/instant-inspire.html">Inspire</a>.</p>
+<p><strong>Filled description:</strong> Converts life energy into fortune. Targets the ally with least DMG taken. Restores 10 HP and grants 10 stacks of Inspire.</p>
 </blockquote>
 <h2>Attack (Normal Attack)</h2>
 <p><strong>Basic Heal</strong> (<code>BD30301</code>) — UnlockStar 1</p>

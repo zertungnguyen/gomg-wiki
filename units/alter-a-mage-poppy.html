@@ -248,57 +248,43 @@
 <blockquote>
 <p>Higher-level stats = base + level growth + Insight + passive/talent modifiers + gear. Growth formula per <code>BasicAttrDataTable.GrowthType1..10</code> (cycle of 10) — exact application rule TBD pending in-game datapoint verification.</p>
 </blockquote>
-<h2>Skill (Active)</h2>
+<h2>Activities</h2>
 <p><strong>Multicast</strong> (<code>UniqueDataTable.M13201_000</code>)</p>
 <table>
 <thead>
 <tr>
-<th>Field</th>
-<th>Value</th>
+<th>#</th>
+<th>Trigger Timing</th>
+<th>Trigger</th>
+<th>Target</th>
+<th>Target Condition</th>
+<th>Effect #</th>
+<th>Effect</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>SkillType</td>
-<td>Attack</td>
+<td><strong>#1</strong></td>
+<td>Cast Skill</td>
+<td>Skill — Multicast</td>
+<td>All Enemies</td>
+<td>—</td>
+<td>1.1</td>
+<td><strong>5 DMG</strong></td>
 </tr>
 <tr>
-<td>TargetType</td>
-<td>Enemy</td>
-</tr>
-<tr>
-<td>Target</td>
-<td>All Targets</td>
-</tr>
-<tr>
-<td>MaxTarget</td>
-<td>3</td>
-</tr>
-<tr>
-<td>Times</td>
-<td>1</td>
-</tr>
-<tr>
-<td>Value</td>
-<td>5</td>
-</tr>
-<tr>
-<td>StatusLayer</td>
-<td>4</td>
-</tr>
-<tr>
-<td>ExtraValue1/2/3</td>
-<td>0 / 0 / 0</td>
-</tr>
-<tr>
-<td>ActionType</td>
-<td>Special Attack</td>
+<td>↑</td>
+<td>↑</td>
+<td>↑</td>
+<td>↑</td>
+<td>↑</td>
+<td>1.2</td>
+<td><strong>+4</strong> <a href="../keywords/debuff-burn.html">Burn</a></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Effect:</strong></p>
 <blockquote>
-<p>Unleashes all her Mana. Deals <strong>5</strong> DMG to all enemies and applies <strong>4</strong> <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-burn.html">Burn</a> (front), <a href="../keywords/debuff-shock.html">Shock</a> (mid), or <a href="../keywords/debuff-chill.html">Chill</a> (back) based on position.</p>
+<p><strong>Filled description:</strong> Unleashes all her Mana. Deals 5 DMG to all enemies and applies 4 stacks of Burn (front), Shock (mid), or Chill (back) based on position.</p>
 </blockquote>
 <h2>Attack (Normal Attack)</h2>
 <p><strong>Normal Attack</strong> (<code>BD30001</code>) — UnlockStar 1</p>
