@@ -263,8 +263,7 @@ function buildPills() {
     // Material pill tooltip skips R1 (per-rune) + R5 (digit-double of per-rune)
     // — those vary across runes within the material. Shows the 2 fixed-per-
     // material strings: R3 + R7.
-    b.title = "R3 (3 stacks): " + m.r3 + "
-R7 (7 stacks): " + m.r7;
+    b.title = "R3 (3 stacks): " + m.r3 + "\nR7 (7 stacks): " + m.r7;
     b.onclick = () => togglePill("Material", m.name, b);
     mat.appendChild(b);
   });
@@ -379,15 +378,10 @@ function render() {
       ? doubleDigits(doubleDigits(r.effect || ""))   // Copper: digits doubled twice
       : (mat.r7 || "—");
     const ladder =
-      "Resonance ladder (stack 1 / 3 / 5 / 7 same-material runes):
-
-" +
-      "R1 (1 stack): " + (r.effect || "—") + "
-" +
-      "R3 (3 stacks): " + r3Text + "
-" +
-      "R5 (5 stacks): " + r5Text + "
-" +
+      "Resonance ladder (stack 1 / 3 / 5 / 7 same-material runes):\n\n" +
+      "R1 (1 stack): " + (r.effect || "—") + "\n" +
+      "R3 (3 stacks): " + r3Text + "\n" +
+      "R5 (5 stacks): " + r5Text + "\n" +
       "R7 (7 stacks): " + r7Text;
     return '<tr title="' + escapeHtml(ladder) + '">' +
       '<td class="col-step"><span class="badge ' + stepCls + '">' + escapeHtml(stepLabel) + '</span></td>' +
