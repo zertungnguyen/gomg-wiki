@@ -26,6 +26,8 @@
 <main class="content">
 <h1>News</h1>
 <p><em>Wiki update log — most recent first. Each entry summarizes what changed in the published site.</em></p>
+<h2>2026-05-07 — Search · Talents fix (was silently empty)</h2>
+<p>The <a href="search-talent.html">Search · Talents</a> page was rendering "Filter 0 talent groups" with no rows shown — silent regression introduced when the markdown table renderer started padding header cells (<code>| IDs         | Icon    | …</code>). The legacy parser for <code>TalentDataTable.md</code> used a strict <code>line.startswith("| IDs |")</code> prefix that no longer matched the padded form. Fixed by routing through the same <code>_parse_md_table</code> helper every other table parser uses (whitespace-tolerant). Page now lists <strong>354 talent groups from 588 raw rows</strong>, 25 races represented, all filter dimensions (tier / restricted-by / exclusive flag) functional.</p>
 <h2>2026-05-07 — Search · Runes added</h2>
 <p>New page: <a href="search-runes.html">Search · Runes</a> — client-side filter over all 124 runes from <code>RuneDataTable</code>.</p>
 <ul>
