@@ -1668,17 +1668,21 @@ function renderActivities(unitId){
       num.textContent = `1.${i+1}`;
       const txt = document.createElement('span');
       txt.className = 'ae-text';
-      // Insight modifier delta (base × level for this effect's tier).
+      // Insight modifier — full contribution at this tier per the verified
+      // engine formula: base × (level + 1). Off (level === undefined) = 0.
+      // L0 = base × 1 (e.g. base=1 → +1 to skill output). L3 = base × 4.
       let insightDelta = 0;
       let insightTooltip = '';
+      let insightActive = false;
       const im = ef.insightModifier;
       if(im){
         const lvl = stars[im.relicId];
         if(typeof lvl === 'number' && lvl >= 0){
-          insightDelta = im.base * lvl;
-          insightTooltip = `${im.relicName} L${lvl} → ${im.base}×${lvl+1} = +${im.base * (lvl+1)} on top of activity base`;
+          insightActive = true;
+          insightDelta = im.base * (lvl + 1);
+          insightTooltip = `${im.relicName} ${lvl}★ → +${im.base} × ${lvl+1} = +${insightDelta} on top of skill base`;
         } else {
-          insightTooltip = `${im.relicName} (toggle the insight star to apply +${im.base}/star modifier)`;
+          insightTooltip = `${im.relicName} locked (Off) — toggle a tier to apply +${im.base}×N modifier`;
         }
       }
       txt.innerHTML = formatActivityEffect(ef, insightDelta);
@@ -1686,7 +1690,7 @@ function renderActivities(unitId){
         const tag = document.createElement('span');
         tag.className = 'ae-insight-tag';
         tag.title = insightTooltip;
-        if(insightDelta > 0){
+        if(insightActive){
           tag.textContent = `+${insightDelta} from ${im.relicName}`;
         } else {
           tag.textContent = `Insight: ${im.relicName} (off)`;
@@ -2110,22 +2114,26 @@ function _argList(args){
   }).join(',');
 }
 
-// 5-state insight level widget [Off / ☆ / ★ / ★★ / ★★★]
-//   Off = disabled (no propagation)
-//   ☆ (level 0) = active at base value
-//   ★ (level 1) = base + 1
-//   ★★ = base + 2
-//   ★★★ = base + 3 (Max Star)
+// 5-state insight level widget [Off / 0★ / 1★ / 2★ / 3★]
+//   Off  = insight locked / not propagating (delta = 0)
+//   0★ (level 0) = active at base value (× 1) — adds `base × 1` to skill output
+//   1★ (level 1) = × 2 — adds `base × 2`
+//   2★ (level 2) = × 3 — adds `base × 3`
+//   3★ (level 3) = × 4 (Max Star) — adds `base × 4`
+// Verified scaling: effect digit × (level + 1) per
+// data-session/intermediate/decompiled_relic.cs:240-258 RelicsDataItem.GetDescription.
+// Numeric "N★" labels (instead of ☆/★/★★/★★★) because the empty-vs-filled
+// outline read as two consecutive 1-star buttons; the prefix disambiguates.
 // fnName takes (...args, level) where level is null for Off, integer 0-3 otherwise.
 function insightLevelWidgetHTML(currentLevel, fnName, args){
   const argList = _argList(args);
   const sep = argList ? ',' : '';
   const buttons = [
-    { val: 'null',   label: 'Off',   isOn: currentLevel === null || currentLevel === undefined },
-    { val: '0',      label: '☆',     isOn: currentLevel === 0 },
-    { val: '1',      label: '★',     isOn: currentLevel === 1 },
-    { val: '2',      label: '★★',    isOn: currentLevel === 2 },
-    { val: '3',      label: '★★★',   isOn: currentLevel === 3 },
+    { val: 'null',   label: 'Off',  isOn: currentLevel === null || currentLevel === undefined },
+    { val: '0',      label: '0★',   isOn: currentLevel === 0 },
+    { val: '1',      label: '1★',   isOn: currentLevel === 1 },
+    { val: '2',      label: '2★',   isOn: currentLevel === 2 },
+    { val: '3',      label: '3★',   isOn: currentLevel === 3 },
   ];
   let html = '<span class="lvl-widget" onclick="event.stopPropagation()">';
   for(const b of buttons){
