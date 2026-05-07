@@ -270,6 +270,20 @@ button.ghost{padding:5px 10px;font-size:10px;background:transparent}
 .activities-block .activities-riders .ar-label{font-size:9px;color:var(--dim);font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
 .activities-block .activities-riders ul{margin:0;padding-left:18px;color:var(--dim);font-size:11px;line-height:1.4}
 .activities-block .activities-desc{margin-top:8px;padding-top:6px;border-top:1px solid #1a1a24;font-size:10px;color:var(--dim);font-style:italic;line-height:1.4}
+/* === Counter sub-block — passive counter stats (range / dmg / count) === */
+.activities-block .activities-counter{margin-top:8px;padding:6px 8px;background:#0e0e1480;border:1px solid var(--border);border-radius:5px}
+.activities-block .activities-counter .ac-label{font-size:9px;color:var(--accent);font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;font-weight:600}
+.activities-block .activities-counter .ac-row{display:grid;grid-template-columns:auto 1fr;gap:3px 8px;font-size:11px;align-items:baseline;padding:2px 0}
+.activities-block .activities-counter .ac-row .ac-stat{color:var(--dim);font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:0.5px;font-size:10px;white-space:nowrap}
+.activities-block .activities-counter .ac-row .ac-val{color:var(--text)}
+.activities-block .activities-counter .ac-row .ac-val .ac-base{color:var(--text);font-weight:600}
+.activities-block .activities-counter .ac-row .ac-val .ac-plus{color:#2ecc71;font-weight:600;margin:0 2px}
+.activities-block .activities-counter .ac-row .ac-val .ac-eq{color:var(--dim);margin:0 2px}
+.activities-block .activities-counter .ac-row .ac-val .ac-total{color:var(--accent);font-weight:700}
+.activities-block .activities-counter .ac-row .ac-src{color:var(--dim);font-size:9px;margin-left:6px;font-style:italic}
+.activities-block .activities-counter .ac-total-row{margin-top:5px;padding-top:5px;border-top:1px dashed var(--border)}
+.activities-block .activities-counter .ac-total-row .ac-stat{color:var(--accent)}
+.activities-block .activities-counter .ac-total-row .ac-val .ac-formula{color:var(--dim);font-size:10px;margin-right:4px}
 .stat-pool{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:6px}
 .pool-pill{padding:9px 5px;background:var(--card2);border:1.5px solid var(--border);border-radius:6px;text-align:center}
 .pool-pill .lbl{font-family:'Chakra Petch',sans-serif;font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
@@ -1323,10 +1337,12 @@ function renderUnitPanel(main, idxN, pu){
     panel.appendChild(stats);
   }
 
-  // === Activities (active skill — Cast Skill trigger) ===
+  // === Activities (#1 Cast Skill + #2 Counter, peer blocks) ===
   if(u){
     const actBlock = renderActivities(u.id);
     if(actBlock) panel.appendChild(actBlock);
+    const counterBlock = renderCounterActivity(u);
+    if(counterBlock) panel.appendChild(counterBlock);
   }
 
   // === Insight (tabs by unit attribute, mirroring in-game UI) ===
@@ -1630,7 +1646,7 @@ function renderActivities(unitId){
 
   const header = document.createElement('div');
   header.className = 'activities-section-header';
-  header.innerHTML = `<span>Activities</span><span class="skill-pill">${e(a.triggerTiming)}</span>`;
+  header.innerHTML = `<span>Activities #1</span><span class="skill-pill">${e(a.triggerTiming)}</span>`;
   block.appendChild(header);
 
   const skill = document.createElement('div');
@@ -1728,6 +1744,139 @@ function renderActivities(unitId){
     block.appendChild(desc);
   }
 
+  return block;
+}
+
+// Render Activities block #2 — Counter (standalone, peer to the Cast Skill
+// block). Take Hit trigger, fires reactively against the attacker.
+// Stats:
+//   2.1 Counter Range — 0 baseline; +1 if class === 'Warrior'
+//   2.2 Counter DMG    — 1 baseline (every unit can counter for 1)
+//   2.3 Counters       — 1 baseline (one counter per trigger)
+//   2.4 Total Counter DMG (derived) = Counters × Counter DMG
+// Modifier sources surfaced in this iteration:
+//   - Insight (XD1<step>001_*): unit's own insight with modifier kind in
+//     {counter-dmg, counter-range, counter-count} contributes base×(level+1)
+//     when the player has set its star.
+// Future iterations will fold in bonds, talents, sub-skill passives.
+function renderCounterActivity(u){
+  if(!u) return null;
+  const a = (DATA.activities || {})[u.id];  // optional — only used for insight metadata
+  const block = document.createElement('div');
+  block.className = 'activities-block';
+
+  const header = document.createElement('div');
+  header.className = 'activities-section-header';
+  header.innerHTML = `<span>Activities #2</span><span class="skill-pill">Take Hit</span>`;
+  block.appendChild(header);
+
+  const skill = document.createElement('div');
+  skill.className = 'activities-skill';
+  skill.textContent = 'Counter';
+  block.appendChild(skill);
+
+  // Resolve insight modifier (at most one applies in this iteration).
+  const stars = state.insightStars || {};
+  const ins = a && a.insight;
+  const insMod = ins ? ins.modifier : null;
+  const insLvl = ins ? stars[ins.relicId] : undefined;
+  const insActive = (typeof insLvl === 'number' && insLvl >= 0);
+  const insMult = insActive ? (insLvl + 1) : 0;
+
+  function modifierFor(kind){
+    if(insMod && insMod.kind === kind && insActive){
+      return { delta: insMod.base * insMult, src: ins.relicName, lvl: insLvl };
+    }
+    return null;
+  }
+
+  const baseRange = (u.cls === 'Warrior') ? 1 : 0;
+  const baseDmg   = 1;
+  const baseCount = 1;
+  const rangeMod  = modifierFor('counter-range');
+  const dmgMod    = modifierFor('counter-dmg');
+  const countMod  = modifierFor('counter-count');
+
+  const rangeTotal = baseRange + (rangeMod ? rangeMod.delta : 0);
+  const dmgTotal   = baseDmg   + (dmgMod   ? dmgMod.delta   : 0);
+  const countTotal = baseCount + (countMod ? countMod.delta : 0);
+  const totalDmg   = countTotal * dmgTotal;
+
+  // Meta line — Trigger / Target. Counter targets the attacker reactively;
+  // Counter Range gates whether the attacker is reachable, but the target
+  // is conceptually "the unit that just hit me".
+  const meta = document.createElement('div');
+  meta.className = 'activities-meta';
+  meta.innerHTML =
+    `<span class="ml">Trigger</span><span class="mv">Counter</span>` +
+    `<span class="ml">Target</span><span class="mv">1 Enemy · attacker (within Counter Range)</span>`;
+  block.appendChild(meta);
+
+  // Effect rows 2.1 / 2.2 / 2.3, plus derived 2.4.
+  const eff = document.createElement('div');
+  eff.className = 'activities-effects';
+
+  function statRow(num, label, base, total, mod, baseAnnotation){
+    const row = document.createElement('div');
+    row.className = 'ae-row';
+    const numEl = document.createElement('span');
+    numEl.className = 'ae-num';
+    numEl.textContent = num;
+    const txt = document.createElement('span');
+    txt.className = 'ae-text';
+    if(mod && mod.delta){
+      txt.innerHTML =
+        `<span class="ac-stat-label">${e(label)}</span> ` +
+        `<span class="ae-base">${base}</span>` +
+        `<span class="ae-plus">+${mod.delta}</span>` +
+        `<span class="ae-eq">=</span>` +
+        `<strong class="ae-total">${total}</strong>`;
+      const tag = document.createElement('span');
+      tag.className = 'ae-insight-tag';
+      tag.title = `${mod.src} ${mod.lvl}★ → +${mod.delta}`;
+      tag.textContent = `+${mod.delta} from ${mod.src}`;
+      txt.appendChild(tag);
+    } else {
+      txt.innerHTML = `<span class="ac-stat-label">${e(label)}</span> <strong>${base}</strong>` +
+        (baseAnnotation ? ` <span class="ae-cond" style="display:inline;color:var(--dim);font-style:italic">${e(baseAnnotation)}</span>` : '');
+      // Show "Insight (off)" tag if the unit has an insight whose kind matches
+      // this stat but it's not toggled on, so player knows they can boost it.
+      if(insMod && !insActive && insMod.kind === modKindFor(label)){
+        const tag = document.createElement('span');
+        tag.className = 'ae-insight-tag off';
+        tag.title = `${ins.relicName} locked (Off) — toggle a tier to apply +${insMod.base}×N modifier`;
+        tag.textContent = `Insight: ${ins.relicName} (off)`;
+        txt.appendChild(tag);
+      }
+    }
+    row.appendChild(numEl);
+    row.appendChild(txt);
+    eff.appendChild(row);
+  }
+
+  function modKindFor(label){
+    if(label === 'Counter Range') return 'counter-range';
+    if(label === 'Counter DMG')   return 'counter-dmg';
+    if(label === 'Counters')      return 'counter-count';
+    return null;
+  }
+
+  statRow('2.1', 'Counter Range', baseRange, rangeTotal, rangeMod,
+          (u.cls === 'Warrior') ? '(Warrior +1)' : '');
+  statRow('2.2', 'Counter DMG',   baseDmg,   dmgTotal,   dmgMod, '');
+  statRow('2.3', 'Counters',      baseCount, countTotal, countMod, '');
+
+  // Derived row 2.4 — Total Counter DMG = Counters × Counter DMG.
+  const totalRow = document.createElement('div');
+  totalRow.className = 'ae-row';
+  totalRow.innerHTML =
+    `<span class="ae-num">2.4</span>` +
+    `<span class="ae-text"><span class="ac-stat-label">Total Counter DMG</span> ` +
+    `<span class="ac-formula" style="color:var(--dim);font-size:10px">${countTotal} × ${dmgTotal} =</span> ` +
+    `<strong class="ae-total">${totalDmg}</strong></span>`;
+  eff.appendChild(totalRow);
+
+  block.appendChild(eff);
   return block;
 }
 
