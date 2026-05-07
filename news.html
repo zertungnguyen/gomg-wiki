@@ -26,6 +26,17 @@
 <main class="content">
 <h1>News</h1>
 <p><em>Wiki update log — most recent first. Each entry summarizes what changed in the published site.</em></p>
+<h2>2026-05-08 — Search · Runes: full R1/R3/R5/R7 resonance ladder</h2>
+<p>Initial search-runes shipped with only the 3-cell DataTable resonance columns (R1/R2/R3) — the in-game Rune Detail panel actually shows <strong>4 tiers</strong> at stack thresholds 1 / 3 / 5 / 7. After decompiling <code>MainScripts.dll</code> (<code>RuneInfoResonanceItem.GetResonanceText</code>) the ladder is now correct:</p>
+<ul>
+<li><strong>R1</strong> (1 stack) — the rune's own effect text from <code>RuneDataTable.Description_EN</code>. Shown verbatim.</li>
+<li><strong>R3</strong> (3 stacks) — pulled from <code>RuneMaterialDataTable.Resonance1_EN</code> (per-material).</li>
+<li><strong>R5</strong> (5 stacks) — the rune's effect with every numeric digit ×2 (per-char doubling, mirroring the C# StringBuilder loop). The +100% bonus.</li>
+<li><strong>R7</strong> (7 stacks) — <code>RuneMaterialDataTable.Resonance3_EN</code> for 11 materials. <strong>Copper exception</strong>: digits get doubled a 2nd time for an effective ×4 vs R1, because Copper's <code>Resonance3</code> is "Base effect +200%" which the engine interprets as a second digit-double pass.</li>
+</ul>
+<p>How to read it on the page: <strong>hover any rune row</strong> to see the full ladder as a tooltip (cursor turns into a help-cursor). The Material pill above also shows R3 + R7 on hover. The <code>Effect</code> column itself is the R1 tier.</p>
+<p>The <code>Resonance2</code> placeholder column (always "Base effect +100%" for all 12 materials) is no longer surfaced — the engine throws that string away in favor of the per-rune doubled description, so the placeholder isn't useful as a display cell.</p>
+<p>Research file: <code>data-session/intermediate/rune_resonance_research.md</code> carries the full decompile evidence + line references. Wiki layer also updated (<code>visualise-session/runes/{materials,list}.md</code>).</p>
 <h2>2026-05-07 — Team Planner: Activities section (active skill breakdown)</h2>
 <p>Each main slot in <a href="team-planner.html">Team Planner</a> now shows an <strong>Activities</strong> block between the unit's Stats panel and Insight section. For every selected unit, the block surfaces the active skill (the "Cast Skill" trigger event) broken into atomic effects so you can see exactly what the skill does without re-reading the in-game tooltip:</p>
 <ul>
