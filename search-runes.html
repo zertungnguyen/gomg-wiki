@@ -143,12 +143,6 @@ table.results td.col-name { font-weight: 600; color: var(--fg); }
 .rune-ladder-row .rune-tier.r5 { background: rgba(46,204,113,.18);  color: #2ecc71; }
 .rune-ladder-row .rune-tier.r7 { background: rgba(245,179,66,.18);  color: #f5b342; }
 .rune-ladder-row .rune-text { color: var(--fg); font-size: 12.5px; }
-.rune-ladder-row .rune-text .copper-note {
-  display: inline-block; margin-left: 6px; padding: 0 5px;
-  font-size: 9.5px; font-weight: 600; color: #f5b342;
-  background: rgba(245,179,66,.08); border: 1px solid rgba(245,179,66,.3);
-  border-radius: 2px; letter-spacing: .3px;
-}
 table.results tbody tr:hover td { background: rgba(245,179,66,.04); }
 .rune-mat { display: inline-flex; flex-direction: column; gap: 2px; }
 .rune-mat .mat-name { color: #f5b342; font-weight: 600; font-size: 12px; }
@@ -188,7 +182,7 @@ table.results th.col-step, table.results td.col-step {
 <main class="content">
 <h1>Search Runes</h1>
 <p>Filter 124 runes from <code>RuneDataTable</code>. <strong>Rarity</strong> + <strong>Material</strong> mirror the in-game <em>Codex → Runes → Filter</em> dialog. <strong>Tags</strong> is a wiki-side facet drawn from <code>FilterTags_EN</code> (~41 atomic effect tags). Pills within a tab OR; across tabs AND.</p>
-<p>The <em>Resonance</em> column lists the full <strong>R1 / R3 / R5 / R7</strong> ladder per rune — what the rune's effect grows into as you stack 1 / 3 / 5 / 7 same-material runes across your team's gear slots. <strong>R1</strong> = the base rune effect; <strong>R3</strong> + <strong>R7</strong> come from <code>RuneMaterialDataTable</code>; <strong>R5</strong> is always "your rune's effect with every digit doubled" (the +100% mechanical bonus). <strong>Copper</strong> at R7 doubles digits a second time (effective ×4 vs R1) — that's a hardcoded engine quirk, not a data field. Material pill hover shows the per-material R3/R7 only.</p>
+<p>The <em>Resonance</em> column lists the full <strong>R1 / R3 / R5 / R7</strong> ladder per rune — exactly the four lines the in-game Rune Detail panel prints, no pre-computed totals. Tiers unlock at stack thresholds 1 / 3 / 5 / 7 of same-material runes equipped across your team's 10 gear slots. <strong>R1</strong> is always the rune's own effect verbatim. <strong>R3</strong> and <strong>R7</strong> normally pull from <code>RuneMaterialDataTable</code> (the per-material set bonuses), but for materials whose stored row reads "Base effect +N%" (Copper) the engine substitutes the rune's own description instead — so Copper R3/R5 also print verbatim, and Copper R7 prints with every numeric digit ×2. Material pill hover still shows the raw R3/R7 strings from the DataTable.</p>
 
 <div class="rune-filter-grid">
   <div class="rune-filter-col" data-tab="Rarity">
@@ -392,28 +386,32 @@ function render() {
       : "";
     // Per-rune R1/R3/R5/R7 ladder. Source-of-truth: data-session/intermediate/
     // rune_resonance_research.md + decompiled_rune.cs (RuneInfoResonanceItem).
-    //   R1 = rune.effect verbatim
-    //   R3 = mat.r3 (always per-material)
-    //   R5 = rune.effect with every numeric digit ×2 (per-char doubling
-    //        matching the C# StringBuilder loop). +100% mechanical bonus.
-    //   R7 = mat.r7. Copper exception: Copper R7 is "Base effect +200%" so
-    //        the UI doubles digits a 2nd time (effective ×4 vs R1).
+    //
+    // Mirrors the C# RuneInfoResonanceItem.GetResonanceText logic exactly so
+    // each row prints what the in-game rune detail panel prints — no pre-
+    // computed totals, no synthesized "+100%" / "×N" labels. Verified against
+    // F30004_001 Ascetic Rune (Copper, "Gain 10 Max Mana"): R1/R3/R5 all
+    // print verbatim, R7 prints with digits ×2 → "Gain 20 Max Mana".
+    //
+    // Per-tier rule:
+    //   R1 (idx=0) → always rune.effect verbatim.
+    //   R3 (idx=1), R5 (idx=2), R7 (idx=3):
+    //     matText = (R3) mat.Resonance1_EN | (R5) the shared "Base effect
+    //                +100%." placeholder | (R7) mat.Resonance3_EN
+    //     If matText starts with "Base effect" → enter the digit-doubling
+    //       branch with flag = idx >= 3 && Copper (CZ00001_003).
+    //         flag=true  → rune.effect with digits ×2 (only Copper R7 hits
+    //                      this in current data)
+    //         flag=false → rune.effect verbatim
+    //     Else → matText as-is (the per-material unique string)
+    //
+    // R5 always lands in the if-branch (Resonance2 placeholder is "Base
+    // effect +100%" for every material) with flag=false, so R5 text always
+    // matches R1 text. R3 only lands in the if-branch for Copper (whose
+    // Resonance1 is also "Base effect +100%"), so Copper R3 = R1; all
+    // other materials' R3 = the unique mat.Resonance1_EN.
     const mat = matByName[r.material] || {};
-    const r1Text = r.effect || "—";
-    const r3Text = mat.r3 || "—";
-    const r5Text = doubleDigits(r.effect || "");
-    const isCopper = mat.id === "CZ00001_003";
-    const r7Text = isCopper
-      ? doubleDigits(doubleDigits(r.effect || ""))   // Copper: digits doubled twice
-      : (mat.r7 || "—");
-    const r7Note = isCopper ? '<span class="copper-note">×4 vs R1</span>' : "";
-    const ladderHtml =
-      '<div class="rune-ladder">' +
-        '<div class="rune-ladder-row"><span class="rune-tier r1">R1</span><span class="rune-text">' + escapeHtml(r1Text) + '</span></div>' +
-        '<div class="rune-ladder-row"><span class="rune-tier r3">R3</span><span class="rune-text">' + escapeHtml(r3Text) + '</span></div>' +
-        '<div class="rune-ladder-row"><span class="rune-tier r5">R5</span><span class="rune-text">' + escapeHtml(r5Text) + '</span></div>' +
-        '<div class="rune-ladder-row"><span class="rune-tier r7">R7</span><span class="rune-text">' + escapeHtml(r7Text) + r7Note + '</span></div>' +
-      '</div>';
+    const ladderHtml = buildResonanceLadder(r, mat);
     return '<tr>' +
       '<td class="col-step"><span class="badge ' + stepCls + '">' + escapeHtml(stepLabel) + '</span></td>' +
       '<td class="col-name">' + escapeHtml(r.name || "") + '<br><span class="col-rune-id">' + escapeHtml(r.id) + '</span></td>' +
@@ -444,6 +442,46 @@ function doubleDigits(s) {
     }
   }
   return out;
+}
+
+// Per-tier text resolver — mirrors C# RuneInfoResonanceItem.GetResonanceText
+// exactly. tierIdx ∈ {0,1,2,3} corresponds to R1/R3/R5/R7.
+//
+// In-game UI strings come from one of two places:
+//   - the rune's own Description_EN (verbatim, optionally digit-doubled), or
+//   - the material's Resonance{1,3}_EN (the unique-per-material strings).
+// Resonance2_EN is a placeholder ("Base effect +100%.") shared across all 12
+// materials and is never displayed literally; the engine substitutes the
+// rune's description (with digit-doubling controlled by `flag`).
+function getResonanceText(rune, mat, tierIdx) {
+  if (tierIdx === 0) return rune.effect || "—";
+  let matText;
+  if (tierIdx === 1)      matText = mat.r3 || "";   // R3 ← Resonance1_EN
+  else if (tierIdx === 2) matText = "Base effect increased by 100%.";  // R5 placeholder
+  else                    matText = mat.r7 || "";   // R7 ← Resonance3_EN
+  if (matText.startsWith("Base effect")) {
+    // C# branch: if (mat.GetResonance(num).Contains("基础效果")) { ... }
+    const flag = tierIdx >= 3 && mat.id === "CZ00001_003";  // Copper R7 only
+    return flag ? doubleDigits(rune.effect || "") : (rune.effect || "—");
+  }
+  return matText || "—";
+}
+
+function buildResonanceLadder(rune, mat) {
+  const tiers = [
+    { idx: 0, label: "R1", cls: "r1" },
+    { idx: 1, label: "R3", cls: "r3" },
+    { idx: 2, label: "R5", cls: "r5" },
+    { idx: 3, label: "R7", cls: "r7" },
+  ];
+  return '<div class="rune-ladder">' +
+    tiers.map(t =>
+      '<div class="rune-ladder-row">' +
+        '<span class="rune-tier ' + t.cls + '">' + t.label + '</span>' +
+        '<span class="rune-text">' + escapeHtml(getResonanceText(rune, mat, t.idx)) + '</span>' +
+      '</div>'
+    ).join("") +
+  '</div>';
 }
 
 function escapeHtml(s) {
