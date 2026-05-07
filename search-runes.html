@@ -117,12 +117,39 @@ table.results td.col-img { width: 48px; padding: 4px 8px; }
 .tag-autocomplete .ac-empty { padding: 8px 10px; color: var(--fg-dim); font-size: 11px; font-style: italic; }
 .text-search-row .field-hint { font-size: 10px; color: var(--fg-dim); font-style: italic; margin-top: -2px; }
 table.results td.col-name { font-weight: 600; color: var(--fg); }
-.rune-effect { color: var(--fg); line-height: 1.4; max-width: 280px; }
-/* Hover any row to see the per-rune R1/R3/R5/R7 resonance ladder via the
- * native browser title-tooltip. Subtle visual cue: rows highlight more
- * strongly on hover so the player knows they're interactive. */
-table.results tbody tr { cursor: help; }
-table.results tbody tr:hover td { background: rgba(245,179,66,.06); }
+.rune-effect { color: var(--fg); line-height: 1.4; min-width: 280px; max-width: 380px; }
+/* Inline 4-tier resonance ladder rendered directly in the Effect cell.
+ * Each tier (R1/R3/R5/R7) is a row: stack-threshold pill on the left, the
+ * effect text on the right. Tier-pill color = visual hint to the resonance
+ * ramp. R1 = base (dim). R3 = primary set bonus (blue). R5 = +100% boost
+ * (green). R7 = max set bonus (orange).
+ *
+ * Source-of-truth for the mapping: data-session/intermediate/
+ * rune_resonance_research.md + decompiled_rune.cs (RuneInfoResonanceItem).
+ */
+.rune-ladder { display: flex; flex-direction: column; gap: 4px; }
+.rune-ladder-row {
+  display: grid; grid-template-columns: 38px 1fr; gap: 8px;
+  align-items: baseline; line-height: 1.35;
+}
+.rune-ladder-row .rune-tier {
+  font-size: 10px; font-weight: 700; letter-spacing: .5px;
+  padding: 2px 6px; border-radius: 3px; text-align: center;
+  font-family: "SF Mono", Consolas, Menlo, monospace;
+  white-space: nowrap;
+}
+.rune-ladder-row .rune-tier.r1 { background: rgba(255,255,255,.06); color: var(--fg-dim); }
+.rune-ladder-row .rune-tier.r3 { background: rgba(78,161,255,.18);  color: #4ea1ff; }
+.rune-ladder-row .rune-tier.r5 { background: rgba(46,204,113,.18);  color: #2ecc71; }
+.rune-ladder-row .rune-tier.r7 { background: rgba(245,179,66,.18);  color: #f5b342; }
+.rune-ladder-row .rune-text { color: var(--fg); font-size: 12.5px; }
+.rune-ladder-row .rune-text .copper-note {
+  display: inline-block; margin-left: 6px; padding: 0 5px;
+  font-size: 9.5px; font-weight: 600; color: #f5b342;
+  background: rgba(245,179,66,.08); border: 1px solid rgba(245,179,66,.3);
+  border-radius: 2px; letter-spacing: .3px;
+}
+table.results tbody tr:hover td { background: rgba(245,179,66,.04); }
 .rune-mat { display: inline-flex; flex-direction: column; gap: 2px; }
 .rune-mat .mat-name { color: #f5b342; font-weight: 600; font-size: 12px; }
 .rune-mat .mat-effect { color: var(--fg-dim); font-size: 11px; font-style: italic; }
@@ -161,7 +188,7 @@ table.results th.col-step, table.results td.col-step {
 <main class="content">
 <h1>Search Runes</h1>
 <p>Filter 124 runes from <code>RuneDataTable</code>. <strong>Rarity</strong> + <strong>Material</strong> mirror the in-game <em>Codex → Runes → Filter</em> dialog. <strong>Tags</strong> is a wiki-side facet drawn from <code>FilterTags_EN</code> (~41 atomic effect tags). Pills within a tab OR; across tabs AND.</p>
-<p>The <em>Effect</em> column shows what stat the rune grants when equipped (this is the <strong>R1</strong> resonance tier — what 1 rune of the material does). The <em>Material</em> column shows the material's family effect (Amplify / Spell Break / etc.). <strong>Hover any rune row</strong> to see the full <strong>R1 / R3 / R5 / R7</strong> resonance ladder — what the rune's effect grows into as you stack 1 / 3 / 5 / 7 same-material runes across your team's gear slots. R5 is always "your rune's effect with every digit doubled"; Copper at R7 doubles digits a second time (effective ×4) — that's a hardcoded engine quirk, not a data field.</p>
+<p>The <em>Resonance</em> column lists the full <strong>R1 / R3 / R5 / R7</strong> ladder per rune — what the rune's effect grows into as you stack 1 / 3 / 5 / 7 same-material runes across your team's gear slots. <strong>R1</strong> = the base rune effect; <strong>R3</strong> + <strong>R7</strong> come from <code>RuneMaterialDataTable</code>; <strong>R5</strong> is always "your rune's effect with every digit doubled" (the +100% mechanical bonus). <strong>Copper</strong> at R7 doubles digits a second time (effective ×4 vs R1) — that's a hardcoded engine quirk, not a data field. Material pill hover shows the per-material R3/R7 only.</p>
 
 <div class="rune-filter-grid">
   <div class="rune-filter-col" data-tab="Rarity">
@@ -221,7 +248,7 @@ table.results th.col-step, table.results td.col-step {
 <div id="resultsWrap">
 <table class="results">
 <thead><tr>
-  <th class="col-step">Step</th><th>Rune</th><th>Effect</th><th>Material</th><th>Tags</th><th>Area</th>
+  <th class="col-step">Step</th><th>Rune</th><th>Resonance (R1 / R3 / R5 / R7)</th><th>Material</th><th>Tags</th><th>Area</th>
 </tr></thead>
 <tbody id="tbody"></tbody>
 </table>
@@ -372,21 +399,25 @@ function render() {
     //   R7 = mat.r7. Copper exception: Copper R7 is "Base effect +200%" so
     //        the UI doubles digits a 2nd time (effective ×4 vs R1).
     const mat = matByName[r.material] || {};
+    const r1Text = r.effect || "—";
     const r3Text = mat.r3 || "—";
     const r5Text = doubleDigits(r.effect || "");
-    const r7Text = (mat.id === "CZ00001_003")
+    const isCopper = mat.id === "CZ00001_003";
+    const r7Text = isCopper
       ? doubleDigits(doubleDigits(r.effect || ""))   // Copper: digits doubled twice
       : (mat.r7 || "—");
-    const ladder =
-      "Resonance ladder (stack 1 / 3 / 5 / 7 same-material runes):\n\n" +
-      "R1 (1 stack): " + (r.effect || "—") + "\n" +
-      "R3 (3 stacks): " + r3Text + "\n" +
-      "R5 (5 stacks): " + r5Text + "\n" +
-      "R7 (7 stacks): " + r7Text;
-    return '<tr title="' + escapeHtml(ladder) + '">' +
+    const r7Note = isCopper ? '<span class="copper-note">×4 vs R1</span>' : "";
+    const ladderHtml =
+      '<div class="rune-ladder">' +
+        '<div class="rune-ladder-row"><span class="rune-tier r1">R1</span><span class="rune-text">' + escapeHtml(r1Text) + '</span></div>' +
+        '<div class="rune-ladder-row"><span class="rune-tier r3">R3</span><span class="rune-text">' + escapeHtml(r3Text) + '</span></div>' +
+        '<div class="rune-ladder-row"><span class="rune-tier r5">R5</span><span class="rune-text">' + escapeHtml(r5Text) + '</span></div>' +
+        '<div class="rune-ladder-row"><span class="rune-tier r7">R7</span><span class="rune-text">' + escapeHtml(r7Text) + r7Note + '</span></div>' +
+      '</div>';
+    return '<tr>' +
       '<td class="col-step"><span class="badge ' + stepCls + '">' + escapeHtml(stepLabel) + '</span></td>' +
       '<td class="col-name">' + escapeHtml(r.name || "") + '<br><span class="col-rune-id">' + escapeHtml(r.id) + '</span></td>' +
-      '<td class="rune-effect">' + escapeHtml(r.effect || "") + '</td>' +
+      '<td class="rune-effect">' + ladderHtml + '</td>' +
       '<td>' + matHtml + '</td>' +
       '<td><div class="rune-tags">' + tagsHtml + '</div></td>' +
       '<td class="rune-area">' + areaHtml + '</td>' +
