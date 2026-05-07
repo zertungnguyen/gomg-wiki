@@ -79,7 +79,7 @@
 <td><strong>3</strong></td>
 </tr>
 <tr>
-<td>Effect (base value at L1)</td>
+<td>Effect (L1 base)</td>
 <td>Apply 1 more <a href="../keywords/mechanic-stacks.html">stack</a> of <a href="../keywords/instant-inspire.html">Inspire</a>.</td>
 </tr>
 <tr>
@@ -92,9 +92,38 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p><em>Effect text is L1 base value. Higher levels usually scale linearly; verify in-game.</em></p>
-</blockquote>
+<p><strong>Tier ladder</strong> <em>(verified formula: digit × (level + 1) per <code>decompiled_relic.cs:240-258 RelicsDataItem.GetDescription</code>)</em></p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Multiplier</th>
+<th>Filled effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L0 (☆)</td>
+<td>×1</td>
+<td>Apply 1 more <a href="../keywords/mechanic-stacks.html">stack</a> of <a href="../keywords/instant-inspire.html">Inspire</a>.</td>
+</tr>
+<tr>
+<td>L1 (★)</td>
+<td>×2</td>
+<td>Apply 2 more <a href="../keywords/mechanic-stacks.html">stack</a> of <a href="../keywords/instant-inspire.html">Inspire</a>.</td>
+</tr>
+<tr>
+<td>L2 (★★)</td>
+<td>×3</td>
+<td>Apply 3 more <a href="../keywords/mechanic-stacks.html">stack</a> of <a href="../keywords/instant-inspire.html">Inspire</a>.</td>
+</tr>
+<tr>
+<td>L3 (★★★)</td>
+<td>×4</td>
+<td>Apply 4 more <a href="../keywords/mechanic-stacks.html">stack</a> of <a href="../keywords/instant-inspire.html">Inspire</a>.</td>
+</tr>
+</tbody>
+</table>
 <h2>Stats</h2>
 <h3>Base Stats (L1, no modifiers)</h3>
 <table>

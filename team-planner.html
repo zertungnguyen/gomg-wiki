@@ -259,6 +259,13 @@ button.ghost{padding:5px 10px;font-size:10px;background:transparent}
 .activities-block .ae-row .ae-cond{color:var(--dim);font-size:10px;font-style:italic;display:block;margin-top:1px}
 .activities-block .ae-row a.kw{color:#9bbcff;text-decoration:none;border-bottom:1px dashed #9bbcff66}
 .activities-block .ae-row a.kw:hover{color:#bdd1ff;border-bottom-color:#bdd1ff}
+/* Insight modifier breakdown shown inline as `base+delta=total` */
+.activities-block .ae-row .ae-base{color:var(--text);font-weight:600}
+.activities-block .ae-row .ae-plus{color:#2ecc71;font-weight:600;margin:0 2px}
+.activities-block .ae-row .ae-eq{color:var(--dim);margin:0 2px}
+.activities-block .ae-row .ae-total{color:var(--accent);font-weight:700}
+.activities-block .ae-row .ae-insight-tag{display:inline-block;margin-left:6px;font-size:9px;color:#2ecc71;background:#2ecc7115;border:1px solid #2ecc7144;border-radius:3px;padding:1px 5px;cursor:help;letter-spacing:0.3px;font-family:'Chakra Petch',sans-serif;text-transform:none}
+.activities-block .ae-row .ae-insight-tag.off{color:var(--dim);background:transparent;border-color:var(--border)}
 .activities-block .activities-riders{margin-top:8px;padding-top:6px;border-top:1px solid #1a1a24}
 .activities-block .activities-riders .ar-label{font-size:9px;color:var(--dim);font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
 .activities-block .activities-riders ul{margin:0;padding-left:18px;color:var(--dim);font-size:11px;line-height:1.4}
@@ -1645,10 +1652,14 @@ function renderActivities(unitId){
   ).join('');
   block.appendChild(meta);
 
-  // Atomized effects
+  // Atomized effects (with optional Insight modifier surfaced inline).
+  // Insight level is read from state.insightStars[relicId] — same map the
+  // Insight section uses, so toggling stars there updates this display live
+  // on the next renderAll() pass.
   if((a.effects || []).length){
     const eff = document.createElement('div');
     eff.className = 'activities-effects';
+    const stars = state.insightStars || {};
     a.effects.forEach((ef, i) => {
       const row = document.createElement('div');
       row.className = 'ae-row';
@@ -1657,7 +1668,32 @@ function renderActivities(unitId){
       num.textContent = `1.${i+1}`;
       const txt = document.createElement('span');
       txt.className = 'ae-text';
-      txt.innerHTML = formatActivityEffect(ef);
+      // Insight modifier delta (base × level for this effect's tier).
+      let insightDelta = 0;
+      let insightTooltip = '';
+      const im = ef.insightModifier;
+      if(im){
+        const lvl = stars[im.relicId];
+        if(typeof lvl === 'number' && lvl >= 0){
+          insightDelta = im.base * lvl;
+          insightTooltip = `${im.relicName} L${lvl} → ${im.base}×${lvl+1} = +${im.base * (lvl+1)} on top of activity base`;
+        } else {
+          insightTooltip = `${im.relicName} (toggle the insight star to apply +${im.base}/star modifier)`;
+        }
+      }
+      txt.innerHTML = formatActivityEffect(ef, insightDelta);
+      if(im){
+        const tag = document.createElement('span');
+        tag.className = 'ae-insight-tag';
+        tag.title = insightTooltip;
+        if(insightDelta > 0){
+          tag.textContent = `+${insightDelta} from ${im.relicName}`;
+        } else {
+          tag.textContent = `Insight: ${im.relicName} (off)`;
+          tag.classList.add('off');
+        }
+        txt.appendChild(tag);
+      }
       if(ef.condition){
         const c = document.createElement('span');
         c.className = 'ae-cond';
@@ -1692,32 +1728,44 @@ function renderActivities(unitId){
 }
 
 // Render one activity effect as inline HTML. Status keywords link to the
-// per-keyword wiki page on this site (../keywords/<slug>.html style — but
-// since the team planner is at site root and keyword pages live under
-// keywords/, the relative href is keywords/<slug>.html).
-function formatActivityEffect(ef){
+// per-keyword wiki page (keywords/<slug>.html). When `insightDelta > 0`,
+// the primary number is rendered as `<base>+<delta>=<total>` so the player
+// sees the math instead of a single mystery number.
+function formatActivityEffect(ef, insightDelta){
   const v = ef.value;
   const k = ef.kind;
-  const sign = (typeof v === 'number' && v >= 0) ? '+' : '';
+  const d = (typeof insightDelta === 'number' && insightDelta > 0) ? insightDelta : 0;
+  const fmt = (base, suffix) => {
+    if(d === 0) return `<strong>${base}${suffix}</strong>`;
+    const tot = (typeof v === 'number') ? v + d : base;
+    return `<span class="ae-base">${base}</span>` +
+           `<span class="ae-plus">+${d}</span>` +
+           `<span class="ae-eq">=</span>` +
+           `<strong class="ae-total">${tot}${suffix}</strong>`;
+  };
   switch(k){
     case 'status': {
       const slug = e(ef.keyword || '');
       const nm = e(ef.status || '');
-      return `<strong>+${v}</strong> <a class="kw" href="keywords/${slug}.html">${nm}</a>`;
+      const link = ` <a class="kw" href="keywords/${slug}.html">${nm}</a>`;
+      return fmt(`+${v}`, '') + link;
     }
-    case 'heal':              return `<strong>+${v} HP</strong>`;
-    case 'damage':            return `<strong>${v} DMG</strong>`;
+    case 'heal':              return fmt(`+${v}`, ' HP');
+    case 'damage':            return fmt(`${v}`, ' DMG');
     case 'damage-multi':      return `<strong>${e(String(ef.hits))}×${e(String(ef.per_hit))} DMG</strong> <span style="color:var(--dim);font-size:10px">(${v} total)</span>`;
-    case 'extra-action':      return `<strong>+${v} Extra Action</strong>`;
-    case 'counter-range':     return `<strong>+${v} Counter Range</strong>`;
-    case 'counter-count':     return `<strong>+${v} Counter Attacks</strong>`;
-    case 'followup-count':    return `<strong>+${v} Follow-Up Attacks</strong>`;
+    case 'extra-action':      return fmt(`+${v}`, ' Extra Action');
+    case 'counter-range':     return fmt(`+${v}`, ' Counter Range');
+    case 'counter-count':     return fmt(`+${v}`, ' Counter Attacks');
+    case 'followup-count':    return fmt(`+${v}`, ' Follow-Up Attacks');
     case 'mana-action-reduce':return `<strong>-${v} Action Mana</strong>`;
     case 'mana-loss':         return `<strong>-${v} Mana</strong>`;
     case 'mana-drain':        return `<strong>-${v} Mana</strong> <span style="color:var(--dim);font-size:10px">(drain)</span>`;
-    case 'basic-attack-targets': return `<strong>+${v} Basic Attack Targets</strong>`;
-    case 'basic-attack-dmg':  return `<strong>+${v} Basic Attack DMG</strong>`;
-    case 'stat':              return `<strong>${sign}${v} ${e(ef.stat || '')}</strong>`;
+    case 'basic-attack-targets': return fmt(`+${v}`, ' Basic Attack Targets');
+    case 'basic-attack-dmg':  return fmt(`+${v}`, ' Basic Attack DMG');
+    case 'stat': {
+      const sign = (typeof v === 'number' && v >= 0) ? '+' : '';
+      return fmt(`${sign}${v}`, ` ${e(ef.stat || '')}`);
+    }
     default:                  return `<strong>${e(ef.text || '?')}</strong>`;
   }
 }
@@ -2102,17 +2150,21 @@ function pipsHTML(currentStar, fnName, args){
   return html;
 }
 
-// Apply insight star bump: bump first integer in the effect text by `level`.
-// Per game mechanic: each star adds +1 to the value (regardless of which value).
+// Apply insight star bump: scale first integer in the effect text by (level+1).
+// Verified formula from MainScripts.dll RelicsDataItem.GetDescription:
+//   `int.Parse(text) * (num + 1)` where num = star ∈ [0..MaxLevel=3]
+// → tier 0/1/2/3 multipliers = ×1/×2/×3/×4.
+// (The earlier additive `base + level` happened to match for base=1 relics
+// but diverges for the 60/164 insight relics with base > 1.)
 // level === null → return effect unchanged with "(off)" sentinel handled by caller.
 function applyInsightStar(effect, level){
   if(level == null) return effect;
-  if(typeof level !== 'number' || level === 0) return effect;
+  if(typeof level !== 'number') return effect;
   let replaced = false;
   return effect.replace(/(\d+)/, (m, n) => {
     if(replaced) return m;
     replaced = true;
-    return String(parseInt(n) + level);
+    return String(parseInt(n) * (level + 1));
   });
 }
 
