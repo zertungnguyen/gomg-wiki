@@ -73,6 +73,12 @@ td:nth-child(2){text-align:left}
 .mode-panel .shard-input-group input:focus{outline:none;border-color:var(--accent)}
 .mode-panel .shard-input-group .star-lbl{font-family:'Chakra Petch',sans-serif;font-weight:600;color:var(--text);min-width:24px}
 .mode-panel .shard-help{flex-basis:100%;font-size:10px;color:var(--dim);font-style:italic;margin-top:2px}
+.mode-panel .panel-divider{width:1px;height:22px;background:var(--border);margin:0 4px}
+.mode-panel .metric-opt{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;border:1.5px solid var(--border);cursor:pointer;font-size:13px;color:var(--dim);transition:all .15s;user-select:none}
+.mode-panel .metric-opt input[type="radio"]{display:none}
+.mode-panel .metric-opt:hover{border-color:#555;color:var(--text)}
+.mode-panel .metric-opt.checked{color:var(--accent);background:#c9a24e18;border-color:var(--accent);font-weight:600}
+.mode-panel .metric-help{flex-basis:100%;font-size:10px;color:var(--dim);font-style:italic;margin-top:2px}
 </style>
 
 <style>
@@ -163,6 +169,11 @@ body > .wrap thead th { top: 0 !important; z-index: 5 !important; }
   <label class="tier-opt" data-tier="2"><input type="radio" name="targetTier" value="2"> 2★</label>
   <label class="tier-opt" data-tier="1"><input type="radio" name="targetTier" value="1"> 1★</label>
   <label class="tier-opt" data-tier="0"><input type="radio" name="targetTier" value="0"> 0★</label>
+  <span class="panel-divider"></span>
+  <span class="panel-label">% by</span>
+  <label class="metric-opt checked" data-metric="count"><input type="radio" name="unitMetric" value="count" checked> Pool count</label>
+  <label class="metric-opt" data-metric="weight"><input type="radio" name="unitMetric" value="weight"> Roll probability</label>
+  <span class="metric-help"><strong>Pool count</strong> = how dense the target tier is in the filtered pool (target-tier units / total units). <strong>Roll probability</strong> = the actual chance of pulling a target-tier unit when you do a daily-tag recruit, weighted per Step (S=10, A=100, B=1000, C=10000 — inverse rarity, see <code>visualise-session/mechanics/recruit-rates.md</code>).</span>
 </div>
 
 <div id="shardModePanel" class="mode-panel" style="display:none">
@@ -217,6 +228,12 @@ let available=[];
 let maxPicks=3;
 let mode = "unit";          // "unit" | "shard"
 let targetTier = 3;         // 3 / 2 / 1 / 0  (only used in unit mode)
+// Probability mode for Unit-Optimizer:
+//   "count"  — count(target tier) / total filtered units (uniform per unit)
+//   "weight" — weighted by Step pool weight (per CLAUDE.md gacha mechanics):
+//              the actual roll probability when daily-tag recruit picks a unit
+//              from the filtered subpool via raw weighted pick.
+let unitMetric = "count";
 // Defaults from visualise-session/mechanics/duplicate-shards.md — duplicate
 // recruit pulls auto-convert at S=50, A=10, B=2, C=1 (same numbers for Standard
 // and Alter pools; Alter pool adds an exchange-shop step on top of these).
@@ -232,11 +249,13 @@ function analyze(attrs){
   const m=UNITS.filter(u=>match(u,attrs));
   const t=m.length;
   const counts=[0,0,0,0]; // index by star: counts[3]=s3, counts[2]=s2, ...
+  const tierWeight=[0,0,0,0]; // sum of weights per tier in the filtered pool
   let totalWeight=0;
   let expShards=0;
   for(const u of m){
     counts[u.star]++;
     const w=STEP_WEIGHT[u.star];
+    tierWeight[u.star]+=w;
     totalWeight+=w;
   }
   if(totalWeight>0){
@@ -254,10 +273,19 @@ function analyze(attrs){
   return {
     attrs,
     total:t,
+    totalWeight,
     s3:counts[3], s2:counts[2], s1:counts[1], s0:counts[0],
     namesByTier,
     targetCount: counts[targetTier],
+    // Pool count percentage — what % of the filtered units belong to the
+    // target tier, ignoring the per-unit pull weight. Useful for quickly
+    // judging "filter density" but doesn't reflect the realistic odds of a
+    // single recruit pull resolving to a target-tier unit.
     targetPct: t>0 ? counts[targetTier]/t*100 : 0,
+    // Weight-based percentage — the actual roll probability when the
+    // daily-tag recruit picks a unit from the filtered subpool via the
+    // weighted-uniform path documented in mechanics/recruit-rates.md.
+    targetPctWeight: totalWeight>0 ? (tierWeight[targetTier] / totalWeight) * 100 : 0,
     expShards,
   };
 }
@@ -283,6 +311,14 @@ function setTargetTier(t){
   render();
 }
 
+function setUnitMetric(m){
+  unitMetric = m;
+  document.querySelectorAll('.mode-panel .metric-opt').forEach(el => {
+    el.classList.toggle('checked', el.dataset.metric === m);
+  });
+  render();
+}
+
 function setShardValue(tier, val){
   shardPerTier[tier] = (val >= 0 ? val : 0);
   render();
@@ -293,12 +329,19 @@ function buildHeaderRow(){
   const headers = ['#','Combo'];
   if(mode === 'shard'){
     headers.push('Exp. shards/pull');
+  }else if(unitMetric === 'weight'){
+    headers.push(`${TIER_LABEL[targetTier]} roll %`);
   }else{
     headers.push(`${TIER_LABEL[targetTier]} %`);
   }
   headers.push('3★','2★','1★','0★','Total');
   const row = document.getElementById('thead-row');
   row.innerHTML = headers.map(h => `<th>${h}</th>`).join('');
+}
+
+// Pick the active percentage value for unit-mode (count vs weight).
+function unitPct(r){
+  return unitMetric === 'weight' ? r.targetPctWeight : r.targetPct;
 }
 
 function render(){
@@ -325,22 +368,30 @@ function render(){
   if(mode === 'shard'){
     results.sort((a,b)=>b.expShards-a.expShards || b.total-a.total);
   }else{
-    results.sort((a,b)=>b.targetPct-a.targetPct || b.targetCount-a.targetCount);
+    results.sort((a,b)=>unitPct(b)-unitPct(a) || b.targetCount-a.targetCount);
   }
   const best=results[0];
   document.getElementById("emptyMsg").style.display="none";
   document.getElementById("tblWrap").style.display="";
   document.getElementById("bestBox").style.display="";
-  // Best-pick display adapts per mode.
+  // Best-pick display adapts per mode + unitMetric.
   if(mode === 'shard'){
     document.getElementById("bestLabel").textContent = "Best pick (Shard-Optimizer)";
     document.getElementById("bestPct").textContent = best.expShards.toFixed(2);
     document.getElementById("bestInfo").textContent = (best.attrs.length ? best.attrs.join(" + ") : "None") + ` → ${best.expShards.toFixed(2)} shards/pull (pool: ${best.total} units)`;
   }else{
     const tl = TIER_LABEL[targetTier];
-    document.getElementById("bestLabel").textContent = `Best pick (Unit-Optimizer · target ${tl})`;
-    document.getElementById("bestPct").textContent = best.targetPct.toFixed(1)+"%";
-    document.getElementById("bestInfo").textContent = (best.attrs.length ? best.attrs.join(" + ") : "None") + ` → ${best.targetCount}× ${tl} / ${best.total} total`;
+    const isWeight = unitMetric === 'weight';
+    const pctVal = unitPct(best);
+    const pctText = pctVal.toFixed(isWeight ? 2 : 1) + "%";
+    const metricLabel = isWeight ? "roll %" : "pool %";
+    document.getElementById("bestLabel").textContent = `Best pick (Unit-Optimizer · target ${tl} · ${metricLabel})`;
+    document.getElementById("bestPct").textContent = pctText;
+    const altPct = isWeight ? best.targetPct : best.targetPctWeight;
+    const altLabel = isWeight ? "pool" : "roll";
+    document.getElementById("bestInfo").textContent =
+      (best.attrs.length ? best.attrs.join(" + ") : "None") +
+      ` → ${best.targetCount}× ${tl} / ${best.total} total (${altLabel}: ${altPct.toFixed(altLabel === 'roll' ? 2 : 1)}%)`;
   }
 
   const tbody=document.getElementById("tbody");
@@ -353,8 +404,14 @@ function render(){
     if(mode === 'shard'){
       mainCell = `<td class="s3">${r.expShards.toFixed(2)}</td>`;
     }else{
-      const pc = r.targetPct >= 40 ? "pct-hi" : r.targetPct >= 25 ? "pct-mid" : "pct-lo";
-      mainCell = `<td class="${pc}">${r.total ? r.targetPct.toFixed(1) : "—"}</td>`;
+      const pct = unitPct(r);
+      // Thresholds: count mode peaks much higher than weight mode (weight
+      // gives realistic-tiny S percentages e.g. 0.5%), so adjust per metric.
+      const pc = unitMetric === 'weight'
+        ? (pct >= 5 ? "pct-hi" : pct >= 1 ? "pct-mid" : "pct-lo")
+        : (pct >= 40 ? "pct-hi" : pct >= 25 ? "pct-mid" : "pct-lo");
+      const dec = unitMetric === 'weight' ? 2 : 1;
+      mainCell = `<td class="${pc}">${r.total ? pct.toFixed(dec) : "—"}</td>`;
     }
     // Highlight the target-tier count column in unit mode.
     const cellCls = (tier) => (mode === 'unit' && targetTier === tier) ? 'class="s-target-on"' : '';
@@ -397,6 +454,11 @@ document.querySelectorAll('.mode-toggle input[name="optMode"]').forEach(r => {
 // Target-tier sub-radio (Unit mode)
 document.querySelectorAll('.mode-panel input[name="targetTier"]').forEach(r => {
   r.addEventListener('change', ev => { if(ev.target.checked) setTargetTier(parseInt(ev.target.value)); });
+});
+
+// Probability-mode sub-radio (Unit mode: count vs weight)
+document.querySelectorAll('.mode-panel input[name="unitMetric"]').forEach(r => {
+  r.addEventListener('change', ev => { if(ev.target.checked) setUnitMetric(ev.target.value); });
 });
 
 // Shard-per-tier inputs (Shard mode)
