@@ -1321,13 +1321,43 @@ function restoreScrollPositions(){
   });
 }
 
+// Coalesce repeated renderTeam calls (e.g. while dragging the level slider)
+// to at most 1 every 80ms. Without this, oninput fires 60-100x/sec →
+// 60-100x aggregateTeam() per second → page locks up because aggregateTeam
+// runs extractStacking across all equipped bonds/talents/runes/insights.
+//
+// Strategy: leading-edge fire + trailing-edge flush after cooldown.
+//   - First call after idle: fires immediately (instant feedback).
+//   - Subsequent calls within 80ms window: coalesce, schedule one trailing
+//     fire after cooldown so the FINAL slider position is reflected even
+//     if user releases inside the window.
+const RENDER_MIN_INTERVAL_MS = 80;
+let _lastRenderTs = 0;
+let _renderPending = false;
+function scheduleRender(){
+  const now = performance.now();
+  const elapsed = now - _lastRenderTs;
+  if(elapsed >= RENDER_MIN_INTERVAL_MS){
+    _lastRenderTs = now;
+    renderTeam();
+    return;
+  }
+  if(_renderPending) return;
+  _renderPending = true;
+  setTimeout(() => {
+    _renderPending = false;
+    _lastRenderTs = performance.now();
+    renderTeam();
+  }, RENDER_MIN_INTERVAL_MS - elapsed);
+}
+
 function renderTeam(){
   saveScrollPositions();
   const grid = $('teamGrid');
   grid.innerHTML = '';
   const aggr = aggregateTeam();
   state.mains.forEach((m, i) => {
-    grid.appendChild(renderUnitPanel(m, i, aggr.perUnit[i]));
+    grid.appendChild(renderUnitPanel(m, i, aggr.perUnit[i], aggr));
   });
   renderInsightPool(aggr);
   renderTeamAggregate(aggr);
@@ -1445,7 +1475,7 @@ function renderInsightPool(aggr){
   window._poolToggleActive = () => { stored.onlyActive = !stored.onlyActive; renderInsightPool(aggr); };
 }
 
-function renderUnitPanel(main, idxN, pu){
+function renderUnitPanel(main, idxN, pu, aggr){
   const panel = document.createElement('div');
   panel.className = 'unit-panel';
   const u = main.unitId ? idx.unitById.get(main.unitId) : null;
@@ -1505,11 +1535,10 @@ function renderUnitPanel(main, idxN, pu){
       : 0;
     const ultReadyR1 = pu.raw.StartMana >= pu.raw.MaxMana;
     // Action-order rank among team — SPD descending; ult-ready acts first.
-    const teamPus = state.mains.map((mm, idx2) => {
-      if(idx2 === idxN) return null;
-      return computeUnitStats(mm);
-    });
-    teamPus[idxN] = pu;
+    // Use the already-computed `aggr.perUnit` (passed down from renderTeam)
+    // so we don't re-run computeUnitStats × 3 per panel × 3 panels = 9 extras
+    // per render. The earlier per-panel-recompute was a major slider-drag cost.
+    const teamPus = (aggr && aggr.perUnit) ? aggr.perUnit : [pu];
     const rankList = teamPus
       .map((tpu, j) => tpu && tpu.unit ? {
         j, spd: tpu.raw.SPD,
@@ -1548,6 +1577,13 @@ function renderUnitPanel(main, idxN, pu){
 
     // Level slider — drives GetLevelAttr scaling. Default 80; clamp 1..100.
     // Mirrors decompile RoleDataItem.GetLevelAttr (line 37466).
+    //
+    // Perf split:
+    //   - oninput fires on every drag tick (60-100/sec). Update only the
+    //     numeric label inline + schedule a coalesced renderTeam via rAF.
+    //     saveState() is intentionally NOT called here — localStorage write
+    //     would multiply IO during drag.
+    //   - onchange fires once on release. Persist state then.
     const lvlRow = document.createElement('div');
     lvlRow.className = 'level-row';
     lvlRow.innerHTML = `
@@ -1556,13 +1592,14 @@ function renderUnitPanel(main, idxN, pu){
       <span class="lvl-val" data-main-idx="${idxN}">${pu.level}</span>`;
     panel.appendChild(lvlRow);
     const slider = lvlRow.querySelector('.lvl-slider');
+    const lvlVal = lvlRow.querySelector('.lvl-val');
     slider.oninput = (ev) => {
       const v = Math.max(1, Math.min(100, parseInt(ev.target.value, 10) || 1));
       state.mains[idxN].level = v;
-      lvlRow.querySelector('.lvl-val').textContent = v;
-      saveState();
-      renderTeam();
+      lvlVal.textContent = v;        // cheap inline update
+      scheduleRender();              // coalesced full re-render via rAF
     };
+    slider.onchange = () => { saveState(); };
 
     // Raw stats — split into 2 sections (Showing / Hidden). Each row exposes
     // the 4-layer breakdown from our decompiled stat pipeline:
