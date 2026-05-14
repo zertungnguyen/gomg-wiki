@@ -1065,6 +1065,35 @@ function extractStacking(text){
   while((m = reE3.exec(text)) !== null){
     out.push({keyword:MANA_QUAL[m[2].charAt(0).toUpperCase()+m[2].slice(1).toLowerCase()], amount:-parseInt(m[1]), kind:'stat'});
   }
+  // X. Verb-led STAT additions (extend the bond/insight coverage gap):
+  //   X1. "Gain N <stat>"   — bonds like JN00001 Sharp tier 1: "Gain 1 ATK."
+  //   X2. "Restore N <stat>" / "Grant N <stat>" — rarer but seen in some talents
+  //   X3. "<stat> +N" / "<stat> -N" — Insight relic format ("STR +2.")
+  //   X4. "Take N less <stat>" / "Receive +N <stat>" — DR / shield-like terms
+  // Filtered against STAT_TEXT_TO_KEY to avoid false positives on non-stat words.
+  const STAT_TOKEN_REGEX_BODY = 'STR|Strength|SPI|Spirit|AGI|Agility|HP|Max HP|SPD|Speed|Tough|Toughness|Luck|LUK|ATK|DEF|Weakness|Max Mana|Starting Mana|Action Mana|Hit Mana';
+  const reX1 = new RegExp(`\\b(?:Gain|Restore|Grant)\\s+(\\d+)\\s+(${STAT_TOKEN_REGEX_BODY})(?![A-Za-z])`, 'g');
+  while((m = reX1.exec(text)) !== null){
+    const n = parseInt(m[1]); const kw = m[2];
+    if(kw in STAT_TEXT_TO_KEY){
+      out.push({keyword:STAT_TEXT_TO_KEY[kw], amount:n, kind:'stat'});
+    }
+  }
+  const reX3pos = new RegExp(`\\b(${STAT_TOKEN_REGEX_BODY})\\s+\\+\\s*(\\d+)(?![%\\w])`, 'g');
+  while((m = reX3pos.exec(text)) !== null){
+    const kw = m[1]; const n = parseInt(m[2]);
+    if(kw in STAT_TEXT_TO_KEY){
+      out.push({keyword:STAT_TEXT_TO_KEY[kw], amount:n, kind:'stat'});
+    }
+  }
+  const reX3neg = new RegExp(`\\b(${STAT_TOKEN_REGEX_BODY})\\s+[-−]\\s*(\\d+)(?![%\\w])`, 'g');
+  while((m = reX3neg.exec(text)) !== null){
+    const kw = m[1]; const n = parseInt(m[2]);
+    if(kw in STAT_TEXT_TO_KEY){
+      out.push({keyword:STAT_TEXT_TO_KEY[kw], amount:-n, kind:'stat'});
+    }
+  }
+
   // F. Follow-Up DMG modifiers — distinct phrasing from generic stat patterns:
   //   F1. "Deal +N Follow-Up DMG"   (BD40102, BD10403, talents — leading "+" form)
   //   F2. "Deal N more Follow-Up DMG"  (JN01502 bond, XD insight relics — no "+" but "more")
@@ -1113,13 +1142,31 @@ function aggregateTeam(){
   const stackMap = new Map(); // key=`${kind}:${keyword}` → {kind, keyword, amount, sources:[{label,amount}]}
 
   // Stat keys whose parsed-from-text deltas ALSO roll into the owning unit's raw stat
-  // (and thus into teamTotal). Most stat-mods stay display-only in the stacking panel
-  // (see computeUnitStats comment about partial-parse risks); these are the exceptions
-  // where the parse coverage is solid enough to trust the rolled total.
-  const STATS_ROLLED_INTO_RAW = new Set(['FollowUpDmg']);
+  // (and thus into teamTotal). After the stat-pipeline overhaul, all canonical stats
+  // (STR/SPI/AGI/HP/SPD/Tough/Luck + Mana variants + FollowUpDmg + ATK/DEF/WEAK) are
+  // trusted enough to roll up — modifier-pass contributions from bond active tiers,
+  // equipped talents, insight relics, supports, runes, and own kit all get summed
+  // into the unit's FINAL raw stats. Mirrors the in-game ChangeAttrFirst/Second/Final
+  // pipeline at the SUM level (we still can't reproduce 3-pass ordering for
+  // multiplicative effects without further effect-text parsing).
+  const STATS_ROLLED_INTO_RAW = new Set([
+    'STR','SPI','AGI','HP','SPD','Tough','Luck',
+    'StartMana','MaxMana','ActMana','HitMana',
+    'ATK','DEF','WEAK','FollowUpDmg',
+  ]);
   const perMainStatDelta = state.mains.map(() => ({}));
+  // Per-main, per-source-category stat delta breakdown. Lets renderUnitPanel
+  // show "+N bond · +N talent · +N insight" alongside the base/level/gear/★
+  // breakdown produced by computeUnitStats. Category list mirrors the addStack
+  // call sites in this aggregation.
+  const SRC_CATS = ['own','talent','support','bond','rune','insight'];
+  const perMainStatBySrc = state.mains.map(() => {
+    const o = {};
+    for(const c of SRC_CATS) o[c] = {};
+    return o;
+  });
 
-  function addStack(items, srcLabel, srcText, mainIdx){
+  function addStack(items, srcLabel, srcText, mainIdx, srcCat){
     const triggered = detectTriggered(srcText);
     for(const it of items){
       const key = `${it.kind}:${it.keyword}`;
@@ -1127,10 +1174,14 @@ function aggregateTeam(){
       const ent = stackMap.get(key);
       ent.amount += it.amount;
       ent.sources.push({label:srcLabel, amount:it.amount, triggered});
-      // Per-main roll-up for the trusted-parse stat keys.
+      // Per-main roll-up + per-source breakdown for trusted-parse stat keys.
       if(it.kind === 'stat' && STATS_ROLLED_INTO_RAW.has(it.keyword) && mainIdx !== undefined && mainIdx !== null){
         const d = perMainStatDelta[mainIdx];
         d[it.keyword] = (d[it.keyword] || 0) + it.amount;
+        if(srcCat && SRC_CATS.includes(srcCat)){
+          const ds = perMainStatBySrc[mainIdx][srcCat];
+          ds[it.keyword] = (ds[it.keyword] || 0) + it.amount;
+        }
       }
     }
   }
@@ -1143,14 +1194,14 @@ function aggregateTeam(){
       for(const k of ['perk','trait','title']){
         const sid = u[k]; if(!sid) continue;
         const ss = DATA.subskills[sid]; if(!ss) continue;
-        addStack(extractStacking(ss.effect), `${tag} · ${k[0].toUpperCase()+k.slice(1)} (own)`, ss.effect, i);
+        addStack(extractStacking(ss.effect), `${tag} · ${k[0].toUpperCase()+k.slice(1)} (own)`, ss.effect, i, 'own');
       }
     }
     // talents
     m.talents.forEach((tid, ti) => {
       if(!tid) return;
       const t = DATA.talents[tid]; if(!t) return;
-      addStack(extractStacking(t.effect), `${tag} · Talent #${ti+1}: ${t.name}`, t.effect, i);
+      addStack(extractStacking(t.effect), `${tag} · Talent #${ti+1}: ${t.name}`, t.effect, i, 'talent');
     });
     // supports — each support contributes the SOURCE unit's named passive's effect
     for(const k of ['Trait','Title','Perk']){
@@ -1158,19 +1209,19 @@ function aggregateTeam(){
       const srcU = idx.unitById.get(srcUnitId); if(!srcU) continue;
       const sid = srcU[k.toLowerCase()]; if(!sid) continue;
       const ss = DATA.subskills[sid]; if(!ss) continue;
-      addStack(extractStacking(ss.effect), `${tag} · Support ${k} ← ${srcU.alter?srcU.alter+' ':''}${srcU.name}`, ss.effect, i);
+      addStack(extractStacking(ss.effect), `${tag} · Support ${k} ← ${srcU.alter?srcU.alter+' ':''}${srcU.name}`, ss.effect, i, 'support');
     }
     // active bond tiers
     for(const ba of (perUnit[i].bondsActive || [])){
       if(!ba.activeTier) continue;
-      addStack(extractStacking(ba.activeTier.effect), `${tag} · Bond [${ba.bond.name}] ${ba.count}pc`, ba.activeTier.effect, i);
+      addStack(extractStacking(ba.activeTier.effect), `${tag} · Bond [${ba.bond.name}] ${ba.count}pc`, ba.activeTier.effect, i, 'bond');
     }
     // rune effects (any rune at star >= 0 contributes its description)
     (m.runes || []).forEach((rs, ri) => {
       if(!rs) return;
       const r = DATA.runes ? DATA.runes[rs.id] : null;
       if(!r) return;
-      addStack(extractStacking(r.desc || ''), `${tag} · Rune #${ri+1}: ${r.name}${rs.star?' '+'★'.repeat(rs.star):''}`, r.desc || '', i);
+      addStack(extractStacking(r.desc || ''), `${tag} · Rune #${ri+1}: ${r.name}${rs.star?' '+'★'.repeat(rs.star):''}`, r.desc || '', i, 'rune');
     });
   });
 
@@ -1196,7 +1247,7 @@ function aggregateTeam(){
         const u2 = idx.unitById.get(state.mains[j].unitId);
         const tag2 = u2.alter ? `${u2.alter} ${u2.name}` : u2.name;
         const lvlLabel = level === 0 ? '☆' : '★'.repeat(level);
-        addStack(extractStacking(boostedEffect), `${tag2} · Insight ${lvlLabel}: ${ins.name}`, boostedEffect, j);
+        addStack(extractStacking(boostedEffect), `${tag2} · Insight ${lvlLabel}: ${ins.name}`, boostedEffect, j, 'insight');
       }
     }
   }
@@ -1210,6 +1261,12 @@ function aggregateTeam(){
     for(const k in d){
       perUnit[i].raw[k] = (perUnit[i].raw[k] || 0) + d[k];
     }
+    // Re-apply LegalTrim AFTER modifier deltas (decompile order: trim is the
+    // very last step in GetRoleAttr, AFTER ChangeAttrFinal pass).
+    legalTrim(perUnit[i].raw);
+    // Stash per-source breakdown for renderUnitPanel stat-row display.
+    perUnit[i].sources = perUnit[i].sources || {};
+    perUnit[i].sources.mod = perMainStatBySrc[i];
   }
   for(const pu of perUnit){
     for(const k in pu.raw){
@@ -1451,7 +1508,10 @@ function renderUnitPanel(main, idxN, pu){
     const stats = document.createElement('div');
     stats.className = 'stat-block';
     const baseSrc = pu.sources.base, lvlSrc = pu.sources.level,
-          gearBase = pu.sources.gear, gearStar = pu.sources.gearStar;
+          gearBase = pu.sources.gear, gearStar = pu.sources.gearStar,
+          mod = pu.sources.mod || {};
+    // Modifier source labels — short single-letter prefix keeps row compact.
+    const MOD_LABELS = {own:'kit', talent:'tal', support:'sup', bond:'bond', rune:'rune', insight:'ins'};
     const renderRow = (k) => {
       const total = pu.raw[k];
       const baseV = baseSrc[k] || 0;
@@ -1463,8 +1523,18 @@ function renderUnitPanel(main, idxN, pu){
       if(lvlV)  breakdown.push(`+${lvlV} lvl`);
       if(gearV) breakdown.push(`+${gearV} gear`);
       if(starV) breakdown.push(`+${starV} ★`);
-      const derived = total - baseV - lvlV - gearV - starV;
-      if(derived !== 0) breakdown.push(`${derived>0?'+':''}${derived} other`);
+      // Per-modifier-source contributions (parsed from effect text — partial
+      // coverage). Each non-zero category gets its own pill.
+      let modSum = 0;
+      for(const cat of ['own','talent','support','bond','rune','insight']){
+        const v = mod[cat]?.[k] || 0;
+        if(v){
+          breakdown.push(`${v>0?'+':''}${v} ${MOD_LABELS[cat]}`);
+          modSum += v;
+        }
+      }
+      const derived = total - baseV - lvlV - gearV - starV - modSum;
+      if(derived !== 0) breakdown.push(`${derived>0?'+':''}${derived} ⚠`);
       return `<div class="stat-row">
         <span class="label">${STAT_LABEL[k] || k}</span>
         <span class="val">${total}<span class="delta">${breakdown.length?` (${breakdown.join(' · ')})`:''}</span></span>
@@ -1473,7 +1543,7 @@ function renderUnitPanel(main, idxN, pu){
     const showingRows = SHOWING_STATS.map(renderRow).join('');
     const hiddenRows  = HIDDEN_STATS.map(renderRow).join('');
     stats.innerHTML =
-      `<div class="stat-section-header">Showing Stats <span class="formula-hint">(base+lvl+gear+★ — modifier passes via bonds/talents/insight shown below)</span></div>` +
+      `<div class="stat-section-header">Showing Stats <span class="formula-hint">base + lvl + gear + ★ + mod (kit/tal/sup/bond/rune/ins). See <a href="mechanics/stat-calculation.html" style="color:var(--accent)">stat-calculation</a> for pipeline.</span></div>` +
       showingRows +
       `<div class="stat-section-header" style="margin-top:8px">Hidden Stats</div>` +
       hiddenRows;
