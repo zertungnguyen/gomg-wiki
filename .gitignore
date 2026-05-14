@@ -11,3 +11,10 @@ desktop.ini
 *.log
 *.tmp
 *.bak
+
+# Token-bearing files (never commit)
+playerprefs*
+server_gameconfig*
+*.flow
+.mitmproxy/
+fetch_gameconfig.py
