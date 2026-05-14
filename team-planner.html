@@ -243,6 +243,15 @@ button.ghost{padding:5px 10px;font-size:10px;background:transparent}
 .stat-block .label{color:var(--dim);font-family:'Chakra Petch',sans-serif;letter-spacing:0.5px;font-size:12px;text-transform:uppercase;flex-shrink:0}
 .stat-block .val{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:14px;color:var(--text);white-space:nowrap}
 .stat-block .val .delta{color:var(--accent);font-size:11px;margin-left:3px;font-weight:500}
+.stat-block .formula-hint{font-family:'Noto Sans',sans-serif;font-size:9px;font-weight:400;color:var(--dim);text-transform:none;letter-spacing:0;margin-left:6px}
+
+/* Level slider row — drives GetLevelAttr scaling per unit */
+.level-row{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--card2);border-radius:6px;margin-top:6px}
+.level-row .label{font-family:'Chakra Petch',sans-serif;font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
+.level-row .lvl-slider{flex:1;height:4px;cursor:pointer;-webkit-appearance:none;background:var(--border);border-radius:2px;outline:none}
+.level-row .lvl-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);cursor:pointer;border:none}
+.level-row .lvl-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--accent);cursor:pointer;border:none}
+.level-row .lvl-val{font-family:'Chakra Petch',sans-serif;font-size:14px;font-weight:700;color:var(--accent);min-width:30px;text-align:right}
 /* === Activities (active skill) block === */
 .activities-block{background:var(--card2);border-radius:6px;padding:10px 12px;margin-top:6px}
 .activities-block .activities-section-header{font-family:'Chakra Petch',sans-serif;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--accent);padding-bottom:3px;margin-bottom:6px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px}
@@ -482,13 +491,14 @@ button.ghost{padding:5px 10px;font-size:10px;background:transparent}
     <a href="search-talent.html">Search · Talents</a>
     <a href="search-gear.html">Search · Gear</a>
     <a href="search-runes.html">Search · Runes</a>
+    <a href="mechanics/index.html">Mechanics</a>
     <a href="news.html">News</a>
   </nav>
 </aside>
 
 <div class="wrap">
   <h1>🛡️ Team Planner</h1>
-  <div class="sub">Guild of Monster Girls · 3-unit build · stat &amp; status stacking display</div>
+  <div class="sub">Guild of Monster Girls · 3-unit build · stat pipeline (base+lvl+gear+★) + bond/talent/insight stacking display · v1.1.1.0</div>
 
   <div id="loading" class="warn-banner">Loading team-planner-data.js...</div>
 
@@ -532,10 +542,11 @@ button.ghost{padding:5px 10px;font-size:10px;background:transparent}
 </div>
 
 <div class="footer">
-  Datamine: Guild of Monster Girls v1.0.0.9 · Internal GMG Wiki tooling.
+  Datamine: Guild of Monster Girls v1.1.1.0 · server-canonical data · Internal GMG Wiki tooling.
+  Stat formula reverse-engineered from <code>RoleHelper.GetRoleAttr</code> — see <a href="mechanics/stat-calculation.html" style="color:var(--accent)">mechanics/stat-calculation</a>.
 </div>
 
-<script src="team-planner-data.js?v=79be46e03d"></script>
+<script src="team-planner-data.js?v=ee2f2b9fdd"></script>
 <script>
 'use strict';
 
@@ -627,17 +638,23 @@ const GEAR_FILTER_CATEGORIES = {
 function emptyMain(){
   return {
     unitId: null,
+    level: 80,                                                  // see schema v3 note
     gear: Object.fromEntries(SLOT_ORDER.map(s=>[s,null])),
     runes: Array.from({length:RUNE_SLOT_COUNT}, ()=>null),
     talents: [null,null,null,null],
     supports: {Trait:null, Title:null, Perk:null}
   };
 }
+// state.mains[i].level: int 1..100 — drives GetLevelAttr scaling per the
+// decompiled formula (1 stat point per axis per level, cycling GrowthType1..10).
+// Default 80 = typical mid-game progression; matches the level our captured
+// stat_breakdown logs were taken at (stats reconciled within ±3 across all 8
+// captured units once GetLevelAttr is applied).
 let state = {
   mains:[emptyMain(), emptyMain(), emptyMain()],
   insightStars: {},
   poolCollapsed: true,
-  schema: 2,
+  schema: 3,
 };
 
 // Migration: gear used to be {slot: gearId|null}; now {slot: {id, star, legacy}|null}.
@@ -683,6 +700,10 @@ function loadState(){
         state.schema = 2;
       }
       state.mains.forEach(m=>{
+        // Schema v3 added per-main level (default 80).
+        if(typeof m.level !== 'number' || m.level < 1 || m.level > 100){
+          m.level = 80;
+        }
         if(!m.gear) m.gear={};
         SLOT_ORDER.forEach(s=>{ m.gear[s] = migrateGearSlot(m.gear[s] ?? null); });
         if(!Array.isArray(m.runes) || m.runes.length!==RUNE_SLOT_COUNT){
@@ -790,51 +811,128 @@ function getStatusList(){
 // Talent / support stat additions are extracted separately (parsed from effect text)
 // and shown in the stacking panel rather than rolled silently into the raw totals,
 // because effect text is heterogeneous and partial-parse risks misleading numbers.
+// Gear ★ upgrade iterations per Step (decompile EquipHelper line 86944).
+// Round-robin: at each iteration, attr[ upgradeAttr[i % len] ] += 1.
+const EQUIP_UPG_TIMES = {C:1, B:1, A:2, S:4, SS:8};
+
+// EN stat tokens in UpgradeAttr_EN / GrowthType_EN columns → planner stat keys.
+const GEAR_UPG_TOKEN_MAP = {
+  HP: 'HP', STR: 'STR', SPI: 'SPI', AGI: 'AGI', SPD: 'SPD',
+  Toughness: 'Tough', Luck: 'Luck',
+  'Starting Mana': 'StartMana', 'Max Mana': 'MaxMana',
+  'Action Mana': 'ActMana', 'Hit Mana': 'HitMana',
+};
+
+// GetLevelAttr — sum 1 stat point per axis per level, cycling GrowthType1..10
+// per decompile `RoleDataItem.GetLevelAttr` (line 37466). `growth[stat][p]` =
+// # of the 5 axes whose GrowthType{p+1} equals that stat.
+function computeLevelAttr(growth, level){
+  const r = {HP:0, STR:0, SPI:0, AGI:0, SPD:0, Tough:0, Luck:0,
+             StartMana:0, MaxMana:0, ActMana:0, HitMana:0};
+  if(!growth || level <= 0) return r;
+  // count_at_pos(L, p) = #{i in 1..L | i % 10 == p}
+  //   p == 0: positions are L=10,20,…  → floor(L/10)
+  //   p >= 1: positions are p, p+10, … → floor((L-p)/10) + 1 if L >= p, else 0
+  for(let p = 0; p < 10; p++){
+    const count = p === 0
+      ? Math.floor(level / 10)
+      : (level >= p ? Math.floor((level - p) / 10) + 1 : 0);
+    if(count === 0) continue;
+    for(const stat of Object.keys(r)){
+      r[stat] += (growth[stat]?.[p] || 0) * count;
+    }
+  }
+  return r;
+}
+
+// EquipHelper.GetEquipAttr — base stats + per-★ round-robin upgrade.
+// upgradeAttr is an EN-name list (e.g. ['SPI','HP','Starting Mana']).
+function computeGearStatsWithStars(g, star){
+  const r = {HP:0, STR:0, SPI:0, AGI:0, SPD:0, Tough:0, Luck:0,
+             StartMana:0, MaxMana:0, ActMana:0, HitMana:0};
+  // Base column values
+  for(const k of Object.keys(g.stats || {})){
+    const tgt = k === 'Mana' ? 'StartMana' : k;
+    if(tgt in r) r[tgt] += g.stats[k];
+  }
+  // ★ upgrade: equipUpgTimes[step] × star iterations, cycling upgradeAttr
+  const upg = g.upgradeAttr || [];
+  if(upg.length === 0 || !star) return r;
+  const n = EQUIP_UPG_TIMES[g.step] || 1;
+  const total = star * n;
+  for(let i = 0; i < total; i++){
+    const tok = upg[i % upg.length];
+    const key = GEAR_UPG_TOKEN_MAP[tok];
+    if(key && key in r) r[key] += 1;
+  }
+  return r;
+}
+
+// Attr.LegalTrim() — decompile line 83376. Only 4 stats clamped.
+function legalTrim(stats){
+  if(stats.HP    <= 0) stats.HP    = 1;
+  if(stats.Tough <= 0) stats.Tough = 1;
+  if(stats.MaxMana <= 0) stats.MaxMana = 1;
+  if(stats.StartMana < 0) stats.StartMana = 0;
+  return stats;
+}
+
 function computeUnitStats(main){
   const u = main.unitId ? idx.unitById.get(main.unitId) : null;
   const stats = {STR:0,SPI:0,AGI:0,HP:0,SPD:0,Tough:0,Luck:0,
                  StartMana:0,MaxMana:0,ActMana:0,HitMana:0,FollowUpDmg:0,
                  ATK:0,DEF:0,WEAK:0};
-  if(!u) return {unit:null, raw:stats, sources:{base:{}, gear:{}}, bondsActive:[], routeWarn:false};
+  if(!u) return {unit:null, raw:stats, sources:{base:{}, level:{}, gear:{}, gearStar:{}}, bondsActive:[], routeWarn:false, level:main.level||80};
 
-  // Base from BasicAttrDataTable + game-wide Mana defaults
+  const level = Math.max(1, Math.min(100, main.level || 80));
+
+  // ===== Stage 1: BASE (from sidecar — already aggregated across 5 axes) =====
+  // Plus Mage +10 InitialMagic (decompile line 88735-88738: applied right
+  // after initial assignment, before First-pass modifier loop).
   const base = {
     STR: u.base.InitialSTR, SPI: u.base.InitialINT, AGI: u.base.InitialDEX,
     HP: u.base.InitialCONS, SPD: u.base.initialSPD, Tough: u.base.initialTough,
     Luck: 0,
-    StartMana: MANA_DEFAULTS.StartMana, MaxMana: MANA_DEFAULTS.MaxMana,
+    StartMana: MANA_DEFAULTS.StartMana + (u.isMage ? 10 : 0),
+    MaxMana: MANA_DEFAULTS.MaxMana,
     ActMana: MANA_DEFAULTS.ActMana, HitMana: MANA_DEFAULTS.HitMana,
     FollowUpDmg: 0,
     ATK: u.base.initialAttack, DEF: u.base.initialDefence, WEAK: u.base.initialWeak,
   };
   for(const k of Object.keys(base)){ stats[k] += base[k]; }
 
-  // Gear stats (raw) — sums column values regardless of star (no scaling formula yet).
-  // Star/legacy are tracked + displayed but don't multiply RAW stat values until the
-  // in-game star-scaling formula is verified.
-  //
-  // Bond piece counts DO scale with star + legacy per in-game mechanic:
+  // ===== Stage 2: LEVEL scaling (GetLevelAttr per growth cycle) =====
+  const lvl = computeLevelAttr(u.growth, level);
+  for(const k of Object.keys(lvl)){ if(k in stats) stats[k] += lvl[k]; }
+
+  // ===== Stage 3: GEAR (base column + ★ upgrade scaling) =====
+  // Bond piece counts ALSO depend on star/legacy per in-game mechanic:
   //   1★ → Pure (basic-1) bond gets +1 piece
-  //   2★ → 1★ effect + Title (basic-2) bond gets +1 piece
-  //   3★ → 1★+2★ effects + Enhance (special) bond gets +1 piece
+  //   2★ → +Title (basic-2) bond gets +1 piece
+  //   3★ → +Enhance (special) bond gets +1 piece
   //   legacy → ALL three bonds on this gear get +1 piece (stacks with star)
   const STAR_BONUS_BY_SOURCE = { Pure: 1, Title: 2, Enhance: 3 };
-  const gearTotals = {STR:0,SPI:0,AGI:0,HP:0,SPD:0,Tough:0,Luck:0,
-                      StartMana:0,MaxMana:0,ActMana:0,HitMana:0,FollowUpDmg:0};
-  const bondCounts = new Map(); // bond CN name → piece count (across all 3 bond fields per gear)
+  const gearBase = {HP:0, STR:0, SPI:0, AGI:0, SPD:0, Tough:0, Luck:0,
+                    StartMana:0, MaxMana:0, ActMana:0, HitMana:0};
+  const gearStar = {HP:0, STR:0, SPI:0, AGI:0, SPD:0, Tough:0, Luck:0,
+                    StartMana:0, MaxMana:0, ActMana:0, HitMana:0};
+  const bondCounts = new Map();
   for(const slot of SLOT_ORDER){
     const slotState = main.gear[slot];
     if(!slotState) continue;
     const g = DATA.gear[slotState.id];
     if(!g) continue;
-    // Gear's own Mana stat (sidecar key "Mana" = EquipDataTable.InitialMagic)
-    // is Starting Mana — gear can't carry Max/Action/Hit Mana columns.
-    for(const k of Object.keys(g.stats)){
-      const target = k === 'Mana' ? 'StartMana' : k;
-      if(target in gearTotals) gearTotals[target] += g.stats[k];
-    }
     const star = slotState.star || 0;
     const legacy = !!slotState.legacy;
+    // Stats split into base column (always-on) + star bonus (★ round-robin).
+    const full = computeGearStatsWithStars(g, star);
+    // Base = full with star=0
+    const baseOnly = computeGearStatsWithStars(g, 0);
+    for(const k of Object.keys(gearBase)){
+      gearBase[k] += baseOnly[k];
+      gearStar[k] += (full[k] - baseOnly[k]);
+    }
+    // Bond piece count tally (unchanged from prior implementation)
     const bondsOnGear = g.bonds || (g.bond ? [g.bond] : []);
     for(const br of bondsOnGear){
       const starThreshold = STAR_BONUS_BY_SOURCE[br.source] || 99;
@@ -844,17 +942,28 @@ function computeUnitStats(main){
       bondCounts.set(br.name, (bondCounts.get(br.name) || 0) + pieces);
     }
   }
-  for(const k of Object.keys(gearTotals)){ stats[k] += gearTotals[k]; }
-
-  // Class routing — gear raw stats also flow into pool stats per class mapping.
-  const route = CLASS_ROUTE[u.cls] || null;
-  if(route){
-    stats.ATK  += gearTotals[route.ATK] || 0;
-    stats.DEF  += gearTotals[route.DEF] || 0;
-    stats.WEAK += gearTotals[route.WEAK] || 0;
+  for(const k of Object.keys(gearBase)){
+    if(k in stats) stats[k] += gearBase[k] + gearStar[k];
+  }
+  // Combined gear totals for ATK/DEF/WEAK routing (raw + ★)
+  const gearTotals = {};
+  for(const k of Object.keys(gearBase)){
+    gearTotals[k] = gearBase[k] + gearStar[k];
   }
 
-  // Active bonds: for each bond in bondCounts, find the highest tier ≤ count.
+  // ===== Stage 4: Class routing — derived combat stats =====
+  const route = CLASS_ROUTE[u.cls] || null;
+  if(route){
+    // BASE+LEVEL also count toward combat stats via the routed raw stat.
+    stats.ATK  += (lvl[route.ATK]  || 0) + (gearTotals[route.ATK]  || 0);
+    stats.DEF  += (lvl[route.DEF]  || 0) + (gearTotals[route.DEF]  || 0);
+    stats.WEAK += (lvl[route.WEAK] || 0) + (gearTotals[route.WEAK] || 0);
+  }
+
+  // ===== Stage 5: LegalTrim (CONS/Tough/MaxMana floor 1; StartMana floor 0) =====
+  legalTrim(stats);
+
+  // Active bonds (highest tier ≤ count)
   const bondsActive = [];
   for(const [bondName, count] of bondCounts){
     const b = idx.bondByName.get(bondName);
@@ -870,9 +979,10 @@ function computeUnitStats(main){
 
   return {
     unit: u, raw: stats,
-    sources: {base, gear:gearTotals},
+    sources: {base, level:lvl, gear:gearBase, gearStar},
     bondsActive,
     routeWarn: route ? !route.confirmed : true,
+    level,
   };
 }
 
@@ -1310,22 +1420,51 @@ function renderUnitPanel(main, idxN, pu){
       <div class="pool-pill weak"><div class="lbl">Weak</div><div class="v">${pu.raw.WEAK}</div></div>`;
     panel.appendChild(pool);
 
-    // Raw stats — split into 2 sections (Showing / Hidden). Both render as one
-    // .stat-block visually; a small subheader divides them. Hidden Stats grow
-    // incrementally as parse coverage for additional mechanics is verified.
+    // Level slider — drives GetLevelAttr scaling. Default 80; clamp 1..100.
+    // Mirrors decompile RoleDataItem.GetLevelAttr (line 37466).
+    const lvlRow = document.createElement('div');
+    lvlRow.className = 'level-row';
+    lvlRow.innerHTML = `
+      <span class="label">Level</span>
+      <input type="range" min="1" max="100" value="${pu.level}" class="lvl-slider" data-main-idx="${idxN}" />
+      <span class="lvl-val" data-main-idx="${idxN}">${pu.level}</span>`;
+    panel.appendChild(lvlRow);
+    const slider = lvlRow.querySelector('.lvl-slider');
+    slider.oninput = (ev) => {
+      const v = Math.max(1, Math.min(100, parseInt(ev.target.value, 10) || 1));
+      state.mains[idxN].level = v;
+      lvlRow.querySelector('.lvl-val').textContent = v;
+      saveState();
+      renderTeam();
+    };
+
+    // Raw stats — split into 2 sections (Showing / Hidden). Each row exposes
+    // the 4-layer breakdown from our decompiled stat pipeline:
+    //   BASE (RoleDataItem.GetInitialAttr) + Mage+10 InitialMagic + LevelScaling
+    //   (GetLevelAttr cycle) + GearBase (EquipDataTable columns) + GearStar
+    //   (EquipHelper.GetEquipAttr round-robin upgrade) → LegalTrim → FINAL.
+    // Modifier sources (bond / talent / Insight relic / rune resonance) are
+    // tracked separately in the activity + bond/insight blocks below — they
+    // contribute via ChangeAttrFirst/Second/Final passes and require effect-text
+    // parsing to roll up here. See mechanics/stat-calculation.html for the full
+    // pipeline + open questions on per-modifier attribution.
     const stats = document.createElement('div');
     stats.className = 'stat-block';
-    const baseSrc = pu.sources.base, gearSrc = pu.sources.gear;
+    const baseSrc = pu.sources.base, lvlSrc = pu.sources.level,
+          gearBase = pu.sources.gear, gearStar = pu.sources.gearStar;
     const renderRow = (k) => {
       const total = pu.raw[k];
-      const baseV = baseSrc[k] || 0, gearV = gearSrc[k] || 0;
+      const baseV = baseSrc[k] || 0;
+      const lvlV  = lvlSrc[k]  || 0;
+      const gearV = gearBase[k] || 0;
+      const starV = gearStar[k] || 0;
       const breakdown = [];
       if(baseV) breakdown.push(`${baseV} base`);
+      if(lvlV)  breakdown.push(`+${lvlV} lvl`);
       if(gearV) breakdown.push(`+${gearV} gear`);
-      // Trusted-parse stats: derived total may differ from base+gear because
-      // text-parsed deltas roll into raw. Hint that diff in the breakdown.
-      const derived = total - baseV - gearV;
-      if(derived !== 0) breakdown.push(`${derived>0?'+':''}${derived} text`);
+      if(starV) breakdown.push(`+${starV} ★`);
+      const derived = total - baseV - lvlV - gearV - starV;
+      if(derived !== 0) breakdown.push(`${derived>0?'+':''}${derived} other`);
       return `<div class="stat-row">
         <span class="label">${STAT_LABEL[k] || k}</span>
         <span class="val">${total}<span class="delta">${breakdown.length?` (${breakdown.join(' · ')})`:''}</span></span>
@@ -1334,7 +1473,7 @@ function renderUnitPanel(main, idxN, pu){
     const showingRows = SHOWING_STATS.map(renderRow).join('');
     const hiddenRows  = HIDDEN_STATS.map(renderRow).join('');
     stats.innerHTML =
-      `<div class="stat-section-header">Showing Stats</div>` +
+      `<div class="stat-section-header">Showing Stats <span class="formula-hint">(base+lvl+gear+★ — modifier passes via bonds/talents/insight shown below)</span></div>` +
       showingRows +
       `<div class="stat-section-header" style="margin-top:8px">Hidden Stats</div>` +
       hiddenRows;
