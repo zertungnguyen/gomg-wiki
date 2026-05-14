@@ -1,0 +1,889 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gear Filter — Option Reference — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="../index.html">GMG Wiki</a>
+  <nav>
+    <a href="../units/index.html">Units</a>
+    <a href="../keywords/index.html">Keywords</a>
+    <a href="../gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="../talent-simulator.html">Talent Simulator</a>
+    <a href="../team-planner.html">Team Planner</a>
+    <a href="../search-unit.html">Search · Units</a>
+    <a href="../search-talent.html">Search · Talents</a>
+    <a href="../search-gear.html">Search · Gear</a>
+    <a href="../search-runes.html">Search · Runes</a>
+    <a href="../news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>Gear Filter — Option Reference</h1>
+<p>Catalogue of every option shown in the in-game <strong>Codex → Gear → Filter</strong> UI. Lifted from the game's localization data (<code>Sift_Option_*</code> key family in <code>mgg_loc.csv</code>). Multiple selections allowed within and across tabs.</p>
+<blockquote>
+<p><strong>Source / methodology:</strong> see <code>data-session/intermediate/gear_filter_research.md</code> (datamine-extractor research deliverable). 148 options across 5 tabs; all labels verbatim from <code>Sift_Option_Title_*</code> (tab names) and <code>Sift_Option_&lt;Tab&gt;_*</code> (per-tab options).</p>
+<p>Filter axes that are <strong>NOT</strong> exposed by the in-game UI (and thus not in this list): <code>Element</code>, <code>Source</code>, <code>AreaType</code>, <code>AreaName</code>. The wiki's gear-by-area page split (<code>gear/01-world.md</code> … <code>gear/12-ashland-wastes.md</code>) is purely organizational — there is no in-game equivalent.</p>
+</blockquote>
+<h2>Tab design — gear-column vs bond-effect-text</h2>
+<p>The 5 tabs split into two filter tiers based on <strong>what</strong> they scan:</p>
+<ul>
+<li><strong>Tab 1 (Basic)</strong> — scans gear's <strong>own</strong> EquipDataTable columns: rarity = <code>Step</code>, class = <code>Class</code>, slot = <code>Type</code>, stat keyword = base stat columns + <code>UpgradeAttr</code>. Player intuition: <em>"the gear inherently is/has X."</em></li>
+<li><strong>Tabs 2–5 (Value / Mechanic / Timing / Status)</strong> — scan the <strong>bond effect text</strong> referenced by each gear's <code>Pure</code> / <code>Title</code> / <code>Enhance</code> slots, resolved through <code>BondDataTable.EffectDescription_EN</code>. Player intuition: <em>"once I farm the matching set bond, the gear will give me X."</em></li>
+</ul>
+<p>A few keyword names overlap between tiers (e.g. <code>STR</code> appears in both Basic 1C and Value 05) <strong>on purpose</strong> — they answer different questions:</p>
+<table>
+<thead>
+<tr>
+<th>Filter</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Basic 1C <code>STR</code></td>
+<td>Gear with <code>EquipDataTable.STR &gt; 0</code> OR <code>UpgradeAttr</code> includes 力量 (gear gives STR by itself)</td>
+</tr>
+<tr>
+<td>Value 05 <code>STR</code></td>
+<td>Gear whose Pure/Title/Enhance bonds have effect text mentioning STR (gear eventually gives STR via set bond)</td>
+</tr>
+</tbody>
+</table>
+<p>Same overlap pattern for SPD / Luck / Toughness / Starting Mana / SPI / AGI / HP. Filtering both surfaces gear that hits the stat from any source.</p>
+<p>Mechanic / Timing / Status tabs have no Basic-tier counterpart because raw stat columns can't store mechanism semantics (triggers, conditions, status applications) — those live entirely in bond effect strings.</p>
+<h2>Tab 1 — Basic</h2>
+<p>Discrete categorical filter; maps to specific <code>EquipDataTable</code> columns.</p>
+<h3>Rarity (4 buttons)</h3>
+<p>In-game uses <strong>4 rarity tiers</strong> (Common / Rare / Epic / Legendary) but <code>EquipDataTable.Step</code> has <strong>5</strong> values (SS / S / A / B / C). Best-inference mapping below — confirm in-game with a Filter screenshot if exact bucketing matters:</p>
+<table>
+<thead>
+<tr>
+<th>Rarity</th>
+<th>Probable <code>Step</code></th>
+<th>Approx items</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Common</td>
+<td>C</td>
+<td>121</td>
+</tr>
+<tr>
+<td>Rare</td>
+<td>B</td>
+<td>273</td>
+</tr>
+<tr>
+<td>Epic</td>
+<td>A</td>
+<td>480</td>
+</tr>
+<tr>
+<td>Legendary</td>
+<td>S + SS</td>
+<td>348 + 12</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><em>Open question: SS may merge into Legendary, get its own implicit row, or be excluded — confirm with screenshot.</em></p>
+</blockquote>
+<h3>Class (4 buttons)</h3>
+<table>
+<thead>
+<tr>
+<th>Filter</th>
+<th><code>EquipDataTable.Class</code> match</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../keywords/class-warrior.html">Warrior</a></td>
+<td>atomic <code>Warrior</code> (342) + any combo containing it</td>
+</tr>
+<tr>
+<td><a href="../keywords/class-archer.html">Archer</a></td>
+<td>atomic <code>Archer</code> (149) + combos</td>
+</tr>
+<tr>
+<td><a href="../keywords/class-mage.html">Mage</a></td>
+<td>atomic <code>Mage</code> (154) + combos</td>
+</tr>
+<tr>
+<td><a href="../keywords/class-priest.html">Priest</a></td>
+<td>atomic <code>Priest</code> (118) + combos</td>
+</tr>
+</tbody>
+</table>
+<p><code>All-Class</code> gear (116 items) has no dedicated button; likely surfaces under all 4 class filters when any is selected.</p>
+<h3>Stat keyword (8 buttons)</h3>
+<p>Surfaces gear that grants the named raw stat. <strong>Best inference</strong> is the filter checks both the gear's base stat columns and its <code>UpgradeAttr</code> (the stats that scale on star-up) — the in-game UI is not yet decompiled for the exact predicate.</p>
+<table>
+<thead>
+<tr>
+<th>Filter</th>
+<th>Source columns checked</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>STR</td>
+<td><code>EquipDataTable.STR</code> &gt; 0 OR <code>UpgradeAttr</code> contains 力量</td>
+</tr>
+<tr>
+<td>SPI</td>
+<td><code>INT</code> &gt; 0 OR <code>UpgradeAttr</code> contains 精神</td>
+</tr>
+<tr>
+<td>AGI</td>
+<td><code>DEX</code> &gt; 0 OR <code>UpgradeAttr</code> contains 敏捷</td>
+</tr>
+<tr>
+<td>HP</td>
+<td><code>CONS</code> &gt; 0 OR <code>UpgradeAttr</code> contains 生命</td>
+</tr>
+<tr>
+<td><a href="../keywords/stat-spd.html">SPD</a></td>
+<td><code>SPD</code> &gt; 0 OR <code>UpgradeAttr</code> contains 速度</td>
+</tr>
+<tr>
+<td><a href="../keywords/stat-luck.html">Luck</a></td>
+<td><code>Luck</code> &gt; 0 <em>(no UpgradeAttr coverage; gear only)</em></td>
+</tr>
+<tr>
+<td><a href="../keywords/stat-toughness.html">Toughness</a></td>
+<td><code>Tough</code> &gt; 0 OR <code>UpgradeAttr</code> contains 韧性</td>
+</tr>
+<tr>
+<td><a href="../keywords/mechanic-starting-mana.html">Starting Mana</a></td>
+<td><code>InitialMagic</code> &gt; 0 OR <code>UpgradeAttr</code> contains 初始魔力</td>
+</tr>
+</tbody>
+</table>
+<p>(STR / SPI / AGI / HP do not have keyword pages — they are base attributes, not gameplay keywords.)</p>
+<h3>Slot (10 buttons)</h3>
+<blockquote>
+<p>⚠ <strong>Three slot labels differ between the in-game UI and the wiki's <code>EquipDataTable.Type_EN</code> column.</strong> The right-hand column lists the wiki label currently emitted by the gear pages. The left column is what the in-game Filter shows.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>In-game UI label</th>
+<th>Wiki / <code>Type_EN</code> label</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Main Hand</td>
+<td>Main Hand</td>
+</tr>
+<tr>
+<td>Off Hand</td>
+<td>Off Hand</td>
+</tr>
+<tr>
+<td>Head</td>
+<td>Head</td>
+</tr>
+<tr>
+<td>Body</td>
+<td>Body</td>
+</tr>
+<tr>
+<td><strong>Hands</strong></td>
+<td>Gloves</td>
+</tr>
+<tr>
+<td>Belt</td>
+<td>Belt</td>
+</tr>
+<tr>
+<td><strong>Feet</strong></td>
+<td>Shoes</td>
+</tr>
+<tr>
+<td>Badge</td>
+<td>Badge</td>
+</tr>
+<tr>
+<td><strong>Amulet</strong></td>
+<td>Necklace</td>
+</tr>
+<tr>
+<td>Ring</td>
+<td>Ring</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><em>Recommend updating <code>data-session/tools/seed_dict.json</code> to align the wiki labels with the in-game Filter (Hands/Feet/Amulet) — owner: datamine-extractor (touches translator config). 3 entries to flip.</em></p>
+</blockquote>
+<h2>Tab 2 — Value</h2>
+<p><strong>Content-text filter</strong> — surfaces gear whose effect strings (the <code>Pure</code> / <code>Title</code> / <code>Enhance</code> bond entries plus <code>BondDataTable</code> effects they reference) mention the named numeric stat or mechanism. Useful when hunting for <code>+ATK</code>, <code>+Action Mana</code>, <code>+Counter Range</code>, etc.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Filter</th>
+<th>Linked keyword</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td>Increase DMG</td>
+<td>—</td>
+</tr>
+<tr>
+<td>02</td>
+<td>Reduce DMG Taken</td>
+<td>—</td>
+</tr>
+<tr>
+<td>03</td>
+<td>HP Granted</td>
+<td><a href="../keywords/mechanic-total-hp-restored.html">HP Granted</a></td>
+</tr>
+<tr>
+<td>04</td>
+<td>HP Drain</td>
+<td>—</td>
+</tr>
+<tr>
+<td>05</td>
+<td>STR</td>
+<td>—</td>
+</tr>
+<tr>
+<td>06</td>
+<td>SPI</td>
+<td>—</td>
+</tr>
+<tr>
+<td>07</td>
+<td>AGI</td>
+<td>—</td>
+</tr>
+<tr>
+<td>08</td>
+<td>ATK</td>
+<td><a href="../keywords/stat-atk.html">ATK</a></td>
+</tr>
+<tr>
+<td>09</td>
+<td>DEF</td>
+<td><a href="../keywords/stat-def.html">DEF</a></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Weakness</td>
+<td><a href="../keywords/stat-weakness.html">Weakness</a></td>
+</tr>
+<tr>
+<td>11</td>
+<td>SPD</td>
+<td><a href="../keywords/stat-spd.html">SPD</a></td>
+</tr>
+<tr>
+<td>12</td>
+<td>Luck</td>
+<td><a href="../keywords/stat-luck.html">Luck</a></td>
+</tr>
+<tr>
+<td>13</td>
+<td>HP</td>
+<td>—</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Toughness</td>
+<td><a href="../keywords/stat-toughness.html">Toughness</a></td>
+</tr>
+<tr>
+<td>15</td>
+<td>HP Lost</td>
+<td>—</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Current Toughness</td>
+<td>—</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Toughness Lost</td>
+<td>—</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Max Mana</td>
+<td><a href="../keywords/mechanic-max-mana.html">Max Mana</a></td>
+</tr>
+<tr>
+<td>19</td>
+<td>Current Mana</td>
+<td>—</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Starting Mana</td>
+<td><a href="../keywords/mechanic-starting-mana.html">Starting Mana</a></td>
+</tr>
+<tr>
+<td>21</td>
+<td>Action Mana</td>
+<td><a href="../keywords/mechanic-action-mana.html">Action Mana</a></td>
+</tr>
+<tr>
+<td>22</td>
+<td>Hit Mana</td>
+<td><a href="../keywords/mechanic-hit-mana.html">Hit Mana</a></td>
+</tr>
+<tr>
+<td>23</td>
+<td>Extra Action</td>
+<td><a href="../keywords/mechanic-extra-action.html">Extra Action</a></td>
+</tr>
+<tr>
+<td>24</td>
+<td>Extra Targets</td>
+<td>—</td>
+</tr>
+<tr>
+<td>25</td>
+<td>Counter Range</td>
+<td>—</td>
+</tr>
+<tr>
+<td>26</td>
+<td>Counters</td>
+<td><a href="../keywords/mechanic-counter.html">Counters</a></td>
+</tr>
+<tr>
+<td>27</td>
+<td>Follow-Ups</td>
+<td><a href="../keywords/mechanic-follow-up.html">Follow-Ups</a></td>
+</tr>
+<tr>
+<td>28</td>
+<td>Skill Uses</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2>Tab 3 — Mechanic</h2>
+<p>Same content-text filter pattern as Tab 2, but for higher-level mechanism names.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Filter</th>
+<th>Linked keyword</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td>HP Gain</td>
+<td><a href="../keywords/mechanic-hp-gain.html">HP Gain</a></td>
+</tr>
+<tr>
+<td>02</td>
+<td>HP Loss</td>
+<td><a href="../keywords/mechanic-hp-loss.html">HP Loss</a></td>
+</tr>
+<tr>
+<td>03</td>
+<td>HP Gain Bonus</td>
+<td>—</td>
+</tr>
+<tr>
+<td>04</td>
+<td>HP Loss Bonus</td>
+<td>—</td>
+</tr>
+<tr>
+<td>05</td>
+<td>HP Loss Resist</td>
+<td>—</td>
+</tr>
+<tr>
+<td>06</td>
+<td>Overflow HP</td>
+<td>—</td>
+</tr>
+<tr>
+<td>07</td>
+<td>Mana Gain</td>
+<td><a href="../keywords/mechanic-mana-gain.html">Mana Gain</a></td>
+</tr>
+<tr>
+<td>08</td>
+<td>Mana Loss</td>
+<td><a href="../keywords/mechanic-mana-loss.html">Mana Loss</a></td>
+</tr>
+<tr>
+<td>09</td>
+<td>Mana Gain Bonus</td>
+<td>—</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Mana Loss Resist</td>
+<td>—</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Toughness Gain</td>
+<td>—</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Toughness Loss</td>
+<td>—</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Ally Count</td>
+<td><a href="../keywords/mechanic-ally-count.html">Ally Count</a></td>
+</tr>
+<tr>
+<td>14</td>
+<td>Enemy Count</td>
+<td>—</td>
+</tr>
+<tr>
+<td>15</td>
+<td>At Low HP</td>
+<td><a href="../keywords/mechanic-low-hp.html">At Low HP</a> <em>(self condition)</em></td>
+</tr>
+<tr>
+<td>16</td>
+<td>At High HP</td>
+<td><a href="../keywords/mechanic-high-hp.html">At High HP</a> <em>(self condition)</em></td>
+</tr>
+<tr>
+<td>17</td>
+<td>Ally Low HP</td>
+<td>—</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Ally High HP</td>
+<td>—</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Increase Stacks</td>
+<td><a href="../keywords/mechanic-stacks.html">Stacks</a></td>
+</tr>
+<tr>
+<td>20</td>
+<td>Reduce Stacks</td>
+<td><a href="../keywords/mechanic-stacks.html">Stacks</a></td>
+</tr>
+<tr>
+<td>21</td>
+<td>Immune Status</td>
+<td>—</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Consume Status</td>
+<td>—</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Trigger Status</td>
+<td>—</td>
+</tr>
+<tr>
+<td>24</td>
+<td>With Status</td>
+<td>—</td>
+</tr>
+<tr>
+<td>25</td>
+<td>No Status</td>
+<td>—</td>
+</tr>
+<tr>
+<td>26</td>
+<td>Absorb Effect</td>
+<td><a href="../keywords/mechanic-absorb.html">Absorb</a></td>
+</tr>
+<tr>
+<td>27</td>
+<td>Change Target</td>
+<td>—</td>
+</tr>
+<tr>
+<td>28</td>
+<td>Act First</td>
+<td><a href="../keywords/mechanic-act-first.html">Act First</a></td>
+</tr>
+</tbody>
+</table>
+<h2>Tab 4 — Timing</h2>
+<p>Trigger-window filter — surfaces gear whose effects fire on a specific event. 30 numbered options + 3 late-additions (<code>_New</code> keys) added in a later patch.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Filter</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td>Battle Start</td>
+<td></td>
+</tr>
+<tr>
+<td>02</td>
+<td>Turn Start</td>
+<td></td>
+</tr>
+<tr>
+<td>03</td>
+<td>Action Start</td>
+<td></td>
+</tr>
+<tr>
+<td>04</td>
+<td>Action End</td>
+<td></td>
+</tr>
+<tr>
+<td>05</td>
+<td>Basic Attack</td>
+<td></td>
+</tr>
+<tr>
+<td>06</td>
+<td>Basic Heal</td>
+<td></td>
+</tr>
+<tr>
+<td>07</td>
+<td>Cast Skill</td>
+<td></td>
+</tr>
+<tr>
+<td>08</td>
+<td>Attacking</td>
+<td><a href="../keywords/mechanic-attacking.html">Attacking</a></td>
+</tr>
+<tr>
+<td>09</td>
+<td>Healing</td>
+<td><a href="../keywords/mechanic-healing.html">Healing</a></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Following Up</td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td>Countering</td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td>Bonus Heal</td>
+<td></td>
+</tr>
+<tr>
+<td>13</td>
+<td>Counter Heal</td>
+<td></td>
+</tr>
+<tr>
+<td>14</td>
+<td>Deal DMG</td>
+<td></td>
+</tr>
+<tr>
+<td>15</td>
+<td>Heal</td>
+<td></td>
+</tr>
+<tr>
+<td>16</td>
+<td>Take Hit</td>
+<td></td>
+</tr>
+<tr>
+<td>17</td>
+<td>Receive Healing</td>
+<td></td>
+</tr>
+<tr>
+<td>18</td>
+<td>Take DMG</td>
+<td></td>
+</tr>
+<tr>
+<td>19</td>
+<td>Heal <em>(duplicate label of #15 — likely a registration mistake)</em></td>
+<td></td>
+</tr>
+<tr>
+<td>19'</td>
+<td>HP Restored <em>(loc key <code>Timing_19_New</code> — probably the intended "received heal" semantics)</em></td>
+<td></td>
+</tr>
+<tr>
+<td>20</td>
+<td>Take Basic Attack</td>
+<td></td>
+</tr>
+<tr>
+<td>21</td>
+<td>Take Skill</td>
+<td></td>
+</tr>
+<tr>
+<td>22</td>
+<td>Take Follow-Up</td>
+<td></td>
+</tr>
+<tr>
+<td>23</td>
+<td>Take Counter</td>
+<td></td>
+</tr>
+<tr>
+<td>24</td>
+<td>Exposed</td>
+<td></td>
+</tr>
+<tr>
+<td>25</td>
+<td>Ally Exposed</td>
+<td></td>
+</tr>
+<tr>
+<td>26</td>
+<td>Enemy Exposed</td>
+<td><a href="../keywords/mechanic-weakness-exposed.html">Weakness exposed</a></td>
+</tr>
+<tr>
+<td>27</td>
+<td>Defeated</td>
+<td></td>
+</tr>
+<tr>
+<td>28</td>
+<td>Ally Defeated</td>
+<td></td>
+</tr>
+<tr>
+<td>29</td>
+<td>Enemy Defeated</td>
+<td></td>
+</tr>
+<tr>
+<td>30</td>
+<td>Defeat Target</td>
+<td></td>
+</tr>
+<tr>
+<td>–</td>
+<td>Enemy Low HP <em>(loc key <code>Timing_New01</code>)</em></td>
+<td></td>
+</tr>
+<tr>
+<td>–</td>
+<td>Enemy High HP <em>(loc key <code>Timing_New02</code>)</em></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2>Tab 5 — Status</h2>
+<p>Filter by named status effect. Each entry corresponds to a status keyword already documented under <code>visualise-session/keywords/</code>.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Filter</th>
+<th>Wiki page</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td>All Status</td>
+<td><em>(umbrella; no dedicated page)</em></td>
+</tr>
+<tr>
+<td>02</td>
+<td>Buffs</td>
+<td><em>(umbrella)</em></td>
+</tr>
+<tr>
+<td>03</td>
+<td>Debuffs</td>
+<td><em>(umbrella)</em></td>
+</tr>
+<tr>
+<td>04</td>
+<td>Instant</td>
+<td><em>(umbrella)</em></td>
+</tr>
+<tr>
+<td>05</td>
+<td>Shield</td>
+<td><a href="../keywords/buff-shield.html">Shield</a></td>
+</tr>
+<tr>
+<td>06</td>
+<td>Bloodlust</td>
+<td><a href="../keywords/buff-bloodlust.html">Bloodlust</a></td>
+</tr>
+<tr>
+<td>07</td>
+<td>Haste</td>
+<td><a href="../keywords/buff-haste.html">Haste</a></td>
+</tr>
+<tr>
+<td>08</td>
+<td>Growth</td>
+<td><a href="../keywords/buff-growth.html">Growth</a></td>
+</tr>
+<tr>
+<td>09</td>
+<td>Regen</td>
+<td><a href="../keywords/buff-regen.html">Regen</a></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Soothe</td>
+<td><a href="../keywords/buff-soothe.html">Soothe</a></td>
+</tr>
+<tr>
+<td>11</td>
+<td>Faith</td>
+<td><a href="../keywords/buff-faith.html">Faith</a></td>
+</tr>
+<tr>
+<td>12</td>
+<td>Thorns</td>
+<td><a href="../keywords/buff-thorns.html">Thorns</a></td>
+</tr>
+<tr>
+<td>13</td>
+<td>Precision</td>
+<td><a href="../keywords/buff-precision.html">Precision</a></td>
+</tr>
+<tr>
+<td>14</td>
+<td>Vulnerable</td>
+<td><a href="../keywords/debuff-vulnerable.html">Vulnerable</a></td>
+</tr>
+<tr>
+<td>15</td>
+<td>Chill</td>
+<td><a href="../keywords/debuff-chill.html">Chill</a></td>
+</tr>
+<tr>
+<td>16</td>
+<td>Slow</td>
+<td><a href="../keywords/debuff-slow.html">Slow</a></td>
+</tr>
+<tr>
+<td>17</td>
+<td>Expose</td>
+<td><a href="../keywords/debuff-expose.html">Expose</a></td>
+</tr>
+<tr>
+<td>18</td>
+<td>Burn</td>
+<td><a href="../keywords/debuff-burn.html">Burn</a></td>
+</tr>
+<tr>
+<td>19</td>
+<td>Shock</td>
+<td><a href="../keywords/debuff-shock.html">Shock</a></td>
+</tr>
+<tr>
+<td>20</td>
+<td>Hinder</td>
+<td><a href="../keywords/debuff-hinder.html">Hinder</a></td>
+</tr>
+<tr>
+<td>21</td>
+<td>Taunt</td>
+<td><a href="../keywords/debuff-taunt.html">Taunt</a></td>
+</tr>
+<tr>
+<td>22</td>
+<td>Stun</td>
+<td><a href="../keywords/debuff-stun.html">Stun</a></td>
+</tr>
+<tr>
+<td>23</td>
+<td>Inspire</td>
+<td><a href="../keywords/instant-inspire.html">Inspire</a></td>
+</tr>
+<tr>
+<td>24</td>
+<td>Decay</td>
+<td><a href="../keywords/instant-decay.html">Decay</a></td>
+</tr>
+<tr>
+<td>25</td>
+<td>Reversal</td>
+<td><a href="../keywords/instant-reversal.html">Reversal</a></td>
+</tr>
+<tr>
+<td>26</td>
+<td>Cleanse</td>
+<td><a href="../keywords/instant-cleanse.html">Cleanse</a></td>
+</tr>
+<tr>
+<td>27</td>
+<td>Fortitude</td>
+<td><a href="../keywords/instant-fortitude.html">Fortitude</a></td>
+</tr>
+<tr>
+<td>28</td>
+<td>Fear</td>
+<td><a href="../keywords/instant-fear.html">Fear</a></td>
+</tr>
+</tbody>
+</table>
+<h2>Open questions / TODO</h2>
+<ol>
+<li><strong>Step → Rarity mapping</strong> — assumed Legendary = SS+S; needs Filter screenshot to confirm SS bucketing.</li>
+<li><strong>Slot label rename</strong> — wiki currently emits <code>Gloves / Shoes / Necklace</code> (legacy translator output) but the in-game Filter shows <code>Hands / Feet / Amulet</code>. Recommend updating <code>data-session/tools/seed_dict.json</code> (3 entries) and re-running <code>translate.py</code> + the gear generators. Owner: datamine-extractor.</li>
+<li><strong>Stat keyword filter scope</strong> — does the Basic stat-keyword filter check base columns only, <code>UpgradeAttr</code> only, or both? Best inference is "both" — verify with a Filter test in-game.</li>
+</ol>
+<h2>Source data files</h2>
+<ul>
+<li>Filter labels: <code>data-session/intermediate/mgg_loc.csv</code>, key family <code>Sift_Option_*</code> (lines 14320–14468 + 740–742)</li>
+<li>Frame labels: <code>Equip_Button_01</code> "Filter", <code>Sift_Title_Text_01..04</code></li>
+<li>Source columns: <code>data-session/mgg_datamine/EquipDataTable.md</code> (Step / Type / Class / 8 stat columns / UpgradeAttr / Pure / Title / Enhance)</li>
+<li>Status keyword pages: <code>visualise-session/keywords/&lt;category&gt;-&lt;name&gt;.md</code> (<code>category</code> ∈ buff / debuff / instant)</li>
+<li>Full research deliverable: <code>data-session/intermediate/gear_filter_research.md</code></li>
+</ul>
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.1.1.0 · filter-values.md</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>

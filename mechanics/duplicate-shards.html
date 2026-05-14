@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Duplicate Shards — Convert Owned-Again Pulls — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="../index.html">GMG Wiki</a>
+  <nav>
+    <a href="../units/index.html">Units</a>
+    <a href="../keywords/index.html">Keywords</a>
+    <a href="../gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="../talent-simulator.html">Talent Simulator</a>
+    <a href="../team-planner.html">Team Planner</a>
+    <a href="../search-unit.html">Search · Units</a>
+    <a href="../search-talent.html">Search · Talents</a>
+    <a href="../search-gear.html">Search · Gear</a>
+    <a href="../search-runes.html">Search · Runes</a>
+    <a href="../news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>Duplicate Shards — Convert Owned-Again Pulls</h1>
+<p>When a recruit roll lands on a unit you <strong>already own</strong>, the duplicate auto-converts to <strong>shards</strong> based on the unit's Step. Shards are universal within their pool — used to star-up any unit on the same banner side.</p>
+<blockquote>
+<p><strong>Source:</strong> decompiled <code>GeneralDataTables.SummonDataTable.RedundantRoleShardCount</code> / <code>RedundantSkinPointCount</code> + <code>SummonManager.SummonRoleAsync</code> / <code>SummonSkinAsync</code> in <code>data-session/intermediate/decompiled_summon.cs</code>. Hot-loaded from <code>MainScripts.dll</code> — re-decompile after every patch (<code>datamine-extractor</code> agent diffs it).</p>
+</blockquote>
+<h2>Conversion table</h2>
+<p>Both pools use the <strong>same numbers</strong>, but the destination currency differs:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Display</th>
+<th>Standard dup →</th>
+<th>Alter dup →</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>S</strong></td>
+<td>3★ vàng</td>
+<td><strong>50</strong> Standard Shards</td>
+<td><strong>50</strong> Alter exchange points</td>
+</tr>
+<tr>
+<td><strong>A</strong></td>
+<td>2★ tím</td>
+<td><strong>10</strong></td>
+<td><strong>10</strong></td>
+</tr>
+<tr>
+<td><strong>B</strong></td>
+<td>1★ xanh</td>
+<td><strong>2</strong></td>
+<td><strong>2</strong></td>
+</tr>
+<tr>
+<td><strong>C</strong></td>
+<td>0★ xám</td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The number is shown live on the summon-result icon (line 2959 of the decompile, <code>SummonResultIconCtr</code>).</p>
+<h2>Two pools, two destinations</h2>
+<p><strong>Standard Recruit (<code>SummonDataTable</code>)</strong></p>
+<ul>
+<li>Function: <code>RedundantRoleShardCount(step)</code></li>
+<li>Pulled at: <code>SummonRoleAsync</code> line 1211 (<code>int num8 = RedundantRoleShardCount(roleDataItem2.Step); num += num8;</code>).</li>
+<li>Settled into: <code>save.genericShard += num;</code> (line 1232) — adds <strong>directly</strong> to the player's Standard Shard inventory.</li>
+<li>Currency item: <strong><code>D00008_031</code> 常规碎片 / Standard Shard</strong> — <code>SpecialItemDataTable</code> row "A mystical shard used to Star Up any standard girl."</li>
+</ul>
+<p><strong>Alter Recruit (<code>SkinSummonDataTable</code>)</strong></p>
+<ul>
+<li>Function: <code>RedundantSkinPointCount(step)</code> — note the function name says <strong>Point</strong>, not Shard.</li>
+<li>Pulled at: <code>SummonSkinAsync</code> line 1337 (<code>int num8 = RedundantSkinPointCount(result.Step); num += num8;</code>).</li>
+<li>Settled into: <code>poolInfo.summonPoint += num;</code> (line 1358) — adds to the <strong>per-banner exchange point</strong> counter, NOT directly to a shard inventory.</li>
+<li>Player must then redeem points → Alter Shards via the banner's exchange shop (<code>SkinSummonExchangeAsync</code> API, <code>SummonExchangeReply.ShardCount</code>).</li>
+<li>Final currency item: <strong><code>D00008_032</code> 异化碎片 / Alter Shard</strong> — "A mystical shard used to Star Up any alter girl." (Stored in <code>save.skinShard</code> after exchange.)</li>
+</ul>
+<p>So Standard is one-step (dup → shard in inventory) while Alter is two-step (dup → banner points → exchange for shards). The exchange ratio inside the shop is configured on the banner side, not in this constant.</p>
+<h2>What shards are used for</h2>
+<p>Both shard types are <strong>universal star-up fodder</strong> within their pool:</p>
+<ul>
+<li>Standard Shard → star-up any standard girl (any unit without the <code>_NNN</code> suffix, e.g. M53301).</li>
+<li>Alter Shard → star-up any alter girl (any unit with <code>_NNN</code> suffix, e.g. M53301_001).</li>
+</ul>
+<p>Confirmed by loc strings:
+- <code>Text_Loading_06</code>: "Standard Shards can star up any standard girl"
+- <code>Text_Loading_07</code>: "Alter Shards can star up any alter girl"
+- <code>Role_Upstar_04</code>: "※ All Alter girls share the same Alter Shard pool."</p>
+<p>There is <strong>no per-unit shard</strong> in this game — unlike many gachas where each character has its own shard. One shared pool per banner side.</p>
+<h2>Worked example</h2>
+<p>A 10-pull on Standard with these results (rate-up + already-owned mix):</p>
+<table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Unit</th>
+<th>Step</th>
+<th>New?</th>
+<th>Shards added</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>M11002 Goblin Scout</td>
+<td>C</td>
+<td>dup</td>
+<td>+1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>M12002 Goblin Hunter</td>
+<td>C</td>
+<td>dup</td>
+<td>+1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>M11102 Shining Maiden</td>
+<td>B</td>
+<td>dup</td>
+<td>+2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>M11201 (some C)</td>
+<td>C</td>
+<td>new</td>
+<td>0 (creates SaveData.Role)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>M12101 (some B)</td>
+<td>B</td>
+<td>dup</td>
+<td>+2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>M11003 (some C)</td>
+<td>C</td>
+<td>dup</td>
+<td>+1</td>
+</tr>
+<tr>
+<td>7</td>
+<td>M21102 (some A)</td>
+<td>A</td>
+<td>dup</td>
+<td>+10</td>
+</tr>
+<tr>
+<td>8</td>
+<td>M11104 (some C)</td>
+<td>C</td>
+<td>new</td>
+<td>0</td>
+</tr>
+<tr>
+<td>9</td>
+<td>M12102 (some B)</td>
+<td>B</td>
+<td>dup</td>
+<td>+2</td>
+</tr>
+<tr>
+<td>10</td>
+<td>M53301 Astral Fiend</td>
+<td>S</td>
+<td>dup</td>
+<td><strong>+50</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Total: <strong>+69 Standard Shards</strong> added to inventory after the 10-pull, plus 2 new units unlocked.</p>
+<h2>Cross-refs</h2>
+<ul>
+<li><a href="../mechanics/recruit-rates.html">recruit-rates</a> — how the roll picks the unit in the first place (Step bucket → unit pick).</li>
+<li><code>data-session/mgg_datamine/SpecialItemDataTable.md</code> rows <code>D00008_031</code> / <code>D00008_032</code> — shard item definitions.</li>
+<li><code>data-session/mgg_datamine/SpecialItemDataTable.md</code> rows <code>D00006_031</code> / <code>D00006_032</code> — recruit ticket items (orthogonal — input cost, not output shard).</li>
+</ul>
+<h2>Implementation notes</h2>
+<ul>
+<li>Both functions live next to each other in <code>GeneralDataTables.SummonDataTable</code> (lines 130–152 in current decompile). They share the same numeric ladder; if a future patch decouples them (e.g. nerfs Alter S-dup to 30), the diff against <code>data-session/back-up/&lt;prev&gt;/intermediate/decompiled_summon.cs</code> will surface it immediately.</li>
+<li>The existing <code>data-session/tools/decompile_summon.py</code> (one-off, but kept on disk) re-runs the decompile on demand. Add <code>SummonDataTable</code> to the diff target after every patch.</li>
+</ul>
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.1.1.0 · duplicate-shards.md</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>

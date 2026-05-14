@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stat Calculation Pipeline — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="../index.html">GMG Wiki</a>
+  <nav>
+    <a href="../units/index.html">Units</a>
+    <a href="../keywords/index.html">Keywords</a>
+    <a href="../gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="../talent-simulator.html">Talent Simulator</a>
+    <a href="../team-planner.html">Team Planner</a>
+    <a href="../search-unit.html">Search · Units</a>
+    <a href="../search-talent.html">Search · Talents</a>
+    <a href="../search-gear.html">Search · Gear</a>
+    <a href="../search-runes.html">Search · Runes</a>
+    <a href="../news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>Stat Calculation Pipeline</h1>
+<p><strong>How a unit's displayed stat (HP / STR / INT / DEX / SPD / Tough / Luck / Mana) is computed at runtime.</strong></p>
+<p>Reverse-engineered from <code>RoleHelper.GetRoleAttr</code> (decompile line 88725-88828) and verified end-to-end against captured game runtime via a Mono.Cecil-injected logger that dumps stats at 6 stages of the pipeline.</p>
+<h2>TL;DR — 7-layer additive pipeline</h2>
+<pre><code>FINAL = LegalTrim(
+    BASE                                         # 5-axis sum at level 1
+    + InitialMagic_MageBonus                     # +10 if Class=Mage
+    + Σ Modifier.ChangeAttrFirst()              # bonds + subskills + talents + prefixes + runes (pass 1)
+    + Σ Insight_Relic.ChangeAttr() (player only) # 4 XD-prefix relics in RelicsDataTable
+    + LevelScaling                               # 1 stat point per axis per level, cycling GrowthType1..10
+    + GearSum                                    # Σ EquipHelper.GetEquipAttr per equipped slot
+    + Σ Modifier.ChangeAttrSecond()             # same modifier list, pass 2
+    + (BossConsBuff% × accumulated CONS)        # boss-only HP buff
+    + Σ Modifier.ChangeAttrFinal()              # same modifier list, pass 3
+)
+</code></pre>
+<p>Modifier sources (collected once per <code>GetRoleAttr</code> call):
+- <code>GetRoleBondList(role)</code> — set-bond effects from equipped gear
+- <code>GetRoleSubskillList(role)</code> — Trait/Title/Perk passives + Race/NormalAttack passive
+- <code>GetRoleTalentList(role)</code> — equipped Talent Fruit effects
+- Prefix list (enemy-only) — <code>Ancient</code>/<code>Infected</code>/<code>Frozen</code>/etc. from PrefixDataTable
+- <code>GetRoleRuneModifiers(role)</code> — rune material resonance levels
+- <code>WorldMap.GetEffects(isChallenge)</code> — map-effect modifiers
+- ParagonChallengePanel selected modifiers (Paragon mode, enemy only)</p>
+<p>Each modifier is called <strong>3 times</strong> per stat-compute: <code>ChangeAttrFirst</code> → <code>ChangeAttrSecond</code> → <code>ChangeAttrFinal</code>. Different modifier types use different passes (e.g., percentage buffs typically use Final to apply on accumulated value).</p>
+<h2>Stage 1 — BASE (<code>role.data.GetInitialAttr()</code>)</h2>
+<p>Formula (decompile line 37444-37464):</p>
+<pre><code>For each of the 5 axes in BasicAttrDataTable[ role.&lt;axis&gt; ]:
+    axes = [BasicAttr[Step], BasicAttr[Class], BasicAttr[Element],
+            BasicAttr[Map], BasicAttr[Type]]   # 5 lookups
+
+CONS = Σ axes.InitialCONS
+SPD  = Σ axes.initialSPD
+Tough = Σ axes.initialTough
+Luck = 0
+
+STR = Σ axes.InitialSTR + (axes.initialAttack if Class.attack==力量)
+                        + (axes.initialDefence if Class.defence==力量)
+                        + (axes.initialWeak if Class.weakness==力量)
+INT = same pattern with 精神
+DEX = same pattern with 敏捷
+</code></pre>
+<p>The combat-stat dispatch uses <code>BattleHelper.GetAttackingAttr(Class)</code> / <code>GetDefendingAttr</code> / <code>GetWeaknessAttr</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Attack stat</th>
+<th>Defence stat</th>
+<th>Weakness stat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Warrior (战士)</td>
+<td>力量 STR</td>
+<td>精神 INT</td>
+<td>敏捷 DEX</td>
+</tr>
+<tr>
+<td>Mage (法师)</td>
+<td>精神 INT</td>
+<td>敏捷 DEX</td>
+<td>力量 STR</td>
+</tr>
+<tr>
+<td>Archer (射手)</td>
+<td>敏捷 DEX</td>
+<td>力量 STR</td>
+<td>精神 INT</td>
+</tr>
+<tr>
+<td>Priest (牧师)</td>
+<td>精神 INT</td>
+<td>力量 STR</td>
+<td>敏捷 DEX</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Gotcha</strong>: the 5th axis is <strong>Type</strong> (race-family — 生灵/魔灵/器灵/亡灵/神灵), NOT the <code>Race</code> column (which holds the species name like 神族/龙族 in compound <code>BD20015,神族</code> form). <code>BasicAttrDataTable</code> only has entries for the 5 race-family categories.</p>
+<h2>Stage 2 — InitialMagic Mage bonus</h2>
+<pre><code class="language-csharp">if (role.data.isMage) attr.InitialMagic += 10;
+</code></pre>
+<p>A flat +10 starting mana hardcoded for Mages, applied right after BASE assignment. NOT included in <code>GetInitialAttr</code> itself — it's added by <code>GetRoleAttr</code> to the accumulator after the base is loaded.</p>
+<h2>Stage 3 — LevelScaling (<code>role.data.GetLevelAttr(level)</code>)</h2>
+<p>For each level <code>i</code> from 1 to <code>role.level</code>:
+- index = <code>i % 10</code>
+- For each of the 5 axes, look up <code>axis.GrowthType{index+1}</code> (CN stat name)
+- Add 1 to that stat in the level-attr accumulator</p>
+<p>So at level N, each axis has contributed <code>N</code> stat points distributed across its 10-position growth cycle.</p>
+<p>Example for a Warrior (axis.GrowthType1..10 = HP, STR, HP, STR, HP, INT, HP, STR, Tough, INT):
+- Level 1: +STR (idx 1 → GrowthType2)
+- Level 2: +HP (idx 2 → GrowthType3)
+- ...
+- Level 10: +HP (idx 0 → GrowthType1)
+- Level 11: +STR (idx 1 → GrowthType2)
+- ...</p>
+<p>→ Over 10 levels: +5 HP, +3 STR, +1 INT, +1 Tough from the Class axis alone. Multiply by 5 axes for the full level-scaling rate.</p>
+<p>This is the "soft" stat growth — at level 100, a unit's CONS modifier is roughly <code>50</code> from level alone.</p>
+<h2>Stage 4 — GearSum (<code>Σ EquipHelper.GetEquipAttr(equip)</code>)</h2>
+<p>For each gear slot (10 total — Main / Off / Head / Body / Gloves / Belt / Shoes / Necklace / Ring / Badge):</p>
+<pre><code>attr.CONS  = equip.data.CONS
+attr.STR   = equip.data.STR
+attr.INT   = equip.data.INT
+attr.DEX   = equip.data.DEX
+attr.SPD   = equip.data.SPD
+attr.Luck  = equip.data.Luck
+attr.Tough = equip.data.Tough
+attr.InitialMagic += equip.data.InitialMagic
+
+# Per-star round-robin distribution:
+n = equipUpgTimes[Step]   # C=1, B=1, A=2, S=4, SS=8
+upg_list = equip.data.UpgradeAttr.split(',')
+for i in range(equip.star * n):
+    stat_cn = upg_list[i % len(upg_list)]
+    attr[stat_cn] += 1
+</code></pre>
+<p><code>equipUpgTimes</code> = <code>[1, 1, 2, 4, 8]</code> for <code>[C, B, A, S, SS]</code>. At ★3 max:
+- C gear: +3 points distributed across UpgradeAttr stats
+- B gear: +3 points
+- A gear: +6 points (2 per star × 3 stars)
+- S gear: +12 points
+- SS gear: +24 points</p>
+<p>Detailed example in <a href="../mechanics/starup.html">starup</a>.</p>
+<h2>Stage 5 — Modifier passes 1/2/3</h2>
+<p>Modifiers (bonds, subskills, talents, runes, prefixes, map effects, paragon modifiers) collectively form a <code>List&lt;BattleModifier&gt;</code>. The whole list is iterated <strong>3 times</strong> per stat compute, with different methods called each pass:</p>
+<table>
+<thead>
+<tr>
+<th>Pass</th>
+<th>Method</th>
+<th>When</th>
+<th>Typical use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>First</td>
+<td><code>ChangeAttrFirst(role, attr)</code></td>
+<td>Right after BASE, BEFORE level+gear</td>
+<td>Flat additive (e.g., <code>+50 HP</code>) on the BASE accumulator</td>
+</tr>
+<tr>
+<td>Insight Relic</td>
+<td><code>relic.ChangeAttr(role, attr)</code></td>
+<td>Player-only, between First and level+gear</td>
+<td>Insight unlocks (XD11001_<em>, XD12001_</em>, XD13001_<em>, XD14001_</em>)</td>
+</tr>
+<tr>
+<td>Second</td>
+<td><code>ChangeAttrSecond(role, attr, attr2)</code></td>
+<td>After level+gear is added</td>
+<td>Conditional/state-dependent (<code>+X if has Y status</code>) — accumulates into separate <code>attr2</code></td>
+</tr>
+<tr>
+<td>BossConsBuff</td>
+<td>(built-in)</td>
+<td>Enemy-only, if isBoss</td>
+<td><code>attr2.CONS += accumulated_CONS × (BossConsBuff% - 1)</code></td>
+</tr>
+<tr>
+<td>Final</td>
+<td><code>ChangeAttrFinal(role, attr4)</code></td>
+<td>After <code>attr4 = attr + attr2</code>, before trim</td>
+<td>Percentage scaling (<code>× 1.5</code>) on near-final value</td>
+</tr>
+</tbody>
+</table>
+<p>Why 3 passes? <strong>Order matters for stacking</strong> — e.g., a "+50% HP" talent (Final) should multiply on top of "+100 HP from bond" (First), not the other way. The pass system gives the team designer explicit ordering control without requiring runtime priority resolution.</p>
+<h2>Stage 6 — LegalTrim (<code>attr4.LegalTrim()</code>)</h2>
+<p>Decompiled exactly (Attr.cs line 83376-83394):</p>
+<pre><code class="language-csharp">public void LegalTrim() {
+    if (CONS &lt;= 0)        CONS = 1;          // HP floor 1 (NOT 0)
+    if (MaxMagic &lt;= 0)    MaxMagic = 1;      // Mana cap floor 1
+    if (InitialMagic &lt; 0) InitialMagic = 0;  // Starting mana floor 0
+    if (Tough &lt;= 0)       Tough = 1;         // Toughness floor 1
+}
+</code></pre>
+<p><strong>Only 4 stats are clamped.</strong> Notable consequences:</p>
+<ul>
+<li><strong>STR / INT / DEX / SPD / Luck / ActionMagic / HitMagic</strong> can go arbitrarily negative. Captured M21204 ended with <code>SPD = -52</code> — game proceeds normally with negative SPD (likely interpreted as "very slow / acts last" in turn-order code).</li>
+<li><strong>CONS / Tough</strong> clamp to <strong>1</strong>, not 0. The game's combat logic separately tracks "alive" — a unit can never be brought to 0 HP via Attr math alone; combat damage must explicitly reduce HP via <code>LoseLife</code>.</li>
+<li><strong>MaxMagic = 1 floor</strong> prevents division by zero in mana-percent formulas.</li>
+<li><strong>InitialMagic = 0 floor</strong> means a unit can never start a battle with negative mana, but can end up with 0 (already does for non-Mages).</li>
+</ul>
+<p>This explains the M21204 boss case in our capture — its SPD-84 modifier wasn't clamped because SPD isn't in the LegalTrim list.</p>
+<h2>Verification — captured runtime vs computed</h2>
+<p>Patched <code>MainScripts.dll</code> via Mono.Cecil to inject IL log calls at 6 points in <code>GetRoleAttr</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Inject after</th>
+<th>Captures L?</th>
+<th>Tag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>stloc.2 attr</code> (initial assignment)</td>
+<td>L2</td>
+<td><code>STAT_BASE</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>foreach ChangeAttrFirst loop exit</td>
+<td>L2</td>
+<td><code>STAT_AFTER_FIRST</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>foreach Insight Relic loop exit</td>
+<td>L2</td>
+<td><code>STAT_AFTER_RELIC</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>stloc.s V_7</code> (gear loop completed)</td>
+<td>L7 standalone</td>
+<td><code>STAT_GEAR</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>foreach ChangeAttrSecond loop exit</td>
+<td>L2</td>
+<td><code>STAT_AFTER_SECOND</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>callvirt LegalTrim</code> (final)</td>
+<td>L8</td>
+<td><code>STAT_FINAL</code></td>
+</tr>
+</tbody>
+</table>
+<p>Output format per line:</p>
+<pre><code>STAT_&lt;STAGE&gt; &lt;role.IDs&gt; {&quot;CONS&quot;:N,&quot;STR&quot;:N,&quot;INT&quot;:N,...}
+</code></pre>
+<p>Captured (Apr 2026, 1.1.1.0 game version, <code>stat_breakdown_run4.log</code>):</p>
+<pre><code>M11302 Shadow Dragoness (Warrior, Dark, Forest, level=?):
+  STAT_BASE   : CONS=18, STR=22, INT=6,  DEX=2,   SPD=14, Tough=22, Luck=0,  InitialMagic=0
+  STAT_GEAR   : CONS=1,  STR=17, INT=13, DEX=1,   SPD=2,  Tough=2,  Luck=0,  InitialMagic=5
+  STAT_FINAL  : CONS=207,STR=137,INT=121,DEX=105, SPD=30, Tough=53, Luck=4,  InitialMagic=5
+</code></pre>
+<p>Cross-validated <code>STAT_FINAL</code> against the in-game <code>battleLog.txt</code> ("生命:207, 力量:137, ...") — exact match.</p>
+<h3>Python re-compute (BASE only)</h3>
+<p><code>data-session/tools/replay_stats.py</code> re-implements <code>GetInitialAttr</code> in pure Python and verifies against captured BASE for every unit in the log.</p>
+<p><strong>Result on captured 8 units (3 player + 3 enemy + 2 misc):</strong></p>
+<pre><code>M00000  Dummy           ✅ MATCH   (16/24/8/2/12/22/0/0)
+M11302  Shadow Dragoness ✅ MATCH  (18/22/6/2/14/22/0/0)
+M51303_000 Imp           ✅ MATCH  (20/18/12/0/12/22/0/0)
+M53301_001 Astral Fiend  ✅ MATCH  (11/4/29/2/16/22/0/0)
+M41301  Ghost Captain    ✅ MATCH  (18/26/4/0/14/22/0/0)
+M12301_001 Harpy Princess ✅ MATCH (10/2/0/28/22/22/0/0)
+M54301  Forest Nymph     ✅ MATCH  (16/4/24/2/18/20/0/0)
+M13305_000 Grand Magician ✅ MATCH (11/0/29/8/16/20/0/0)
+</code></pre>
+<p>8/8 unit exact match → formula re-implementation is correct.</p>
+<h2>Insights from the data</h2>
+<h3>General</h3>
+<ol>
+<li>
+<p><strong>Modifier system dominates at mid/late game.</strong> Shadow Dragoness gear contributes +17 STR / +13 INT — the modifier system adds +98 STR / +102 INT (5-7× more). Talents + bonds matter more than gear ★ when you're past mid-game.</p>
+</li>
+<li>
+<p><strong>Gear contribution is small compared to BASE for tank stats.</strong> Shadow Dragoness gear gives +1 CONS — that's because gear primarily scales offensive stats. CONS comes mostly from BASE + level + Insight relic.</p>
+</li>
+<li>
+<p><strong>Insight Relic adds a modest spread of stats</strong> (typical: ~30-50 total points across 4-6 stats):
+   - CONS +0..+16, INT +2..+20, DEX 0..+6, SPD 0..+16, Tough +4..+8, Luck +4..+12.
+   - Notable: Luck/SPD/Tough are stats poorly served by bonds/talents — Insight is the main player-side source for these.</p>
+</li>
+</ol>
+<h3>Verified at runtime — Pass 1 / 2 / 3 separation (<code>stat_breakdown_run5.log</code>)</h3>
+<p>Captured 6 units across player + enemy after extending the patcher to 6 stages. Key proven mechanics:</p>
+<p><strong><code>BossConsBuff</code> from DifficultySpec lộ ra cụ thể.</strong> Enemy unit M21204 had <code>Pass3+Trim</code> adding <strong>+2772 CONS</strong> on top of accumulated 924 CONS. Ratio = exactly 3.0 → <code>BossConsBuff = 4.0×</code> (formula <code>attr2.CONS += accumulated × (bossConsBuff - 1)</code>). Confirms decompile line 88816-88820 + <code>DifficultySpecDataTable.BossConsBuff</code> column.</p>
+<p><strong><code>DifficultySpec.Extra*</code> fields applied between gear-add and Pass2</strong> for enemies:
+- ExtraCONS ≈ 600 in level+Pass2 layer for current difficulty
+- ExtraATK ≈ 370 (routed to Class's attack stat — INT for Mage M23201)
+- ExtraDEF ≈ 200 (routed to defense stat — DEX for Mage)
+- ExtraWEK ≈ 150 (routed to weakness stat — STR for Mage)
+- These are flat per-tier scaling, not multiplicative.</p>
+<p><strong>Map/Prefix debuff visible</strong> — both captured enemies show identical <code>-84 SPD</code> in Pass1, regardless of unit type. Likely a map-effect modifier applied to all enemies on this map (or a shared <code>Sluggish</code>-type prefix).</p>
+<p><strong>LegalTrim is selective.</strong> M21204 ended with <code>SPD = -52</code> (negative!) despite the call to LegalTrim — clamping seems to apply only to CONS/Tough/MaxMagic, not SPD/STR/INT/DEX. M23201 ended <code>SPD = 0</code> (clamped from -24) suggesting context-dependent floor application. Worth deeper investigation.</p>
+<p><strong>Pass 3 (<code>ChangeAttrFinal</code>) modifiers are rare but strong.</strong> Only 1 of 4 captured player units had any Pass3 contribution (<code>Luck +24</code>). Most talents/bonds register in Pass 1 or 2. For enemies, Pass 3 is dominated by <code>BossConsBuff</code>.</p>
+<h3>Edge cases</h3>
+<p><strong>Dummy tutorial unit has +1002 CONS modifier from somewhere.</strong> Captured Dummy showed BASE=16 CONS but FINAL=1018. Some hidden tutorial-only bond/relic gives Dummy effectively infinite HP — "tutorial scaling", not a normal modifier source.</p>
+<p><strong>Enemy unit max-mana cap exceeds the 30 hardcoded limit.</strong> Stellar Archer (M52301 as enemy at difficulty 190) showed MaxMagic 270 — this is set by DifficultySpec scaling, not the per-unit hardcoded cap (which only applies to player roles).</p>
+<h2>Tools</h2>
+<ul>
+<li><strong>Patcher</strong>: <code>data-session/tools/patch_stat_logger.py</code> — Mono.Cecil IL injection on <code>RoleHelper.GetRoleAttr</code>. Outputs to <code>MainScripts_patched.dll</code> (padded to original 4,174,848 bytes for YooAsset Middle-level verify).</li>
+<li><strong>Replay</strong>: <code>data-session/tools/replay_stats.py</code> — verifies BASE formula against captured logs.</li>
+<li><strong>Sister patchers</strong> (stackable on same DLL):</li>
+<li><code>patch_battle_logger.py</code> — 201 API request endpoint loggers</li>
+<li><code>patch_battle_logflag.py</code> — force-enable built-in <code>battleLog.txt</code> + <code>log.json</code></li>
+<li><strong>Captures</strong> (in <code>data-session/intermediate/</code>):</li>
+<li><code>stat_breakdown_run4.log</code> — 33 GetRoleAttr calls × 6 stages = 99 lines, 8 unique units</li>
+<li><code>battlelog_run4.json</code> — structured BattleLog (54 actions × 6 fighters × 5 phases)</li>
+<li><code>battleLog_run4.txt</code> — CN verbose battle narrative</li>
+</ul>
+<h2>Open questions (future research)</h2>
+<h3>A. Per-modifier attribution (<code>STAT_AFTER_FIRST</code> shows SUM, not per-modifier)</h3>
+<p>Currently <code>STAT_AFTER_FIRST</code> captures L2 after ALL First-pass modifiers applied. To know which bond/talent/relic contributed how much, inject log INSIDE the foreach loop.</p>
+<p><strong>Methodology</strong> (designed, not yet executed):</p>
+<p>In <code>RoleHelper.GetRoleAttr</code> at IL_0280 (the <code>callvirt ChangeAttrFirst</code>), inject AFTER the call:</p>
+<pre><code class="language-il">;; The Enumerator local V_15 still holds the current modifier (MoveNext not yet called)
+ldloca.s V_15
+call instance !0 Enumerator`1&lt;BattleModifier&gt;::get_Current()    ;; -&gt; BattleModifier
+callvirt instance string BattleModifier::get_IDs()              ;; -&gt; &quot;BD40326_001&quot; etc
+;; ... combine with attr state JSON ...
+;; AppendAllText &quot;MOD_FIRST &lt;role.IDs&gt; &lt;modifier.IDs&gt; {attr-json}\n&quot;
+</code></pre>
+<p><strong>Complication</strong>: Cecil method-reference for the generic <code>Enumerator&lt;BattleModifier&gt;::get_Current()</code> requires importing a generic method instantiation, which is non-trivial via the pythonnet binding. Easier path: reuse the existing <code>get_Current</code> MethodReference from the IL_0279 instruction (which Cecil already has a working ref for).</p>
+<p><strong>Output format</strong> (designed):</p>
+<pre><code>MOD_FIRST &lt;role.IDs&gt; &lt;modifier.IDs&gt; {attr after this single modifier's First pass}
+</code></pre>
+<p>Diff between consecutive MOD_FIRST lines = that specific modifier's First-pass contribution. With ~10-30 modifiers per unit per battle, log ~6-fold larger than current STAT_BASE/AFTER_* breakdown — manageable.</p>
+<h3>B. <code>attr2</code> (L3) standalone capture</h3>
+<p>ChangeAttrSecond signature is <code>(role, attr, attr2)</code> — mutates both L2 and L3. We currently capture L2 post-loop but not L3. Adding a 7th inject point right after the foreach completion to log L3 would expose: which modifiers add to attr2 vs attr (and thus what gets the BossConsBuff multiplier).</p>
+<p>Trivial extension to <code>patch_stat_logger.py</code>: same pattern as STAT_AFTER_SECOND but loading L3 instead of L2. ~13 IL instructions, no new method references needed.</p>
+<h3>C. Per-rune resonance contribution isolation</h3>
+<p>Rune modifiers route through <code>GetRoleRuneModifiers(role)</code> (decompile line 88830-88904). Each equipped rune contributes:
+- Its own <code>RuneBase</code> modifier (based on <code>RuneDataTable[runeId].IDs.Split('_')[0]</code> class name)
+- Plus the material's <code>RuneMaterialBase</code> modifier (resonance bonus)</p>
+<p>The <code>resonanceLevel</code> (line 88894) depends on <strong>total runes of same material across all 10 slots</strong> — so isolating a single rune's contribution requires equipping ONLY that rune at a time.</p>
+<p><strong>Methodology</strong> (designed, not yet executed — requires user cycles):
+1. Patch v6 deployed (stat logger active)
+2. Equip 1 specific rune of material X at star Y → capture STAT_AFTER_FIRST
+3. Unequip all runes → capture STAT_AFTER_FIRST
+4. Diff = that single rune's contribution at its current resonance level (alone = level 1)
+5. Re-equip with 2nd identical rune → diff captures bump at resonance level 2
+6. ... repeat for level 3
+7. Repeat per material × per star → ~36 captures (12 materials × 3 stars)</p>
+<p>Total time-cost: 30-60 min user interaction. Defer for a focused session dedicated to rune mechanics.</p>
+<h3>D. Modifier ordering within passes</h3>
+<p>Each pass iterates modifiers in a sorted order (<code>list.Sort</code> at line 88777). The comparer is <code>string.CompareOrdinal(a.IDs, b.IDs)</code> — pure alphabetical by ID string. Implication: same modifier set ALWAYS applies in same order regardless of equip-order, so the breakdown is deterministic. No combinatorial ordering issues to worry about.</p>
+<h3>E. Replay tool: modifier contribution</h3>
+<p><code>replay_stats.py</code> currently implements BASE + GEAR + LEVEL accurately. To implement MODIFIER contribution in pure Python would require:
+- Parsing 805 BondDataTable rows × <code>Effect</code>/<code>Value0..5</code> for piece-count thresholds
+- Parsing 619 TalentDataTable rows × ditto
+- Parsing the Insight relic subset of RelicsDataTable (~166 XD-prefix entries)
+- Implementing the 3-pass execution order
+- Implementing conditional effects (e.g., "+20 INT IF teammate has Frostbound element")</p>
+<p>This is essentially reimplementing the game's combat math in Python. Scope: 1-2 weeks of focused dev work. For now, easier to capture FINAL stats live via the patcher rather than predict them analytically.</p>
+<h2>References</h2>
+<ul>
+<li>Decompile source: <code>data-session/intermediate/decompiled_full_mainscripts.cs</code></li>
+<li><code>RoleHelper.GetRoleAttr</code> at line 88725</li>
+<li><code>RoleDataItem.GetInitialAttr</code> at line 37444</li>
+<li><code>RoleDataItem.GetLevelAttr</code> at line 37466</li>
+<li><code>EquipHelper.GetEquipAttr</code> at line 86946 (+ <code>equipUpgTimes</code> at 86944)</li>
+<li><code>Attr</code> class at line 83207 (11 int fields)</li>
+<li><code>BasicAttrDataItem.GetUpgAttrName</code> at line 34342</li>
+<li>Source data: <code>data-session/mgg_datamine/{Role,BasicAttr,Equip}DataTable.md</code></li>
+<li>Related mechanics: <a href="../mechanics/starup.html">starup</a>, <a href="../mechanics/legacy.html">legacy</a></li>
+</ul>
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.1.1.0 · stat-calculation.md</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>

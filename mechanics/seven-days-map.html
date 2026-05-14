@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seven Days Map Event — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="../index.html">GMG Wiki</a>
+  <nav>
+    <a href="../units/index.html">Units</a>
+    <a href="../keywords/index.html">Keywords</a>
+    <a href="../gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="../talent-simulator.html">Talent Simulator</a>
+    <a href="../team-planner.html">Team Planner</a>
+    <a href="../search-unit.html">Search · Units</a>
+    <a href="../search-talent.html">Search · Talents</a>
+    <a href="../search-gear.html">Search · Gear</a>
+    <a href="../search-runes.html">Search · Runes</a>
+    <a href="../news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>Seven Days Map Event</h1>
+<p>New 7-day login campaign + quest system added in <strong>v1.1.1.0</strong>. Combines daily quest objectives and stage-based milestone rewards over a 7-day window. All rewards are quest-driven — no purchasable IAP packages in the current data.</p>
+<blockquote>
+<p><strong>Status (2026-05-15):</strong> <code>SevenDaysMapDataTable</code> has <strong>33 entries</strong> — fully active server-side as of v1.1.1.0 data pull. Source: <code>data-session/mgg_datamine/SevenDaysMapDataTable.md</code>.</p>
+</blockquote>
+<h2>Structure</h2>
+<p>33 entries across 2 types:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Count</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Quests</code></td>
+<td>28</td>
+<td>4 quests per day × 7 days. Each quest rewards Gems + Progress Points.</td>
+</tr>
+<tr>
+<td><code>Stage Reward</code></td>
+<td>5</td>
+<td>Milestone rewards unlocked at cumulative Point thresholds.</td>
+</tr>
+</tbody>
+</table>
+<h2>Daily Quests (4 per day, repeat pattern)</h2>
+<p>Each day has the same 4 quest types, with escalating targets:</p>
+<table>
+<thead>
+<tr>
+<th>Quest</th>
+<th>Day 1</th>
+<th>Day 2</th>
+<th>Day 3</th>
+<th>Day 4</th>
+<th>Day 5</th>
+<th>Day 6</th>
+<th>Day 7</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Log in for N days</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Clear Endless Desert (Easy→Abyss)</td>
+<td>10</td>
+<td>20</td>
+<td>30</td>
+<td>40</td>
+<td>50</td>
+<td>60</td>
+<td>70</td>
+</tr>
+<tr>
+<td>Total recruits</td>
+<td>10</td>
+<td>20</td>
+<td>30</td>
+<td>40</td>
+<td>50</td>
+<td>60</td>
+<td>70</td>
+</tr>
+<tr>
+<td>Spend N Stamina</td>
+<td>2,000</td>
+<td>4,000</td>
+<td>6,000</td>
+<td>8,000</td>
+<td>10,000</td>
+<td>12,000</td>
+<td>14,000</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Endless Desert difficulty progression by day:</strong> Easy (Day 1) → Normal (Day 2) → Hard (Day 3) → Insane (Day 4) → Hell (Day 5) → Abyss (Day 6) → Abyss floor 20 (Day 7).</p>
+<p><strong>Rewards per quest:</strong> Login quest = <strong>20 Gems + 10 Progress Points</strong>. Other 3 quests = <strong>20 Gems + 5 Progress Points</strong> each (except Stamina quest = <strong>40 Gems + 10 Points</strong>).</p>
+<p>Daily reward totals (completing all 4): <strong>100 Gems + 30 Points</strong> per day.
+Full 7-day total (all quests): <strong>700 Gems + 210 Points</strong>.</p>
+<h2>Stage Rewards (cumulative Points thresholds)</h2>
+<table>
+<thead>
+<tr>
+<th>Milestone</th>
+<th>Points Required</th>
+<th>Reward</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stage 1</td>
+<td>30 Points</td>
+<td>10 × Alter Recruit Ticket</td>
+</tr>
+<tr>
+<td>Stage 2</td>
+<td>60 Points</td>
+<td>5 × Alter Recruit Ticket</td>
+</tr>
+<tr>
+<td>Stage 3</td>
+<td>90 Points</td>
+<td>5 × Alter Recruit Ticket</td>
+</tr>
+<tr>
+<td>Stage 4</td>
+<td>120 Points</td>
+<td>5 × Alter Recruit Ticket</td>
+</tr>
+<tr>
+<td>Stage 5</td>
+<td>150 Points</td>
+<td><strong>1 × Earth Witch</strong> (<code>M13303_001</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>The Stage 5 reward is a guaranteed alter unit: <strong>Earth Witch</strong> (<code>M13303_001</code>). This is a "check in for 3 days to get limited-time Swimsuit girl" style reward — achieving 150 Points requires completing roughly 5 full days of quests.</p>
+<h2>Notes</h2>
+<ul>
+<li>All reward currencies: Gems (<code>D00001_000</code>) and Progress Points (<code>D00005_004</code>). No premium currency IAP in current entries — <code>Cost</code> and <code>Currency</code> fields are all blank/0.</li>
+<li><code>DiscountRate</code> field is 0 for all entries (no discount mechanic active).</li>
+<li><code>CreditRequirement</code> is 0 for all quest entries; Stage Reward entries use it as the Point threshold (30/60/90/120/150).</li>
+<li>The decompiled schema note (server RPCs) remains valid — the <code>ClaimMapHeaderRewardAsync</code> and <code>PurchaseSevenDaysMapItemAsync</code> endpoints are still registered in client code, even if the purchase flow isn't exercised by current data.</li>
+</ul>
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.1.1.0 · seven-days-map.md</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>

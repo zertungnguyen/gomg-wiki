@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Legacy (传承 / Heritage) — Bond Tier Boost — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="../index.html">GMG Wiki</a>
+  <nav>
+    <a href="../units/index.html">Units</a>
+    <a href="../keywords/index.html">Keywords</a>
+    <a href="../gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="../talent-simulator.html">Talent Simulator</a>
+    <a href="../team-planner.html">Team Planner</a>
+    <a href="../search-unit.html">Search · Units</a>
+    <a href="../search-talent.html">Search · Talents</a>
+    <a href="../search-gear.html">Search · Gear</a>
+    <a href="../search-runes.html">Search · Runes</a>
+    <a href="../news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>Legacy (传承 / Heritage) — Bond Tier Boost</h1>
+<p>How equipment Legacy works: when a piece of gear has the <strong>Legacy</strong> flag set (in-game UI: <code>[传承]</code> / <code>[Legacy]</code> prefix on the gear name + gold border sprite), every one of its 3 bond slots gains an additional <code>+1</code> to its level.</p>
+<blockquote>
+<p><strong>Source:</strong> decompiled <code>EquipHelper.GetEquipBond</code> and <code>EquipHelper.SetEquipHeritage</code> in <code>data-session/intermediate/decompiled_equip.cs</code>. The math is in <code>MainScripts.dll</code> (HybridCLR HotUpdate), not in any DataTable.</p>
+</blockquote>
+<h2>What Legacy DOES</h2>
+<p><strong>Bond level +1 for all 3 slots</strong> (Pure / Title / Enhance), capped per-bond by the bond's max tier (= number of comma-separated entries in <code>BondDataTable.Value1</code>, e.g. Sharp/Sturdy = 6 tiers max, Fair Trade = 2 tiers max).</p>
+<p>The bonus stacks on top of the <a href="../mechanics/starup.html">star-up</a> bonus:</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Pure</th>
+<th>Title</th>
+<th>Enhance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>★0, no Legacy</td>
+<td>base</td>
+<td>base</td>
+<td>base</td>
+</tr>
+<tr>
+<td>★3, no Legacy</td>
+<td>base+1</td>
+<td>base+1</td>
+<td>base+1</td>
+</tr>
+<tr>
+<td>★0 + Legacy</td>
+<td>base+1</td>
+<td>base+1</td>
+<td>base+1</td>
+</tr>
+<tr>
+<td><strong>★3 + Legacy</strong></td>
+<td><strong>base+2</strong></td>
+<td><strong>base+2</strong></td>
+<td><strong>base+2</strong></td>
+</tr>
+</tbody>
+</table>
+<p>(MaxLevel cap applies at every step.)</p>
+<h2>What Legacy does NOT do</h2>
+<p><strong>Legacy does NOT modify raw stats.</strong> Verified by full grep of <code>Heritage</code> references in decompiled C# — 8 references total, none inside <code>GetEquipAttr</code> (the function that computes raw STR/INT/DEX/CONS/SPD/Luck/Tough/Mana). All 8 references:</p>
+<table>
+<thead>
+<tr>
+<th>Line</th>
+<th>Where</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>557, 645</td>
+<td>UI init</td>
+<td>Set/clear flag</td>
+</tr>
+<tr>
+<td>656</td>
+<td>UI title</td>
+<td>Show "[Legacy]" prefix on gear name</td>
+</tr>
+<tr>
+<td>1209</td>
+<td>UI preview</td>
+<td>Display "+1" or "+2" in bond text</td>
+</tr>
+<tr>
+<td><strong>1568</strong></td>
+<td><strong><code>GetEquipBond</code></strong></td>
+<td><strong>+1 every bond level (capped by MaxLevel)</strong></td>
+</tr>
+<tr>
+<td>1582</td>
+<td><code>SetEquipHeritage(step)</code></td>
+<td>RNG roll on drop</td>
+</tr>
+<tr>
+<td>1906</td>
+<td>UI sprite</td>
+<td>Border sprite (gold vs default)</td>
+</tr>
+<tr>
+<td>2642</td>
+<td>Serialization</td>
+<td>JSON property declaration</td>
+</tr>
+</tbody>
+</table>
+<p>The localization text <strong>"Legacy adds one more stat"</strong> (<code>Battle_Option_Travel_09</code>) is misleading — it's a translation of CN <code>传承会使装备拥有的词条数+1</code> ("Legacy makes gear's 词条 count +1"). <code>词条</code> here refers to <strong>bond entries</strong>, not raw stat lines. The EN translator picked "stat" because <code>词条</code> is ambiguous, but the code path only modifies bond levels.</p>
+<h2>How gear becomes Legacy</h2>
+<p><code>EquipHelper.SetEquipHeritage(string step)</code> rolls RNG when gear drops. Drop probability scales with rarity:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Legacy roll chance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C</td>
+<td>1/160 ≈ 0.625%</td>
+</tr>
+<tr>
+<td>B</td>
+<td>1.25%</td>
+</tr>
+<tr>
+<td>A</td>
+<td>2.5%</td>
+</tr>
+<tr>
+<td>S</td>
+<td>5%</td>
+</tr>
+<tr>
+<td>SS</td>
+<td>not implemented in this code path <em>(SS items use a separate flow; verify in-game)</em></td>
+</tr>
+</tbody>
+</table>
+<p>(Constants from <code>EquipHelper.SetEquipHeritage</code> switch.)</p>
+<p>So Legacy is purely a <strong>drop modifier</strong> — there's no in-game upgrade UI to convert a non-Legacy piece into a Legacy piece. You either roll Legacy at drop time or you don't.</p>
+<blockquote>
+<p>Note: <code>Items_Des_D00007_*</code> loc keys describe a "Legacy Stone" item that "allows gear of the corresponding tier to gain Legacy", which would be a UI-driven legacy upgrade. The corresponding code path was not located in the current decompile dump — likely in a service handler not in <code>EquipHelper</code>. Treat the RNG drop chance as the primary path for now; if the user reports gaining Legacy via Stone, re-check after next decompile.</p>
+</blockquote>
+<h2>Implementation notes</h2>
+<ul>
+<li>Legacy state is on the player's gear instance (<code>SaveData.Equip.Heritage</code> field), NOT on <code>EquipDataTable</code> rows. The gear DataTable describes the template; whether a specific copy is Legacy depends on the player's drop history.</li>
+<li>This means the wiki gear catalog (<code>gear/&lt;area&gt;.md</code>, <code>&lt;span class="broken-link" title="missing: starup-gear-info"&gt;starup-gear-info&lt;/span&gt;</code>) shows base + star-up only — Legacy adds a uniform <code>+1 to all 3 bonds, capped per MaxLevel</code> on top, easy to apply mentally.</li>
+<li>Code path for the "Legacy Stone" use-case (UI-driven conversion) is not in the current decompile output — <code>data-session/tools/decompile_equip.py</code> only pulls <code>Equip*</code> types. To investigate: extend the script's <code>TARGETS</code> to include <code>LegacyStone</code> / item-handler types and re-decompile.</li>
+</ul>
+<h2>Cross-refs</h2>
+<ul>
+<li><a href="../mechanics/starup.html">starup</a> — gear star-up math (this page references it heavily)</li>
+<li><span class="broken-link" title="missing: starup-gear-info">starup-gear-info</span> — per-gear progression table at ★0/★1/★2/★3 (Legacy NOT applied; add +1 to each bond mentally)</li>
+</ul>
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.1.1.0 · legacy.md</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recruit Rates — Step Probability + Per-Unit Weight — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="../index.html">GMG Wiki</a>
+  <nav>
+    <a href="../units/index.html">Units</a>
+    <a href="../keywords/index.html">Keywords</a>
+    <a href="../gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="../talent-simulator.html">Talent Simulator</a>
+    <a href="../team-planner.html">Team Planner</a>
+    <a href="../search-unit.html">Search · Units</a>
+    <a href="../search-talent.html">Search · Talents</a>
+    <a href="../search-gear.html">Search · Gear</a>
+    <a href="../search-runes.html">Search · Runes</a>
+    <a href="../news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>Recruit Rates — Step Probability + Per-Unit Weight</h1>
+<p>How the gacha (招募 / Recruit) decides which unit you actually get. The roll is <strong>two-stage</strong>: first pick a rarity bucket (Step) using a fixed rate ladder, then pick a specific unit inside that bucket using each unit's <code>Weight</code> from <code>RoleDataTable</code>.</p>
+<blockquote>
+<p><strong>Source:</strong> decompiled <code>GeneralDataTables.SummonDataTable</code> + <code>SummonManager.SummonRoleAsync</code> / <code>SummonSkinAsync</code> in <code>data-session/intermediate/decompiled_summon.cs</code>. Constants are hot-loaded from <code>MainScripts.dll</code> (HybridCLR HotUpdate), NOT in any DataTable — re-decompile after every patch (<code>datamine-extractor</code> agent diffs <code>decompiled_summon.cs</code>).</p>
+</blockquote>
+<h2>Cost per single roll</h2>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Cost</th>
+<th>Source field</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gem</td>
+<td><strong>50</strong> per roll</td>
+<td><code>summonGemConsumption = 50</code></td>
+</tr>
+<tr>
+<td>Standard Recruit Ticket (<code>D00006_031</code> 推荐信)</td>
+<td>1 per roll, replaces gem</td>
+<td>inventory check before gem deduction</td>
+</tr>
+<tr>
+<td>Alter Recruit Ticket (<code>D00006_032</code> 异化推荐信)</td>
+<td>1 per roll on Alter banner, replaces gem</td>
+<td>same</td>
+</tr>
+</tbody>
+</table>
+<p>Tickets are consumed first; gem only spent when invitation count runs out. 10-pull = <code>10 × 50 = 500 gem</code> if no tickets. First 10-pull on Alter banner is <strong>free</strong> (<code>usedFirstSkinBundleSummon</code> flag).</p>
+<h2>Stage 1 — pick the Step bucket</h2>
+<p>Per roll, the game does <code>WeightedRandom([C-weight, B-weight, A-weight, S-weight])</code> where the weights come from <code>StepSummonPossibility(step)</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Display</th>
+<th>Step weight</th>
+<th>Per-roll %</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>S</strong></td>
+<td>3★ vàng</td>
+<td>20</td>
+<td><strong>2.0%</strong></td>
+</tr>
+<tr>
+<td><strong>A</strong></td>
+<td>2★ tím</td>
+<td>60</td>
+<td><strong>6.0%</strong></td>
+</tr>
+<tr>
+<td><strong>B</strong></td>
+<td>1★ xanh</td>
+<td>360</td>
+<td><strong>36.0%</strong></td>
+</tr>
+<tr>
+<td><strong>C</strong></td>
+<td>0★ xám</td>
+<td>560</td>
+<td><strong>56.0%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Total = 1000 → percentages are exact (no normalisation rounding).</p>
+<p><strong>Pity nudge to S in 10-pull:</strong> inside a 10-pull batch, the code accumulates a counter <code>num4</code> from "missed S rolls" and adds it onto the S weight on each subsequent roll within the same batch. So a 10-pull biases the last few rolls toward S if early rolls didn't hit one. (Exact accumulator math: see <code>SummonRoleAsync</code> lines 1156–1172 in the decompile.)</p>
+<p><strong>10th-roll guarantee on Alter pool:</strong> if no 3★ rolled in the first 9 of an Alter 10-pull, the 10th is forced to <strong>A</strong> minimum (<code>if (num2 == 9 &amp;&amp; ConvertStepToInt(text) &lt; 3) text = "A"</code> at line 1286–1289). Standard pool has no equivalent forced floor.</p>
+<h2>Stage 2 — pick the unit inside that Step</h2>
+<p>Once a Step bucket is chosen, the game builds the candidate list: every unit in the active pool whose <code>Step</code> matches the rolled bucket. Each unit's <code>Weight</code> (<code>RoleDataTable.Weight</code>) is then used in another <code>WeightedRandom</code> to pick the specific unit.</p>
+<p><code>RoleDataTable.Weight</code> per Step (uniform within a Step):</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>RoleDataTable Weight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S</td>
+<td>10</td>
+</tr>
+<tr>
+<td>A</td>
+<td>100</td>
+</tr>
+<tr>
+<td>B</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>C</td>
+<td>10000</td>
+</tr>
+</tbody>
+</table>
+<p>Because every unit of the same Step shares the same <code>Weight</code>, <strong>Stage-2 effectively picks uniformly at random</strong> from all in-pool units of that Step. The numeric value differs per Step but cancels out within a bucket.</p>
+<blockquote>
+<p>So the Weight column on <code>RoleDataTable</code> is largely vestigial in the current build — it would only matter if devs ever ship a unit with a non-default Weight. Currently 0 such cases across all 166 entries.</p>
+</blockquote>
+<h3>Pool composition (current data)</h3>
+<p>The active pool depends on banner:
+- <strong>Standard Recruit</strong> (<code>SummonDataTable</code>, 128 entries) — bare-id units, no <code>_NNN</code> suffix.
+- <strong>Alter Recruit</strong> (<code>SkinSummonDataTable</code>, 34 entries) — alter units with <code>_NNN</code> suffix.</p>
+<p>Per-roll odds for any <strong>specific</strong> unit = (Step rate) × (1 / count of units of that Step in the active pool). Example, on Standard pool:</p>
+<ul>
+<li>If pool has 12 S-step units → odds of any one specific S = 2.0% / 12 ≈ <strong>0.167%</strong> per roll.</li>
+<li>If pool has 24 A-step units → odds of any one specific A = 6.0% / 24 ≈ <strong>0.25%</strong> per roll.</li>
+</ul>
+<p>For the 128-unit standard pool, the <code>web-session/gacha-optimizer/gacha_optimizer_128unit.html</code> computes these per-tag, per-combo (used for the daily free recruit tag-pick decision).</p>
+<h2>Rate-up windows</h2>
+<p>Each banner's <code>poolInfo.upRoles</code> list marks rate-up units. The mechanic differs slightly between pools:</p>
+<ul>
+<li><strong>Standard:</strong> if Stage-1 rolls the rate-up unit's Step, there's a <strong>50% chance</strong> the result is pinned to that specific rate-up unit, otherwise normal Stage-2 weighted pick (which still can land on the rate-up unit). So effective rate-up rate ≈ <code>step% × (50% + 50% × 1/poolSize)</code>.</li>
+<li>Example: S-step rate-up on a pool with 12 S units → <code>2.0% × (0.5 + 0.5/12) = ~1.04%</code> for the up unit, vs <code>~0.083%</code> for any non-up S.</li>
+<li><strong>Alter:</strong> multiple rate-ups supported (<code>list2</code>); when the rolled step matches an up unit, the result is biased toward an up unit via a similar 50% pin (see <code>SummonSkinAsync</code> lines 1300+ for the exact branch).</li>
+</ul>
+<p><code>StartTime</code> / <code>EndTime</code> columns on <code>SummonDataTable</code> / <code>SkinSummonDataTable</code> flag the active window per rate-up.</p>
+<h2>Daily Free Recruit (tag-pick) flow</h2>
+<p>Daily free recruit uses a <strong>different code path</strong> — it filters the pool by the player's chosen 1–3 tags first, then picks via <code>GetResultRole()</code> at line 1689–1693:</p>
+<pre><code>List&lt;int&gt; weightList = filterRoleList.Select(s =&gt; s.Weight).ToList();
+return filterRoleList[GeneralHelper.WeightedRandom(weightList)];
+</code></pre>
+<p>This is <strong>raw weighted pick over RoleDataTable.Weight, no Step-bucket pre-roll</strong>. Because Weight is inverse to rarity (S=10, C=10000), the chance of pulling a specific unit is <code>unit.Weight / sum(filterPool.Weight)</code> — meaning <strong>filter-pool composition matters enormously</strong> for hitting an S.</p>
+<p>Maximising "S-density" of the filter pool = maximising chance of pulling a 3★. The optimiser tool answers exactly that: it enumerates all valid 1-tag-per-category combos and reports which combo yields the highest S share.</p>
+<h2>Cross-refs</h2>
+<ul>
+<li><a href="../mechanics/duplicate-shards.html">duplicate-shards</a> — what you get when a roll lands on a unit you already own.</li>
+<li><code>web-session/gacha-optimizer/gacha_optimizer_128unit.html</code> — daily free recruit tag-combo picker (uses Stage-2-only formula).</li>
+<li><code>data-session/mgg_datamine/RoleDataTable.md</code> — <code>Weight</code> column.</li>
+<li><code>data-session/mgg_datamine/SummonDataTable.md</code> / <code>SkinSummonDataTable.md</code> — pool membership + rate-up windows.</li>
+</ul>
+<h2>Implementation notes</h2>
+<ul>
+<li>All per-roll constants live in <code>GeneralDataTables.SummonDataTable</code> (class wrapper inside MainScripts.dll). To audit after a patch: <code>diff data-session/back-up/&lt;prev&gt;/intermediate/decompiled_summon.cs data-session/intermediate/decompiled_summon.cs</code> and watch the <code>SummonDataTable</code> block (lines ~112–153 currently).</li>
+<li>If <code>StepSummonPossibility</code> ladder changes, update this page <strong>and</strong> <code>web-session/gacha-optimizer/gacha_optimizer_128unit.html</code> (the optimizer hardcodes the rate ladder for its expected-value calculations).</li>
+</ul>
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.1.1.0 · recruit-rates.md</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>

@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fate Die — Battle-End Loot Reroll System — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="../index.html">GMG Wiki</a>
+  <nav>
+    <a href="../units/index.html">Units</a>
+    <a href="../keywords/index.html">Keywords</a>
+    <a href="../gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="../talent-simulator.html">Talent Simulator</a>
+    <a href="../team-planner.html">Team Planner</a>
+    <a href="../search-unit.html">Search · Units</a>
+    <a href="../search-talent.html">Search · Talents</a>
+    <a href="../search-gear.html">Search · Gear</a>
+    <a href="../search-runes.html">Search · Runes</a>
+    <a href="../news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>Fate Die — Battle-End Loot Reroll System</h1>
+<p>The "Fate Die" (定命骰子) is the post-battle loot-quality mechanic. After winning a fight, the game rolls a 1-20 dice that determines drop quantity + drop tier priority. <strong>Clover</strong> (item <code>D00002_000</code>) is the consumable to reroll the dice — each reroll forces a strictly higher number, capped at 20. Team <strong>Luck</strong> stat (non-combat total) reduces Clover cost via free rerolls.</p>
+<blockquote>
+<p><strong>Source:</strong> raw probability table at <code>data-session/intermediate/datatables_json/DiceDataTable.json</code> (also auto-generated as <code>data-session/mgg_datamine/DiceDataTable.md</code>). Mechanic decompiled from <code>MainScripts.dll</code> — see <code>data-session/intermediate/decompiled_dice.cs</code> for <code>DiceDataTable</code> schema + <code>BattleResultPanel.GenerateDroppingItemsByDice</code> + <code>BattleResultPanel.RollDice</code> + <code>BattleResultPanel.Reroll</code>. Server-authoritative reroll via <code>GameApi.Explore.DiceRerollAsync</code> (POST <code>/Explore/DiceReroll</code>).</p>
+</blockquote>
+<h2>Probability table</h2>
+<p>20 entries (Point 1 → 20). Initial post-battle roll is weighted; total weight = <strong>390</strong>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Point</th>
+<th style="text-align: right;">Weight</th>
+<th style="text-align: right;">InitialRoll%</th>
+<th style="text-align: right;">DropPossi</th>
+<th style="text-align: center;">EquipNum</th>
+<th style="text-align: center;">RuneNum</th>
+<th style="text-align: right;">Gold</th>
+<th style="text-align: right;">E[equip]</th>
+<th style="text-align: right;">E[rune]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">7.69%</td>
+<td style="text-align: right;">0%</td>
+<td style="text-align: center;">1-1</td>
+<td style="text-align: center;">0-0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">7.69%</td>
+<td style="text-align: right;">0%</td>
+<td style="text-align: center;">1-1</td>
+<td style="text-align: center;">0-0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">7.69%</td>
+<td style="text-align: right;">0%</td>
+<td style="text-align: center;">1-1</td>
+<td style="text-align: center;">0-0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">7.69%</td>
+<td style="text-align: right;">0%</td>
+<td style="text-align: center;">1-1</td>
+<td style="text-align: center;">0-0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">7.69%</td>
+<td style="text-align: right;">0%</td>
+<td style="text-align: center;">1-1</td>
+<td style="text-align: center;">0-0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">7.69%</td>
+<td style="text-align: right;">0%</td>
+<td style="text-align: center;">1-1</td>
+<td style="text-align: center;">0-0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">7.18%</td>
+<td style="text-align: right;">0%</td>
+<td style="text-align: center;">1-1</td>
+<td style="text-align: center;">0-0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">6.67%</td>
+<td style="text-align: right;">0%</td>
+<td style="text-align: center;">1-1</td>
+<td style="text-align: center;">0-0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">6.15%</td>
+<td style="text-align: right;">0%</td>
+<td style="text-align: center;">1-1</td>
+<td style="text-align: center;">0-0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">5.64%</td>
+<td style="text-align: right;">10%</td>
+<td style="text-align: center;">1-1</td>
+<td style="text-align: center;">0-0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">5.13%</td>
+<td style="text-align: right;">10%</td>
+<td style="text-align: center;">1-1</td>
+<td style="text-align: center;">0-0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">4.62%</td>
+<td style="text-align: right;">10%</td>
+<td style="text-align: center;">1-1</td>
+<td style="text-align: center;">0-0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">4.10%</td>
+<td style="text-align: right;">10%</td>
+<td style="text-align: center;">1-1</td>
+<td style="text-align: center;">0-0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">3.59%</td>
+<td style="text-align: right;">10%</td>
+<td style="text-align: center;">1-1</td>
+<td style="text-align: center;">0-0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">3.08%</td>
+<td style="text-align: right;">10%</td>
+<td style="text-align: center;">1-1</td>
+<td style="text-align: center;">0-0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2.56%</td>
+<td style="text-align: right;">20%</td>
+<td style="text-align: center;">1-2</td>
+<td style="text-align: center;">0-0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.2</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2.05%</td>
+<td style="text-align: right;">20%</td>
+<td style="text-align: center;">1-2</td>
+<td style="text-align: center;">0-1</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.2</td>
+<td style="text-align: right;">0.2</td>
+</tr>
+<tr>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1.54%</td>
+<td style="text-align: right;">30%</td>
+<td style="text-align: center;">1-3</td>
+<td style="text-align: center;">0-1</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.6</td>
+<td style="text-align: right;">0.3</td>
+</tr>
+<tr>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1.03%</td>
+<td style="text-align: right;">40%</td>
+<td style="text-align: center;">1-3</td>
+<td style="text-align: center;">0-1</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">1.8</td>
+<td style="text-align: right;">0.4</td>
+</tr>
+<tr>
+<td style="text-align: right;"><strong>20</strong></td>
+<td style="text-align: right;"><strong>2</strong></td>
+<td style="text-align: right;"><strong>0.51%</strong></td>
+<td style="text-align: right;">0% (n/a)</td>
+<td style="text-align: center;"><strong>3-3</strong></td>
+<td style="text-align: center;"><strong>1-1</strong></td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;"><strong>3.0</strong></td>
+<td style="text-align: right;"><strong>1.0</strong></td>
+</tr>
+</tbody>
+</table>
+<p><code>InitialRoll%</code> = <code>Weight / 390</code>. Probability of rolling 20 on a fresh battle = <strong>1 in 195</strong>.</p>
+<h2>Column meaning</h2>
+<ul>
+<li><strong>Point</strong> — face value (1-20). Higher = better loot.</li>
+<li><strong>Weight</strong> — gacha-pool weight for the <em>initial</em> roll. Larger weight = more likely on the first roll.</li>
+<li><strong>Gold</strong> — flat 100 per battle, dice-rank-independent.</li>
+<li><strong>IngreNum</strong> — ingredient drop count. <strong>All 0</strong> in current data → ingredients drop via a different mechanism (chest / map event), not via the dice.</li>
+<li><strong>DropPossi</strong> — per-rolling-slot success chance for extra drops (see <code>EquipNum</code> parse).</li>
+<li><strong>EquipNum / RuneNum</strong> — <code>"X-Y"</code> where:</li>
+<li><code>X</code> = guaranteed drops (always rolled)</li>
+<li><code>Y - X</code> = additional "rolling slots", each with <code>DropPossi</code> chance to succeed</li>
+<li>Examples: <code>1-1</code> = 1 guaranteed, 0 rolling. <code>1-3</code> = 1 guaranteed + 2 rolling at DropPossi each. <code>3-3</code> = 3 guaranteed, 0 rolling.</li>
+<li><strong>E[equip] / E[rune]</strong> = <code>X + (Y-X) × DropPossi</code>. Point 20 special-cases this to a fixed 3 equip + 1 rune (no rolling slots — pure guarantee).</li>
+</ul>
+<h2>Drop tier priority</h2>
+<p>From <code>BattleResultPanel.GenerateDroppingItemsByDice</code>:</p>
+<pre><code class="language-csharp">DroppingPriority priority = (dice &gt; 19) ? DroppingPriority.Highest : DroppingPriority.Random;
+</code></pre>
+<ul>
+<li><strong>Point ≤ 19</strong>: drops are picked at random from the stage's loot pool.</li>
+<li><strong>Point ≥ 20</strong>: drops are picked from the <strong>highest-tier</strong> item in the stage's pool (guaranteed top-rarity).</li>
+<li>Special branch: <code>dice == 20 &amp;&amp; rerollTime == 0</code> (rolled 20 on the very first try, no Clover spent) — also locked to highest tier.</li>
+</ul>
+<h2>Reroll mechanic</h2>
+<p>Player taps the dice icon on the battle-result screen:</p>
+<ol>
+<li>If current Point ≥ 20 → button disabled (cannot reroll further).</li>
+<li>Else → confirm dialog (loc <code>Fight_Reward_Reset_Text01</code> / <code>Fight_Reward_Reset_Text02</code>), then send <code>DiceRerollArg</code> to server.</li>
+<li>Server validates Clover availability, picks a new value from <code>DiceDataTable</code> weighted-randomly <strong>AND</strong> loops until result &gt; current Point (forced strictly higher).</li>
+<li>Server returns <code>DiceRerollReply</code> with <code>EventDice</code> (new Point) + <code>EventRerollTime</code> (incremented counter) + <code>DropBundle</code> (re-rolled loot).</li>
+<li>Cost: 1 Clover per reroll, minus free rerolls from team LUK (every 15 LUK = +1 free).</li>
+</ol>
+<h3>Conditional probability per reroll</h3>
+<p>After rolling Point <code>P</code>, the chance one reroll lands on each higher value <code>Q &gt; P</code> is:</p>
+<pre><code>P[Q | start=P] = Weight[Q] / Σ Weight[k]  for k in (P+1)..20
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>From →</th>
+<th style="text-align: right;">16</th>
+<th style="text-align: right;">17</th>
+<th style="text-align: right;">18</th>
+<th style="text-align: right;">19</th>
+<th style="text-align: right;">20</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>15 (Σ=30)</td>
+<td style="text-align: right;">33.3%</td>
+<td style="text-align: right;">26.7%</td>
+<td style="text-align: right;">20.0%</td>
+<td style="text-align: right;">13.3%</td>
+<td style="text-align: right;">6.7%</td>
+</tr>
+<tr>
+<td>16 (Σ=20)</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">40.0%</td>
+<td style="text-align: right;">30.0%</td>
+<td style="text-align: right;">20.0%</td>
+<td style="text-align: right;">10.0%</td>
+</tr>
+<tr>
+<td>17 (Σ=12)</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">50.0%</td>
+<td style="text-align: right;">33.3%</td>
+<td style="text-align: right;">16.7%</td>
+</tr>
+<tr>
+<td>18 (Σ=6)</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">66.7%</td>
+<td style="text-align: right;">33.3%</td>
+</tr>
+<tr>
+<td>19 (Σ=2)</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">100%</td>
+</tr>
+</tbody>
+</table>
+<p>So reaching Point 20 from a typical first roll of 7-10 needs roughly 3-4 rerolls on average. From 15 → 20 needs about 4-5 more rerolls; from 19 → 20 is guaranteed in 1.</p>
+<h3>Free rerolls from LUK</h3>
+<p><code>Role_AttDes_08</code> / <code>Noun_Des_32</code>: "Every <strong>15 Luck</strong> across the team (non-combat) grants <strong>+1 extra Clover reroll</strong> in battle results."</p>
+<p>The +1 reroll is free (doesn't consume Clover). Stacks: 30 LUK = 2 free, 45 LUK = 3 free, etc. Team LUK includes:
+- Base LUK from each fielded unit
+- Gear LUK (<code>EquipDataTable.Luck</code>)
+- Lucky-Streak talent family (<code>TF10008_*</code>)
+- Insight relics that grant LUK</p>
+<h3>Talent / mechanic that pushes Point above 20</h3>
+<p>Loc <code>Fight_Reward_Reset_Text01</code>: "<strong>Rolling above 20</strong> increases Gear drops by 1." There's a talent/passive that allows Point to exceed 20 (e.g. reach 21). When that happens, the drop logic still treats it as Highest priority, but with <strong>+1 extra gear drop</strong> on top of the Point-20 baseline (so 4 guaranteed equip + 1 rune). Source talent ID not yet located in current decompile slice — flagged for future investigation.</p>
+<h2>Strategy implications</h2>
+<ul>
+<li><strong>First reroll = best ROI.</strong> Even 1 Clover lifts you from random pool to typically Point 10+ (the threshold where DropPossi kicks in for rolling slots in later versions of the curve). Average first-reroll lands around Point 11 (median of weighted draw conditional on <code>&gt;P_initial</code>).</li>
+<li><strong>Saving for Point 20</strong> = expensive but worth it if the boss has tier-S exclusive drop in the loot pool. From a fresh battle, expected Clover cost = ~3-4 rerolls.</li>
+<li><strong>15 LUK threshold</strong> is a hard breakpoint — gear/talent investment is worth crossing each 15-LUK boundary to add a free reroll. After 30/45/60 LUK the free-reroll budget often eliminates Clover cost entirely for routine farming.</li>
+<li><strong>Skip rerolling</strong> on low-tier stages where the loot pool's "highest tier" is still mediocre — save Clover for boss / end-of-region stages where Point 20 unlocks tier-S exclusive drops.</li>
+</ul>
+<h2>Related loc keys</h2>
+<ul>
+<li><code>Help_Map_14</code> — "Use Clover to reroll the Fate Die. Your team's total Luck affects reroll efficiency."</li>
+<li><code>Help_Map_15</code> — "Higher rolls mean better rewards. Rolling 20 guarantees the highest-tier reward."</li>
+<li><code>Fight_Reward_Reset_Text01</code> — "Rolling above 20 increases Gear drops by 1."</li>
+<li><code>Fight_Reward_Reset_Text02</code> — "Each reroll guarantees a higher number, up to 20."</li>
+<li><code>Role_AttDes_08</code> / <code>Noun_Des_32</code> — LUK → free Clover reroll formula.</li>
+<li><code>Items_Name_D00002_000</code> — "Clover" item display name.</li>
+<li><code>Guide_Dialogue_82</code> / <code>Guide_Dialogue_84</code> — tutorial dialogue confirming Point 20 = guaranteed top-tier drop.</li>
+</ul>
+<h2>Source files</h2>
+<ul>
+<li><code>data-session/intermediate/datatables_json/DiceDataTable.json</code> — raw 20-entry probability table.</li>
+<li><code>data-session/mgg_datamine/DiceDataTable.md</code> — auto-generated bilingual rendering (no CN columns since table is pure numeric).</li>
+<li><code>data-session/intermediate/decompiled_dice.cs</code> — <code>DiceDataTable</code> class definition (line 1626+), <code>BattleResultPanel.GenerateDroppingItemsByDice</code> (line 837), <code>BattleResultPanel.RollDice</code> (line 1530), <code>BattleResultPanel.Reroll</code> (line 1397), <code>DiceEntry</code> / <code>DiceRerollArg</code> / <code>DiceRerollReply</code> server contracts.</li>
+<li>Regenerator: <code>data-session/tools/decompile_dice.py</code> — run after every patch if Fate Die mechanic suspected of change.</li>
+</ul>
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.1.1.0 · fate-die.md</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>

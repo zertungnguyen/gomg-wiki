@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Battle Weight Correction — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="../index.html">GMG Wiki</a>
+  <nav>
+    <a href="../units/index.html">Units</a>
+    <a href="../keywords/index.html">Keywords</a>
+    <a href="../gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="../talent-simulator.html">Talent Simulator</a>
+    <a href="../team-planner.html">Team Planner</a>
+    <a href="../search-unit.html">Search · Units</a>
+    <a href="../search-talent.html">Search · Talents</a>
+    <a href="../search-gear.html">Search · Gear</a>
+    <a href="../search-runes.html">Search · Runes</a>
+    <a href="../news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>Battle Weight Correction</h1>
+<p><strong>Status:</strong> Server-staged rebalance — table is live on the server (<code>BattleWeightCorrectionDataTable</code>, 8 entries, server-only) but <strong>the in-game client still uses the old hardcoded values</strong> in <code>WeightTableHelper</code>. Effectively a preview of the next gameplay-balance patch.</p>
+<p>Discovered during the 1.1.1.0 server-canonical mining pass (one of the 3 server-only tables alongside <code>ExoticEvent</code> + <code>ExoticShop</code>).</p>
+<h2>What it controls</h2>
+<p>Loot-tier weighting when the game generates an <strong>equipment drop</strong> or <strong>rune drop</strong> during exploration. The system biases what rarity (C/B/A/S/SS) of item shows up based on three independent correction sources that all stack additively.</p>
+<p><strong>Formula</strong> (decompiled <code>MainScripts.dll</code>, lines 35087-35095, 35184-35192, 47855-47862):</p>
+<pre><code>final_weight(loot_step) = base_Weight(loot_item) × max(0, 1 + ΔD + ΔE + ΔP)
+
+where:
+  ΔD = difficultyCorrection = DifficultySpec.FixC/B/A/S[map.difficulty][loot_step]
+  ΔE = eventCorrection      = battle_tier × loot_step  (this table, battleX rows)
+  ΔP = prefixCorrection     = enemy_prefix_tier × loot_step  (this table, prefixX rows)
+</code></pre>
+<p>The 3 corrections are summed, clamped to <code>≥ 0</code>, then multiplied into the item's <code>Weight</code> field. WeightedRandom picks the actual drop from the resulting list.</p>
+<h2>Table contents</h2>
+<p>Pair-structured: 4 rows for the <strong>battle/event tier</strong> axis + 4 rows for the <strong>monster prefix tier</strong> axis. Each row spells out the modifier for each of the 5 loot tiers (C / B / A / S / SS).</p>
+<h3>battleX rows — event/battle tier × loot tier</h3>
+<p>The "battle tier" is the rarity step of the <strong>current encounter</strong> (event step). Read row = your current battle's tier, column = candidate drop's tier:</p>
+<table>
+<thead>
+<tr>
+<th>battle ↓ \ loot →</th>
+<th>C</th>
+<th>B</th>
+<th>A</th>
+<th>S</th>
+<th>SS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>battleC</strong></td>
+<td>0</td>
+<td>0</td>
+<td>−0.5</td>
+<td><strong>−1</strong></td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>battleB</strong></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>−0.5</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>battleA</strong></td>
+<td>−0.5</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>battleS</strong></td>
+<td><strong>−1</strong></td>
+<td>−0.5</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Reading guide:</strong>
+- In a <strong>C-tier battle</strong>: S-loot is forced to zero weight (−1). A-loot at half. C/B unaffected. → You only get junk drops.
+- In an <strong>S-tier battle</strong>: C-loot is forced to zero (−1). B-loot at half. A/S unaffected. → You only get top-tier drops.
+- Symmetric ceiling-AND-floor design. SS column is always 0 (no battle ever boosts/blocks SS — SS-tier loot is presumably gated elsewhere).</p>
+<h3>prefixX rows — monster prefix tier × loot tier</h3>
+<p>The "prefix tier" is the rarity step of the <strong>prefix modifier rolled onto the killed monster</strong> (e.g. <em>Ancient</em> C, <em>Infected</em> A, <em>Astral</em> S — all from <span class="broken-link" title="missing: PrefixDataTable">PrefixDataTable</span>, 143 entries). Read row = monster's prefix tier, column = candidate drop's tier:</p>
+<table>
+<thead>
+<tr>
+<th>prefix ↓ \ loot →</th>
+<th>C</th>
+<th>B</th>
+<th>A</th>
+<th>S</th>
+<th>SS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>prefixC</strong></td>
+<td><strong>+0.5</strong></td>
+<td><strong>+0.5</strong></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>prefixB</strong></td>
+<td>0</td>
+<td><strong>+0.5</strong></td>
+<td><strong>+0.5</strong></td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>prefixA</strong></td>
+<td>−0.5</td>
+<td>0</td>
+<td><strong>+0.5</strong></td>
+<td><strong>+0.5</strong></td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>prefixS</strong></td>
+<td>−0.5</td>
+<td>−0.5</td>
+<td>0</td>
+<td><strong>+1</strong></td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Reading guide:</strong>
+- Higher-tier prefixes shift the drop window UP. A <strong>prefixS</strong> monster doubles S-loot weight (+1) AND penalizes C/B drops (−0.5 each).
+- Low-tier prefixes (C/B) only ADD without penalty — easy mode.
+- A <strong>prefixA</strong> monster boosts both A and S equally — convenient for farming S-step gear.
+- If the monster has no prefix (<code>role.prefix == ""</code>), the entire ΔP term is <strong>0</strong> (early return in <code>GetPrefixCorrection</code>).</p>
+<h2>Concrete example</h2>
+<p>Player is in <strong>map difficulty 50</strong> (suppose <code>FixS = -0.4</code>), in a <strong>battleA event</strong> (current battle tier = A), killing a <strong>prefixS Astral</strong> monster. A candidate S-tier gear drop with <code>Weight = 10</code> gets:</p>
+<pre><code>ΔD = DifficultySpec[50].FixS         = -0.4
+ΔE = battleA × S                     =  0    (row battleA, column S)
+ΔP = prefixS × S                     = +1    (row prefixS, column S)
+final = max(0, 1 + -0.4 + 0 + +1) × 10
+      = max(0, 1.6) × 10
+      = 16
+</code></pre>
+<p>vs. an A-tier gear (<code>Weight = 100</code>):</p>
+<pre><code>ΔD = DifficultySpec[50].FixA         = ?  (read from DifficultySpec row 50)
+ΔE = battleA × A                     =  0
+ΔP = prefixS × A                     =  0
+final = max(0, 1 + ΔD + 0 + 0) × 100 ≈ 100   (assuming ΔD ≈ 0)
+</code></pre>
+<p>So S-gear's effective weight goes 10 → 16 (1.6×) while A-gear stays flat — the Astral prefix concentrates rolls into the higher tier.</p>
+<h2>What's NEW vs. the hardcoded baseline</h2>
+<p>The live game client doesn't actually consume <code>BattleWeightCorrectionDataTable</code> yet. <code>WeightTableHelper</code> (decompile lines 89268-89345) holds <strong>hardcoded 2D float arrays</strong> that are still the live values:</p>
+<pre><code class="language-csharp">public static float[,] eventStepWeightTable = new float[4, 5]
+{
+    { 0f, -0.7f, -0.9f, -1f, 0f },   // C battle  (old)
+    { -0.5f,  0f, -0.7f, -0.9f, 0f }, // B battle  (old)
+    { -0.5f, -0.5f,  0f, -0.7f, 0f }, // A battle  (old)
+    { -0.5f, -0.5f, -0.5f,  0f, 0f }  // S battle  (old)
+};
+public static float[,] prefixWeightTable = new float[4, 5]
+{
+    {  0.5f,  0.5f,   0f, -0.5f, 0f }, // C prefix (old)
+    { -0.5f,  0.5f,  0.5f,   0f, 0f }, // B prefix (old)
+    { -0.5f,    0f,  0.5f,  0.5f, 0f }, // A prefix (old)
+    { -0.5f, -0.5f,  0.5f,  0.5f, 0f }  // S prefix (old)
+};
+</code></pre>
+<h3>Diff: battleX rows</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>C / loot</th>
+<th>B / loot</th>
+<th>A / loot</th>
+<th>S / loot</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>C battle</strong></td>
+<td>0 → 0</td>
+<td><strong>−0.7 → 0</strong></td>
+<td>−0.9 → −0.5</td>
+<td>−1 → −1</td>
+</tr>
+<tr>
+<td><strong>B battle</strong></td>
+<td>−0.5 → 0</td>
+<td>0 → 0</td>
+<td><strong>−0.7 → 0</strong></td>
+<td>−0.9 → −0.5</td>
+</tr>
+<tr>
+<td><strong>A battle</strong></td>
+<td>−0.5 → −0.5</td>
+<td>−0.5 → 0</td>
+<td>0 → 0</td>
+<td><strong>−0.7 → 0</strong></td>
+</tr>
+<tr>
+<td><strong>S battle</strong></td>
+<td>−0.5 → <strong>−1</strong></td>
+<td>−0.5 → −0.5</td>
+<td>−0.5 → 0</td>
+<td>0 → 0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Direction:</strong>
+- <strong>Old</strong> = one-way ceiling. Low-tier battles ONLY suppressed high-tier loot.
+- <strong>New</strong> = bidirectional. S-tier battles now ALSO zero-out C-tier junk (<code>-0.5 → -1</code>). Late-game becomes less spammy with garbage drops.
+- A/B-tier battles relax the suppression on adjacent-tier loot (<code>-0.7 → 0</code>, off-by-one diagonal becomes flat). → A wider distribution of drop tiers across mid-game.</p>
+<h3>Diff: prefixX rows</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>C / loot</th>
+<th>B / loot</th>
+<th>A / loot</th>
+<th>S / loot</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>C prefix</strong></td>
+<td>+0.5 → +0.5</td>
+<td>+0.5 → +0.5</td>
+<td>0 → 0</td>
+<td><strong>−0.5 → 0</strong></td>
+</tr>
+<tr>
+<td><strong>B prefix</strong></td>
+<td><strong>−0.5 → 0</strong></td>
+<td>+0.5 → +0.5</td>
+<td>+0.5 → +0.5</td>
+<td>0 → 0</td>
+</tr>
+<tr>
+<td><strong>A prefix</strong></td>
+<td>−0.5 → −0.5</td>
+<td>0 → 0</td>
+<td>+0.5 → +0.5</td>
+<td>+0.5 → +0.5</td>
+</tr>
+<tr>
+<td><strong>S prefix</strong></td>
+<td>−0.5 → −0.5</td>
+<td>−0.5 → −0.5</td>
+<td><strong>+0.5 → 0</strong></td>
+<td><strong>+0.5 → +1</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Direction:</strong>
+- <strong>C/B prefixes</strong> no longer apply penalties to off-axis tiers. → More forgiving for early-game low-prefix monsters.
+- <strong>S prefixes</strong> drop the A-loot boost entirely (+0.5 → 0) but <strong>double</strong> the S-loot boost (+0.5 → +1). → S-prefix monsters become the canonical farming target for S gear / runes specifically — they no longer "leak" rolls into the A tier.
+- Net: rewards are concentrated rather than spread out. Players will recognize S-prefix monsters as "S-tier farm spots" rather than generic loot upgrade.</p>
+<h2>Where it's read in code</h2>
+<table>
+<thead>
+<tr>
+<th>Decompile line</th>
+<th>Caller</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>35087</td>
+<td>(equip drop pass 1)</td>
+<td>Initial gear drop generation when a chest spawns</td>
+</tr>
+<tr>
+<td>35184</td>
+<td>(equip drop pass 2)</td>
+<td>Re-roll path if pass 1 fails the filter</td>
+</tr>
+<tr>
+<td>35186</td>
+<td>(rune drop)</td>
+<td>Rune generation in the same drop event</td>
+</tr>
+<tr>
+<td>47855</td>
+<td>(event reward eq)</td>
+<td>Event-style equipment reward (slightly different consumer than chest path)</td>
+</tr>
+<tr>
+<td>46847, 47335, 47342, 47350, 47358, 47365, 47372, 47379, 47386, 47414, 47534</td>
+<td>only <code>GetDifficultyCorrection</code></td>
+<td>All non-equip drops (monster, ingredient, lime, battle-event, saga, chest, relic) use ONLY difficulty correction — no event/prefix correction. The 8-row table affects equip + rune drops, not generic loot.</td>
+</tr>
+</tbody>
+</table>
+<p><code>role.prefix</code> is set on a monster instance during spawn (line 88721) by picking a random <code>PrefixDataItem.IDs</code> from the legal pool. Each prefix has its own Step (C/B/A/S) → drives the prefixX-row lookup.</p>
+<p><code>eventStep</code> for <code>GetEventCorrection</code> is the <strong>current battle's tier</strong>, supplied by the caller (the event spawner already knows the step it rolled).</p>
+<h2>Why server pushed it but client doesn't use it</h2>
+<p>The DTO is fully wired in MainScripts:</p>
+<pre><code class="language-csharp">// line 185730
+public class BattleWeightCorrectionEntry {
+    public string Type { get; set; }
+    public float C_Correction { get; set; }
+    public float B_Correction { get; set; }
+    public float A_Correction { get; set; }
+    public float S_Correction { get; set; }
+    public float SS_Correction { get; set; }
+}
+
+// line 189893 — on the parent GameConfig
+[JsonProperty(&quot;Battle_Weight_Correction&quot;, ...)]
+public Dictionary&lt;string, BattleWeightCorrectionEntry&gt; Battle_Weight_Correction { get; set; }
+</code></pre>
+<p>…but <code>WeightTableHelper.GetEventCorrection</code> / <code>GetPrefixCorrection</code> read the <strong>hardcoded arrays</strong> (lines 89328-89344), not the deserialized server dictionary. Conclusion: the next HotUpdate is expected to swap those getters to read from <code>Singleton&lt;DataTableManager&gt;.Self.BattleWeightCorrection.DataTable</code> instead. <strong>Timing unknown</strong> — no in-game release notes have flagged this rebalance yet (2026-05-15). Worth monitoring on next patch.</p>
+<h2>Insight for players</h2>
+<p>When the live switch happens:</p>
+<ol>
+<li><strong>S-tier farm targets shift to S-prefix monsters specifically.</strong> Old behavior gave A-prefix and S-prefix equal +0.5 on S loot; new behavior gives only S-prefix the boost (doubled to +1). Old farming routes that targeted A-prefix mobs for S-gear become noticeably worse.</li>
+<li><strong>Late-game stops spawning C-tier junk.</strong> S-tier battles will literally never roll C-tier equipment/rune drops anymore (<code>-1</code> zeroes them). Cleanup of trash inventory pressure.</li>
+<li><strong>Mid-game gets more variety.</strong> A/B-battles let adjacent-tier loot through more freely (<code>-0.7 → 0</code> on off-diagonal). Less "always B-loot in B-battles" predictability.</li>
+<li><strong>C/B-prefix monsters are still useful early-game.</strong> Penalty removal (<code>-0.5 → 0</code> on lower tier) means low-prefix kills don't cost you potential better drops.</li>
+</ol>
+<h2>References</h2>
+<ul>
+<li><code>data-session/mgg_datamine/BattleWeightCorrectionDataTable.md</code> — 8-row source table (server-only)</li>
+<li><code>data-session/intermediate/decompiled_full_mainscripts.cs:35087</code> — main consumer (equip drop)</li>
+<li><code>data-session/intermediate/decompiled_full_mainscripts.cs:89268-89345</code> — <code>WeightTableHelper</code> (live hardcoded values + getters)</li>
+<li><code>data-session/intermediate/decompiled_full_mainscripts.cs:185730</code> — <code>BattleWeightCorrectionEntry</code> DTO</li>
+<li><span class="broken-link" title="missing: PrefixDataTable">PrefixDataTable</span> — 143 monster prefixes feeding the <code>role.prefix</code> field</li>
+<li><span class="broken-link" title="missing: DifficultySpecDataTable">DifficultySpecDataTable</span> — <code>FixC/FixB/FixA/FixS</code> per-difficulty correction supplying the ΔD term</li>
+</ul>
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.1.1.0 · battle-weight-correction.md</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>

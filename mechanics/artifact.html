@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artifact System — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="../index.html">GMG Wiki</a>
+  <nav>
+    <a href="../units/index.html">Units</a>
+    <a href="../keywords/index.html">Keywords</a>
+    <a href="../gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="../talent-simulator.html">Talent Simulator</a>
+    <a href="../team-planner.html">Team Planner</a>
+    <a href="../search-unit.html">Search · Units</a>
+    <a href="../search-talent.html">Search · Talents</a>
+    <a href="../search-gear.html">Search · Gear</a>
+    <a href="../search-runes.html">Search · Runes</a>
+    <a href="../news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>Artifact System</h1>
+<p>New gameplay layer added in <strong>v1.1.1.0</strong>. Artifacts are equippable modifiers that apply flat stat boosts or combat-behavior overrides at the start of battle. They are defined as concrete C# classes in <code>MainScripts.dll</code> (HotUpdate), not as DataTable rows.</p>
+<blockquote>
+<p><strong>Status (2026-05-14):</strong> Code present in <code>MainScripts.dll</code> (<code>e3f9f8c4</code>). Player-facing UI and acquisition flows not yet observed in live game — likely activates alongside a future content patch. Source: <code>data-session/intermediate/decompile_diff_full.cs</code> lines 17–1115.</p>
+</blockquote>
+<h2>Base class</h2>
+<pre><code class="language-csharp">// decompile_diff_full.cs line 21
+public class ArtifactBase : BattleModifier
+{
+    public int level;
+    public int value0;
+    public int value1;
+}
+</code></pre>
+<p>Each artifact has <code>level</code>, <code>value0</code>, and <code>value1</code>. The level field likely governs scaling (not yet visible in DataTable). <code>value0</code> and <code>value1</code> are the two primary stat parameters.</p>
+<p><code>RacePassiveArtifactBase&lt;T&gt;</code> is a second base class (generic wrapper over a <code>SubSkill</code> type <code>T</code>) — the decompiler could not fully resolve the generic definition, but the usage pattern is clear: <code>BS31041 : RacePassiveArtifactBase&lt;BD20010&gt;</code> means the artifact applies the <code>BD20010</code> sub-skill effect as if the unit had that passive.</p>
+<h2>Artifact catalog (78 BS-prefix classes)</h2>
+<h3>BS00 — Single-stat boosts (6 artifacts)</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Effect</th>
+<th>Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BS00001</code></td>
+<td>STR += value0</td>
+<td><code>ChangeAttrFirst</code></td>
+</tr>
+<tr>
+<td><code>BS00002</code></td>
+<td>INT (SPI) += value0</td>
+<td><code>ChangeAttrFirst</code></td>
+</tr>
+<tr>
+<td><code>BS00003</code></td>
+<td>DEX (AGI) += value0</td>
+<td><code>ChangeAttrFirst</code></td>
+</tr>
+<tr>
+<td><code>BS01001</code></td>
+<td>CONS (HP) += value0</td>
+<td><code>ChangeAttrFirst</code></td>
+</tr>
+<tr>
+<td><code>BS01002</code></td>
+<td>SPD += value0</td>
+<td><code>ChangeAttrFirst</code></td>
+</tr>
+<tr>
+<td><code>BS01003</code></td>
+<td>Tough += value0</td>
+<td><code>ChangeAttrFirst</code></td>
+</tr>
+</tbody>
+</table>
+<h3>BS10 / BS11 — Dual-stat boosts (6 artifacts)</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BS10001</code></td>
+<td>STR += value0, INT += value1</td>
+</tr>
+<tr>
+<td><code>BS10002</code></td>
+<td>STR += value0, DEX += value1</td>
+</tr>
+<tr>
+<td><code>BS10003</code></td>
+<td>DEX += value0, INT += value1</td>
+</tr>
+<tr>
+<td><code>BS11001</code></td>
+<td>CONS += value0, SPD += value1</td>
+</tr>
+<tr>
+<td><code>BS11002</code></td>
+<td>CONS += value0, Tough += value1</td>
+</tr>
+<tr>
+<td><code>BS11003</code></td>
+<td>Tough += value0, SPD += value1</td>
+</tr>
+</tbody>
+</table>
+<h3>BS20 / BS21 — Mana and team-count modifiers (4 artifacts)</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Effect</th>
+<th>Override</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BS20001</code></td>
+<td>InitialMagic (Starting Mana) += value0</td>
+<td><code>ChangeAttrFirst</code></td>
+</tr>
+<tr>
+<td><code>BS20002</code></td>
+<td>Extra support teammate count += value0</td>
+<td><code>ExtraTeammateCount</code></td>
+</tr>
+<tr>
+<td><code>BS21002</code></td>
+<td>Extra support teammate count += value0</td>
+<td><code>ExtraTeammateCount</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>BS21061–BS21068 — Target-sort overrides (8 artifacts):</strong> These set an <code>ExternalComparer</code> on the unit's normal attack and unique skill at battle start, changing which targets are prioritized. Behaviors:</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Sort priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BS21061</code></td>
+<td>Targets sorted by highest DEF stat (attack-type skills only)</td>
+</tr>
+<tr>
+<td><code>BS21062</code></td>
+<td>Targets sorted by lowest ATK stat (attack-type skills only)</td>
+</tr>
+<tr>
+<td><code>BS21063</code></td>
+<td>Targets sorted by position index ascending (attack-type)</td>
+</tr>
+<tr>
+<td><code>BS21064</code></td>
+<td>Middle target (index % 3 == 1) prioritized last (attack-type)</td>
+</tr>
+<tr>
+<td><code>BS21065</code></td>
+<td>Targets sorted by position index descending (attack-type)</td>
+</tr>
+<tr>
+<td><code>BS21066</code></td>
+<td>Owner excluded from targeting priority (heal-type skills only)</td>
+</tr>
+<tr>
+<td><code>BS21067</code></td>
+<td>Targets sorted by highest DEF stat (heal-type skills only)</td>
+</tr>
+<tr>
+<td><code>BS21068</code></td>
+<td>Targets sorted by lowest ATK stat (heal-type skills only)</td>
+</tr>
+</tbody>
+</table>
+<h3>BS30 — Combat modifiers (21 artifacts)</h3>
+<h4>Stat regen</h4>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BS30001</code></td>
+<td>Luck += value0</td>
+</tr>
+<tr>
+<td><code>BS30002</code></td>
+<td>ActionMagic (Action Mana) += value0</td>
+</tr>
+</tbody>
+</table>
+<h4>Damage boosts (flat, applied via <code>ChangeDamageBeforeResolveGlobal</code> or <code>ModifyResult*</code>)</h4>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Trigger</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BS30004</code></td>
+<td>Any outgoing damage</td>
+<td>+value0 flat DMG</td>
+</tr>
+<tr>
+<td><code>BS30006</code></td>
+<td>Toughness damage dealt</td>
+<td>-value0 Tough reduction (i.e. unit deals more Tough damage)</td>
+</tr>
+<tr>
+<td><code>BS30016</code></td>
+<td>Normal attack (isAttack)</td>
+<td>+value0% DMG</td>
+</tr>
+<tr>
+<td><code>BS30017</code></td>
+<td>Follow-up attack (isAttack)</td>
+<td>+value0% follow DMG</td>
+</tr>
+<tr>
+<td><code>BS30018</code></td>
+<td>Counter/revenge (isDefending)</td>
+<td>+value0% revenge DMG</td>
+</tr>
+<tr>
+<td><code>BS30019</code></td>
+<td>Single-hit skill (Times == 1)</td>
+<td>+value0% skill DMG</td>
+</tr>
+<tr>
+<td><code>BS30020</code></td>
+<td>Single-target skill (MaxTarget == 1)</td>
+<td>+value0% skill DMG</td>
+</tr>
+<tr>
+<td><code>BS30021</code></td>
+<td>Multi-target skill (MaxTarget &gt; 1)</td>
+<td>+value0% skill DMG</td>
+</tr>
+<tr>
+<td><code>BS30022</code></td>
+<td>Multi-hit skill (Times &gt; 1)</td>
+<td>+value0% skill DMG</td>
+</tr>
+</tbody>
+</table>
+<h4>Extra actions</h4>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BS30011</code></td>
+<td>+value0 extra counter/revenge actions</td>
+</tr>
+<tr>
+<td><code>BS30012</code></td>
+<td>+value0 extra follow-up actions</td>
+</tr>
+<tr>
+<td><code>BS30013</code></td>
+<td>+value0 extra normal attack targets</td>
+</tr>
+<tr>
+<td><code>BS30014</code></td>
+<td>+value0 extra targets for Special-type skill</td>
+</tr>
+<tr>
+<td><code>BS30015</code></td>
+<td>+value0 extra hits for multi-hit skill (Times &gt; 1)</td>
+</tr>
+</tbody>
+</table>
+<h4>Heal boosts</h4>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Trigger</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BS30031</code></td>
+<td>Normal heal</td>
+<td>+value0 extra heal targets</td>
+</tr>
+<tr>
+<td><code>BS30032</code></td>
+<td>Heal-type skill</td>
+<td>+value0 extra skill heal targets</td>
+</tr>
+<tr>
+<td><code>BS30033</code></td>
+<td>Normal heal (isAttack context)</td>
+<td>+value0% normal heal amount</td>
+</tr>
+<tr>
+<td><code>BS30034</code></td>
+<td>Single-hit skill heal (Times == 1)</td>
+<td>+value0% skill heal</td>
+</tr>
+<tr>
+<td><code>BS30035</code></td>
+<td>Multi-hit skill heal (Times &gt; 1)</td>
+<td>+value0% skill heal</td>
+</tr>
+<tr>
+<td><code>BS30036</code></td>
+<td>Single-target skill heal (MaxTarget == 1)</td>
+<td>+value0% skill heal</td>
+</tr>
+<tr>
+<td><code>BS30037</code></td>
+<td>Multi-target skill heal (MaxTarget &gt; 1)</td>
+<td>+value0% skill heal</td>
+</tr>
+</tbody>
+</table>
+<h3>BS31 — Mana flow and race-passive artifacts (32 artifacts)</h3>
+<h4>Mana modifiers</h4>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Trigger</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BS31002</code></td>
+<td>Any mana gain (dest == self)</td>
+<td>+value0 mana on gain</td>
+</tr>
+<tr>
+<td><code>BS31005</code></td>
+<td>Any mana loss (dest == self)</td>
+<td>+value0 mana recovered on loss</td>
+</tr>
+<tr>
+<td><code>BS31008</code></td>
+<td>Flat stat</td>
+<td>MaxMagic (Max Mana) += value0</td>
+</tr>
+<tr>
+<td><code>BS31009</code></td>
+<td>Flat stat</td>
+<td>HitMagic (Hit Mana) += value0</td>
+</tr>
+</tbody>
+</table>
+<h4>Race-passive wraps (BS31041–BS31068, 28 artifacts)</h4>
+<p>These artifacts inject a <code>SubSkill</code> passive (normally a set-bond effect or race passive) directly onto the unit as an artifact effect, bypassing the normal bond-equip requirement. Each <code>BS3104x/BS3106x</code> is <code>RacePassiveArtifactBase&lt;BD&lt;id&gt;&gt;</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Wrapped SubSkill</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BS31041</code></td>
+<td>BD20010</td>
+</tr>
+<tr>
+<td><code>BS31042</code></td>
+<td>BD20008</td>
+</tr>
+<tr>
+<td><code>BS31043</code></td>
+<td>BD20104</td>
+</tr>
+<tr>
+<td><code>BS31044</code></td>
+<td>BD20103</td>
+</tr>
+<tr>
+<td><code>BS31045</code></td>
+<td>BD20102</td>
+</tr>
+<tr>
+<td><code>BS31046</code></td>
+<td>BD20101</td>
+</tr>
+<tr>
+<td><code>BS31047</code></td>
+<td>BD20007</td>
+</tr>
+<tr>
+<td><code>BS31048</code></td>
+<td>BD20005</td>
+</tr>
+<tr>
+<td><code>BS31049</code></td>
+<td>BD20106</td>
+</tr>
+<tr>
+<td><code>BS31050</code></td>
+<td>BD20105</td>
+</tr>
+<tr>
+<td><code>BS31051</code></td>
+<td>BD20107</td>
+</tr>
+<tr>
+<td><code>BS31052</code></td>
+<td>BD20009</td>
+</tr>
+<tr>
+<td><code>BS31053</code></td>
+<td>BD20002</td>
+</tr>
+<tr>
+<td><code>BS31054</code></td>
+<td>BD20003</td>
+</tr>
+<tr>
+<td><code>BS31055</code></td>
+<td>BD20006</td>
+</tr>
+<tr>
+<td><code>BS31056</code></td>
+<td>BD20004</td>
+</tr>
+<tr>
+<td><code>BS31057</code></td>
+<td>BD20108</td>
+</tr>
+<tr>
+<td><code>BS31058</code></td>
+<td>BD20011</td>
+</tr>
+<tr>
+<td><code>BS31059</code></td>
+<td>BD20016</td>
+</tr>
+<tr>
+<td><code>BS31060</code></td>
+<td>BD20017</td>
+</tr>
+<tr>
+<td><code>BS31061</code></td>
+<td>BD20013</td>
+</tr>
+<tr>
+<td><code>BS31062</code></td>
+<td>BD20012</td>
+</tr>
+<tr>
+<td><code>BS31063</code></td>
+<td>BD20014</td>
+</tr>
+<tr>
+<td><code>BS31064</code></td>
+<td>BD20015</td>
+</tr>
+<tr>
+<td><code>BS31065</code></td>
+<td>BD20501</td>
+</tr>
+<tr>
+<td><code>BS31066</code></td>
+<td>BD20111 <em>(new in 1.1.1.0 — Tough-floor mechanic)</em></td>
+</tr>
+<tr>
+<td><code>BS31067</code></td>
+<td>BD20110 <em>(new — Fear-on-attached)</em></td>
+</tr>
+<tr>
+<td><code>BS31068</code></td>
+<td>BD20109 <em>(new — Slow-on-attaching / Peel-on-attached)</em></td>
+</tr>
+</tbody>
+</table>
+<p>To look up the effect of a wrapped SubSkill, cross-reference its BD-id in <code>SubSkillDataTable.md</code>.</p>
+<h2>Summary table</h2>
+<table>
+<thead>
+<tr>
+<th>Family</th>
+<th>Count</th>
+<th>Mechanism</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BS00 / BS01</td>
+<td>6</td>
+<td>Single flat stat</td>
+</tr>
+<tr>
+<td>BS10 / BS11</td>
+<td>6</td>
+<td>Dual flat stats</td>
+</tr>
+<tr>
+<td>BS20 / BS21</td>
+<td>12</td>
+<td>Mana / extra teammate count / target sort</td>
+</tr>
+<tr>
+<td>BS30</td>
+<td>21</td>
+<td>Combat modifiers (DMG, heal, extra actions)</td>
+</tr>
+<tr>
+<td>BS31</td>
+<td>32</td>
+<td>Mana flow + race-passive wraps</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>78</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2>Decompile references</h2>
+<ul>
+<li><code>ArtifactBase</code> definition: <code>decompile_diff_full.cs</code> line 21</li>
+<li>All BS classes: lines 85–1115</li>
+<li><code>RacePassiveArtifactBase</code> definition: decompiler error on generic resolution (line 3653–3670) — usage pattern clear from concrete subclasses</li>
+</ul>
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.1.1.0 · artifact.md</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>

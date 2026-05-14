@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Star-Up — Gear Upgrade Progression — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="../index.html">GMG Wiki</a>
+  <nav>
+    <a href="../units/index.html">Units</a>
+    <a href="../keywords/index.html">Keywords</a>
+    <a href="../gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="../talent-simulator.html">Talent Simulator</a>
+    <a href="../team-planner.html">Team Planner</a>
+    <a href="../search-unit.html">Search · Units</a>
+    <a href="../search-talent.html">Search · Talents</a>
+    <a href="../search-gear.html">Search · Gear</a>
+    <a href="../search-runes.html">Search · Runes</a>
+    <a href="../news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>Star-Up — Gear Upgrade Progression</h1>
+<p>How equipment scales when you star up (升星) from ★0 → ★1 → ★2 → ★3.</p>
+<blockquote>
+<p><strong>Source:</strong> reverse-engineered from <code>MainScripts.dll</code> (HybridCLR HotUpdate). Full decompiled C# in <code>data-session/intermediate/decompiled_equip.cs</code> (<code>EquipHelper.GetEquipAttr</code> + <code>EquipHelper.GetEquipBond</code>). The math is <strong>NOT</strong> stored in any DataTable — it's hot-loaded code, so re-extract + re-decompile after every patch (<code>datamine-extractor</code> agent does this automatically).</p>
+</blockquote>
+<h2>Star cap</h2>
+<p><code>EquipHelper.GetMaxStarByIDs(string IDs)</code> returns <code>3</code> for <strong>every gear</strong> in the game. So max star = ★3 across all rarities (SS / S / A / B / C). No per-step cap variation, no per-IDs override.</p>
+<p>To star up gear: collect duplicates of the same gear (same <code>IDs</code>), spend the duplicates + gold per <code>EquipHelper.GetUpgradeRequireNum(step, currentStar)</code>:</p>
+<pre><code>GetUpgradeRequireNum:
+  if Step ∈ {SS}: 1 dup per star (always)
+  else: 1 + currentStar × 4   →  ★0→★1: 1 dup,  ★1→★2: 5 dups,  ★2→★3: 9 dups
+</code></pre>
+<p>Gold cost is per-step lookup via <code>PriceDataTable.UpgradePrice(step)</code> (not yet decompiled — values shown in-game directly).</p>
+<h2>Stat scaling formula</h2>
+<p>Each gear has an <code>UpgradeAttr</code> field listing 1–3 stat names (CN keys, e.g. <code>精神,生命,初始魔力</code> → SPI/HP/Mana). At star <code>s</code>, the game cycles through that list and adds +1 to each named stat per iteration. Iteration count depends on the gear's <strong>Step</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th><code>equipUpgTimes</code></th>
+<th>Iters at ★1</th>
+<th>Iters at ★2</th>
+<th>Iters at ★3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SS</td>
+<td>8</td>
+<td>8</td>
+<td>16</td>
+<td><strong>24</strong></td>
+</tr>
+<tr>
+<td>S</td>
+<td>4</td>
+<td>4</td>
+<td>8</td>
+<td><strong>12</strong></td>
+</tr>
+<tr>
+<td>A</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+<td><strong>6</strong></td>
+</tr>
+<tr>
+<td>B</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td><strong>3</strong></td>
+</tr>
+<tr>
+<td>C</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td><strong>3</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The cycle is round-robin — at ★3 SS, 24 iterations across 3 stats means <strong>+8 to each</strong> stat in <code>UpgradeAttr</code>. At intermediate stars the distribution can be uneven (e.g. SS at ★2: 16 iters across 3 stats → 6/5/5).</p>
+<h3>Stat dispatch (<code>Attr.Add(string type, int value)</code>)</h3>
+<p>CN key in <code>UpgradeAttr</code> maps to <code>Attr</code> field as follows:</p>
+<table>
+<thead>
+<tr>
+<th><code>UpgradeAttr</code> (CN)</th>
+<th>Attr field</th>
+<th>Display</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>生命</td>
+<td>CONS</td>
+<td>HP</td>
+</tr>
+<tr>
+<td>力量</td>
+<td>STR</td>
+<td>STR</td>
+</tr>
+<tr>
+<td>精神</td>
+<td>INT</td>
+<td>SPI</td>
+</tr>
+<tr>
+<td>敏捷</td>
+<td>DEX</td>
+<td>AGI</td>
+</tr>
+<tr>
+<td>速度</td>
+<td>SPD</td>
+<td>SPD</td>
+</tr>
+<tr>
+<td>幸运</td>
+<td>Luck</td>
+<td>LUK</td>
+</tr>
+<tr>
+<td>韧性</td>
+<td>Tough</td>
+<td>Toughness</td>
+</tr>
+<tr>
+<td>全属性</td>
+<td>STR + INT + DEX</td>
+<td>All Stats (3 fields at once)</td>
+</tr>
+<tr>
+<td>魔力上限</td>
+<td>MaxMagic</td>
+<td><a href="../keywords/mechanic-max-mana.html">Max Mana</a></td>
+</tr>
+<tr>
+<td>初始魔力</td>
+<td>InitialMagic</td>
+<td><a href="../keywords/mechanic-starting-mana.html">Starting Mana</a></td>
+</tr>
+<tr>
+<td>行动回魔</td>
+<td>ActionMagic</td>
+<td><a href="../keywords/mechanic-action-mana.html">Action Mana</a></td>
+</tr>
+<tr>
+<td>受击回魔</td>
+<td>HitMagic</td>
+<td><a href="../keywords/mechanic-hit-mana.html">Hit Mana</a></td>
+</tr>
+</tbody>
+</table>
+<p>These CN keys are the canonical lookup keys in source data — wiki output displays the EN equivalent in the right column.</p>
+<h2>Bond scaling formula</h2>
+<p>Each gear has 3 bond slots: <strong>Pure</strong> (basic), <strong>Title</strong> (theme), <strong>Enhance</strong> (skill). Each slot stores <code>Name[BaseLevel]</code> (e.g. <code>Eternal[1]</code>). On star up, the slot at index <code>i</code> gets +1 if <code>star &gt; i</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Index</th>
+<th>Unlocks at</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pure</td>
+<td>0</td>
+<td>★1</td>
+</tr>
+<tr>
+<td>Title</td>
+<td>1</td>
+<td>★2</td>
+</tr>
+<tr>
+<td>Enhance</td>
+<td>2</td>
+<td>★3</td>
+</tr>
+</tbody>
+</table>
+<p>So at ★3 every bond slot gets +1 to its base level. Final bond level is then capped by the bond's max tier (= number of comma-separated entries in <code>BondDataTable.Value1</code>, e.g. Sharp/Sturdy = 6 tiers max, Fair Trade = 2 tiers max).</p>
+<p><a href="../mechanics/legacy.html">Legacy/Heritage</a> adds <strong>another +1</strong> to every bond on top of the star-up bonus (same MaxLevel cap applies). Legacy does NOT modify raw stats.</p>
+<h2>Verification examples</h2>
+<p>Live decompile-verified at all 4 stars:</p>
+<p><strong>Z00000_942 Philosopher's Stone</strong> — SS · UpgradeAttr = SPI/HP/Mana · base INT 10 / CONS 5 / Mana 5</p>
+<table>
+<thead>
+<tr>
+<th>★</th>
+<th>INT</th>
+<th>CONS</th>
+<th>Mana</th>
+<th>Pure</th>
+<th>Title</th>
+<th>Enhance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>10</td>
+<td>5</td>
+<td>5</td>
+<td>Eternal[1]</td>
+<td>World[1]</td>
+<td>Fair Trade[1]</td>
+</tr>
+<tr>
+<td>1</td>
+<td>13</td>
+<td>8</td>
+<td>7</td>
+<td>Eternal[2]</td>
+<td>World[1]</td>
+<td>Fair Trade[1]</td>
+</tr>
+<tr>
+<td>2</td>
+<td>16</td>
+<td>10</td>
+<td>10</td>
+<td>Eternal[2]</td>
+<td>World[2]</td>
+<td>Fair Trade[1]</td>
+</tr>
+<tr>
+<td>3</td>
+<td>18</td>
+<td>13</td>
+<td>13</td>
+<td>Eternal[2]</td>
+<td>World[2]</td>
+<td>Fair Trade[2]</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Z50006_131 Hero Sword</strong> — S · UpgradeAttr = STR/HP/Tough · base STR 6 / CONS 2 / Tough 2</p>
+<table>
+<thead>
+<tr>
+<th>★</th>
+<th>STR</th>
+<th>CONS</th>
+<th>Tough</th>
+<th>Pure</th>
+<th>Title</th>
+<th>Enhance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>6</td>
+<td>2</td>
+<td>2</td>
+<td>Frustrate[1]</td>
+<td>Heroine[1]</td>
+<td>Heroine's Blessing[1]</td>
+</tr>
+<tr>
+<td>1</td>
+<td>8</td>
+<td>3</td>
+<td>3</td>
+<td>Frustrate[2]</td>
+<td>Heroine[1]</td>
+<td>Heroine's Blessing[1]</td>
+</tr>
+<tr>
+<td>2</td>
+<td>9</td>
+<td>5</td>
+<td>4</td>
+<td>Frustrate[2]</td>
+<td>Heroine[2]</td>
+<td>Heroine's Blessing[1]</td>
+</tr>
+<tr>
+<td>3</td>
+<td>10</td>
+<td>6</td>
+<td>6</td>
+<td>Frustrate[2]</td>
+<td>Heroine[2]</td>
+<td>Heroine's Blessing[2]</td>
+</tr>
+</tbody>
+</table>
+<p>For per-gear progression tables across all 1234 gear: see <code>&lt;span class="broken-link" title="missing: starup-gear-info"&gt;starup-gear-info&lt;/span&gt;</code> (split into 5 per-tier files: <code>&lt;span class="broken-link" title="missing: ss-gear"&gt;ss-gear&lt;/span&gt;</code>, <code>&lt;span class="broken-link" title="missing: s-gear"&gt;s-gear&lt;/span&gt;</code>, <code>&lt;span class="broken-link" title="missing: a-gear"&gt;a-gear&lt;/span&gt;</code>, <code>&lt;span class="broken-link" title="missing: b-gear"&gt;b-gear&lt;/span&gt;</code>, <code>&lt;span class="broken-link" title="missing: c-gear"&gt;c-gear&lt;/span&gt;</code>).</p>
+<h2>Implementation notes</h2>
+<ul>
+<li>Formula constants live in <code>visualise-session/tools/generate_starup_gear_info.py</code> (<code>EQUIP_UPG_TIMES</code>, <code>MAX_STARS</code>, <code>ATTR_DISPATCH</code>).</li>
+<li>After a patch where <code>decompile_equip.py</code> shows <code>EquipHelper</code> changed: update those constants, then re-run the gear generators.</li>
+<li><code>generate_gear_pages.py</code> shows base (★0) values only — does NOT depend on this formula.</li>
+</ul>
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.1.1.0 · starup.md</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>
