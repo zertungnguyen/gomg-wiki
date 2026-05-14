@@ -245,6 +245,17 @@ button.ghost{padding:5px 10px;font-size:10px;background:transparent}
 .stat-block .val .delta{color:var(--accent);font-size:11px;margin-left:3px;font-weight:500}
 .stat-block .formula-hint{font-family:'Noto Sans',sans-serif;font-size:9px;font-weight:400;color:var(--dim);text-transform:none;letter-spacing:0;margin-left:6px}
 
+/* Battle preview — derived from mechanics/stat-calculation. Not a precise
+   prediction; relative comparison band only (no per-skill scaling data). */
+.battle-preview{background:var(--card2);border:1px dashed var(--border);border-radius:6px;padding:8px 12px;margin-top:6px;font-size:11px;display:flex;flex-direction:column;gap:4px}
+.battle-preview .bp-row{display:flex;align-items:baseline;gap:6px}
+.battle-preview .bp-ico{flex-shrink:0;width:14px;text-align:center}
+.battle-preview .bp-text{flex:1;line-height:1.5}
+.battle-preview .good{color:var(--good);font-weight:600}
+.battle-preview .dim{color:var(--dim);font-size:10px}
+.battle-preview .dmg{display:inline-block;font-family:'Chakra Petch',sans-serif;font-weight:700;color:var(--orange);background:rgba(255,153,51,0.08);padding:1px 6px;border-radius:3px;margin:0 2px;font-size:11px}
+.battle-preview strong{color:var(--accent);font-family:'Chakra Petch',sans-serif;font-weight:700}
+
 /* Level slider row — drives GetLevelAttr scaling per unit */
 .level-row{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--card2);border-radius:6px;margin-top:6px}
 .level-row .label{font-family:'Chakra Petch',sans-serif;font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
@@ -1476,6 +1487,64 @@ function renderUnitPanel(main, idxN, pu){
       <div class="pool-pill def"><div class="lbl">DEF</div><div class="v">${pu.raw.DEF}</div></div>
       <div class="pool-pill weak"><div class="lbl">Weak</div><div class="v">${pu.raw.WEAK}</div></div>`;
     panel.appendChild(pool);
+
+    // Battle Preview — turn-1 readiness + action order ranking + damage band.
+    // Derived from runtime-verified mechanics in mechanics/stat-calculation:
+    //   - Skill triggers when current MP >= MaxMana (Mage casts on cap reached).
+    //     Turn 1 = StartMana already covers it → "Skill ready Round 1".
+    //   - Action order: highest-SPD unit acts first within a round, but the
+    //     captured battle log (Run3) showed ult-ready units (Forest Nymph
+    //     MP 30/30) acting BEFORE higher-SPD normal-attackers (Astral Fiend
+    //     SPD 79). Treat ult-ready as soft priority bump.
+    //   - Damage formula: max(0, base + scaling × stat_diff + status_value).
+    //     Without per-skill scaling data, show ATK at 3 reference defenses
+    //     using scale=0.7 (averaged from observed Run3 ult casts) for a
+    //     relative comparison band — NOT a precise prediction.
+    const turnsToUlt = pu.raw.MaxMana > 0 && pu.raw.StartMana < pu.raw.MaxMana
+      ? Math.ceil((pu.raw.MaxMana - pu.raw.StartMana) / Math.max(1, pu.raw.ActMana))
+      : 0;
+    const ultReadyR1 = pu.raw.StartMana >= pu.raw.MaxMana;
+    // Action-order rank among team — SPD descending; ult-ready acts first.
+    const teamPus = state.mains.map((mm, idx2) => {
+      if(idx2 === idxN) return null;
+      return computeUnitStats(mm);
+    });
+    teamPus[idxN] = pu;
+    const rankList = teamPus
+      .map((tpu, j) => tpu && tpu.unit ? {
+        j, spd: tpu.raw.SPD,
+        ult: tpu.raw.MaxMana > 0 && tpu.raw.StartMana >= tpu.raw.MaxMana ? 1 : 0,
+      } : null)
+      .filter(Boolean);
+    rankList.sort((a, b) => b.ult - a.ult || b.spd - a.spd);
+    const myRank = rankList.findIndex(x => x.j === idxN) + 1;
+    // Damage band — use scale=0.7 vs assumed DEF=ATK (mirror), ATK×2 (twice),
+    // ATK÷2 (half). max(0, base 5 + scale × diff). Base 5 = neutral skill base.
+    const SCALE = 0.7, BASE = 5;
+    const dmg = (def) => Math.max(0, Math.round(BASE + SCALE * (pu.raw.ATK - def)));
+    const preview = document.createElement('div');
+    preview.className = 'battle-preview';
+    preview.innerHTML = `
+      <div class="bp-row">
+        <span class="bp-ico">🎬</span>
+        <span class="bp-text">${ultReadyR1
+          ? `<span class="good">SKILL READY R1</span> (Mana ${pu.raw.StartMana}/${pu.raw.MaxMana})`
+          : `<span class="dim">~${turnsToUlt} actions to ult</span> (Mana ${pu.raw.StartMana}/${pu.raw.MaxMana} · +${pu.raw.ActMana}/act)`}</span>
+      </div>
+      <div class="bp-row">
+        <span class="bp-ico">🕐</span>
+        <span class="bp-text">Action order in team: <strong>#${myRank}</strong> of ${rankList.length}
+          <span class="dim">(SPD ${pu.raw.SPD}${ultReadyR1?' · ult-ready bumps priority':''})</span></span>
+      </div>
+      <div class="bp-row">
+        <span class="bp-ico">⚔</span>
+        <span class="bp-text">DMG band vs DEF
+          <span class="dmg">×½&nbsp;${dmg(Math.floor(pu.raw.ATK/2))}</span>
+          <span class="dmg">×1&nbsp;${dmg(pu.raw.ATK)}</span>
+          <span class="dmg">×2&nbsp;${dmg(pu.raw.ATK*2)}</span>
+          <span class="dim">(neutral skill, scale 0.7)</span></span>
+      </div>`;
+    panel.appendChild(preview);
 
     // Level slider — drives GetLevelAttr scaling. Default 80; clamp 1..100.
     // Mirrors decompile RoleDataItem.GetLevelAttr (line 37466).
