@@ -1,0 +1,1584 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skill Index — Active Skills (177 units) — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="../index.html">GMG Wiki</a>
+  <nav>
+    <a href="../units/index.html">Units</a>
+    <a href="../keywords/index.html">Keywords</a>
+    <a href="../gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="../talent-simulator.html">Talent Simulator</a>
+    <a href="../team-planner.html">Team Planner</a>
+    <a href="../search-unit.html">Search · Units</a>
+    <a href="../search-talent.html">Search · Talents</a>
+    <a href="../search-gear.html">Search · Gear</a>
+    <a href="../search-runes.html">Search · Runes</a>
+    <a href="../news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>Skill Index — Active Skills (177 units)</h1>
+<p><em>Auto-generated from <code>RoleDataTable</code> + <code>mgg_loc.csv</code>. Re-run with <code>py visualise-session/tools/generate_skill_index.py</code> after a datamine pull.</em></p>
+<blockquote>
+<p><strong>Note on placeholders:</strong> Active skill descriptions are stored as loc strings with <code>{0}/{1}/{2}/…</code> placeholder tokens. Unlike <code>UniqueDataTable</code> actives, per-unit loc actives have no companion <code>Value0..N</code> columns to substitute from. All <code>{N}</code> tokens are kept verbatim in this index. Tags are derived from the effect vocabulary, so unfilled placeholders do not affect tagging accuracy.</p>
+</blockquote>
+<h2>Tag taxonomy</h2>
+<table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>Definition</th>
+<th>Trigger phrases</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ST</code></td>
+<td>Targets a single enemy (front/back/mid/lowest-HP/highest-ATK/etc.).</td>
+<td>Targets the front enemy first</td>
+</tr>
+<tr>
+<td><code>AoE</code></td>
+<td>Hits or debuffs all enemies simultaneously ("all enemies"), or a fixed group.</td>
+<td>all enemies</td>
+</tr>
+<tr>
+<td><code>Ally-Target</code></td>
+<td>Targets one or more allies (heals, buffs, or supports a specific ally or all allies).</td>
+<td>to all allies</td>
+</tr>
+<tr>
+<td><code>Self</code></td>
+<td>Effect is solely on the caster (self-heal or self-buff, no ally/enemy targeting).</td>
+<td>Restores {2} HP [no ally qualifier]</td>
+</tr>
+<tr>
+<td><code>Multi-Hit</code></td>
+<td>Deals {1} hits — multiple separate damage instances in one cast.</td>
+<td>Deals {1} hits of {2} DMG</td>
+</tr>
+<tr>
+<td><code>No-Damage</code></td>
+<td>Skill deals no direct DMG — pure heal, buff, or self-only effect.</td>
+<td>no 'DMG' keyword anywhere in the description</td>
+</tr>
+<tr>
+<td><code>Heal</code></td>
+<td>Restores HP to any target (self, single ally, or all allies).</td>
+<td>Restores {2} HP</td>
+</tr>
+<tr>
+<td><code>Shield</code></td>
+<td>Grants Shield stacks or converts HP/excess-HP to Shield.</td>
+<td>stacks of Shield</td>
+</tr>
+<tr>
+<td><code>Buff</code></td>
+<td>Grants offensive or sustain buff stacks: Bloodlust, Haste, Precision, Inspire, Regen, Faith, Growth, Thorns, Reversal, Soothe, or stat bonuses.</td>
+<td>stacks of Bloodlust/Haste/Precision/Inspire/Regen/Faith/Growth/Thorns/Reversal/Soothe/Burn-res/HP Gain</td>
+</tr>
+<tr>
+<td><code>Mana-Gen</code></td>
+<td>Grants Mana, increases Max Mana, reduces Action Mana, or grants extra actions.</td>
+<td>grants Mana</td>
+</tr>
+<tr>
+<td><code>Follow-Up</code></td>
+<td>Grants Follow-Up attacks or buffs Follow-Up damage.</td>
+<td>Follow-Up attacks</td>
+</tr>
+<tr>
+<td><code>Counter</code></td>
+<td>Grants Counter attacks or extends Counter range.</td>
+<td>Counter attacks</td>
+</tr>
+<tr>
+<td><code>Cleanse</code></td>
+<td>Applies Cleanse stacks (debuff removal) to self or allies.</td>
+<td>stacks of Cleanse</td>
+</tr>
+<tr>
+<td><code>Debuff</code></td>
+<td>Applies any negative status stack to enemies: Expose, Hinder, Vulnerable, Nullify, Lure, Shock, Burn, Chill, Fear, Taunt, Slow, Stun.</td>
+<td>applies {N} stacks of <debuff></td>
+</tr>
+<tr>
+<td><code>Control</code></td>
+<td>Applies hard-control: Stun (lose action), Taunt (forced retarget), Fear (flee/reduced), Lure (misdirect), or Slow (speed reduction).</td>
+<td>stacks of Stun</td>
+</tr>
+<tr>
+<td><code>DoT</code></td>
+<td>Causes ongoing HP loss (target loses HP per Hinder stacks, HP drain per hit, Burn HP loss at max stacks, etc.).</td>
+<td>loses {N} HP per</td>
+</tr>
+<tr>
+<td><code>Conditional</code></td>
+<td>Has a conditional bonus: 'if' clause (HP%, shield, exposed weakness), or 'For every X' scaling rider that gates a bonus damage/effect.</td>
+<td>If the target has</td>
+</tr>
+<tr>
+<td><code>Summon</code></td>
+<td>Calls or spawns an entity by name, or modifies ally-count mid-battle.</td>
+<td>increases ally count</td>
+</tr>
+<tr>
+<td><code>Self-Buff</code></td>
+<td>Grants stacks or stats only to the caster (increases basic attack, gains stacks with no ally qualifier, buff applies to self not the team).</td>
+<td>increases basic attack targets</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Skills</h2>
+<p>Sorted: S → A → B → C, then alphabetically by unit name.</p>
+<table>
+<thead>
+<tr>
+<th>Unit</th>
+<th>ID</th>
+<th>Step</th>
+<th>Skill Name</th>
+<th>Tags</th>
+<th>Effect (verbatim)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Astral Fiend</td>
+<td><code>M53301</code></td>
+<td>S</td>
+<td>Domination Gaze</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Debuff</code>, <code>Control</code>, <code>DoT</code>, <code>Conditional</code></td>
+<td>Gazes upon those who dare to look. Targets the enemy with lowest SPI first. Deals {1} hits of {2} DMG, applying {3} stacks of Fear and draining {4} Mana per hit. If the target's Weakness is exposed, doubles Mana gained.</td>
+</tr>
+<tr>
+<td>Astral Fiend</td>
+<td><code>M53301_001</code></td>
+<td>S</td>
+<td>Frostbound Gaze</td>
+<td><code>AoE</code>, <code>Multi-Hit</code>, <code>Debuff</code>, <code>Conditional</code></td>
+<td>Gazes upon those who entered the tundra. Deals {1} hits of {2} DMG to all enemies and applies {3} stacks of Chill. Drains {4} Mana per hit. If the target has Chill, drains double Mana.</td>
+</tr>
+<tr>
+<td>Astral Fiend</td>
+<td><code>M53301_002</code></td>
+<td>S</td>
+<td>Come At Me</td>
+<td><code>AoE</code>, <code>Self</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code>, <code>Mana-Gen</code>, <code>Self-Buff</code></td>
+<td>Unleashes a brazen Astral Fiendaunt. Restores {2} HP and gains {3} stacks of Thorns. Forces all enemies to immediately take {4} Extra Actions against her. Neither side gains Mana from these actions.</td>
+</tr>
+<tr>
+<td>Core Golem</td>
+<td><code>M31302</code></td>
+<td>S</td>
+<td>Vengeance Smash</td>
+<td><code>ST</code>, <code>Counter</code>, <code>Conditional</code></td>
+<td>Slams the ground with her fists. Targets the enemy with highest ATK first. Deals {2} DMG. For every counter this battle, deals +{4} DMG. For every point of Counter range, deals +{5}% DMG.</td>
+</tr>
+<tr>
+<td>Core Golem</td>
+<td><code>M31302_000</code></td>
+<td>S</td>
+<td>Total Domination</td>
+<td><code>AoE</code>, <code>Multi-Hit</code>, <code>Follow-Up</code>, <code>Conditional</code></td>
+<td>Removes restrictions to go all out. Deals {1} hits of {2} DMG to all enemies. For every action taken by any target this battle, deals +{4} DMG. For every {5} Follow-Up attack, deals +{6} hits.</td>
+</tr>
+<tr>
+<td>Crystal Shroom</td>
+<td><code>M13306</code></td>
+<td>S</td>
+<td>Mana Crystal</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Shield</code>, <code>Mana-Gen</code></td>
+<td>Creates a crystal that releases Mana. Restores {2} HP to other allies and grants Mana equal to {4}% of their max Mana to the target. Excess Mana converts to Shield.</td>
+</tr>
+<tr>
+<td>Dawn Dragoness</td>
+<td><code>M51302</code></td>
+<td>S</td>
+<td>Lightning Flash</td>
+<td><code>AoE</code>, <code>Multi-Hit</code>, <code>Buff</code>, <code>Debuff</code>, <code>Conditional</code></td>
+<td>Calls down thunder with the dragon pearl. Deals {1} hits of {2} DMG to all enemies, applying {3} stacks of Shock per hit. For every {4} stacks of Soothe, deals +{5} DMG.</td>
+</tr>
+<tr>
+<td>Dawn Dragoness</td>
+<td><code>M51302_001</code></td>
+<td>S</td>
+<td>Tidal Surge</td>
+<td><code>AoE</code>, <code>Cleanse</code>, <code>Conditional</code></td>
+<td>Summons a massive tidal wave. Deals {2} DMG to all enemies and applies {3} stacks of Cleanse. For every {4} stacks of Cleanse applied, deals +1 skill DMG. For every {5} buffs removed, gains 1 stack of Regen.</td>
+</tr>
+<tr>
+<td>Desert Dancer</td>
+<td><code>M12211</code></td>
+<td>S</td>
+<td>Spinning Blade</td>
+<td><code>AoE</code>, <code>Buff</code>, <code>Conditional</code></td>
+<td>Throws a spinning giant shuriken. Deals {2} DMG to all enemies. For each enemy hit, gains {3} stacks of Inspire. Each cast increases skill DMG by {4}.</td>
+</tr>
+<tr>
+<td>Desert Dancer</td>
+<td><code>M12211_000</code></td>
+<td>S</td>
+<td>Lunar Spin</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Debuff</code>, <code>Conditional</code></td>
+<td>Spins moon blades to cut. Targets the enemy with highest Mana first. Deals {1} hits of {2} DMG, applying {3} stacks of Nullify per hit. For every {4} stacks of Nullify applied, increases skill DMG by {5}.</td>
+</tr>
+<tr>
+<td>Dummy</td>
+<td><code>M00000</code></td>
+<td>S</td>
+<td>Feint</td>
+<td><code>ST</code></td>
+<td>Pretends to attack. Targets the front enemy first. Deals {2} DMG.</td>
+</tr>
+<tr>
+<td>Earth Herald</td>
+<td><code>M13302</code></td>
+<td>S</td>
+<td>Earthsurge</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Conditional</code></td>
+<td>Drags prey into endless nightmares. Targets the enemy with lowest Toughness first. Deals {1} hits of {2} DMG. For every {4} Toughness lost, deals +{5} DMG. Deals double DMG if the target's Weakness is exposed.</td>
+</tr>
+<tr>
+<td>Earth Herald</td>
+<td><code>M13302_000</code></td>
+<td>S</td>
+<td>Nightmare Descends</td>
+<td><code>AoE</code>, <code>Multi-Hit</code>, <code>Debuff</code>, <code>Conditional</code></td>
+<td>Guides earth spirits to sweep the ground. Deals {1} hits of {2} DMG to all enemies, applying {3} stacks of Vulnerable per hit. If the target has no Shield, deals +{4} hits.</td>
+</tr>
+<tr>
+<td>Earth Witch</td>
+<td><code>M13303</code></td>
+<td>S</td>
+<td>Earthrend</td>
+<td><code>AoE</code>, <code>Debuff</code></td>
+<td>Forms countless stone pillars with earth power. Deals {2} DMG to all enemies and applies {3} stacks of Vulnerable. For each target, deals +{4}% DMG. Each point of DMG consumes {5} stacks of Vulnerable.</td>
+</tr>
+<tr>
+<td>Earth Witch</td>
+<td><code>M13303_001</code></td>
+<td>S</td>
+<td>Sand Tempest</td>
+<td><code>AoE</code>, <code>Multi-Hit</code>, <code>Debuff</code>, <code>Control</code></td>
+<td>Commands endless sand to crush her foes. Deals {1} hits of {2} DMG to all enemies, applying {3} stacks of Slow per hit. For each enemy, deals +{4} hits. Deals +{6} DMG per {5} stacks of Slow on the target.</td>
+</tr>
+<tr>
+<td>Flawless Sage</td>
+<td><code>M14301</code></td>
+<td>S</td>
+<td>Shelter Light</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Cleanse</code></td>
+<td>Opens a protective barrier. Restores {2} HP to all allies and applies {3} stacks of Cleanse. Restores double HP to targets without debuffs.</td>
+</tr>
+<tr>
+<td>Flawless Sage</td>
+<td><code>M14301_000</code></td>
+<td>S</td>
+<td>Command Light</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code></td>
+<td>Rallies teammates' morale. Restores {2} HP {1} times to all allies and grants {3} stacks of Inspire to others. Doubles Inspire effect on targets with Bloodlust.</td>
+</tr>
+<tr>
+<td>Forest Nymph</td>
+<td><code>M54301</code></td>
+<td>S</td>
+<td>Lifegiving</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code></td>
+<td>Commands life energy like no other. Restores {2} HP to all allies, plus {4} for each ally count. Restores double HP to low HP targets.</td>
+</tr>
+<tr>
+<td>Frost Spider Queen</td>
+<td><code>M22301</code></td>
+<td>S</td>
+<td>Frozen Cocoon</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>DoT</code></td>
+<td>Wraps enemies in layers of webs. Targets the enemy with highest ATK first. Deals {1} hits of {2} DMG. Each hit causes the target to lose {4} HP and applies Chill equal to HP lost.</td>
+</tr>
+<tr>
+<td>Ghost Captain</td>
+<td><code>M41301</code></td>
+<td>S</td>
+<td>Life Drain</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Debuff</code></td>
+<td>Controls spirit blades to cut those who dare offend her. Targets the enemy with highest HP first. Deals {1} hits of {2} DMG, applying {3} stacks of Expose per hit. Gains HP equal to stacks applied.</td>
+</tr>
+<tr>
+<td>Ghost Captain</td>
+<td><code>M41301_000</code></td>
+<td>S</td>
+<td>Fatal Performance</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Debuff</code>, <code>Control</code></td>
+<td>Controls flying blades to pierce confused enemies. Targets the enemy with highest ATK first. Deals {1} hits of {2} DMG, applying {3} stacks of Lure per hit. Gains HP equal to stacks applied.</td>
+</tr>
+<tr>
+<td>Golden Maiden</td>
+<td><code>M21301</code></td>
+<td>S</td>
+<td>Self-Repair</td>
+<td><code>Self</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Shield</code></td>
+<td>Repairs herself with gold. Restores {2} HP. Excess HP converts to double Shield.</td>
+</tr>
+<tr>
+<td>Grand Magician</td>
+<td><code>M13305</code></td>
+<td>S</td>
+<td>Grand Finale</td>
+<td><code>AoE</code>, <code>Conditional</code></td>
+<td>Takes a final bow for the performance. Deals {2} DMG to all enemies. For every {4} fewer enemies, deals +{5}% DMG. Deals an extra +{6}% DMG to the sole survivor.</td>
+</tr>
+<tr>
+<td>Grand Magician</td>
+<td><code>M13305_000</code></td>
+<td>S</td>
+<td>Wild Party</td>
+<td><code>AoE</code>, <code>Multi-Hit</code>, <code>Conditional</code></td>
+<td>Holds a grand carnival party. Deals {1} hits of {2} DMG to all enemies. For every {4} Luck, deals +{5} hits. Deals double DMG to the sole survivor.</td>
+</tr>
+<tr>
+<td>Harpy Princess</td>
+<td><code>M12301</code></td>
+<td>S</td>
+<td>Feather Storm</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Follow-Up</code></td>
+<td>Shoots blade-sharp feathers. Targets the enemy with lowest HP first and deals {1} hits of {2} DMG. Each hit grants +{5} instances for the next {4} Follow-Ups.</td>
+</tr>
+<tr>
+<td>Harpy Princess</td>
+<td><code>M12301_001</code></td>
+<td>S</td>
+<td>Frozen Feather</td>
+<td><code>AoE</code>, <code>Follow-Up</code>, <code>Debuff</code>, <code>Conditional</code></td>
+<td>Shoots sharp ice feathers. Deals {2} DMG to all enemies and applies {3} stacks of Chill. For every {4} stacks of Chill on all enemies, increases next Follow-Up DMG by {5}.</td>
+</tr>
+<tr>
+<td>Holy Blade</td>
+<td><code>M31301</code></td>
+<td>S</td>
+<td>Fearless Blade</td>
+<td><code>AoE</code>, <code>Conditional</code></td>
+<td>Turns courage to protect allies into power. Deals {2} DMG to all enemies. For every ally count, deals +{4} DMG. Deals double DMG at low HP.</td>
+</tr>
+<tr>
+<td>Holy Blade</td>
+<td><code>M31301_001</code></td>
+<td>S</td>
+<td>Frostbound Sword</td>
+<td><code>AoE</code>, <code>Multi-Hit</code>, <code>Conditional</code></td>
+<td>Converts frost magic into her power. Deals {1} hits of {2} DMG to all enemies. For every ally count, deals +{4} DMG. Deals +{5} hits at low HP.</td>
+</tr>
+<tr>
+<td>Imp</td>
+<td><code>M51303</code></td>
+<td>S</td>
+<td>Sabotage</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Debuff</code></td>
+<td>Swings a giant scythe wildly. Targets the nearest {0} enemies first. Deals {1} hits of {2} DMG, applying {3} stacks of Vulnerable per hit. Increases multi-hit skill count by {4}, up to +{5}.</td>
+</tr>
+<tr>
+<td>Imp</td>
+<td><code>M51303_000</code></td>
+<td>S</td>
+<td>Forced Sleep</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Debuff</code>, <code>Control</code>, <code>Conditional</code></td>
+<td>Swings a giant doll wildly. Targets the nearest {0} enemies first. Deals {1} hits of {2} DMG and applies {3} stacks of Fear. Gains {4} Mana per target, or {5} Mana if the target's Weakness is exposed.</td>
+</tr>
+<tr>
+<td>Isekai Wanderer</td>
+<td><code>M14303</code></td>
+<td>S</td>
+<td>Bugfix</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Conditional</code></td>
+<td>Pulls out a massive syringe to repair damage. Targets the most injured ally first. Restores {2} HP. If the target has Weakness exposed / high HP / debuffs, grants {3} stacks of Sturdy / Shield / Cleanse respectively.</td>
+</tr>
+<tr>
+<td>Legion Commander</td>
+<td><code>M11301</code></td>
+<td>S</td>
+<td>Command Banner</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code>, <code>Mana-Gen</code>, <code>Conditional</code></td>
+<td>Commands teammates with her banner. Targets the ally with highest ATK (excluding self) first. Restores {2} HP and grants {3} stacks of Inspire. If the target isn't self, they immediately take {4} extra actions.</td>
+</tr>
+<tr>
+<td>Legion Commander</td>
+<td><code>M11301_000</code></td>
+<td>S</td>
+<td>Crushing Stomp</td>
+<td><code>ST</code>, <code>Buff</code>, <code>Conditional</code>, <code>Self-Buff</code></td>
+<td>Tramples enemies with fierce might. Targets the front enemy first. Deals {2} DMG and gains {3} stacks of Bloodlust. For every {4} stacks of Bloodlust, deals +{5} DMG. Deals double DMG to the nearest enemy.</td>
+</tr>
+<tr>
+<td>Minotaur Brave</td>
+<td><code>M11304</code></td>
+<td>S</td>
+<td>Demonic Berserk</td>
+<td><code>Self</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Mana-Gen</code>, <code>Counter</code></td>
+<td>Devours all her Mana. Restores {2} HP, gains +{4} Counter attacks, and +{5} Max Mana.</td>
+</tr>
+<tr>
+<td>Minotaur Brave</td>
+<td><code>M11304_000</code></td>
+<td>S</td>
+<td>Formation Clash</td>
+<td><code>AoE</code>, <code>Mana-Gen</code>, <code>Summon</code></td>
+<td>Calls legion spirits to form a charging formation. Deals {2} DMG to all enemies and increases ally count by {4}. Each target immediately takes {5} extra actions against the unit without gaining Mana.</td>
+</tr>
+<tr>
+<td>Serene Undine</td>
+<td><code>M24301</code></td>
+<td>S</td>
+<td>Soothing Waters</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code>, <code>Conditional</code></td>
+<td>Controls water orbs rich in life energy. Prioritizes the most injured ally, restoring {2} HP {1} times and granting {3} stacks of Soothe. For every {4} stacks of Soothe the target has, this heal increases by {5}.</td>
+</tr>
+<tr>
+<td>Shadow Dragoness</td>
+<td><code>M11302</code></td>
+<td>S</td>
+<td>Dragon Roar</td>
+<td><code>AoE</code>, <code>Multi-Hit</code>, <code>Debuff</code>, <code>Control</code>, <code>Conditional</code></td>
+<td>Roars deafeningly. Deals {1} hits of {2} DMG to all enemies, applying {4} stacks of Fear per hit. If the target's Weakness is exposed, each hit applies an extra {3} stacks of Stun.</td>
+</tr>
+<tr>
+<td>Shadow Dragoness</td>
+<td><code>M11302_000</code></td>
+<td>S</td>
+<td>Pale Grasp</td>
+<td><code>AoE</code>, <code>Shield</code>, <code>DoT</code></td>
+<td>Commands bones to invade the battlefield. Deals {2} DMG to all enemies, but loses {4}% of max HP and gains Shield equal to HP lost. Triggers all allies' defeat effects.</td>
+</tr>
+<tr>
+<td>Slime Queen</td>
+<td><code>M23301</code></td>
+<td>S</td>
+<td>Light Rain</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Mana-Gen</code>, <code>Cleanse</code></td>
+<td>Unleashes a barrage of magic missiles. Targets the enemy with highest SPI first. Deals {1} hits of {2} DMG, applying {3} stacks of Cleanse per hit. For every {4} Max Mana, deals +{5} DMG.</td>
+</tr>
+<tr>
+<td>Slime Queen</td>
+<td><code>M23301_000</code></td>
+<td>S</td>
+<td>Prismatic Beam</td>
+<td><code>AoE</code>, <code>Debuff</code>, <code>Conditional</code></td>
+<td>Summons a crystal shooting rainbow light. Deals {2} DMG to all enemies and applies {3} stacks of Nullify. Each skill cast increases skill DMG by {4}.</td>
+</tr>
+<tr>
+<td>Snowman Knightess</td>
+<td><code>M11303</code></td>
+<td>S</td>
+<td>Frozen Maw</td>
+<td><code>Self</code>, <code>No-Damage</code>, <code>Heal</code></td>
+<td>Devours surrounding cold. Restores {2} HP and gains {4} Toughness and max Toughness. Removes Chill from all allies equal to their current Toughness.</td>
+</tr>
+<tr>
+<td>Stellar Archer</td>
+<td><code>M52301</code></td>
+<td>S</td>
+<td>Stellar Blessing</td>
+<td><code>Self</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Mana-Gen</code>, <code>Follow-Up</code>, <code>Self-Buff</code></td>
+<td>Summons countless spectral arms. Restores {2} HP, gains +{4} Follow-Up attacks, and reduces Action Mana by {5}.</td>
+</tr>
+<tr>
+<td>Timeless Lord</td>
+<td><code>M21302</code></td>
+<td>S</td>
+<td>Desert Sabre</td>
+<td><code>AoE</code>, <code>Control</code>, <code>Conditional</code></td>
+<td>Swings a blade forged from condensed sand. Deals {2} DMG to all enemies. Deals +{5} DMG per {4} stacks of Slow across all enemies. Deals double DMG to targets with SPD below 0.</td>
+</tr>
+<tr>
+<td>Timeless Lord</td>
+<td><code>M21302_000</code></td>
+<td>S</td>
+<td>Hanging Blade</td>
+<td><code>Shield</code>, <code>Conditional</code></td>
+<td>Summons a golden blade crashing from above. Targets the enemy with the least Shield, dealing {2} DMG. For every {4} stacks of Shield the unit has, deals +{5} DMG. Deals +{6}% DMG per enemy action this turn.</td>
+</tr>
+<tr>
+<td>Titan Lancer</td>
+<td><code>M31303</code></td>
+<td>S</td>
+<td>Titan's Might</td>
+<td><code>Self</code>, <code>Self-Buff</code></td>
+<td>Activates the core's full power. Restores herself {2} HP and increases basic attack targets by {4}. Each additional target increases basic attack DMG by {5}.</td>
+</tr>
+<tr>
+<td>Titan Lancer</td>
+<td><code>M31303_000</code></td>
+<td>S</td>
+<td>Thunder Pierce</td>
+<td><code>AoE</code>, <code>Debuff</code>, <code>Conditional</code></td>
+<td>Wields thunder to pierce enemies. Deals {2} DMG to all enemies and applies {3} stacks of Shock. For every {4} stacks of Shock on all enemies, increases next basic attack DMG by {5}. This attack cannot be Countered.</td>
+</tr>
+<tr>
+<td>Wasp Witch</td>
+<td><code>M13304</code></td>
+<td>S</td>
+<td>Wasp Swarm</td>
+<td><code>AoE</code>, <code>Debuff</code>, <code>DoT</code>, <code>Conditional</code></td>
+<td>Summons wasps to break enemy resistance. Deals {2} DMG to all enemies and applies {3} stacks of Hinder. For every {4} stacks of Hinder applied, the target loses {5} HP.</td>
+</tr>
+<tr>
+<td>Wasp Witch</td>
+<td><code>M13304_001</code></td>
+<td>S</td>
+<td>Frostbee Swarm</td>
+<td><code>AoE</code>, <code>Debuff</code>, <code>DoT</code>, <code>Conditional</code></td>
+<td>Summons frostbees to freeze enemies. Deals {2} DMG to all enemies and applies {3} stacks of Chill. For every {4} stacks of Chill applied, the target loses {5} HP.</td>
+</tr>
+<tr>
+<td>Windstrider</td>
+<td><code>M12205</code></td>
+<td>S</td>
+<td>Deadly Snipe</td>
+<td><code>ST</code>, <code>Buff</code>, <code>Conditional</code></td>
+<td>Takes aim at her mark. Targets the back enemy first. Deals {2} DMG. For every {4} stacks of Precision, deals +{5} DMG. Deals double DMG to the farthest target.</td>
+</tr>
+<tr>
+<td>Windstrider</td>
+<td><code>M12205_000</code></td>
+<td>S</td>
+<td>Lucky Draw</td>
+<td><code>ST</code>, <code>Conditional</code></td>
+<td>Shoots a golden card. Targets the nearest {0} enemies first. Deals {2} DMG. For every {4} Luck above the target, deals +{5} DMG. Deals double DMG to targets with lower Luck.</td>
+</tr>
+<tr>
+<td>Wish Djinn</td>
+<td><code>M34301</code></td>
+<td>S</td>
+<td>Wish Spell</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code></td>
+<td>Grants different wishes to each ally. Restores {2} HP to other allies. Grants {3} stacks of Regen, Faith, or Haste based on Front, Mid, or Back position. Grants +{5} stacks of these statuses per {4} Luck. At the highest Luck, grants all statuses regardless of position.</td>
+</tr>
+<tr>
+<td>Wish Djinn</td>
+<td><code>M34301_000</code></td>
+<td>S</td>
+<td>Prayer Spell</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code></td>
+<td>Grants different wishes to each ally. Restores {2} HP to other allies. Grants {3} STR, SPI, or AGI based on Front, Mid, or Back position. Grants +{5} stat bonus per {4} SPI. At the highest SPI, grants all stats regardless of position.</td>
+</tr>
+<tr>
+<td>Academy Mentor</td>
+<td><code>M13203</code></td>
+<td>A</td>
+<td>Flame Blast</td>
+<td><code>AoE</code>, <code>Conditional</code></td>
+<td>Unleashes powerful destructive magic. Deals {2} DMG to all enemies. Deals double DMG to mid enemies.</td>
+</tr>
+<tr>
+<td>Aqua Commander</td>
+<td><code>M11207</code></td>
+<td>A</td>
+<td>Spike Shift</td>
+<td><code>Self</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code>, <code>Self-Buff</code></td>
+<td>Changes her armor's shape. Restores {2} HP and gains {3} stacks of Thorns.</td>
+</tr>
+<tr>
+<td>Astral Guardian</td>
+<td><code>M51201</code></td>
+<td>A</td>
+<td>Astral Ward</td>
+<td><code>Self</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Counter</code>, <code>Self-Buff</code></td>
+<td>Summons astral energy around herself. Restores {2} HP and gains +{4} Counter range.</td>
+</tr>
+<tr>
+<td>Astral Guardian</td>
+<td><code>M51201_001</code></td>
+<td>A</td>
+<td>Frost Vengeance</td>
+<td><code>Self</code>, <code>No-Damage</code>, <code>Heal</code></td>
+<td>Summons frost energy around herself. Restores {2} HP and increases Chill applied by {4}.</td>
+</tr>
+<tr>
+<td>Boom Shroom</td>
+<td><code>M14204</code></td>
+<td>A</td>
+<td>Mana Surge</td>
+<td><code>ST</code>, <code>Conditional</code></td>
+<td>Unleashes all stored energy. Targets the front enemy first. Deals {2} DMG. For every {4} HP lost, deals +{5} DMG.</td>
+</tr>
+<tr>
+<td>Botanist</td>
+<td><code>M14207</code></td>
+<td>A</td>
+<td>Fruit Essence</td>
+<td><code>No-Damage</code>, <code>Buff</code></td>
+<td>Shares cultivated fruits with all allies to restore them {2} HP, and grants {4} HP Gain to the target.</td>
+</tr>
+<tr>
+<td>Boulder Gunner</td>
+<td><code>M22201</code></td>
+<td>A</td>
+<td>Piercing Shot</td>
+<td><code>AoE</code>, <code>Debuff</code></td>
+<td>Fires a piercing cannonball. Deals {2} DMG to all enemies and applies {3} stacks of Vulnerable.</td>
+</tr>
+<tr>
+<td>Broken Blade</td>
+<td><code>M31201</code></td>
+<td>A</td>
+<td>Bladestorm</td>
+<td><code>AoE</code>, <code>Debuff</code></td>
+<td>Sends blades scattering. Deals {2} DMG to all enemies and applies {3} stacks of Expose.</td>
+</tr>
+<tr>
+<td>Candy</td>
+<td><code>M12207</code></td>
+<td>A</td>
+<td>Enchanted Arrow</td>
+<td><code>Self</code>, <code>Self-Buff</code></td>
+<td>Enchants arrows with piercing magic. Restores herself {2} HP, increases basic attack targets by {4} and basic attack DMG by {5}.</td>
+</tr>
+<tr>
+<td>Candy</td>
+<td><code>M12207_000</code></td>
+<td>A</td>
+<td>Focused Stance</td>
+<td><code>Self</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Mana-Gen</code></td>
+<td>Focuses all her concentration. Restores {2} HP and immediately takes {4} extra actions. These actions don't gain Mana.</td>
+</tr>
+<tr>
+<td>Coco Tosser</td>
+<td><code>M12203</code></td>
+<td>A</td>
+<td>Coco Barrage</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Conditional</code></td>
+<td>Throws multiple giant coconuts. Targets the mid enemy first. Deals {1} hits of {2} DMG. For every hit, deals +{4} DMG.</td>
+</tr>
+<tr>
+<td>Dire Wolf</td>
+<td><code>M11205</code></td>
+<td>A</td>
+<td>Fang Breaker</td>
+<td><code>ST</code>, <code>Multi-Hit</code></td>
+<td>Launches a storm of attacks. Targets the front enemy first. Deals {1} hits of {2} DMG. Deals +{4} hits to targets with lower SPD.</td>
+</tr>
+<tr>
+<td>Dire Wolf</td>
+<td><code>M11205_001</code></td>
+<td>A</td>
+<td>Icebreaker Strike</td>
+<td><code>ST</code>, <code>Conditional</code></td>
+<td>Charges with a powerful strike. Targets the enemy with most Chill first. Deals {2} DMG. For every {4} stacks of Chill, deals +{5} DMG.</td>
+</tr>
+<tr>
+<td>Dune Herald</td>
+<td><code>M23205</code></td>
+<td>A</td>
+<td>Burial Sands</td>
+<td><code>Control</code></td>
+<td>Crushes enemies with compressed sand. Targets the lowest SPD enemy first, dealing {1} hits of {2} DMG. Deals +{5} DMG per {4} stacks of Slow on target.</td>
+</tr>
+<tr>
+<td>Elder Dryad</td>
+<td><code>M23202</code></td>
+<td>A</td>
+<td>Verdant Drain</td>
+<td><code>AoE</code>, <code>Buff</code></td>
+<td>Grows trees to bind enemies. Deals {2} DMG to all enemies. Each hit grants self {3} stacks of Growth.</td>
+</tr>
+<tr>
+<td>Fire Banshee</td>
+<td><code>M21205</code></td>
+<td>A</td>
+<td>Flame Whip</td>
+<td><code>AoE</code>, <code>Debuff</code></td>
+<td>Lashes with a flame whip to burn everything. Deals {2} DMG to all enemies and applies {3} stacks of Burn.</td>
+</tr>
+<tr>
+<td>Fish Herder</td>
+<td><code>M13105</code></td>
+<td>A</td>
+<td>School Rush</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Conditional</code></td>
+<td>Commands a school of fish to charge. Targets the front enemy first. Deals {1} hits of {2} DMG. For every ally count, deals +{4} DMG.</td>
+</tr>
+<tr>
+<td>Fishfolk Vanguard</td>
+<td><code>M11208</code></td>
+<td>A</td>
+<td>Piercing Lance</td>
+<td><code>ST</code></td>
+<td>Thrusts with her spear. Targets the nearest {0} enemies first. Deals {2} DMG. Deals +{4} DMG to secondary targets.</td>
+</tr>
+<tr>
+<td>Gale Warrior</td>
+<td><code>M21202</code></td>
+<td>A</td>
+<td>Rending Claw</td>
+<td><code>ST</code>, <code>Debuff</code></td>
+<td>Claws at the enemy fiercely. Targets the front enemy first. Deals {2} DMG and applies {3} stacks of Expose.</td>
+</tr>
+<tr>
+<td>Gale Warrior</td>
+<td><code>M21202_000</code></td>
+<td>A</td>
+<td>Thunder Claw</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Debuff</code></td>
+<td>Rakes with continuous claws. Targets the front enemy first. Deals {1} hits of {2} DMG, applying {3} stacks of Shock per hit.</td>
+</tr>
+<tr>
+<td>Ghost Mate</td>
+<td><code>M41201</code></td>
+<td>A</td>
+<td>Vicious Roar</td>
+<td><code>AoE</code>, <code>Debuff</code>, <code>Control</code></td>
+<td>Roars with magical power. Deals {2} DMG to all enemies and applies {3} stacks of Lure.</td>
+</tr>
+<tr>
+<td>Giant Slime</td>
+<td><code>M21203</code></td>
+<td>A</td>
+<td>Devour's Bite</td>
+<td><code>ST</code>, <code>Buff</code>, <code>Self-Buff</code></td>
+<td>Swells to devour prey. Targets the front enemy first. Deals {2} DMG and gains {3} stacks of Growth.</td>
+</tr>
+<tr>
+<td>Gilt Archer</td>
+<td><code>M22202</code></td>
+<td>A</td>
+<td>Golden Arrow</td>
+<td><code>ST</code>, <code>Multi-Hit</code></td>
+<td>Fires a volley of light arrows. Targets the back enemy first. Deals {1} hits of {2} DMG. Deals +{4} hits to back enemies.</td>
+</tr>
+<tr>
+<td>Goblin Priest</td>
+<td><code>M14202</code></td>
+<td>A</td>
+<td>Haste</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code></td>
+<td>Prays for ancestral power. Restores {2} HP to all allies and grants {3} stacks of Haste.</td>
+</tr>
+<tr>
+<td>Goblin Priest</td>
+<td><code>M14202_000</code></td>
+<td>A</td>
+<td>Fear Curse</td>
+<td><code>AoE</code>, <code>Debuff</code>, <code>Control</code></td>
+<td>Unleashes the prey's inner fear. Deals {2} DMG to all enemies and applies {3} stacks of Fear.</td>
+</tr>
+<tr>
+<td>Green Cap</td>
+<td><code>M14208</code></td>
+<td>A</td>
+<td>Breeze Spore</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code>, <code>Conditional</code></td>
+<td>Continuously releases spores that restores {2} HP {1} times to all allies. For every {4} stacks of Haste the unit has, this heal increases by {5}.</td>
+</tr>
+<tr>
+<td>Hunter Brave</td>
+<td><code>M11201</code></td>
+<td>A</td>
+<td>Hunter's Rush</td>
+<td><code>ST</code></td>
+<td>Strikes at weakened prey. Targets the enemy with lowest HP first. Deals {2} DMG. Deals +{4} DMG against low HP targets.</td>
+</tr>
+<tr>
+<td>Hunter Brave</td>
+<td><code>M11201_000</code></td>
+<td>A</td>
+<td>Nightmare Assault</td>
+<td><code>ST</code>, <code>Conditional</code></td>
+<td>Strikes at desperate prey. Targets the enemy with lowest Toughness first. Deals {2} DMG. For every {4} Toughness lost, deals +{5} DMG.</td>
+</tr>
+<tr>
+<td>Jade Golem</td>
+<td><code>M33101</code></td>
+<td>A</td>
+<td>Mana Pulse</td>
+<td><code>ST</code>, <code>Debuff</code></td>
+<td>Disrupts nearby Mana. Targets the enemy with highest Mana first. Deals {2} DMG and applies {3} stacks of Nullify.</td>
+</tr>
+<tr>
+<td>Jungle Hunter</td>
+<td><code>M13205</code></td>
+<td>A</td>
+<td>Rage Sweep</td>
+<td><code>ST</code>, <code>Conditional</code></td>
+<td>Swings her spear wildly. Targets the front enemy first. Deals {2} DMG. For every {4} Toughness lost this battle, deals +{5} DMG.</td>
+</tr>
+<tr>
+<td>Legion Cavalry</td>
+<td><code>M11204</code></td>
+<td>A</td>
+<td>Fearless Charge</td>
+<td><code>ST</code>, <code>Conditional</code></td>
+<td>Charges at the enemy. Targets the front enemy first. Deals {2} DMG. Deals +{4} DMG to targets with lower SPD.</td>
+</tr>
+<tr>
+<td>Lost Aegis</td>
+<td><code>M31202</code></td>
+<td>A</td>
+<td>Shield Bash</td>
+<td><code>ST</code>, <code>Buff</code>, <code>Self-Buff</code></td>
+<td>Bashes with her shield. Targets the front enemy first. Deals {2} DMG and gains {3} stacks of Thorns.</td>
+</tr>
+<tr>
+<td>Lunar Priest</td>
+<td><code>M14213</code></td>
+<td>A</td>
+<td>Deep Moonlight</td>
+<td><code>AoE</code>, <code>Cleanse</code></td>
+<td>Summons the moon's radiance. Deals {2} DMG to all enemies and applies {3} stacks of Cleanse and Nullify.</td>
+</tr>
+<tr>
+<td>Lurking Shadow</td>
+<td><code>M12201</code></td>
+<td>A</td>
+<td>Sharp Blade</td>
+<td><code>ST</code>, <code>Multi-Hit</code></td>
+<td>Controls multiple flying blades. Targets the back enemy first. Deals {1} hits of {2} DMG. Deals +{4} hits to targets with lower SPD.</td>
+</tr>
+<tr>
+<td>Lurking Shadow</td>
+<td><code>M12201_000</code></td>
+<td>A</td>
+<td>Infinite Cards</td>
+<td><code>AoE</code>, <code>Multi-Hit</code>, <code>Conditional</code></td>
+<td>Throws a flurry of cards. Deals {1} hits of {2} DMG to all enemies. For every {4} Luck, deals +{5} DMG.</td>
+</tr>
+<tr>
+<td>Magic Attendant</td>
+<td><code>M13204</code></td>
+<td>A</td>
+<td>Card Scatter</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Debuff</code>, <code>Control</code></td>
+<td>Throws cards to mislead. Targets the back enemy first. Deals {1} hits of {2} DMG and applies {3} stacks of Lure.</td>
+</tr>
+<tr>
+<td>Mercenary Gunner</td>
+<td><code>M12210</code></td>
+<td>A</td>
+<td>Quick Shot</td>
+<td><code>ST</code>, <code>Multi-Hit</code></td>
+<td>Fires all bullets at once. Targets the front enemy first. Deals {1} hits of {2} DMG. This attack's hit count cannot be modified.</td>
+</tr>
+<tr>
+<td>Minotaur Blade</td>
+<td><code>M11209</code></td>
+<td>A</td>
+<td>Desperate Flurry</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Conditional</code></td>
+<td>Swings her sword wildly with everything she has. Targets the front enemy first. Deals {1} hits of {2} DMG. If her Weakness is exposed, deals +{4} hits.</td>
+</tr>
+<tr>
+<td>Minotaur Priest</td>
+<td><code>M14205</code></td>
+<td>A</td>
+<td>Warmonger's Call</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code>, <code>Conditional</code></td>
+<td>Greatly stirs fighting spirit. Restores {2} HP to all allies and grants {3} stacks of Bloodlust. If the target has no Bloodlust, grants {4} stacks instead.</td>
+</tr>
+<tr>
+<td>Naga Archer</td>
+<td><code>M12204</code></td>
+<td>A</td>
+<td>Chilling Shot</td>
+<td><code>AoE</code>, <code>Debuff</code></td>
+<td>Quickly locks onto enemy weaknesses. Deals {2} DMG to all enemies and applies {3} stacks of Chill.</td>
+</tr>
+<tr>
+<td>Pepper</td>
+<td><code>M11203</code></td>
+<td>A</td>
+<td>Fortress Horn</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Shield</code></td>
+<td>Sounds a mighty horn. Restores {2} HP to all allies and grants {3} stacks of Shield. Gains an extra {4} stacks.</td>
+</tr>
+<tr>
+<td>Pepper</td>
+<td><code>M11203_000</code></td>
+<td>A</td>
+<td>Wild Charge</td>
+<td><code>ST</code>, <code>Shield</code>, <code>Conditional</code></td>
+<td>Charges with her greatsword. Targets the front enemy first. Deals {2} DMG. For every {4} stacks of Shield, deals +{5} DMG.</td>
+</tr>
+<tr>
+<td>Poppy</td>
+<td><code>M13201</code></td>
+<td>A</td>
+<td>Time Warp</td>
+<td><code>AoE</code>, <code>Buff</code>, <code>Debuff</code></td>
+<td>Manipulates time briefly. Deals {2} DMG to all enemies and applies {3} stacks of Reversal.</td>
+</tr>
+<tr>
+<td>Poppy</td>
+<td><code>M13201_000</code></td>
+<td>A</td>
+<td>Multicast</td>
+<td><code>AoE</code>, <code>Debuff</code></td>
+<td>Unleashes all her Mana. Deals {2} DMG to all enemies and applies {3} stacks of Burn (front), Shock (mid), or Chill (back) based on position.</td>
+</tr>
+<tr>
+<td>Quicksand Assassin</td>
+<td><code>M22203</code></td>
+<td>A</td>
+<td>Shifting Blades</td>
+<td>—</td>
+<td>Sends countless sand blades through the enemy. Targets the lowest SPD enemy first, dealing {1} hits of {2} DMG. Deals +{4} hits to Slowed targets.</td>
+</tr>
+<tr>
+<td>Solar Priest</td>
+<td><code>M13207</code></td>
+<td>A</td>
+<td>Solar Radiance</td>
+<td><code>AoE</code>, <code>Multi-Hit</code>, <code>Cleanse</code></td>
+<td>Summons the sun's radiance. Deals {1} hits of {2} DMG to all enemies, applying {3} stacks of Cleanse and Burn per hit.</td>
+</tr>
+<tr>
+<td>Soul Mage</td>
+<td><code>M13202</code></td>
+<td>A</td>
+<td>Soul Sacrifice</td>
+<td><code>ST</code></td>
+<td>Sacrifices her own soul. Targets the enemy with lowest HP first. Deals {2} DMG and triggers own defeat effect. Max {4} times per turn.</td>
+</tr>
+<tr>
+<td>Spore Witch</td>
+<td><code>M13206</code></td>
+<td>A</td>
+<td>Spore Blast</td>
+<td><code>AoE</code></td>
+<td>Activates all spores. Deals {2} DMG to all enemies. Consumes {4}% of Hinder stacks to deal equal HP loss.</td>
+</tr>
+<tr>
+<td>Stinger Assassin</td>
+<td><code>M11210</code></td>
+<td>A</td>
+<td>Ambush Sting</td>
+<td><code>ST</code>, <code>DoT</code></td>
+<td>Launches her tail stinger at blinding speed. Targets the enemy with most Hinder stacks first, dealing {2} DMG. Target loses {5} HP per {4} stacks of Hinder.</td>
+</tr>
+<tr>
+<td>Stone Guard</td>
+<td><code>M21201</code></td>
+<td>A</td>
+<td>Stone Shield</td>
+<td><code>Self</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Shield</code>, <code>Self-Buff</code></td>
+<td>Forms a stone shield. Restores {2} HP and gains {3} stacks of Shield.</td>
+</tr>
+<tr>
+<td>Tempest Herald</td>
+<td><code>M23204</code></td>
+<td>A</td>
+<td>Tempest</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Debuff</code></td>
+<td>Controls a tearing storm. Targets the enemy with highest SPD first. Deals {1} hits of {2} DMG and applies {3} stacks of Expose.</td>
+</tr>
+<tr>
+<td>Tempest Herald</td>
+<td><code>M23204_000</code></td>
+<td>A</td>
+<td>Thunderstrike</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Debuff</code></td>
+<td>Controls thundering storm clouds. Targets the front enemy first. Deals {1} hits of {2} DMG, applying {3} stacks of Shock per hit.</td>
+</tr>
+<tr>
+<td>Thorn Archer</td>
+<td><code>M12304</code></td>
+<td>A</td>
+<td>Needle Rain</td>
+<td><code>AoE</code>, <code>Buff</code></td>
+<td>Unleashes every spine from her body. Deals {2} DMG to all enemies. Deals +{5} DMG per {4} stacks of Thorns.</td>
+</tr>
+<tr>
+<td>Thorn Dryad</td>
+<td><code>M23203</code></td>
+<td>A</td>
+<td>Vine Entangle</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Debuff</code>, <code>Control</code></td>
+<td>Ensnares prey with vines. Targets the enemy with highest SPD first. Deals {1} hits of {2} DMG and applies {3} stacks of Slow.</td>
+</tr>
+<tr>
+<td>Tide Guard</td>
+<td><code>M21204</code></td>
+<td>A</td>
+<td>Tidal Fury</td>
+<td><code>ST</code>, <code>Cleanse</code></td>
+<td>Calls forth a tidal wave. Targets the nearest {0} enemies first. Deals {2} DMG and applies {3} stacks of Cleanse.</td>
+</tr>
+<tr>
+<td>Troll Overseer</td>
+<td><code>M14206</code></td>
+<td>A</td>
+<td>Work Harder</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Mana-Gen</code></td>
+<td>Constantly pushes her teammates. Restores {2} HP to other allies and each takes {4} extra actions, but reduces Action Mana by {5}.</td>
+</tr>
+<tr>
+<td>War Priest</td>
+<td><code>M14201</code></td>
+<td>A</td>
+<td>War Drums</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code></td>
+<td>Awakens wolf spirits. Restores {2} HP to all allies and grants {3} stacks of Bloodlust. Grants an extra {4} stacks to the ally with highest ATK.</td>
+</tr>
+<tr>
+<td>War Priest</td>
+<td><code>M14201_001</code></td>
+<td>A</td>
+<td>Cold Snap</td>
+<td><code>AoE</code>, <code>Debuff</code></td>
+<td>Awakens frozen undead. Deals {2} DMG to all enemies and applies {3} stacks of Chill. Applies an extra {4} stacks to the enemy with highest ATK.</td>
+</tr>
+<tr>
+<td>Warg Archer</td>
+<td><code>M12202</code></td>
+<td>A</td>
+<td>Hunter's Mark</td>
+<td><code>ST</code>, <code>Follow-Up</code></td>
+<td>Shoots a heavy arrow. Targets the back enemy first. Deals {2} DMG and increases Follow-Up DMG by {4}.</td>
+</tr>
+<tr>
+<td>Warg Archer</td>
+<td><code>M12202_001</code></td>
+<td>A</td>
+<td>Frost Mark</td>
+<td><code>ST</code></td>
+<td>Shoots a tracking ice arrow. Targets the enemy with most Chill first. Deals {2} DMG and increases Chill received by {4} this battle.</td>
+</tr>
+<tr>
+<td>Wasteland Hunter</td>
+<td><code>M11202</code></td>
+<td>A</td>
+<td>Blazing Rush</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Buff</code>, <code>Self-Buff</code></td>
+<td>Rapidly thrusts in succession. Targets the front enemy first. Deals {1} hits of {2} DMG and gains {3} stacks of Bloodlust.</td>
+</tr>
+<tr>
+<td>Water Mage</td>
+<td><code>M23201</code></td>
+<td>A</td>
+<td>Aqua Volley</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Cleanse</code></td>
+<td>Fires a stream of water bullets. Targets the front enemy first. Deals {1} hits of {2} DMG and applies {3} stacks of Cleanse per hit.</td>
+</tr>
+<tr>
+<td>Wild Beastmaster</td>
+<td><code>M11206</code></td>
+<td>A</td>
+<td>Earthsplitter</td>
+<td><code>AoE</code></td>
+<td>Cleaves the ground with her greatsword. Deals {2} DMG to all enemies. For each enemy, deals -{4} DMG.</td>
+</tr>
+<tr>
+<td>Zhaocai</td>
+<td><code>M14203</code></td>
+<td>A</td>
+<td>Fortune Beckon</td>
+<td><code>Ally-Target</code>, <code>Heal</code>, <code>Buff</code></td>
+<td>Converts life energy into fortune. Targets the ally with least DMG taken. Restores {2} HP and grants {3} stacks of Inspire.</td>
+</tr>
+<tr>
+<td>Zhaocai</td>
+<td><code>M14203_000</code></td>
+<td>A</td>
+<td>Umbra Moon</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Conditional</code></td>
+<td>Summons dark orbs. Targets the enemy with lowest HP first. Deals {1} hits of {2} DMG. For every point of DMG dealt, restores {4} HP.</td>
+</tr>
+<tr>
+<td>Academy Apprentice</td>
+<td><code>M13106</code></td>
+<td>B</td>
+<td>Magic Missile</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Conditional</code></td>
+<td>Fires tracking missiles. Targets the front enemy first. Deals {1} hits of {2} DMG. Deals +{4} DMG if the target's Weakness is exposed.</td>
+</tr>
+<tr>
+<td>Academy Priest</td>
+<td><code>M14101</code></td>
+<td>B</td>
+<td>Healing</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code></td>
+<td>Uses a healing spell. Targets the most injured ally first. Restores {2} HP. Restores +{4} HP to low HP targets.</td>
+</tr>
+<tr>
+<td>Aqua Soldier</td>
+<td><code>M11113</code></td>
+<td>B</td>
+<td>Charging Stance</td>
+<td><code>Self</code></td>
+<td>Builds power in secret. Restores herself {2} HP and increases the DMG of her next basic attack by {4}.</td>
+</tr>
+<tr>
+<td>Blueshark Drill</td>
+<td><code>M11110</code></td>
+<td>B</td>
+<td>Snap Out</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code></td>
+<td>Cracks a whip to rally teammates. Restores {2} HP to other allies and grants {3} stacks of Bloodlust.</td>
+</tr>
+<tr>
+<td>Brawler Girl</td>
+<td><code>M11114</code></td>
+<td>B</td>
+<td>Seismic Slam</td>
+<td><code>ST</code>, <code>Debuff</code>, <code>Control</code></td>
+<td>Swings her hammer with full force. Targets the front enemy first. Deals {2} DMG and applies {3} stacks of Stun.</td>
+</tr>
+<tr>
+<td>Desert Guard</td>
+<td><code>M11115</code></td>
+<td>B</td>
+<td>Solar Aura</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code></td>
+<td>Activates the sun's protection. Restores {2} HP to all allies and reduces their Burn and Chill received by {4}. Deactivates upon defeat.</td>
+</tr>
+<tr>
+<td>Fairy Archer</td>
+<td><code>M32101</code></td>
+<td>B</td>
+<td>Precise Arrow</td>
+<td><code>ST</code></td>
+<td>Takes precise aim. Targets the back enemy first. Deals {2} DMG. Deals +{4} DMG to back enemies.</td>
+</tr>
+<tr>
+<td>Fighter Apprentice</td>
+<td><code>M11111</code></td>
+<td>B</td>
+<td>Haymaker</td>
+<td><code>ST</code>, <code>Conditional</code></td>
+<td>Charges up a strike. Targets the front enemy first. Deals {2} DMG. Deals +{4} DMG if the target's Weakness is exposed.</td>
+</tr>
+<tr>
+<td>Ghost Gunner</td>
+<td><code>M42101</code></td>
+<td>B</td>
+<td>Buckshot Barrage</td>
+<td><code>AoE</code>, <code>Conditional</code></td>
+<td>Fires countless bullets instantly. Deals {2} DMG to all enemies. For every {4} fewer enemies, deals +{5} DMG.</td>
+</tr>
+<tr>
+<td>Ghost Sailor</td>
+<td><code>M41101</code></td>
+<td>B</td>
+<td>Lifesteal Strike</td>
+<td><code>ST</code>, <code>Buff</code>, <code>Self-Buff</code></td>
+<td>Launches a swift assault. Targets the front enemy first. Deals {2} DMG and gains {3} stacks of Reversal.</td>
+</tr>
+<tr>
+<td>Goblin Mage</td>
+<td><code>M13102</code></td>
+<td>B</td>
+<td>Greater Fireball</td>
+<td><code>ST</code>, <code>Debuff</code></td>
+<td>Launches a massive fireball. Targets the front enemy first. Deals {2} DMG and applies {3} stacks of Burn.</td>
+</tr>
+<tr>
+<td>Goblin Warrior</td>
+<td><code>M11105</code></td>
+<td>B</td>
+<td>Greatsword Sweep</td>
+<td><code>ST</code></td>
+<td>Sweeps with a greatsword. Targets the nearest {0} enemies. Deals {2} DMG.</td>
+</tr>
+<tr>
+<td>Grand Explorer</td>
+<td><code>M12104</code></td>
+<td>B</td>
+<td>Rally</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code></td>
+<td>Cheers on her teammates. Restores {2} HP to other allies and grants {3} stacks of Inspire.</td>
+</tr>
+<tr>
+<td>Harpy Girl</td>
+<td><code>M11109</code></td>
+<td>B</td>
+<td>Aerial Kick</td>
+<td><code>ST</code>, <code>Buff</code>, <code>Self-Buff</code></td>
+<td>Dives with a fierce kick. Targets the front enemy first. Deals {2} DMG and gains {3} stacks of Haste.</td>
+</tr>
+<tr>
+<td>Harpy Girl</td>
+<td><code>M11109_001</code></td>
+<td>B</td>
+<td>Glacial Kick</td>
+<td><code>ST</code>, <code>Debuff</code></td>
+<td>Dives with a cold kick. Targets the front enemy first. Deals {2} DMG and applies {3} stacks of Chill.</td>
+</tr>
+<tr>
+<td>Legion Archer</td>
+<td><code>M12105</code></td>
+<td>B</td>
+<td>Split Shot</td>
+<td><code>AoE</code>, <code>Buff</code>, <code>Self-Buff</code></td>
+<td>Shoots splitting arrows. Deals {2} DMG to all enemies and gains {3} stacks of Haste.</td>
+</tr>
+<tr>
+<td>Lost Soul</td>
+<td><code>M43101</code></td>
+<td>B</td>
+<td>Dissonance</td>
+<td><code>AoE</code></td>
+<td>Emits a disorienting sound. Deals {2} DMG to all enemies and reduces their Toughness by {4}.</td>
+</tr>
+<tr>
+<td>Ruin Seeker</td>
+<td><code>M13107</code></td>
+<td>B</td>
+<td>Focused Beam</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Debuff</code></td>
+<td>Throws ancient machines to focus fire. Targets the mid enemy first. Deals {1} hits of {2} DMG, applying {3} stacks of Burn per hit.</td>
+</tr>
+<tr>
+<td>Shell Maiden</td>
+<td><code>M12103</code></td>
+<td>B</td>
+<td>Hit &amp; Run</td>
+<td><code>ST</code>, <code>Shield</code>, <code>Self-Buff</code></td>
+<td>Fires a giant pearl. Targets the mid enemy first. Deals {2} DMG and gains {3} stacks of Shield.</td>
+</tr>
+<tr>
+<td>Shining Maiden</td>
+<td><code>M11102</code></td>
+<td>B</td>
+<td>Chi Strike</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Buff</code>, <code>Self-Buff</code></td>
+<td>Strikes with rapid punches. Targets the front enemy first. Deals {1} hits of {2} DMG and gains {3} stacks of Haste.</td>
+</tr>
+<tr>
+<td>Silver Songstress</td>
+<td><code>M24102</code></td>
+<td>B</td>
+<td>Silver Gleam</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code>, <code>Self-Buff</code></td>
+<td>Radiates holy light. Restores {2} HP to all allies and gains {3} stacks of Faith.</td>
+</tr>
+<tr>
+<td>Silverscale Guard</td>
+<td><code>M11107</code></td>
+<td>B</td>
+<td>Shimmering Scales</td>
+<td><code>Self</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Cleanse</code></td>
+<td>Cleanses herself with ocean power. Restores {2} HP and gains {3} stacks of Cleanse.</td>
+</tr>
+<tr>
+<td>Silverscale Siren</td>
+<td><code>M14104</code></td>
+<td>B</td>
+<td>Ocean's Blessing</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code></td>
+<td>Heals with flowing water. Restores {2} HP to the most injured {0} allies and grants {3} stacks of Soothe.</td>
+</tr>
+<tr>
+<td>Slime Maid</td>
+<td><code>M24101</code></td>
+<td>B</td>
+<td>Catchy Voice</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Cleanse</code></td>
+<td>Cleanses hearts with songs. Restores {2} HP to other allies and grants {3} stacks of Cleanse.</td>
+</tr>
+<tr>
+<td>Sparkbolt</td>
+<td><code>M11108</code></td>
+<td>B</td>
+<td>Focus</td>
+<td><code>Self</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code>, <code>Self-Buff</code></td>
+<td>Focuses quickly. Restores {2} HP and gains {3} stacks of Precision.</td>
+</tr>
+<tr>
+<td>Spore Archer</td>
+<td><code>M12106</code></td>
+<td>B</td>
+<td>Spore Burst</td>
+<td><code>ST</code>, <code>Debuff</code></td>
+<td>Sprays spores. Targets the front enemy first. Deals {2} DMG and applies {3} stacks of Hinder.</td>
+</tr>
+<tr>
+<td>Spore Guard</td>
+<td><code>M11112</code></td>
+<td>B</td>
+<td>Spore Ram</td>
+<td><code>ST</code>, <code>Debuff</code></td>
+<td>Rams with force. Targets the front enemy first. Deals {2} DMG and applies {3} stacks of Hinder.</td>
+</tr>
+<tr>
+<td>Star Pupil</td>
+<td><code>M13103</code></td>
+<td>B</td>
+<td>Starfall</td>
+<td><code>ST</code></td>
+<td>Summons a falling meteor. Targets the front enemy first. Deals {2} DMG. Deals +{4} DMG to low HP targets.</td>
+</tr>
+<tr>
+<td>Treant Guard</td>
+<td><code>M21101</code></td>
+<td>B</td>
+<td>Ironbark</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Shield</code></td>
+<td>Hardens her bark. Restores {2} HP to all allies and grants {3} stacks of Shield.</td>
+</tr>
+<tr>
+<td>Troll Guard</td>
+<td><code>M11106</code></td>
+<td>B</td>
+<td>Concussive Blow</td>
+<td><code>ST</code></td>
+<td>Swings her hammer to smash the ground. Targets the front enemy first. Deals {2} DMG and reduces the target's Toughness by {4}.</td>
+</tr>
+<tr>
+<td>Troll Hurler</td>
+<td><code>M12102</code></td>
+<td>B</td>
+<td>Boulder Toss</td>
+<td><code>ST</code></td>
+<td>Hurls a boulder with force. Targets the mid enemy first. Deals {2} DMG and reduces the target's Toughness by {4}.</td>
+</tr>
+<tr>
+<td>Wandering Doll</td>
+<td><code>M32103</code></td>
+<td>B</td>
+<td>Cold Backstab</td>
+<td><code>ST</code></td>
+<td>Backstabs from the shadows. Targets the back enemy first. Deals {2} DMG.</td>
+</tr>
+<tr>
+<td>Warg Warrior</td>
+<td><code>M11103</code></td>
+<td>B</td>
+<td>Ground Roar</td>
+<td><code>AoE</code></td>
+<td>Roars to intimidate enemies. Deals {2} DMG to all enemies.</td>
+</tr>
+<tr>
+<td>Warg Warrior</td>
+<td><code>M11103_001</code></td>
+<td>B</td>
+<td>Frostroar</td>
+<td><code>AoE</code>, <code>Debuff</code></td>
+<td>Roars with freezing breath. Deals {2} DMG to all enemies and applies {3} stacks of Chill.</td>
+</tr>
+<tr>
+<td>Wolfkin Hunter</td>
+<td><code>M12101</code></td>
+<td>B</td>
+<td>Fang Flurry</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Debuff</code></td>
+<td>Fires rapidly. Targets the front enemy first. Deals {1} hits of {2} DMG and applies {3} stacks of Expose.</td>
+</tr>
+<tr>
+<td>Wolfkin Hunter</td>
+<td><code>M12101_001</code></td>
+<td>B</td>
+<td>Frostbite Shot</td>
+<td><code>ST</code>, <code>Debuff</code></td>
+<td>Shoots a magic ice arrow. Targets the enemy with highest ATK first. Deals {2} DMG and applies {3} stacks of Chill.</td>
+</tr>
+<tr>
+<td>Wolfkin Shaman</td>
+<td><code>M13104</code></td>
+<td>B</td>
+<td>Cleansing Link</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Cleanse</code></td>
+<td>Awakens allies' enhancement abilities. Targets the most injured ally first. Restores {2} HP and grants {3} stacks of Cleanse to self and target.</td>
+</tr>
+<tr>
+<td>Wolfkin Shaman</td>
+<td><code>M13104_001</code></td>
+<td>B</td>
+<td>Warmth Link</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code></td>
+<td>Awakens allies' cold resistance. Targets the most injured ally first. Restores {2} HP and removes all Chill.</td>
+</tr>
+<tr>
+<td>Bee Hunter</td>
+<td><code>M12003</code></td>
+<td>C</td>
+<td>Stinger Shot</td>
+<td><code>ST</code>, <code>Debuff</code></td>
+<td>Coats arrows with unknown toxins. Targets the front enemy first. Deals {2} DMG and applies {3} stacks of Hinder.</td>
+</tr>
+<tr>
+<td>Bee Hunter</td>
+<td><code>M12003_001</code></td>
+<td>C</td>
+<td>Iceshard Bolt</td>
+<td><code>ST</code>, <code>Debuff</code></td>
+<td>Shoots an icy cold arrow. Targets the front enemy first. Deals {2} DMG and applies {3} stacks of Chill.</td>
+</tr>
+<tr>
+<td>Bee Warrior</td>
+<td><code>M11005</code></td>
+<td>C</td>
+<td>Rapid Sting</td>
+<td><code>ST</code>, <code>Multi-Hit</code>, <code>Debuff</code></td>
+<td>Coats blades with unknown toxins (slurp). Targets the front enemy first. Deals {1} hits of {2} DMG and applies {3} stacks of Hinder per hit.</td>
+</tr>
+<tr>
+<td>Bee Warrior</td>
+<td><code>M11005_001</code></td>
+<td>C</td>
+<td>Iceshard Pierce</td>
+<td><code>ST</code>, <code>Debuff</code></td>
+<td>Her blade is icy cold (sticky). Targets the front enemy first. Deals {2} DMG and applies {3} stacks of Chill.</td>
+</tr>
+<tr>
+<td>Blue Shroom</td>
+<td><code>M13002</code></td>
+<td>C</td>
+<td>Chilling Spore</td>
+<td><code>AoE</code>, <code>Debuff</code></td>
+<td>Rapidly spreads chilling spores. Deals {2} DMG to all enemies and applies {3} stacks of Chill.</td>
+</tr>
+<tr>
+<td>Desert Hunter</td>
+<td><code>M11009</code></td>
+<td>C</td>
+<td>Flame Slash</td>
+<td><code>ST</code>, <code>Debuff</code></td>
+<td>Slashes the enemy. Targets the front enemy first. Deals {2} DMG and applies {3} stacks of Burn.</td>
+</tr>
+<tr>
+<td>Desert Rogue</td>
+<td><code>M11008</code></td>
+<td>C</td>
+<td>Umbra Pierce</td>
+<td><code>ST</code>, <code>Debuff</code></td>
+<td>Ambushes from behind. Targets the back enemy first. Deals {2} DMG and applies {3} stacks of Nullify.</td>
+</tr>
+<tr>
+<td>Fishfolk Priest</td>
+<td><code>M13001</code></td>
+<td>C</td>
+<td>Bloodlust Blessing</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code></td>
+<td>Stirs allies' fighting spirit. Targets the front ally first. Restores {2} HP and grants {3} stacks of Bloodlust.</td>
+</tr>
+<tr>
+<td>Fishfolk Scout</td>
+<td><code>M11003</code></td>
+<td>C</td>
+<td>Harpoon Strike</td>
+<td><code>ST</code>, <code>Debuff</code></td>
+<td>Thrusts her harpoon. Targets the front enemy first. Deals {2} DMG and applies {3} stacks of Chill.</td>
+</tr>
+<tr>
+<td>Fishfolk Warrior</td>
+<td><code>M11004</code></td>
+<td>C</td>
+<td>Piercing Blow</td>
+<td><code>ST</code>, <code>Debuff</code></td>
+<td>Thrusts her harpoon forcefully. Targets the nearest {0} enemies first. Deals {2} DMG and applies {3} stacks of Chill.</td>
+</tr>
+<tr>
+<td>Goblin Hunter</td>
+<td><code>M12002</code></td>
+<td>C</td>
+<td>Sharp Dart</td>
+<td><code>ST</code>, <code>Debuff</code></td>
+<td>Fires a poison dart. Targets the front enemy first. Deals {2} DMG and applies {3} stacks of Expose.</td>
+</tr>
+<tr>
+<td>Goblin Scout</td>
+<td><code>M11002</code></td>
+<td>C</td>
+<td>Quick Draw</td>
+<td><code>ST</code>, <code>Buff</code>, <code>Self-Buff</code></td>
+<td>Draws her blade swiftly. Targets the front enemy first. Deals {2} DMG and gains {3} stacks of Haste.</td>
+</tr>
+<tr>
+<td>Gold Digger</td>
+<td><code>M11007</code></td>
+<td>C</td>
+<td>Power Smash</td>
+<td><code>ST</code>, <code>Conditional</code></td>
+<td>Slams down her pickaxe. Targets the front enemy first. Deals {2} DMG. Deals +{4} DMG to targets without Shield.</td>
+</tr>
+<tr>
+<td>Legion Priest</td>
+<td><code>M14103</code></td>
+<td>C</td>
+<td>Ancestral Wind</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code></td>
+<td>Calls upon ancestral power. Restores {2} HP to the most injured {0} allies and grants {3} stacks of Bloodlust.</td>
+</tr>
+<tr>
+<td>Legion Scout</td>
+<td><code>M11006</code></td>
+<td>C</td>
+<td>Mighty Throw</td>
+<td><code>ST</code>, <code>Buff</code>, <code>Self-Buff</code></td>
+<td>Throws her weapon. Targets the front enemy first. Deals {2} DMG and gains {3} stacks of Bloodlust.</td>
+</tr>
+<tr>
+<td>Mine Gatherer</td>
+<td><code>M12004</code></td>
+<td>C</td>
+<td>Hurl</td>
+<td><code>ST</code>, <code>Debuff</code></td>
+<td>Hurls a rock. Targets the front enemy first. Deals {2} DMG and applies {3} stacks of Vulnerable.</td>
+</tr>
+<tr>
+<td>Shroom Charmer</td>
+<td><code>M14102</code></td>
+<td>C</td>
+<td>Mushroom Spore</td>
+<td><code>AoE</code>, <code>Debuff</code></td>
+<td>Rapidly spreads toxic spores. Deals {2} DMG to all enemies and applies {3} stacks of Hinder.</td>
+</tr>
+<tr>
+<td>Silent Hunter</td>
+<td><code>M11101</code></td>
+<td>C</td>
+<td>Precision Blessing</td>
+<td><code>Self</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code>, <code>Self-Buff</code></td>
+<td>Focuses quickly. Restores {2} HP and gains {3} stacks of Precision.</td>
+</tr>
+<tr>
+<td>Slime Mage</td>
+<td><code>M23001</code></td>
+<td>C</td>
+<td>Slime Shot</td>
+<td><code>ST</code>, <code>Debuff</code>, <code>Control</code></td>
+<td>Fires a sticky slime shot. Targets the front enemy first. Deals {2} DMG and applies {3} stacks of Slow.</td>
+</tr>
+<tr>
+<td>Slime Priest</td>
+<td><code>M24001</code></td>
+<td>C</td>
+<td>Rallying Cure</td>
+<td><code>Ally-Target</code>, <code>No-Damage</code>, <code>Heal</code>, <code>Buff</code></td>
+<td>Channels life energy. Targets the most injured ally first. Restores {2} HP and grants {3} stacks of Inspire.</td>
+</tr>
+<tr>
+<td>Slime Warrior</td>
+<td><code>M21001</code></td>
+<td>C</td>
+<td>Burning Charge</td>
+<td><code>ST</code>, <code>Debuff</code></td>
+<td>Charges with all her strength. Targets the front enemy first. Deals {2} DMG and applies {3} stacks of Burn.</td>
+</tr>
+<tr>
+<td>Wildcat Hunter</td>
+<td><code>M12001</code></td>
+<td>C</td>
+<td>Rock Throw</td>
+<td><code>ST</code></td>
+<td>Hurls a rock with all her might. Targets the front enemy first. Deals {2} DMG and reduces the target's Toughness by {4}.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><em>Total: 177 units · No loc entry (skill name shown as —): 0 · Descriptions with unfilled placeholders: 177</em></p>
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.1.1.0 · skill-index.md</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>
