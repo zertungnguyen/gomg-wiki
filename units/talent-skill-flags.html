@@ -1,0 +1,6357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Talent skill-type flags — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="../index.html">GMG Wiki</a>
+  <nav>
+    <a href="../units/index.html">Units</a>
+    <a href="../keywords/index.html">Keywords</a>
+    <a href="../gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="../talent-simulator.html">Talent Simulator</a>
+    <a href="../team-planner.html">Team Planner</a>
+    <a href="../search-unit.html">Search · Units</a>
+    <a href="../search-talent.html">Search · Talents</a>
+    <a href="../search-gear.html">Search · Gear</a>
+    <a href="../search-runes.html">Search · Runes</a>
+    <a href="../news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>Talent skill-type flags</h1>
+<p>Machine-readable counterpart: <code>units/talent-skill-flags.json</code>.
+Consumer: <code>web-session/publish-web/search-talent.html</code> (filter tab — web-builder phase).</p>
+<h2>Flag definitions</h2>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>CN trigger term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>singleTarget</code></td>
+<td><code>单体技能</code></td>
+<td>Talent conditions on / modifies single-target skills</td>
+</tr>
+<tr>
+<td><code>multiTarget</code></td>
+<td><code>群体技能</code></td>
+<td>Talent conditions on / modifies multi-target (AoE) skills</td>
+</tr>
+<tr>
+<td><code>singleHit</code></td>
+<td><code>单段技能</code></td>
+<td>Talent conditions on / modifies single-hit skills</td>
+</tr>
+<tr>
+<td><code>multiHit</code></td>
+<td><code>多段技能</code></td>
+<td>Talent conditions on / modifies multi-hit skills</td>
+</tr>
+</tbody>
+</table>
+<h2>Derivation rules</h2>
+<ol>
+<li><strong>Explicit type term</strong> in CN description → only matching flags set.</li>
+<li><strong>Generic skill mention</strong> (no type qualifier) → all 4 flags <code>true</code>.</li>
+<li><strong>No skill mention</strong> → all 4 flags <code>false</code>.</li>
+<li><strong>Combined terms</strong> (e.g. <code>群体多段技能</code>) → union of matched flags.</li>
+<li><strong>Negation</strong> (<code>非多段技能</code> etc.) → opposite flag set. None found in current data.</li>
+</ol>
+<p><strong>Excluded patterns (all-false regardless of generic rule):</strong>
+- <code>受到技能攻击</code> / <code>受到技能伤害</code> — incoming skill damage on the caster.
+  These describe a <em>defensive reaction</em> to being hit, not the type of skill the caster uses.
+- <code>攻击技能</code> / <code>治疗技能</code> — skill purpose (attack vs heal) triggers the <strong>generic rule</strong>
+  (all-4-true) because no target-count / hit-count type is specified.</p>
+<h2>Regex patterns</h2>
+<pre><code># Incoming-skill exclusion (strip before generic detection):
+RE_INCOMING_SKILL = r'受到(?:技能攻击|技能伤害|技能)'
+
+# Specific type patterns:
+RE_SINGLE_TARGET        = r'单体技能'
+RE_MULTI_TARGET         = r'群体技能'
+RE_SINGLE_HIT           = r'单段技能'
+RE_MULTI_HIT            = r'多段技能'
+RE_MULTI_TARGET_MULTI_HIT = r'群体多段技能'  # sets both mT + mH
+
+# Generic skill (triggers all-4-true after exclusion strip):
+Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 | 技能攻击次数
+     | 技能恢复 | 造成技能 | 释放攻击技能 | 释放治疗技能 | 首次释放技能
+     | 首回合释放技能 | 施法
+</code></pre>
+<h2>Counts</h2>
+<p>Total talents: <strong>619</strong></p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Count</th>
+<th>% of total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>singleTarget</code></td>
+<td>50</td>
+<td>8.1%</td>
+</tr>
+<tr>
+<td><code>multiTarget</code></td>
+<td>49</td>
+<td>7.9%</td>
+</tr>
+<tr>
+<td><code>singleHit</code></td>
+<td>49</td>
+<td>7.9%</td>
+</tr>
+<tr>
+<td><code>multiHit</code></td>
+<td>57</td>
+<td>9.2%</td>
+</tr>
+<tr>
+<td>All 4 true (generic skill)</td>
+<td>47</td>
+<td>7.6%</td>
+</tr>
+<tr>
+<td>Specific type only</td>
+<td>16</td>
+<td>2.6%</td>
+</tr>
+<tr>
+<td>All false (no skill mention)</td>
+<td>556</td>
+<td>89.8%</td>
+</tr>
+</tbody>
+</table>
+<h2>Talent flag table</h2>
+<p>Sorted by flag combination, then by talent ID. <code>sT</code>=singleTarget, <code>mT</code>=multiTarget, <code>sH</code>=singleHit, <code>mH</code>=multiHit.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>sT</th>
+<th>mT</th>
+<th>sH</th>
+<th>mH</th>
+<th>Combo</th>
+<th>Matched phrases</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TF00009</td>
+<td>Charged Strike</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF00013</td>
+<td>Spell Boost</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF00014</td>
+<td>Fear Siphon</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF00015</td>
+<td>Double Fortune</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>技能治疗</td>
+</tr>
+<tr>
+<td>TF00021</td>
+<td>Colossus</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>技能伤害, 造成技能</td>
+</tr>
+<tr>
+<td>TF00032</td>
+<td>Talent Scout</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF00034</td>
+<td>Flame Burst</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF00042</td>
+<td>Flame Core</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF00050</td>
+<td>Kinetic Use</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>技能伤害, 造成技能</td>
+</tr>
+<tr>
+<td>TF00053</td>
+<td>Bloodlust Trigger</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>技能恢复, 造成技能</td>
+</tr>
+<tr>
+<td>TF00057</td>
+<td>School Summon</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF00058</td>
+<td>Blood Surge</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF01001</td>
+<td>Astral Light</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>技能治疗</td>
+</tr>
+<tr>
+<td>TF01002</td>
+<td>Spirit Drain</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF01006</td>
+<td>Defense Void</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能, 首次释放技能</td>
+</tr>
+<tr>
+<td>TF01008</td>
+<td>Dual Arms</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>技能治疗</td>
+</tr>
+<tr>
+<td>TF01014</td>
+<td>Sharp Feathers</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>技能伤害, 造成技能</td>
+</tr>
+<tr>
+<td>TF01036</td>
+<td>Energized</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能, 技能伤害, 造成技能, 首回合释放技能</td>
+</tr>
+<tr>
+<td>TF01043</td>
+<td>Abyss Gaze</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF01049_000</td>
+<td>Golden Forge</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>技能伤害, 造成技能</td>
+</tr>
+<tr>
+<td>TF01059</td>
+<td>Cool Splash</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF10202_004</td>
+<td>Spell Demo</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能, 技能伤害, 造成技能</td>
+</tr>
+<tr>
+<td>TF10204_001</td>
+<td>Spell Pierce</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF10204_002</td>
+<td>Spell Pierce</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF10204_003</td>
+<td>Spell Pierce</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF10204_004</td>
+<td>Spell Pierce</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF10208_004</td>
+<td>Mana Resonate</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF10301_004</td>
+<td>Fixed Turret</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF10310_004</td>
+<td>Bullet Screen</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF10401_004</td>
+<td>Inspiration</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF10410_003</td>
+<td>Holy Nova</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF10410_004</td>
+<td>Holy Nova</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF11006_004</td>
+<td>Aftershock</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF12904_003</td>
+<td>Rapid Ascent</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF12904_004</td>
+<td>Rapid Ascent</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF13204_003</td>
+<td>Siren Voice</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF13204_004</td>
+<td>Siren Voice</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF13503_004</td>
+<td>Complex Code</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF14005_004</td>
+<td>Hoarder</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF14101_004</td>
+<td>Charm Illusion</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>技能伤害, 造成技能, 释放攻击技能</td>
+</tr>
+<tr>
+<td>TF14205_004</td>
+<td>Divine Law</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF14502_003</td>
+<td>Mana Capture</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF14502_004</td>
+<td>Mana Capture</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF14505_003</td>
+<td>Crystal Amp</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>技能伤害, 造成技能</td>
+</tr>
+<tr>
+<td>TF14505_004</td>
+<td>Crystal Amp</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>技能伤害, 造成技能</td>
+</tr>
+<tr>
+<td>TF15802_003</td>
+<td>Dazzling Light</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放治疗技能</td>
+</tr>
+<tr>
+<td>TF15802_004</td>
+<td>Dazzling Light</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放治疗技能</td>
+</tr>
+<tr>
+<td>TF00019</td>
+<td>Hurricane Split</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>Y</td>
+<td>mH</td>
+<td>多段技能</td>
+</tr>
+<tr>
+<td>TF00026</td>
+<td>Unending</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>Y</td>
+<td>mH</td>
+<td>多段技能</td>
+</tr>
+<tr>
+<td>TF00036</td>
+<td>Backline Killer</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>Y</td>
+<td>mH</td>
+<td>多段技能</td>
+</tr>
+<tr>
+<td>TF00052</td>
+<td>Desperate Surge</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>Y</td>
+<td>mH</td>
+<td>多段技能</td>
+</tr>
+<tr>
+<td>TF00056</td>
+<td>Midline Killer</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>Y</td>
+<td>mH</td>
+<td>多段技能</td>
+</tr>
+<tr>
+<td>TF01023</td>
+<td>Perfect Show</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>Y</td>
+<td>mH</td>
+<td>多段技能</td>
+</tr>
+<tr>
+<td>TF10205_003</td>
+<td>Multicast</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>Y</td>
+<td>mH</td>
+<td>多段技能</td>
+</tr>
+<tr>
+<td>TF10205_004</td>
+<td>Multicast</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>Y</td>
+<td>mH</td>
+<td>多段技能</td>
+</tr>
+<tr>
+<td>TF10209_004</td>
+<td>Ruin Storm</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>Y</td>
+<td>mH</td>
+<td>多段技能</td>
+</tr>
+<tr>
+<td>TF00027</td>
+<td>Ice Shatter</td>
+<td>Y</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>sT</td>
+<td>单体技能</td>
+</tr>
+<tr>
+<td>TF00066</td>
+<td>Ultimate Flash</td>
+<td>Y</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>sT</td>
+<td>单体技能</td>
+</tr>
+<tr>
+<td>TF01039</td>
+<td>Twin Moons</td>
+<td>Y</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>sT</td>
+<td>单体技能</td>
+</tr>
+<tr>
+<td>TF01018</td>
+<td>Oversized</td>
+<td>-</td>
+<td>Y</td>
+<td>-</td>
+<td>-</td>
+<td>mT</td>
+<td>群体技能</td>
+</tr>
+<tr>
+<td>TF00055</td>
+<td>Lance Charge</td>
+<td>-</td>
+<td>-</td>
+<td>Y</td>
+<td>-</td>
+<td>sH</td>
+<td>单段技能</td>
+</tr>
+<tr>
+<td>TF14504_004</td>
+<td>Charge Crystal</td>
+<td>-</td>
+<td>-</td>
+<td>Y</td>
+<td>-</td>
+<td>sH</td>
+<td>单段技能</td>
+</tr>
+<tr>
+<td>TF01058</td>
+<td>Extended Cast</td>
+<td>-</td>
+<td>Y</td>
+<td>-</td>
+<td>Y</td>
+<td>mT+mH</td>
+<td>群体多段技能, 多段技能</td>
+</tr>
+<tr>
+<td>TF00001</td>
+<td>Astral Backlash</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00002</td>
+<td>Frost Backlash</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00003</td>
+<td>Execute</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00004</td>
+<td>Nightmare Eve</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00005</td>
+<td>Food Coma</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00006</td>
+<td>Fully Armed</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00007</td>
+<td>Endless Blades</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00008</td>
+<td>Born Lucky</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00010</td>
+<td>Triple Strike</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00011</td>
+<td>Critical Moment</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00012</td>
+<td>Elemental Reaction</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00016</td>
+<td>Absorb Aura</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00017</td>
+<td>Air Pressure</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00018</td>
+<td>Lightning Charge</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00020</td>
+<td>Chain Lightning</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00022</td>
+<td>Ancient Treant</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00023</td>
+<td>Thorn Vines</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00024</td>
+<td>Shattered Blade</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00025</td>
+<td>Thorn Guard</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00028</td>
+<td>Perfect Aim</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00029</td>
+<td>Frost Hunt</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00030</td>
+<td>Bloodlust Aura</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00031</td>
+<td>Chill Aura</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00033</td>
+<td>Stone Armor</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00035</td>
+<td>Fixed Cannon</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00037</td>
+<td>Control Combo</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00038</td>
+<td>Flowing Mind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00039</td>
+<td>Total Removal</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00040</td>
+<td>Malice Counter</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00041</td>
+<td>Soul Decay</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00043</td>
+<td>Chain Taunt</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00044</td>
+<td>Rage Threshold</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00045</td>
+<td>Careful Nurture</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00046</td>
+<td>Spore Aura</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00047</td>
+<td>Blast Threshold</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00048</td>
+<td>Light Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00049</td>
+<td>Energy Drain</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00051</td>
+<td>Won Already</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00054</td>
+<td>Sharp Mutant</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00059</td>
+<td>Ammo Reload</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00060</td>
+<td>Sunshine</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00061</td>
+<td>Moonwash</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00062</td>
+<td>Quicksand Trap</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00063</td>
+<td>Choking Bind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00064</td>
+<td>Scorpion Venom</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00065</td>
+<td>Regen Thorns</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00067</td>
+<td>Sacred Blessing</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00068</td>
+<td>Lucky Aura</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00069</td>
+<td>Matter Reshape</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01003</td>
+<td>Hypothermia</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01004</td>
+<td>Predict</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01005</td>
+<td>Bullseye</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01007</td>
+<td>Nightmare Realm</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01009</td>
+<td>Mana Swell</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01010_004</td>
+<td>Mana Gather</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01011</td>
+<td>Blade Echo</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01012</td>
+<td>Frost Echo</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01013</td>
+<td>Create Life</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01015</td>
+<td>Frost Wind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01016</td>
+<td>Frail Formula</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01017</td>
+<td>Chill Formula</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01019</td>
+<td>Dazzling</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01020</td>
+<td>Tough Magma</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01021</td>
+<td>Life Water</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01022</td>
+<td>Reaper Blade</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01024</td>
+<td>Tremor Roar</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01025</td>
+<td>Peak Showdown</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01026</td>
+<td>Lucky Strike</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01027</td>
+<td>Crystal Disguise</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01028</td>
+<td>Know Enemy</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01029</td>
+<td>Natural Leader</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01030</td>
+<td>Counter Storm</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01031</td>
+<td>Ancestor's Ward</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01032</td>
+<td>Frost Resist</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01033</td>
+<td>Frostweb Bind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01034</td>
+<td>Purity Bond</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01035</td>
+<td>Storm Call</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01037</td>
+<td>Nightmare Eater</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01038</td>
+<td>Dance Rhythm</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01040</td>
+<td>Weapon Gigantism</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01041</td>
+<td>Titanic Form</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01042</td>
+<td>Pale Lord</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01044</td>
+<td>Born Warrior</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01045</td>
+<td>Pure Silver</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01046</td>
+<td>High Momentum</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01047</td>
+<td>Target Lock</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01048</td>
+<td>Prayers of All</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01049</td>
+<td>Endless Sands</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01050</td>
+<td>Starlight Focus</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01051</td>
+<td>Flame of Life</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01052</td>
+<td>Astral Double</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01053</td>
+<td>Jade Essence</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01054</td>
+<td>Splash Party</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01055</td>
+<td>Soul Purge</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01056</td>
+<td>Fireproof Scales</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01057</td>
+<td>Ruin Descends</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01060</td>
+<td>Flame Ward</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01061</td>
+<td>Deadly Trap</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01062</td>
+<td>Inner Balance</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01063</td>
+<td>Hardened Spines</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01064</td>
+<td>Thorns Abound</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01065</td>
+<td>Mana Rampage</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10001_001</td>
+<td>Strong</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10001_002</td>
+<td>Strong</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10001_003</td>
+<td>Strong</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10001_004</td>
+<td>Strong</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10002_001</td>
+<td>Clear Mind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10002_002</td>
+<td>Clear Mind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10002_003</td>
+<td>Clear Mind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10002_004</td>
+<td>Clear Mind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10003_001</td>
+<td>Quick Reflexes</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10003_002</td>
+<td>Quick Reflexes</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10003_003</td>
+<td>Quick Reflexes</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10003_004</td>
+<td>Quick Reflexes</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10004_001</td>
+<td>Fit Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10004_002</td>
+<td>Fit Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10004_003</td>
+<td>Fit Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10004_004</td>
+<td>Fit Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10005_001</td>
+<td>Strong Will</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10005_002</td>
+<td>Strong Will</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10005_003</td>
+<td>Strong Will</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10005_004</td>
+<td>Strong Will</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10006_001</td>
+<td>Nimble Limbs</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10006_002</td>
+<td>Nimble Limbs</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10006_003</td>
+<td>Nimble Limbs</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10006_004</td>
+<td>Nimble Limbs</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10007_001</td>
+<td>Battle Ready</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10007_002</td>
+<td>Battle Ready</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10007_003</td>
+<td>Battle Ready</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10007_004</td>
+<td>Battle Ready</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10008_001</td>
+<td>Lucky Streak</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10008_002</td>
+<td>Lucky Streak</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10008_003</td>
+<td>Lucky Streak</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10008_004</td>
+<td>Lucky Streak</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10009_001</td>
+<td>Core Position</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10009_002</td>
+<td>Core Position</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10009_003</td>
+<td>Core Position</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10009_004</td>
+<td>Core Position</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10010_001</td>
+<td>Glass Cannon</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10010_002</td>
+<td>Glass Cannon</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10010_003</td>
+<td>Glass Cannon</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10010_004</td>
+<td>Glass Cannon</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10011_001</td>
+<td>Mana Surge</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10011_002</td>
+<td>Mana Surge</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10012_001</td>
+<td>Life Rebuild</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10012_002</td>
+<td>Life Rebuild</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10013_001</td>
+<td>Mind Reshape</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10013_002</td>
+<td>Mind Reshape</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10014_003</td>
+<td>Think First</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10014_004</td>
+<td>Think First</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10015_003</td>
+<td>Mood Control</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10015_004</td>
+<td>Mood Control</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10016_003</td>
+<td>Scrap Use</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10016_004</td>
+<td>Scrap Use</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10017_003</td>
+<td>Patchwork</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10017_004</td>
+<td>Patchwork</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10018_003</td>
+<td>Bond Master</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10018_004</td>
+<td>Bond Master</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10019_003</td>
+<td>Gear Expert</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10019_004</td>
+<td>Gear Expert</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10101_001</td>
+<td>Guard Master</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10101_002</td>
+<td>Guard Master</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10101_003</td>
+<td>Guard Master</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10101_004</td>
+<td>Guard Master</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10102_004</td>
+<td>Unbreakable Defense</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10103_004</td>
+<td>Anger Counter</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10104_003</td>
+<td>War Trample</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10104_004</td>
+<td>War Trample</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10105_003</td>
+<td>Shield Taunt</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10105_004</td>
+<td>Shield Taunt</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10106_001</td>
+<td>Aura Pressure</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10106_002</td>
+<td>Aura Pressure</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10106_003</td>
+<td>Aura Pressure</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10106_004</td>
+<td>Aura Pressure</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10107_003</td>
+<td>Pommel Strike</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10107_004</td>
+<td>Pommel Strike</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10108_003</td>
+<td>Armor Expert</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10108_004</td>
+<td>Armor Expert</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10109_003</td>
+<td>Focus Defense</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10109_004</td>
+<td>Focus Defense</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10110_004</td>
+<td>Stand Firm</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10201_003</td>
+<td>Gifted</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10201_004</td>
+<td>Gifted</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10203_003</td>
+<td>Mage Guild</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10203_004</td>
+<td>Mage Guild</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10206_001</td>
+<td>Curse Focus</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10206_002</td>
+<td>Curse Focus</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10206_003</td>
+<td>Curse Focus</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10206_004</td>
+<td>Curse Focus</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10207_003</td>
+<td>Tool Master</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10207_004</td>
+<td>Tool Master</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10210_003</td>
+<td>Mana Lock</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10210_004</td>
+<td>Mana Lock</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10302_003</td>
+<td>Precise Track</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10302_004</td>
+<td>Precise Track</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10303_001</td>
+<td>Opportunist</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10303_002</td>
+<td>Opportunist</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10303_003</td>
+<td>Opportunist</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10303_004</td>
+<td>Opportunist</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10304_004</td>
+<td>Burst Combo</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10305_001</td>
+<td>Never Miss</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10305_002</td>
+<td>Never Miss</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10305_003</td>
+<td>Never Miss</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10305_004</td>
+<td>Never Miss</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10306_003</td>
+<td>Kite Master</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10306_004</td>
+<td>Kite Master</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10307_003</td>
+<td>Long Range</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10307_004</td>
+<td>Long Range</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10308_003</td>
+<td>Take Cover</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10308_004</td>
+<td>Take Cover</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10309_003</td>
+<td>Boot Master</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10309_004</td>
+<td>Boot Master</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10402_004</td>
+<td>Life Abundant</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10403_004</td>
+<td>Deny Death</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10404_003</td>
+<td>Holy Shock</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10404_004</td>
+<td>Holy Shock</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10405_001</td>
+<td>Pure Barrier</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10405_002</td>
+<td>Pure Barrier</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10405_003</td>
+<td>Pure Barrier</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10405_004</td>
+<td>Pure Barrier</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10406_003</td>
+<td>Selfless</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10406_004</td>
+<td>Selfless</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10407_003</td>
+<td>Share Pain</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10407_004</td>
+<td>Share Pain</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10408_001</td>
+<td>Uplifting Song</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10408_002</td>
+<td>Uplifting Song</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10408_003</td>
+<td>Uplifting Song</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10408_004</td>
+<td>Uplifting Song</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10409_003</td>
+<td>Emblem Master</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF10409_004</td>
+<td>Emblem Master</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11001_003</td>
+<td>Land Herald</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11001_004</td>
+<td>Land Herald</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11002_003</td>
+<td>Defense Break</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11002_004</td>
+<td>Defense Break</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11003_003</td>
+<td>Tangle Bind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11003_004</td>
+<td>Tangle Bind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11004_003</td>
+<td>Sharp Thorns</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11004_004</td>
+<td>Sharp Thorns</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11005_004</td>
+<td>Immovable</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11101_003</td>
+<td>Berserk Wind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11101_004</td>
+<td>Berserk Wind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11102_003</td>
+<td>Blood Drain</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11102_004</td>
+<td>Blood Drain</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11103_003</td>
+<td>Power Decay</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11103_004</td>
+<td>Power Decay</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11104_004</td>
+<td>Wind Dance</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11105_004</td>
+<td>Mana Void</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11106_003</td>
+<td>Storm Eye</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11106_004</td>
+<td>Storm Eye</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11201_003</td>
+<td>Humid Breath</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11201_004</td>
+<td>Humid Breath</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11202_003</td>
+<td>Deep Freeze</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11202_004</td>
+<td>Deep Freeze</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11203_003</td>
+<td>Spotless</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11203_004</td>
+<td>Spotless</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11204_003</td>
+<td>Life Rain</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11204_004</td>
+<td>Life Rain</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11205_004</td>
+<td>Water Mirror</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td>[excluded-incoming]受到技能攻击</td>
+</tr>
+<tr>
+<td>TF11206_004</td>
+<td>Water Absorb</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11301_003</td>
+<td>Flame Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11301_004</td>
+<td>Flame Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11302_003</td>
+<td>Vein Flow</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11302_004</td>
+<td>Vein Flow</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11303_004</td>
+<td>Fierce Fire</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11304_003</td>
+<td>High Spirit</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11304_004</td>
+<td>High Spirit</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11305_003</td>
+<td>Flame Control</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11305_004</td>
+<td>Flame Control</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11306_004</td>
+<td>Endless Rage</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11401_003</td>
+<td>Purify Light</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11401_004</td>
+<td>Purify Light</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11402_004</td>
+<td>Inspire Light</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11403_003</td>
+<td>Indomitable</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11403_004</td>
+<td>Indomitable</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11404_003</td>
+<td>Firm Faith</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11404_004</td>
+<td>Firm Faith</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11405_003</td>
+<td>Flawless Form</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11405_004</td>
+<td>Flawless Form</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11406_004</td>
+<td>Weaken Hostility</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11501_003</td>
+<td>Dark Shroud</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11501_004</td>
+<td>Dark Shroud</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11502_003</td>
+<td>Terror Aura</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11502_004</td>
+<td>Terror Aura</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11503_004</td>
+<td>Endless Cycle</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11504_003</td>
+<td>Potion Craft</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11504_004</td>
+<td>Potion Craft</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11505_003</td>
+<td>Shadow Follow</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11505_004</td>
+<td>Shadow Follow</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF11506_004</td>
+<td>Shadow Lurk</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12101_003</td>
+<td>Slime Corrode</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12101_004</td>
+<td>Slime Corrode</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12102_004</td>
+<td>Life Merge</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12103_001</td>
+<td>Liquid Mana</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12103_002</td>
+<td>Liquid Mana</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12103_003</td>
+<td>Liquid Mana</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12103_004</td>
+<td>Liquid Mana</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12104_003</td>
+<td>Slime Prey</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12104_004</td>
+<td>Slime Prey</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12105_004</td>
+<td>Endless Multiply</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12201_004</td>
+<td>Group Action</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12202_001</td>
+<td>Mutant Growth</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12202_002</td>
+<td>Mutant Growth</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12202_003</td>
+<td>Mutant Growth</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12202_004</td>
+<td>Mutant Growth</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12203_003</td>
+<td>Observe Mimic</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12203_004</td>
+<td>Observe Mimic</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12204_004</td>
+<td>Bandit Nature</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12205_003</td>
+<td>Dark Ambush</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12205_004</td>
+<td>Dark Ambush</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12301_003</td>
+<td>Flexible Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12301_004</td>
+<td>Flexible Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12302_003</td>
+<td>Rapid Breed</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12302_004</td>
+<td>Rapid Breed</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12303_001</td>
+<td>Fungal Carpet</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12303_002</td>
+<td>Fungal Carpet</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12303_003</td>
+<td>Fungal Carpet</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12303_004</td>
+<td>Fungal Carpet</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12304_004</td>
+<td>Explode Spore</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12305_004</td>
+<td>Energy Absorb</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12401_004</td>
+<td>Mana Collapse</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12402_001</td>
+<td>Energy Chaos</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12402_002</td>
+<td>Energy Chaos</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12402_003</td>
+<td>Energy Chaos</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12402_004</td>
+<td>Energy Chaos</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12403_004</td>
+<td>Element Control</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12404_003</td>
+<td>Mana Affinity</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12404_004</td>
+<td>Mana Affinity</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12405_003</td>
+<td>Element Curse</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12405_004</td>
+<td>Element Curse</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12501_004</td>
+<td>Vengeful</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12502_003</td>
+<td>Toy Prey</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12502_004</td>
+<td>Toy Prey</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12503_003</td>
+<td>Act Cute</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12503_004</td>
+<td>Act Cute</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12504_003</td>
+<td>Nine Lives</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12504_004</td>
+<td>Nine Lives</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12505_001</td>
+<td>Burst Speed</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12505_002</td>
+<td>Burst Speed</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12505_003</td>
+<td>Burst Speed</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12505_004</td>
+<td>Burst Speed</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12601_001</td>
+<td>Keen Scent</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12601_002</td>
+<td>Keen Scent</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12601_003</td>
+<td>Keen Scent</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12601_004</td>
+<td>Keen Scent</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12602_004</td>
+<td>Pack Hunt</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12603_003</td>
+<td>Moon Rage</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12603_004</td>
+<td>Moon Rage</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12604_003</td>
+<td>Blood Rush</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12604_004</td>
+<td>Blood Rush</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12605_004</td>
+<td>Blood Hunt</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12701_003</td>
+<td>Living's Bane</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12701_004</td>
+<td>Living's Bane</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12702_004</td>
+<td>Soul Curse</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12703_001</td>
+<td>Soul Drain</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12703_002</td>
+<td>Soul Drain</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12703_003</td>
+<td>Soul Drain</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12703_004</td>
+<td>Soul Drain</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12704_003</td>
+<td>Desperate Frenzy</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12704_004</td>
+<td>Desperate Frenzy</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12705_004</td>
+<td>Terror Ritual</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12801_003</td>
+<td>Wild Growth</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12801_004</td>
+<td>Wild Growth</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12802_001</td>
+<td>Tough Regen</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12802_002</td>
+<td>Tough Regen</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12802_003</td>
+<td>Tough Regen</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12802_004</td>
+<td>Tough Regen</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12803_004</td>
+<td>Giant Tree</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12804_004</td>
+<td>Endless Life</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12805_003</td>
+<td>Sweet Scent</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12805_004</td>
+<td>Sweet Scent</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12901_001</td>
+<td>Swift Pounce</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12901_002</td>
+<td>Swift Pounce</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12901_003</td>
+<td>Swift Pounce</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12901_004</td>
+<td>Swift Pounce</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12902_004</td>
+<td>Blind Spot</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12903_003</td>
+<td>Eagle Eye</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12903_004</td>
+<td>Eagle Eye</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF12905_004</td>
+<td>Wide Vision</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13001_001</td>
+<td>Hive Mind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13001_002</td>
+<td>Hive Mind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13001_003</td>
+<td>Hive Mind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13001_004</td>
+<td>Hive Mind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13002_004</td>
+<td>Swarm Control</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13003_003</td>
+<td>Venom Fang</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13003_004</td>
+<td>Venom Fang</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13004_004</td>
+<td>Molt Escape</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13005_003</td>
+<td>Adaptive</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13005_004</td>
+<td>Adaptive</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13101_004</td>
+<td>Rebel's Wrath</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13102_003</td>
+<td>Spellbreak Scale</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td>[excluded-incoming]受到技能伤害</td>
+</tr>
+<tr>
+<td>TF13102_004</td>
+<td>Spellbreak Scale</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td>[excluded-incoming]受到技能伤害</td>
+</tr>
+<tr>
+<td>TF13103_003</td>
+<td>Dragon Awe</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13103_004</td>
+<td>Dragon Awe</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13104_001</td>
+<td>Legend Creature</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13104_002</td>
+<td>Legend Creature</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13104_003</td>
+<td>Legend Creature</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13104_004</td>
+<td>Legend Creature</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13105_004</td>
+<td>Grand Entrance</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13201_004</td>
+<td>Deep Sea Beast</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13202_003</td>
+<td>Moist Skin</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13202_004</td>
+<td>Moist Skin</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13203_001</td>
+<td>School Control</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13203_002</td>
+<td>School Control</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13203_003</td>
+<td>School Control</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13203_004</td>
+<td>School Control</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13205_004</td>
+<td>Tidal Shift</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13301_004</td>
+<td>Limb Regrow</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13302_004</td>
+<td>Numb Pain</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13303_001</td>
+<td>Primal Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13303_002</td>
+<td>Primal Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13303_003</td>
+<td>Primal Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13303_004</td>
+<td>Primal Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13304_003</td>
+<td>Rapid Regen</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13304_004</td>
+<td>Rapid Regen</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13305_003</td>
+<td>Totem Worship</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13305_004</td>
+<td>Totem Worship</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13401_004</td>
+<td>Eternal Will</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13402_003</td>
+<td>Gear Mastery</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13402_004</td>
+<td>Gear Mastery</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13403_001</td>
+<td>Bloodless</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13403_002</td>
+<td>Bloodless</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13403_003</td>
+<td>Bloodless</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13403_004</td>
+<td>Bloodless</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13404_003</td>
+<td>Ring Master</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13404_004</td>
+<td>Ring Master</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13405_003</td>
+<td>Fearless Weak</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13405_004</td>
+<td>Fearless Weak</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13501_001</td>
+<td>Soulless Puppet</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13501_002</td>
+<td>Soulless Puppet</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13501_003</td>
+<td>Soulless Puppet</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13501_004</td>
+<td>Soulless Puppet</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13502_003</td>
+<td>Mana Driven</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13502_004</td>
+<td>Mana Driven</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13504_004</td>
+<td>Flexible Joint</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13505_003</td>
+<td>Delayed Start</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13505_004</td>
+<td>Delayed Start</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13601_003</td>
+<td>Metal Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13601_004</td>
+<td>Metal Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13602_003</td>
+<td>Energy Reflect</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td>[excluded-incoming]受到技能攻击</td>
+</tr>
+<tr>
+<td>TF13602_004</td>
+<td>Energy Reflect</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td>[excluded-incoming]受到技能攻击</td>
+</tr>
+<tr>
+<td>TF13603_004</td>
+<td>Seamless</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13604_001</td>
+<td>Indestructible</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13604_002</td>
+<td>Indestructible</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13604_003</td>
+<td>Indestructible</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13604_004</td>
+<td>Indestructible</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13605_004</td>
+<td>Metal Shell</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13701_003</td>
+<td>High Speed</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13701_004</td>
+<td>High Speed</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13702_004</td>
+<td>Long March</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13703_001</td>
+<td>Divine Strength</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13703_002</td>
+<td>Divine Strength</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13703_003</td>
+<td>Divine Strength</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13703_004</td>
+<td>Divine Strength</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13704_004</td>
+<td>High Morale</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13705_003</td>
+<td>Rear Kick</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13705_004</td>
+<td>Rear Kick</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13801_004</td>
+<td>Strong Frame</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13802_004</td>
+<td>Berserk Rage</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13803_001</td>
+<td>Sanity Loss</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13803_002</td>
+<td>Sanity Loss</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13803_003</td>
+<td>Sanity Loss</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13803_004</td>
+<td>Sanity Loss</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13804_003</td>
+<td>Horn Charge</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13804_004</td>
+<td>Horn Charge</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13805_003</td>
+<td>Rage Counter</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13805_004</td>
+<td>Rage Counter</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13901_004</td>
+<td>Hyperactive</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13902_001</td>
+<td>Harmless Look</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13902_002</td>
+<td>Harmless Look</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13902_003</td>
+<td>Harmless Look</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13902_004</td>
+<td>Harmless Look</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13903_004</td>
+<td>Early Warning</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13904_003</td>
+<td>Pacifist</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13904_004</td>
+<td>Pacifist</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13905_003</td>
+<td>Long Reach</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF13905_004</td>
+<td>Long Reach</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14001_003</td>
+<td>Wreck Master</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14001_004</td>
+<td>Wreck Master</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14002_001</td>
+<td>Toxin Resist</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14002_002</td>
+<td>Toxin Resist</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14002_003</td>
+<td>Toxin Resist</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14002_004</td>
+<td>Toxin Resist</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14003_003</td>
+<td>Dig Expert</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14003_004</td>
+<td>Dig Expert</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14004_004</td>
+<td>Swarm Wreck</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14102_003</td>
+<td>Unified Mind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14102_004</td>
+<td>Unified Mind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14103_001</td>
+<td>Mana Drain</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14103_002</td>
+<td>Mana Drain</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14103_003</td>
+<td>Mana Drain</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14103_004</td>
+<td>Mana Drain</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14104_003</td>
+<td>Pitiful</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14104_004</td>
+<td>Pitiful</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14105_004</td>
+<td>Observe Prey</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14201_001</td>
+<td>Eternal Life</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14201_002</td>
+<td>Eternal Life</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14201_003</td>
+<td>Eternal Life</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14201_004</td>
+<td>Eternal Life</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14202_004</td>
+<td>Emotion Drain</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14203_003</td>
+<td>Unspeakable</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14203_004</td>
+<td>Unspeakable</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14204_003</td>
+<td>Only God</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14204_004</td>
+<td>Only God</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14301_001</td>
+<td>Life Siphon</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14301_002</td>
+<td>Life Siphon</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14301_003</td>
+<td>Life Siphon</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14301_004</td>
+<td>Life Siphon</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14302_003</td>
+<td>Born Evil</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14302_004</td>
+<td>Born Evil</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14303_004</td>
+<td>Nameless</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14304_003</td>
+<td>Evil Decay</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14304_004</td>
+<td>Evil Decay</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14305_004</td>
+<td>Abyss Call</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14401_004</td>
+<td>Ground Slam</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14402_004</td>
+<td>Hurl Object</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14403_001</td>
+<td>Size Scare</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14403_002</td>
+<td>Size Scare</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14403_003</td>
+<td>Size Scare</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14403_004</td>
+<td>Size Scare</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14404_003</td>
+<td>Earth Tap</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14404_004</td>
+<td>Earth Tap</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14405_003</td>
+<td>Thunder Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14405_004</td>
+<td>Thunder Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14501_004</td>
+<td>Crystal Core</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td>[excluded-incoming]受到技能攻击</td>
+</tr>
+<tr>
+<td>TF14503_001</td>
+<td>Pure Flawless</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14503_002</td>
+<td>Pure Flawless</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14503_003</td>
+<td>Pure Flawless</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF14503_004</td>
+<td>Pure Flawless</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15401_001</td>
+<td>Weathering Erosion</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15401_002</td>
+<td>Weathering Erosion</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15401_003</td>
+<td>Weathering Erosion</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15401_004</td>
+<td>Weathering Erosion</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15402_003</td>
+<td>Softened Ground</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15402_004</td>
+<td>Softened Ground</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15403_003</td>
+<td>Sand Prison</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15403_004</td>
+<td>Sand Prison</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15404_004</td>
+<td>Guardian Sands</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15405_004</td>
+<td>Sandstorm Domain</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15801_001</td>
+<td>Tranquil Glow</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15801_002</td>
+<td>Tranquil Glow</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15801_003</td>
+<td>Tranquil Glow</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15801_004</td>
+<td>Tranquil Glow</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15803_003</td>
+<td>[CN: 温暖光源]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15803_004</td>
+<td>[CN: 温暖光源]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15804_004</td>
+<td>Flame of Hope</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15805_004</td>
+<td>Last Ember</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15901_001</td>
+<td>Tough Hide</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15901_002</td>
+<td>Tough Hide</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15901_003</td>
+<td>Tough Hide</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15901_004</td>
+<td>Tough Hide</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15902_003</td>
+<td>Patient Counter</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15902_004</td>
+<td>Patient Counter</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15903_003</td>
+<td>Tremor Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15903_004</td>
+<td>Tremor Body</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15904_004</td>
+<td>Status Reset</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF15905_004</td>
+<td>Tempered</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.1.1.0 · talent-skill-flags.md</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>
