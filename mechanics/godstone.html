@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jewel (神石) & GoldenVault (黄金宝库) — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="../index.html">GMG Wiki</a>
+  <nav>
+    <a href="../units/index.html">Units</a>
+    <a href="../keywords/index.html">Keywords</a>
+    <a href="../gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="../talent-simulator.html">Talent Simulator</a>
+    <a href="../team-planner.html">Team Planner</a>
+    <a href="../search-unit.html">Search · Units</a>
+    <a href="../search-talent.html">Search · Talents</a>
+    <a href="../search-gear.html">Search · Gear</a>
+    <a href="../search-runes.html">Search · Runes</a>
+    <a href="../news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>Jewel (神石) &amp; GoldenVault (黄金宝库)</h1>
+<blockquote>
+<p><strong>Source tables:</strong> <code>data-session/mgg_datamine/GodstoneDataTable.md</code> (8 Jewels), <code>data-session/mgg_datamine/GodstoneEffectDataTable.md</code> (88 effects), <code>data-session/mgg_datamine/GoldenVaultDataTable.md</code> (25 vault entries). Shipped in manifest <code>Main_2026-05-27-1013</code>. <code>MainScripts.dll</code> byte-identical to prior pull — no new gameplay-logic classes. New content runs via DataTable additions only (existing infra).</p>
+</blockquote>
+<h2>TL;DR</h2>
+<p><strong>Jewels</strong> (神石, in-game EN: "Jewel") are crafting currencies used to roll affixes onto gear — a Path-of-Exile-style orb system where each Jewel type biases results toward a specific effect category (stat buffs, offensive modifiers, debuff-application, etc.). <strong>GoldenVault</strong> (黄金宝库) is a weighted loot box that drops Jewels (among gear, runes, and consumables), with higher Vault Levels unlocking higher-rarity Jewels and loot. Together they extend gear progression beyond the base <a href="../mechanics/starup.html">star-up</a> system: star-up amplifies fixed base stats, while Jewels add rolled free-form affixes layered on top.</p>
+<hr>
+<h2>Jewel catalog</h2>
+<p>All 8 Jewels from <code>GodstoneDataTable</code>. <code>Weight</code> is the drop weight inside GoldenVault (lower = rarer). <code>Pool size</code> = count of effects in <code>GodstoneEffectDataTable</code> that share the same <code>Type</code> as the Jewel's <code>Tag</code>.</p>
+<table>
+<thead>
+<tr>
+<th>IDs</th>
+<th>Name (CN)</th>
+<th>Name (EN)</th>
+<th>Step</th>
+<th>Weight</th>
+<th>Tag (CN/EN)</th>
+<th>Effect pool size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BS60000</td>
+<td>无色神石</td>
+<td>Clear Jewel</td>
+<td>C</td>
+<td>10000</td>
+<td>通用 / All</td>
+<td><strong>88</strong> (universal — any effect)</td>
+</tr>
+<tr>
+<td>BS60001</td>
+<td>洁白神石</td>
+<td>White Jewel</td>
+<td>C</td>
+<td>5000</td>
+<td>数值 / Value</td>
+<td>18</td>
+</tr>
+<tr>
+<td>BS61002</td>
+<td>钴蓝神石</td>
+<td>Cobalt Jewel</td>
+<td>C</td>
+<td>5000</td>
+<td>防御 / Tank</td>
+<td>7</td>
+</tr>
+<tr>
+<td>BS61003</td>
+<td>翠绿神石</td>
+<td>Verdant Jewel</td>
+<td>C</td>
+<td>5000</td>
+<td>治疗 / Healer</td>
+<td>8</td>
+</tr>
+<tr>
+<td>BS61001</td>
+<td>绯红神石</td>
+<td>Crimson Jewel</td>
+<td>B</td>
+<td>1000</td>
+<td>攻击 / Attack</td>
+<td>7</td>
+</tr>
+<tr>
+<td>BS61004</td>
+<td>黑曜神石</td>
+<td>Obsidian Jewel</td>
+<td>B</td>
+<td>1000</td>
+<td>抗性 / Resistant</td>
+<td>11</td>
+</tr>
+<tr>
+<td>BS62001</td>
+<td>金黄神石</td>
+<td>Golden Jewel</td>
+<td>A</td>
+<td>200</td>
+<td>增益 / Buff</td>
+<td>26</td>
+</tr>
+<tr>
+<td>BS62002</td>
+<td>暗紫神石</td>
+<td>Violet Jewel</td>
+<td>S</td>
+<td>40</td>
+<td>减益 / Debuff</td>
+<td>11</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Clear Jewel</strong> is the universal option — its Tag is <code>通用/All</code> meaning it can land on any of the 88 effects regardless of category. All other Jewels restrict the roll to effects matching their Tag bucket, which shrinks the pool but biases toward a specific archetype.</p>
+<blockquote>
+<p><strong>Translation note:</strong> 7 of 8 Jewels share description <code>更容易出现{0}相关的词缀。</code> which renders as <code>[CN: ...]</code> in the current bilingual MDs. Placeholder pending fix — see <span class="broken-link" title="missing: #Open questions">#Open questions</span>.</p>
+</blockquote>
+<hr>
+<h2>Affix pool structure</h2>
+<p><code>GodstoneEffectDataTable</code> holds the 88 rollable affixes. Each row:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IDs</code></td>
+<td>Effect ID (BS-prefix; shares prefix space with Jewel IDs)</td>
+</tr>
+<tr>
+<td><code>Step</code></td>
+<td>Rarity tier of the effect (C / B / A / S) — higher tiers have lower <code>Weight</code> and stronger scaled values</td>
+</tr>
+<tr>
+<td><code>Weight</code></td>
+<td>Roll weight within the pool (C=10000, B=4600, A=600, S=125)</td>
+</tr>
+<tr>
+<td><code>Location</code></td>
+<td><code>前缀</code> (prefix) for all 88 effects — all effects in this table are prefixes</td>
+</tr>
+<tr>
+<td><code>Type</code></td>
+<td>Effect category in CN (<code>数值/防御/治疗/攻击/抗性/增益/减益</code>) — maps to the Tag of the matching Jewel</td>
+</tr>
+<tr>
+<td><code>Effect_EN</code></td>
+<td>Verb-templated EN description with <code>{0}/{1}</code> placeholders (e.g. <code>Gain {0} STR.</code>)</td>
+</tr>
+<tr>
+<td><code>Value0</code></td>
+<td>Four comma-separated values for C/B/A/S roll tiers (e.g. <code>5,10,15,20</code>)</td>
+</tr>
+<tr>
+<td><code>Value1</code></td>
+<td>Second stat value when the effect modifies two stats simultaneously (e.g. paired <code>STR +{0}, SPI +{1}</code>)</td>
+</tr>
+<tr>
+<td><code>FilterTags</code> / <code>PositiveTags</code> / <code>NegativeTags</code></td>
+<td>Denormalized search tags for the in-game filter / conflict resolution</td>
+</tr>
+<tr>
+<td><code>CanRepeat</code></td>
+<td><code>1</code> on all 88 entries — duplicate rolls are permitted</td>
+</tr>
+</tbody>
+</table>
+<p>Effect entries reference existing bond IDs via <code>EffectI2</code> keys in the <code>Equipbond/Name_Skilldetaildes_JN*</code> and <code>Items/Divine_Stone_Effect*</code> namespaces. This confirms the system <strong>reuses the GambleShop affix pool</strong> (previously dormant — GambleShop had 0 client entries at launch, was fully populated server-side in the 1.1.1.0 breakthrough). The studio recycled existing infra rather than building a separate effect library.</p>
+<hr>
+<h2>Effect pool by Type</h2>
+<p>Full breakdown of the 88 effects by category (matching each Jewel's Tag):</p>
+<table>
+<thead>
+<tr>
+<th>Type (CN)</th>
+<th>Type (EN)</th>
+<th>Effect count</th>
+<th>Jewel that targets this bucket</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>增益</td>
+<td>Buff</td>
+<td><strong>26</strong></td>
+<td>Golden Jewel (A)</td>
+</tr>
+<tr>
+<td>数值</td>
+<td>Value</td>
+<td>18</td>
+<td>White Jewel (C)</td>
+</tr>
+<tr>
+<td>抗性</td>
+<td>Resistant</td>
+<td>11</td>
+<td>Obsidian Jewel (B)</td>
+</tr>
+<tr>
+<td>减益</td>
+<td>Debuff</td>
+<td>11</td>
+<td>Violet Jewel (S)</td>
+</tr>
+<tr>
+<td>治疗</td>
+<td>Healer</td>
+<td>8</td>
+<td>Verdant Jewel (C)</td>
+</tr>
+<tr>
+<td>防御</td>
+<td>Tank</td>
+<td>7</td>
+<td>Cobalt Jewel (C)</td>
+</tr>
+<tr>
+<td>攻击</td>
+<td>Attack</td>
+<td>7</td>
+<td>Crimson Jewel (B)</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td></td>
+<td><strong>88</strong></td>
+<td>(Clear Jewel covers all)</td>
+</tr>
+</tbody>
+</table>
+<p>Notable depth differences: <strong>Buff has the largest pool (26 effects)</strong> covering all 9 persistent buffs (Shield, Soothe, Bloodlust, Regen, Faith, Thorns, Growth, Haste, Precision) each with two variants ("self gains +N stacks" vs "applies +N stacks to targets"), plus 4 instant-state buffs (Inspire, Fortitude, Cleanse, Reversal) in both self-gain and outgoing-apply forms. <strong>Tank and Attack each have the smallest focused pools (7 effects)</strong> — direct DMG reduction / DMG bonus per attack type (basic / skill / follow-up / counter), plus a universal all-DMG entry at higher rarity.</p>
+<p>The Value bucket merits attention: it covers single-stat flat bonuses (STR / SPI / AGI / HP / SPD / Toughness at C-rarity), dual-stat combos (all 6 pairings of the 3 combat stats + secondary stats at B-rarity), and the mana-family stats (Starting Mana, Max Mana, Action Mana, Hit Mana, Luck) at A/S-rarity. <strong>Mana stats are only reachable via White Jewel or Clear Jewel</strong> — no other targeted Jewel covers the Value bucket.</p>
+<hr>
+<h2>GoldenVault</h2>
+<p><code>GoldenVaultDataTable</code> defines the weighted-random loot pool for the GoldenVault (黄金宝库) loot box. It has <strong>25 entries</strong> across <strong>5 rarity sets</strong>, each set containing 6 drop categories (Jewels / Gear-normal / Runes / Gear-Legacy / Clover / Items):</p>
+<p>The <code>Level</code> field on each row lists which Vault Level(s) can produce that entry. Think of it as "rarity gate": lower-rarity sets appear in more Vault Levels, higher-rarity sets are gated to higher Levels.</p>
+<table>
+<thead>
+<tr>
+<th>Rarity set</th>
+<th>Level field</th>
+<th>Jewel drop</th>
+<th>Normal Gear</th>
+<th>Rune</th>
+<th>Legacy Gear</th>
+<th>Clover</th>
+<th>Items</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C-tier</td>
+<td><code>1</code> only</td>
+<td>Random C Jewel</td>
+<td>Random C Gear</td>
+<td>Random C Rune</td>
+<td>Random C Legacy Gear</td>
+<td>1× Clover</td>
+<td>5× Talent Fruit</td>
+</tr>
+<tr>
+<td>B-tier</td>
+<td><code>1,2</code></td>
+<td>Random B Jewel</td>
+<td>Random B Gear</td>
+<td>Random B Rune</td>
+<td>Random B Legacy Gear</td>
+<td>2× Clover</td>
+<td>10× Talent Fruit</td>
+</tr>
+<tr>
+<td>A-tier</td>
+<td><code>1,2,3</code></td>
+<td>Random A Jewel</td>
+<td>Random A Gear</td>
+<td>Random A Rune</td>
+<td>Random A Legacy Gear</td>
+<td>4× Clover</td>
+<td>20× Talent Fruit</td>
+</tr>
+<tr>
+<td>S-tier</td>
+<td><code>2,3</code></td>
+<td>Random S Jewel</td>
+<td>Random S Gear</td>
+<td>Random S Rune</td>
+<td>Random S Legacy Gear</td>
+<td>8× Clover</td>
+<td>50× Talent Fruit</td>
+</tr>
+<tr>
+<td>SS-tier</td>
+<td><code>3</code> only</td>
+<td>—</td>
+<td>SS Legacy Gear only</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>The SS-tier set has only 1 entry (<code>BK00001_041</code>): a random SS Legacy gear, Weight=1. No SS Jewel entry exists — the highest Jewel rarity is S (Violet Jewel).</p>
+<p><strong>Vault Level</strong> appears to control which rarity sets the player can draw from on a single pull. Vault Level 1 can land on C/B/A rows; Level 2 adds S rows; Level 3 adds the SS row. How the player advances Vault Level (spending currency, completing stages, etc.) is not encoded in the DataTable — see <span class="broken-link" title="missing: #Open questions">#Open questions</span>.</p>
+<p><strong>Weight structure per category within each set</strong> (from <code>Weight</code> column):</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>C-set</th>
+<th>B-set</th>
+<th>A-set</th>
+<th>S-set</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jewels</td>
+<td>5000</td>
+<td>5000</td>
+<td>2500</td>
+<td>500</td>
+</tr>
+<tr>
+<td>Normal Gear</td>
+<td>2500</td>
+<td>2500</td>
+<td>250</td>
+<td>25</td>
+</tr>
+<tr>
+<td>Rune</td>
+<td>2500</td>
+<td>2500</td>
+<td>250</td>
+<td>25</td>
+</tr>
+<tr>
+<td>Legacy Gear</td>
+<td>500</td>
+<td>500</td>
+<td>50</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Clover</td>
+<td>250</td>
+<td>125</td>
+<td>25</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Items (Talent Fruit)</td>
+<td>250</td>
+<td>125</td>
+<td>25</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<p>Jewels are the <strong>most common drop</strong> within every rarity set (weight 5000 at C/B, 2500 at A, 500 at S). Normal Gear and Runes are equally weighted at half the Jewel rate. Legacy Gear is 1/10 of Jewels. Clover and Talent Fruit items share equal lower weight.</p>
+<hr>
+<h2>Open questions</h2>
+<p>These gaps are documented for follow-up — they do not block use of the mechanic, but in-game verification is needed before the wiki can be considered complete on these points.</p>
+<p><strong>1. Where is the in-game UI?</strong>
+No new C# class shipped in <code>MainScripts.dll</code> (bytewise-identical to prior pull). The affix-roll screen either reuses the existing GambleShop UI, is served from a new server-side screen, or shares logic with another existing system. Has not been verified in-game yet — check the Smithy / Crafting / Item Use menus on next play session.</p>
+<p><strong>2. Affix re-roll cost</strong>
+What currency does the player spend to use a Jewel? Not encoded in either DataTable. Likely a hardcoded constant in the gameplay DLL or a separate <code>/Currency/*</code> API call. Worth logging next time a network capture is feasible.</p>
+<p><strong>3. Per-gear affix slot count</strong>
+How many Jewel-rolled affixes can a single gear piece carry simultaneously? DataTable is silent on this. Could be 1, could be multiple (some PoE-adjacent systems allow prefix + suffix slots).</p>
+<p><strong>4. Translation gap — Jewel description</strong>
+<code>更容易出现{0}相关的词缀。</code> (the description shared by all 7 non-Clear Jewels) renders as <code>[CN: 更容易出现{0}相关的词缀。]</code> in the current bilingual MDs because the template string with embedded <code>{0}</code> didn't match loc CSV lookup. The fix is straightforward: add one entry to <code>data-session/tools/seed_dict.json</code>:</p>
+<pre><code class="language-json">&quot;更容易出现{0}相关的词缀。&quot;: &quot;More likely to roll {0}-related affixes.&quot;
+</code></pre>
+<p>Then re-run <code>py data-session/tools/translate.py</code> to refresh all MDs. <strong>Deferred</strong> — not blocking for wiki or web use; Clear Jewel's description already translates correctly.</p>
+<p><strong>5. GoldenVault Level advancement</strong>
+The mechanic by which the player advances from Vault Level 1 → 2 → 3 is not in any DataTable. Not yet verified in-game.</p>
+<hr>
+<h2>Source references</h2>
+<ul>
+<li><code>data-session/mgg_datamine/GodstoneDataTable.md</code> — 8 Jewels</li>
+<li><code>data-session/mgg_datamine/GodstoneEffectDataTable.md</code> — 88 affix effects</li>
+<li><code>data-session/mgg_datamine/GoldenVaultDataTable.md</code> — 25 vault entries</li>
+<li><code>data-session/CHANGELOG.md</code> — 2026-05-28 entry (manifest -1013 patch notes, NEW SYSTEM sections)</li>
+<li><code>data-session/intermediate/decompiled_full_mainscripts.cs</code> — bytewise-unchanged; no new classes for Godstone/GoldenVault logic; system runs via existing infra</li>
+</ul>
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.1.1.0 · godstone.md</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>
