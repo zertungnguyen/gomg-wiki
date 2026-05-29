@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Search Jewels - Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.search-section { margin-bottom: 14px; }
+.search-section-title {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+  margin-bottom: 6px; color: var(--fg-dim);
+  display: flex; align-items: center; gap: 8px;
+}
+.search-section-title .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill {
+  padding: 5px 12px; border-radius: 4px; border: 1.5px solid var(--border);
+  background: transparent; color: var(--fg-dim); font-size: 13px;
+  cursor: pointer; user-select: none; transition: all .15s;
+}
+.pill:hover { border-color: #555; }
+.pill.on { color: #fff; border-color: currentColor; }
+.cat-Class .dot { background: #f5b342; }
+.cat-Type .dot { background: #2ecc71; }
+.cat-Element .dot { background: #e74c3c; }
+.cat-Terrain .dot { background: #4ea1ff; }
+.cat-Step .dot, .cat-Tier .dot { background: #c290e8; }
+.cat-UnitType .dot, .cat-Restricted .dot, .cat-Exclusive .dot { background: #aaa; }
+.cat-Race .dot { background: #f08c5a; }
+.cat-Class .pill.on { color: #f5b342; background: rgba(245,179,66,.12); border-color: #f5b342; }
+.cat-Type .pill.on { color: #2ecc71; background: rgba(46,204,113,.12); border-color: #2ecc71; }
+.cat-Element .pill.on { color: #e74c3c; background: rgba(231,76,60,.12); border-color: #e74c3c; }
+.cat-Terrain .pill.on { color: #4ea1ff; background: rgba(78,161,255,.12); border-color: #4ea1ff; }
+.cat-Step .pill.on, .cat-Tier .pill.on { color: #c290e8; background: rgba(194,144,232,.12); border-color: #c290e8; }
+.cat-UnitType .pill.on, .cat-Restricted .pill.on, .cat-Exclusive .pill.on { color: #fff; background: rgba(255,255,255,.08); border-color: #ccc; }
+.cat-Race .pill.on { color: #f08c5a; background: rgba(240,140,90,.12); border-color: #f08c5a; }
+.controls-row { display: flex; align-items: center; gap: 12px; margin: 16px 0 8px 0; }
+.btn-clear {
+  padding: 6px 14px; background: var(--bg-alt); color: var(--fg);
+  border: 1px solid var(--border); border-radius: 4px; cursor: pointer; font-size: 13px;
+}
+.btn-clear:hover { border-color: var(--accent); }
+.results-meta { color: var(--fg-dim); font-size: 13px; }
+#resultsWrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table.results { font-size: 13px; min-width: 100%; border-collapse: collapse; }
+table.results thead th {
+  background: var(--bg-alt); position: sticky; top: 0; z-index: 2;
+  text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .5px;
+  padding: 8px 10px; border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+table.results td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+table.results tbody tr:hover { background: var(--bg-alt); }
+.badge {
+  display: inline-block; padding: 2px 9px; border-radius: 3px;
+  font-size: 11px; font-weight: 700; letter-spacing: .3px;
+}
+.b-Orange { background: rgba(245,179,66,.18); color: #f5b342; }
+.b-Purple { background: rgba(194,144,232,.18); color: #c290e8; }
+.b-Blue   { background: rgba(78,161,255,.18); color: #4ea1ff; }
+.b-Green  { background: rgba(108,192,144,.18); color: #6cc090; }
+.tag {
+  display: inline-block; padding: 1px 7px; border-radius: 3px;
+  font-size: 11px; font-weight: 600; margin-right: 4px;
+}
+.t-cls { background: rgba(245,179,66,.15); color: #f5b342; }
+.t-typ { background: rgba(46,204,113,.15); color: #2ecc71; }
+.t-elem { background: rgba(231,76,60,.15); color: #e74c3c; }
+.t-terr { background: rgba(78,161,255,.15); color: #4ea1ff; }
+.t-race { background: rgba(240,140,90,.15); color: #f08c5a; }
+.t-var { background: rgba(255,255,255,.06); color: var(--fg-dim); }
+.empty { padding: 32px 16px; text-align: center; color: var(--fg-dim); font-size: 14px; }
+img.unit-avatar { width: 40px; height: 40px; display: block; image-rendering: pixelated; image-rendering: crisp-edges; border-radius: 4px; background: var(--bg-alt); }
+table.results td.col-img { width: 48px; padding: 4px 8px; }
+
+.tab-bar{display:flex;gap:0;margin-bottom:20px;border-bottom:2px solid var(--border);}
+.tab-btn{padding:10px 22px;background:transparent;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--fg-dim);font-size:14px;font-weight:600;cursor:pointer;transition:color .15s,border-color .15s;letter-spacing:.3px;}
+.tab-btn:hover{color:var(--fg);}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+.jewel-panel{background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;padding:14px 16px;margin-bottom:20px;}
+.jewel-panel h3{margin:0 0 10px 0;font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);}
+.jewel-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.jewel-chip{display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:5px 10px;font-size:12px;}
+.jewel-chip .jname{font-weight:700;color:var(--fg);}
+.jewel-chip .jstep{font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;}
+.jewel-chip .jtag{color:var(--fg-dim);font-size:11px;}
+.jewel-chip .jpoolsz{color:var(--fg-dim);font-size:10px;font-style:italic;}
+.gs-filter-row{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:12px;}
+.gs-filter-col{flex:0 0 auto;}
+.gs-filter-col h4{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--fg-dim);margin:0 0 5px 0;}
+.cat-GsType .pill.on{color:#2ecc71;background:rgba(46,204,113,.12);border-color:#2ecc71;}
+.cat-GsStep .pill.on{color:#c290e8;background:rgba(194,144,232,.12);border-color:#c290e8;}
+.cat-GsLoc .pill.on{color:#4ea1ff;background:rgba(78,161,255,.12);border-color:#4ea1ff;}
+.toggle-repeat{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:4px;border:1.5px solid var(--border);background:transparent;color:var(--fg-dim);font-size:13px;cursor:pointer;user-select:none;transition:all .15s;}
+.toggle-repeat.on{color:#f5b342;background:rgba(245,179,66,.12);border-color:#f5b342;}
+.toggle-repeat:hover{border-color:#555;}
+.gs-text-search{padding:6px 10px;background:var(--bg-alt);color:var(--fg);border:1px solid var(--border);border-radius:4px;font-size:13px;width:360px;max-width:100%;}
+.gs-text-search:focus{outline:none;border-color:var(--accent);}
+table.results td.col-effect{min-width:220px;max-width:380px;line-height:1.45;}
+table.results td.col-jewels{font-size:11px;color:var(--fg-dim);}
+.affix-val-ladder{display:flex;gap:4px;flex-wrap:wrap;margin-top:3px;}
+.badge-repeat{display:inline-block;padding:1px 7px;border-radius:3px;font-size:10px;font-weight:700;background:rgba(245,179,66,.18);color:#f5b342;margin-left:4px;vertical-align:middle;}
+.type-pill{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;margin-left:4px;}
+.loc-pill{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;}
+.loc-Prefix{background:rgba(78,161,255,.15);color:#4ea1ff;}
+.loc-Suffix{background:rgba(240,140,90,.15);color:#f08c5a;}
+.type-Value{background:rgba(46,204,113,.15);color:#2ecc71;}
+.type-Tank{background:rgba(78,161,255,.15);color:#4ea1ff;}
+.type-Healer{background:rgba(108,192,144,.15);color:#6cc090;}
+.type-Attack{background:rgba(231,76,60,.15);color:#e74c3c;}
+.type-Resistant{background:rgba(194,144,232,.15);color:#c290e8;}
+.type-Buff{background:rgba(245,179,66,.15);color:#f5b342;}
+.type-Debuff{background:rgba(240,140,90,.15);color:#f08c5a;}
+.jewel-badge{display:inline-block;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600;background:rgba(255,255,255,.06);color:var(--fg-dim);border:1px solid var(--border);margin-right:3px;white-space:nowrap;}
+.vault-caption{color:var(--fg-dim);font-size:12px;font-style:italic;margin-bottom:10px;}
+.vault-type-row{margin-bottom:10px;}
+.vt-type{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;}
+.vt-Jewels{background:rgba(194,144,232,.15);color:#c290e8;}
+.vt-Gear{background:rgba(46,204,113,.15);color:#2ecc71;}
+.vt-Runes{background:rgba(78,161,255,.15);color:#4ea1ff;}
+.vt-Clover{background:rgba(245,179,66,.15);color:#f5b342;}
+.vt-Items{background:rgba(240,140,90,.15);color:#f08c5a;}
+.vt-LegacyGear{background:rgba(255,99,71,.15);color:#ff7c66;}
+.affix-val-ladder .vtier{padding:1px 6px;border-radius:3px;font-size:10px;font-weight:700;font-family:"SF Mono",Consolas,Menlo,monospace;}
+.vt-C{background:rgba(110,110,110,.15);color:#aaa;}
+.vt-B{background:rgba(78,161,255,.15);color:#4ea1ff;}
+.vt-A{background:rgba(194,144,232,.15);color:#c290e8;}
+.vt-S{background:rgba(245,179,66,.15);color:#f5b342;}
+table.results td.col-wt{color:var(--fg-dim);font-family:"SF Mono",Consolas,Menlo,monospace;font-size:12px;}
+</style>
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="index.html">GMG Wiki</a>
+  <nav>
+    <a href="units/index.html">Units</a>
+    <a href="keywords/index.html">Keywords</a>
+    <a href="gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="talent-simulator.html">Talent Simulator</a>
+    <a href="team-planner.html">Team Planner</a>
+    <a href="search-unit.html">Search · Units</a>
+    <a href="search-talent.html">Search · Talents</a>
+    <a href="search-gear.html">Search · Gear</a>
+    <a href="search-runes.html">Search · Runes</a>
+    <a href="search-godstone.html" class="current">Search · Jewels</a>
+    <a href="news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>Search - Jewels</h1>
+<p>Browse the Jewel (Godstone) crafting system from manifest-1013. <strong>Tab 1</strong>: filter 88 affix entries by tier, type, location, repeat-ability, and effect text. <strong>Tab 2</strong>: 25 Golden Vault loot-box entries.</p>
+
+<div class="jewel-panel">
+  <h3>Jewel Reference (8 total)</h3>
+  <div class="jewel-grid" id="jewelGrid"></div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" id="tab-affixes" onclick="switchTab('affixes')">Affixes (88)</button>
+  <button class="tab-btn" id="tab-vault" onclick="switchTab('vault')">Golden Vault (25)</button>
+</div>
+
+<div class="tab-panel active" id="panel-affixes">
+<div class="gs-filter-row">
+  <div class="gs-filter-col cat-GsStep">
+    <h4>Step (affix tier)</h4>
+    <div class="pills" id="pills-Step"></div>
+  </div>
+  <div class="gs-filter-col cat-GsType">
+    <h4>Type</h4>
+    <div class="pills" id="pills-Type"></div>
+  </div>
+  <div class="gs-filter-col cat-GsLoc">
+    <h4>Location</h4>
+    <div class="pills" id="pills-Loc"></div>
+  </div>
+  <div class="gs-filter-col">
+    <h4>Can Stack</h4>
+    <button class="toggle-repeat" id="toggleRepeat" onclick="toggleRepeatFn()">Can stack on same gear</button>
+  </div>
+</div>
+<div class="controls-row">
+  <input class="gs-text-search" id="affixQ" placeholder="Search effect text (e.g. STR, Shield, Chill)..." />
+  <button class="btn-clear" id="clearAffixes">Clear all</button>
+  <span class="results-meta" id="affixMeta"></span>
+</div>
+<div id="affixResultsWrap">
+<table class="results">
+<thead><tr>
+  <th>Step</th><th>ID</th><th>Location</th><th>Type</th><th>Effect</th><th>Values (C B A S)</th><th>Rollable by</th>
+</tr></thead>
+<tbody id="affixTbody"></tbody>
+</table>
+</div>
+<div id="affixEmpty" class="empty" style="display:none">No affixes match the selected filters.</div>
+</div>
+
+<div class="tab-panel" id="panel-vault">
+<p class="vault-caption">25 entries = 5 rarity sets (C/B/A/S/SS) x 6 categories + SS-only Legacy Gear. Level = vault level(s) this row appears in.</p>
+<div class="vault-type-row">
+  <div class="pills cat-GsType" id="pills-VaultType"></div>
+</div>
+<div class="controls-row">
+  <button class="btn-clear" id="clearVault">Clear vault filters</button>
+  <span class="results-meta" id="vaultMeta"></span>
+</div>
+<div id="vaultResultsWrap">
+<table class="results">
+<thead><tr>
+  <th>Level(s)</th><th>Weight</th><th>Type</th><th>Content</th><th>Quantity</th>
+</tr></thead>
+<tbody id="vaultTbody"></tbody>
+</table>
+</div>
+<div id="vaultEmpty" class="empty" style="display:none">No vault entries match.</div>
+</div>
+
+<script>
+var JEWELS=[{"id": "BS60000", "name": "Clear Jewel", "step": "C", "tag": "All", "description": "May produce any effect, with endless possibilities."}, {"id": "BS60001", "name": "White Jewel", "step": "C", "tag": "Value", "description": "[CN: 更容易出现{0}相关的词缀。]"}, {"id": "BS61002", "name": "Cobalt Jewel", "step": "C", "tag": "Tank", "description": "[CN: 更容易出现{0}相关的词缀。]"}, {"id": "BS61003", "name": "Verdant Jewel", "step": "C", "tag": "Healer", "description": "[CN: 更容易出现{0}相关的词缀。]"}, {"id": "BS61001", "name": "Crimson Jewel", "step": "B", "tag": "Attack", "description": "[CN: 更容易出现{0}相关的词缀。]"}, {"id": "BS61004", "name": "Obsidian Jewel", "step": "B", "tag": "Resistant", "description": "[CN: 更容易出现{0}相关的词缀。]"}, {"id": "BS62001", "name": "Golden Jewel", "step": "A", "tag": "Buff", "description": "[CN: 更容易出现{0}相关的词缀。]"}, {"id": "BS62002", "name": "Violet Jewel", "step": "S", "tag": "Debuff", "description": "[CN: 更容易出现{0}相关的词缀。]"}];
+var AFFIXES=[{"id": "BS00001", "step": "C", "weight": 10000, "location": "Prefix", "type": "Value", "canRepeat": true, "effect": "Gain {0} STR.", "value0": "5,10,15,20", "value1": ""}, {"id": "BS00002", "step": "C", "weight": 10000, "location": "Prefix", "type": "Value", "canRepeat": true, "effect": "Gain {0} SPI.", "value0": "5,10,15,20", "value1": ""}, {"id": "BS00003", "step": "C", "weight": 10000, "location": "Prefix", "type": "Value", "canRepeat": true, "effect": "Gain {0} AGI.", "value0": "5,10,15,20", "value1": ""}, {"id": "BS01001", "step": "C", "weight": 10000, "location": "Prefix", "type": "Value", "canRepeat": true, "effect": "Gain {0} HP.", "value0": "10,20,30,40", "value1": ""}, {"id": "BS01002", "step": "C", "weight": 10000, "location": "Prefix", "type": "Value", "canRepeat": true, "effect": "Gain {0} SPD.", "value0": "5,10,15,20", "value1": ""}, {"id": "BS01003", "step": "C", "weight": 10000, "location": "Prefix", "type": "Value", "canRepeat": true, "effect": "Gain {0} Toughness.", "value0": "5,10,15,20", "value1": ""}, {"id": "BS11011", "step": "C", "weight": 10000, "location": "Prefix", "type": "Tank", "canRepeat": true, "effect": "Take {0} less basic DMG.", "value0": "3,6,9,12", "value1": ""}, {"id": "BS11012", "step": "C", "weight": 10000, "location": "Prefix", "type": "Tank", "canRepeat": true, "effect": "Take {0} less Skill DMG.", "value0": "3,6,9,12", "value1": ""}, {"id": "BS11013", "step": "C", "weight": 10000, "location": "Prefix", "type": "Tank", "canRepeat": true, "effect": "Take {0} less Follow-Up DMG.", "value0": "3,6,9,12", "value1": ""}, {"id": "BS11014", "step": "C", "weight": 10000, "location": "Prefix", "type": "Tank", "canRepeat": true, "effect": "Take {0} less Counter DMG.", "value0": "3,6,9,12", "value1": ""}, {"id": "BS11021", "step": "C", "weight": 10000, "location": "Prefix", "type": "Healer", "canRepeat": true, "effect": "+{0} Basic healing received.", "value0": "3,6,9,12", "value1": ""}, {"id": "BS11022", "step": "C", "weight": 10000, "location": "Prefix", "type": "Healer", "canRepeat": true, "effect": "+{0} Skill healing received.", "value0": "3,6,9,12", "value1": ""}, {"id": "BS10001", "step": "B", "weight": 4600, "location": "Prefix", "type": "Value", "canRepeat": true, "effect": "STR +{0}, SPI +{1}.", "value0": "3,6,9,12", "value1": "3,6,9,12"}, {"id": "BS10002", "step": "B", "weight": 4600, "location": "Prefix", "type": "Value", "canRepeat": true, "effect": "STR +{0}, AGI +{1}.", "value0": "3,6,9,12", "value1": "3,6,9,12"}, {"id": "BS10003", "step": "B", "weight": 4600, "location": "Prefix", "type": "Value", "canRepeat": true, "effect": "AGI +{0}, SPI +{1}.", "value0": "3,6,9,12", "value1": "3,6,9,12"}, {"id": "BS11001", "step": "B", "weight": 4600, "location": "Prefix", "type": "Value", "canRepeat": true, "effect": "HP +{0}, SPD +{1}.", "value0": "4,8,12,16", "value1": "4,8,12,16"}, {"id": "BS11002", "step": "B", "weight": 4600, "location": "Prefix", "type": "Value", "canRepeat": true, "effect": "HP +{0}, Toughness +{1}.", "value0": "4,8,12,16", "value1": "4,8,12,16"}, {"id": "BS11003", "step": "B", "weight": 4600, "location": "Prefix", "type": "Value", "canRepeat": true, "effect": "Toughness +{0}, SPD +{1}.", "value0": "4,8,12,16", "value1": "4,8,12,16"}, {"id": "BS10011", "step": "B", "weight": 4600, "location": "Prefix", "type": "Attack", "canRepeat": true, "effect": "Deal {0} more basic DMG.", "value0": "2,4,6,8", "value1": ""}, {"id": "BS10012", "step": "B", "weight": 4600, "location": "Prefix", "type": "Attack", "canRepeat": true, "effect": "Deal {0} more Skill DMG.", "value0": "2,4,6,8", "value1": ""}, {"id": "BS10013", "step": "B", "weight": 4600, "location": "Prefix", "type": "Attack", "canRepeat": true, "effect": "Deal {0} more Follow-Up DMG.", "value0": "2,4,6,8", "value1": ""}, {"id": "BS10014", "step": "B", "weight": 4600, "location": "Prefix", "type": "Attack", "canRepeat": true, "effect": "Deal {0} more Counter DMG.", "value0": "2,4,6,8", "value1": ""}, {"id": "BS10021", "step": "B", "weight": 4600, "location": "Prefix", "type": "Healer", "canRepeat": true, "effect": "Basic healing restores {0} more HP to targets.", "value0": "2,4,6,8", "value1": ""}, {"id": "BS10022", "step": "B", "weight": 4600, "location": "Prefix", "type": "Healer", "canRepeat": true, "effect": "+{0} Skill healing to targets.", "value0": "2,4,6,8", "value1": ""}, {"id": "BS11034", "step": "B", "weight": 4600, "location": "Prefix", "type": "Resistant", "canRepeat": true, "effect": "Take {0} fewer stacks of Vulnerable.", "value0": "3,6,9,12", "value1": ""}, {"id": "BS11037", "step": "B", "weight": 4600, "location": "Prefix", "type": "Resistant", "canRepeat": true, "effect": "Take -{0} stacks of Chill.", "value0": "3,6,9,12", "value1": ""}, {"id": "BS11039", "step": "B", "weight": 4600, "location": "Prefix", "type": "Resistant", "canRepeat": true, "effect": "Take {0} fewer stacks of Shock.", "value0": "3,6,9,12", "value1": ""}, {"id": "BS11040", "step": "B", "weight": 4600, "location": "Prefix", "type": "Resistant", "canRepeat": true, "effect": "Take -{0} stacks of Hinder.", "value0": "3,6,9,12", "value1": ""}, {"id": "BS11038", "step": "B", "weight": 4600, "location": "Prefix", "type": "Resistant", "canRepeat": true, "effect": "Take {0} fewer stacks of Burn.", "value0": "3,6,9,12", "value1": ""}, {"id": "BS20002", "step": "A", "weight": 600, "location": "Prefix", "type": "Value", "canRepeat": true, "effect": "Gain {0} ally count.", "value0": "1,1,2,3", "value1": ""}, {"id": "BS20001", "step": "A", "weight": 600, "location": "Prefix", "type": "Value", "canRepeat": true, "effect": "Gain {0} Starting Mana.", "value0": "5,5,10,15", "value1": ""}, {"id": "BS31008", "step": "A", "weight": 600, "location": "Prefix", "type": "Value", "canRepeat": true, "effect": "Gain {0} Max Mana.", "value0": "5,5,10,15", "value1": ""}, {"id": "BS20011", "step": "A", "weight": 600, "location": "Prefix", "type": "Attack", "canRepeat": true, "effect": "Deal +{0} total DMG.", "value0": "2,2,4,6", "value1": ""}, {"id": "BS11015", "step": "A", "weight": 600, "location": "Prefix", "type": "Tank", "canRepeat": true, "effect": "Take -{0} total DMG.", "value0": "3,3,6,9", "value1": ""}, {"id": "BS20021", "step": "A", "weight": 600, "location": "Prefix", "type": "Healer", "canRepeat": true, "effect": "+{0} Total HP restored to targets.", "value0": "2,2,4,6", "value1": ""}, {"id": "BS11023", "step": "A", "weight": 600, "location": "Prefix", "type": "Healer", "canRepeat": true, "effect": "+{0} Total HP restored to self.", "value0": "3,3,6,9", "value1": ""}, {"id": "BS21041", "step": "A", "weight": 600, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Gain +{0} stacks of Shield.", "value0": "1,1,2,3", "value1": ""}, {"id": "BS21044", "step": "A", "weight": 600, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Gain +{0} stacks of Soothe.", "value0": "1,1,2,3", "value1": ""}, {"id": "BS21047", "step": "A", "weight": 600, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Gain +{0} stacks of Bloodlust.", "value0": "1,1,2,3", "value1": ""}, {"id": "BS21048", "step": "A", "weight": 600, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Gain +{0} stacks of Regen.", "value0": "1,1,2,3", "value1": ""}, {"id": "BS21049", "step": "A", "weight": 600, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Gain +{0} stacks of Faith.", "value0": "1,1,2,3", "value1": ""}, {"id": "BS21042", "step": "A", "weight": 600, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Gain +{0} stacks of Thorns.", "value0": "1,1,2,3", "value1": ""}, {"id": "BS21043", "step": "A", "weight": 600, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Gain +{0} stacks of Growth.", "value0": "1,1,2,3", "value1": ""}, {"id": "BS21046", "step": "A", "weight": 600, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Gain +{0} stacks of Haste.", "value0": "1,1,2,3", "value1": ""}, {"id": "BS21045", "step": "A", "weight": 600, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Gain +{0} stacks of Precision.", "value0": "1,1,2,3", "value1": ""}, {"id": "BS11035", "step": "A", "weight": 600, "location": "Prefix", "type": "Resistant", "canRepeat": true, "effect": "Take {0} fewer stacks of Slow.", "value0": "4,4,8,12", "value1": ""}, {"id": "BS11036", "step": "A", "weight": 600, "location": "Prefix", "type": "Resistant", "canRepeat": true, "effect": "Take {0} fewer stacks of Expose.", "value0": "4,4,8,12", "value1": ""}, {"id": "BS11041", "step": "A", "weight": 600, "location": "Prefix", "type": "Resistant", "canRepeat": true, "effect": "Take -{0} stacks of Taunt.", "value0": "4,4,8,12", "value1": ""}, {"id": "BS11031", "step": "A", "weight": 600, "location": "Prefix", "type": "Resistant", "canRepeat": true, "effect": "Take -{0} stacks of Fear.", "value0": "4,4,8,12", "value1": ""}, {"id": "BS11032", "step": "A", "weight": 600, "location": "Prefix", "type": "Resistant", "canRepeat": true, "effect": "Take {0} fewer stacks of Decay.", "value0": "4,4,8,12", "value1": ""}, {"id": "BS11033", "step": "A", "weight": 600, "location": "Prefix", "type": "Resistant", "canRepeat": true, "effect": "Take -{0} stacks of Stun.", "value0": "4,4,8,12", "value1": ""}, {"id": "BS30001", "step": "S", "weight": 125, "location": "Prefix", "type": "Value", "canRepeat": true, "effect": "Gain {0} Luck.", "value0": "4,4,4,8", "value1": ""}, {"id": "BS30002", "step": "S", "weight": 125, "location": "Prefix", "type": "Value", "canRepeat": true, "effect": "+{0} Action Mana.", "value0": "2,2,2,4", "value1": ""}, {"id": "BS31009", "step": "S", "weight": 125, "location": "Prefix", "type": "Value", "canRepeat": true, "effect": "Gain {0} Hit Mana.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS30004", "step": "S", "weight": 125, "location": "Prefix", "type": "Attack", "canRepeat": true, "effect": "HP Loss inflicted increases by {0} .", "value0": "5,5,5,10", "value1": ""}, {"id": "BS30006", "step": "S", "weight": 125, "location": "Prefix", "type": "Attack", "canRepeat": true, "effect": "Reduce enemies' Toughness by {0}.", "value0": "2,2,2,4", "value1": ""}, {"id": "BS11004", "step": "S", "weight": 125, "location": "Prefix", "type": "Tank", "canRepeat": true, "effect": "HP Loss taken reduces by {0} .", "value0": "5,5,5,10", "value1": ""}, {"id": "BS11005", "step": "S", "weight": 125, "location": "Prefix", "type": "Tank", "canRepeat": true, "effect": "Toughness Loss received -{0}.", "value0": "2,2,2,4", "value1": ""}, {"id": "BS31002", "step": "S", "weight": 125, "location": "Prefix", "type": "Healer", "canRepeat": true, "effect": "+{0} HP Gain.", "value0": "2,2,2,4", "value1": ""}, {"id": "BS31003", "step": "S", "weight": 125, "location": "Prefix", "type": "Healer", "canRepeat": true, "effect": "Toughness Gain +{0}.", "value0": "2,2,2,4", "value1": ""}, {"id": "BS20034", "step": "S", "weight": 125, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Apply {0} more stacks of Soothe.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20037", "step": "S", "weight": 125, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Apply {0} more stacks of Bloodlust.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20038", "step": "S", "weight": 125, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Apply {0} more stacks of Regen.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20031", "step": "S", "weight": 125, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Apply {0} more stacks of Shield.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20039", "step": "S", "weight": 125, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Apply {0} more stacks of Faith.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20032", "step": "S", "weight": 125, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Apply {0} more stacks of Thorns.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20033", "step": "S", "weight": 125, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Apply {0} more stacks of Growth.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20036", "step": "S", "weight": 125, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Apply {0} more stacks of Haste.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20035", "step": "S", "weight": 125, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Apply {0} more stacks of Precision.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20040", "step": "S", "weight": 125, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Apply {0} more stacks of Inspire.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20041", "step": "S", "weight": 125, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Apply {0} more stacks of Fortitude.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20042", "step": "S", "weight": 125, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Causes purification layer number + {0}.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20043", "step": "S", "weight": 125, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Apply {0} more stacks of Reversal.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS21050", "step": "S", "weight": 125, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Gain +{0} stacks of Inspire.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS21051", "step": "S", "weight": 125, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Gain +{0} stacks of Fortitude.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS21052", "step": "S", "weight": 125, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Gain +{0} stacks of Cleanse.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS21053", "step": "S", "weight": 125, "location": "Prefix", "type": "Buff", "canRepeat": true, "effect": "Gain +{0} stacks of Reversal.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20053", "step": "S", "weight": 125, "location": "Prefix", "type": "Debuff", "canRepeat": true, "effect": "Apply {0} more stacks of Vulnerable.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20058", "step": "S", "weight": 125, "location": "Prefix", "type": "Debuff", "canRepeat": true, "effect": "Apply {0} more stacks of Shock.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20059", "step": "S", "weight": 125, "location": "Prefix", "type": "Debuff", "canRepeat": true, "effect": "Apply {0} more stacks of Hinder.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20054", "step": "S", "weight": 125, "location": "Prefix", "type": "Debuff", "canRepeat": true, "effect": "Apply {0} more stacks of Slow.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20055", "step": "S", "weight": 125, "location": "Prefix", "type": "Debuff", "canRepeat": true, "effect": "Apply {0} more stacks of Expose.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20057", "step": "S", "weight": 125, "location": "Prefix", "type": "Debuff", "canRepeat": true, "effect": "Apply {0} more stacks of Burn.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20056", "step": "S", "weight": 125, "location": "Prefix", "type": "Debuff", "canRepeat": true, "effect": "Apply {0} more stacks of Chill.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20060", "step": "S", "weight": 125, "location": "Prefix", "type": "Debuff", "canRepeat": true, "effect": "Apply {0} more stacks of Taunt.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20051", "step": "S", "weight": 125, "location": "Prefix", "type": "Debuff", "canRepeat": true, "effect": "Apply {0} more stacks of Fear.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20052", "step": "S", "weight": 125, "location": "Prefix", "type": "Debuff", "canRepeat": true, "effect": "Apply {0} more stacks of Decay.", "value0": "1,1,1,2", "value1": ""}, {"id": "BS20061", "step": "S", "weight": 125, "location": "Prefix", "type": "Debuff", "canRepeat": true, "effect": "+{0} Stun stacks applied.", "value0": "1,1,1,2", "value1": ""}];
+var VAULT=[{"id": "BK00001_001", "level": "1", "weight": 5000, "type": "Jewels", "content": "Random C-tier Jewel", "num": 1}, {"id": "BK00001_002", "level": "1", "weight": 2500, "type": "Gear", "content": "Random C-tier Gear", "num": 1}, {"id": "BK00001_003", "level": "1", "weight": 2500, "type": "Runes", "content": "Random C-tier Rune", "num": 1}, {"id": "BK00001_004", "level": "1", "weight": 500, "type": "Legacy Gear", "content": "Random C-tier Legacy Gear", "num": 1}, {"id": "BK00001_005", "level": "1", "weight": 250, "type": "Clover", "content": "Clover", "num": 1}, {"id": "BK00001_006", "level": "1", "weight": 250, "type": "Items", "content": "Talent Fruit", "num": 5}, {"id": "BK00001_011", "level": "1,2", "weight": 5000, "type": "Jewels", "content": "Random B-tier Jewel", "num": 1}, {"id": "BK00001_012", "level": "1,2", "weight": 2500, "type": "Gear", "content": "Random B-tier Gear", "num": 1}, {"id": "BK00001_013", "level": "1,2", "weight": 2500, "type": "Runes", "content": "Random B-tier Rune", "num": 1}, {"id": "BK00001_014", "level": "1,2", "weight": 500, "type": "Legacy Gear", "content": "Random B-tier Legacy Gear", "num": 1}, {"id": "BK00001_015", "level": "1,2", "weight": 125, "type": "Clover", "content": "Clover", "num": 2}, {"id": "BK00001_016", "level": "1,2", "weight": 125, "type": "Items", "content": "Talent Fruit", "num": 10}, {"id": "BK00001_021", "level": "1,2,3", "weight": 2500, "type": "Jewels", "content": "Random A-tier Jewel", "num": 1}, {"id": "BK00001_022", "level": "1,2,3", "weight": 250, "type": "Gear", "content": "Random A-tier Gear", "num": 1}, {"id": "BK00001_023", "level": "1,2,3", "weight": 250, "type": "Runes", "content": "Random A-tier Rune", "num": 1}, {"id": "BK00001_024", "level": "1,2,3", "weight": 50, "type": "Legacy Gear", "content": "Random A-tier Legacy Gear", "num": 1}, {"id": "BK00001_025", "level": "1,2,3", "weight": 25, "type": "Clover", "content": "Clover", "num": 4}, {"id": "BK00001_026", "level": "1,2,3", "weight": 25, "type": "Items", "content": "Talent Fruit", "num": 20}, {"id": "BK00001_031", "level": "2,3", "weight": 500, "type": "Jewels", "content": "Random S-tier Jewel", "num": 1}, {"id": "BK00001_032", "level": "2,3", "weight": 25, "type": "Gear", "content": "Random S-tier Gear", "num": 1}, {"id": "BK00001_033", "level": "2,3", "weight": 25, "type": "Runes", "content": "Random S-tier Rune", "num": 1}, {"id": "BK00001_034", "level": "2,3", "weight": 5, "type": "Legacy Gear", "content": "Random S-tier Legacy Gear", "num": 1}, {"id": "BK00001_035", "level": "2,3", "weight": 5, "type": "Clover", "content": "Clover", "num": 8}, {"id": "BK00001_036", "level": "2,3", "weight": 5, "type": "Items", "content": "Talent Fruit", "num": 50}, {"id": "BK00001_041", "level": "3", "weight": 1, "type": "Legacy Gear", "content": "Random SS-tier Legacy Gear", "num": 1}];
+var STEP_ORDER=['S','A','B','C'];
+var STEP_BADGE={S:'b-Orange',A:'b-Purple',B:'b-Blue',C:'b-Green'};
+var TYPE_ORDER=['Value','Tank','Healer','Attack','Resistant','Buff','Debuff'];
+var LOC_ORDER=['Prefix','Suffix'];
+var JEWEL_TAG_TYPES={All:TYPE_ORDER,Value:['Value'],Tank:['Tank'],Healer:['Healer'],Attack:['Attack'],Resistant:['Resistant'],Buff:['Buff'],Debuff:['Debuff']};
+function jewelsForAffix(a){var out=[];for(var i=0;i<JEWELS.length;i++){var j=JEWELS[i];var cv=JEWEL_TAG_TYPES[j.tag]||[];if(cv.indexOf(a.type)>=0)out.push(j.name);}return out;}
+function switchTab(n){document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});document.getElementById('panel-'+n).classList.add('active');document.getElementById('tab-'+n).classList.add('active');}
+function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+(function(){var grid=document.getElementById('jewelGrid');grid.innerHTML='';var sc={S:'vt-S',A:'vt-A',B:'vt-B',C:'vt-C'};
+JEWELS.forEach(function(j){var s=sc[j.step]||'vt-C';var cv=JEWEL_TAG_TYPES[j.tag]||[];
+var n=cv.length===TYPE_ORDER.length?AFFIXES.length:AFFIXES.filter(function(a){return cv.indexOf(a.type)>=0;}).length;
+var chip=document.createElement('div');chip.className='jewel-chip';
+chip.innerHTML='<span class=\"jname\">'+escapeHtml(j.name)+'</span>'+'<span class=\"jstep '+s+'\">'+j.step+'</span>'+'<span class=\"jtag\">'+escapeHtml(j.tag)+'</span>'+'<span class=\"jpoolsz\">'+n+' affixes</span>';
+grid.appendChild(chip);});})();
+var selStep=new Set(),selType=new Set(),selLoc=new Set(),repeatOnly=false;
+function buildAffixPills(){
+var sw=document.getElementById('pills-Step'),tw=document.getElementById('pills-Type'),lw=document.getElementById('pills-Loc');
+sw.innerHTML='';tw.innerHTML='';lw.innerHTML='';
+STEP_ORDER.forEach(function(s){var b=document.createElement('button');b.className='pill'+(selStep.has(s)?' on':'');b.textContent=s;
+b.onclick=(function(sv){return function(){selStep.has(sv)?selStep.delete(sv):selStep.add(sv);buildAffixPills();renderAffixes();};})(s);sw.appendChild(b);});
+TYPE_ORDER.forEach(function(t){var b=document.createElement('button');b.className='pill'+(selType.has(t)?' on':'');b.textContent=t;
+b.onclick=(function(tv){return function(){selType.has(tv)?selType.delete(tv):selType.add(tv);buildAffixPills();renderAffixes();};})(t);tw.appendChild(b);});
+LOC_ORDER.forEach(function(l){var b=document.createElement('button');b.className='pill'+(selLoc.has(l)?' on':'');b.textContent=l;
+b.onclick=(function(lv){return function(){selLoc.has(lv)?selLoc.delete(lv):selLoc.add(lv);buildAffixPills();renderAffixes();};})(l);lw.appendChild(b);});
+document.getElementById('toggleRepeat').className='toggle-repeat'+(repeatOnly?' on':'');}
+function toggleRepeatFn(){repeatOnly=!repeatOnly;buildAffixPills();renderAffixes();}
+function renderAffixes(){
+var q=(document.getElementById('affixQ').value||'').trim().toLowerCase();
+var rows=AFFIXES.slice();
+if(selStep.size)rows=rows.filter(function(a){return selStep.has(a.step);});
+if(selType.size)rows=rows.filter(function(a){return selType.has(a.type);});
+if(selLoc.size)rows=rows.filter(function(a){return selLoc.has(a.location);});
+if(repeatOnly)rows=rows.filter(function(a){return a.canRepeat;});
+if(q)rows=rows.filter(function(a){return(a.effect||'').toLowerCase().indexOf(q)>=0;});
+rows.sort(function(a,b){var ds=STEP_ORDER.indexOf(a.step)-STEP_ORDER.indexOf(b.step);if(ds)return ds;
+var dt=TYPE_ORDER.indexOf(a.type)-TYPE_ORDER.indexOf(b.type);if(dt)return dt;return(a.id||'').localeCompare(b.id||'');});
+document.getElementById('affixMeta').textContent=rows.length+' of '+AFFIXES.length+' affixes';
+var tbody=document.getElementById('affixTbody'),empty=document.getElementById('affixEmpty');
+tbody.innerHTML='';
+if(!rows.length){empty.style.display='';document.getElementById('affixResultsWrap').style.display='none';return;}
+empty.style.display='none';document.getElementById('affixResultsWrap').style.display='';
+var tl=['C','B','A','S'];
+rows.forEach(function(a){
+var sc2=STEP_BADGE[a.step]||'b-Green';
+var lc='loc-'+(a.location||'');var tc='type-'+(a.type||'');
+var v0=(a.value0||'').split(',').map(function(v){return v.trim();}).filter(Boolean);
+var lh=v0.map(function(v,i){var t2=tl[i]||i;return '<span class=\"vtier vt-'+t2+'\">'+t2+': '+escapeHtml(v)+'</span>';}).join('');
+var v1=(a.value1||'').split(',').map(function(v){return v.trim();}).filter(Boolean);
+var lh1=v1.map(function(v,i){var t2=tl[i]||i;return '<span class=\"vtier vt-'+t2+'\">'+t2+': '+escapeHtml(v)+'</span>';}).join('');
+var lf=lh1?'<div class=\"affix-val-ladder\">'+lh+'</div><div class=\"affix-val-ladder\" style=\"margin-top:2px\">'+lh1+'</div>':'<div class=\"affix-val-ladder\">'+lh+'</div>';
+var jw=jewelsForAffix(a).map(function(jn){return '<span class=\"jewel-badge\">'+escapeHtml(jn)+'</span>';}).join('');
+var rb=a.canRepeat?' <span class=\"badge-repeat\">Stackable</span>':'';
+var tr=document.createElement('tr');
+tr.innerHTML='<td><span class=\"badge '+sc2+'\">'+a.step+'</span></td>'+'<td style=\"font-size:11px;color:var(--fg-dim)\">'+escapeHtml(a.id)+'</td>'+'<td><span class=\"loc-pill '+lc+'\">'+escapeHtml(a.location)+'</span></td>'+'<td><span class=\"type-pill '+tc+'\">'+escapeHtml(a.type)+'</span></td>'+'<td class=\"col-effect\">'+escapeHtml(a.effect)+rb+'</td><td>'+lf+'</td><td class=\"col-jewels\">'+jw+'</td>';
+tbody.appendChild(tr);});
+}
+var selVaultType=new Set();
+function buildVaultPills(){
+var types=[],seen={};VAULT.forEach(function(v){if(!seen[v.type]){seen[v.type]=1;types.push(v.type);}});types.sort();
+var wrap=document.getElementById('pills-VaultType');wrap.innerHTML='';
+types.forEach(function(t){var ck=t.replace(/\s+/g,'');var b=document.createElement('button');
+b.className='pill vt-type vt-'+ck+(selVaultType.has(t)?' on':'');b.textContent=t;
+b.onclick=(function(tv){return function(){selVaultType.has(tv)?selVaultType.delete(tv):selVaultType.add(tv);buildVaultPills();renderVault();};})(t);wrap.appendChild(b);});
+}
+function renderVault(){
+var rows=selVaultType.size?VAULT.filter(function(v){return selVaultType.has(v.type);}):VAULT.slice();
+document.getElementById('vaultMeta').textContent=rows.length+' of '+VAULT.length+' entries';
+var tbody=document.getElementById('vaultTbody'),empty=document.getElementById('vaultEmpty');
+tbody.innerHTML='';if(!rows.length){empty.style.display='';return;}
+empty.style.display='none';
+rows.forEach(function(v){var ck=(v.type||'').replace(/\s+/g,'');
+var th='<span class=\"vt-type vt-'+ck+'\">'+escapeHtml(v.type)+'</span>';
+var tr=document.createElement('tr');
+tr.innerHTML='<td>'+escapeHtml(v.level)+'</td>'+'<td class=\"col-wt\">'+escapeHtml(String(v.weight))+'</td>'+th+'<td>'+escapeHtml(v.content)+'</td><td>'+escapeHtml(String(v.num))+'</td>';
+tbody.appendChild(tr);});}
+document.getElementById('clearAffixes').onclick=function(){selStep.clear();selType.clear();selLoc.clear();repeatOnly=false;document.getElementById('affixQ').value='';buildAffixPills();renderAffixes();};
+document.getElementById('clearVault').onclick=function(){selVaultType.clear();buildVaultPills();renderVault();};
+document.getElementById('affixQ').addEventListener('input',renderAffixes);
+buildAffixPills();renderAffixes();buildVaultPills();renderVault();
+</script>
+</main>
+<footer>
+  <p>Static export from Obsidian vault - datamine version 1.1.1.0 - search-godstone.html</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>
