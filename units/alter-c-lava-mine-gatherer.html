@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mine Gatherer — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="../index.html">GMG Wiki</a>
+  <nav>
+    <a href="../units/index.html">Units</a>
+    <a href="../keywords/index.html">Keywords</a>
+    <a href="../gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="../talent-simulator.html">Talent Simulator</a>
+    <a href="../search-unit.html">Search · Units</a>
+    <a href="../search-talent.html">Search · Talents</a>
+    <a href="../search-gear.html">Search · Gear</a>
+    <a href="../search-runes.html">Search · Runes</a>
+    <a href="../search-godstone.html">Search · Jewels</a>
+    <a href="../news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>Mine Gatherer</h1>
+<p><strong>ID:</strong> <code>M12004_002</code> · <strong>Standard counterpart:</strong> <a href="../units/standard-c-mine-gatherer.html">M12004</a> · <strong>Alter Theme:</strong> Lava · <strong>Source:</strong> Events · <strong>Step:</strong> C · <strong>Weight:</strong> 10000</p>
+<p><strong>Archetypes:</strong> Burn</p>
+<h2>Attributes (Class · Type · Element · Terrain)</h2>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Type</th>
+<th>Element</th>
+<th>Terrain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><a href="../keywords/class-archer.html">Archer</a></strong></td>
+<td><strong><a href="../keywords/race-spirit.html">Spirit</a></strong></td>
+<td><strong><a href="../keywords/element-fire.html">Fire</a></strong></td>
+<td><strong><a href="../keywords/terrain-volcano.html">Volcano</a></strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Race name</strong> (used for talent filter): <code>Rodent</code> (race name ≠ Type race-family <code>Spirit</code>).</p>
+</blockquote>
+<h2>Codex (Insight)</h2>
+<p><em>(No Insight found in <code>RelicsDataTable</code> for this unit.)</em></p>
+<h2>Stats</h2>
+<h3>Base Stats (L1, no modifiers)</h3>
+<table>
+<thead>
+<tr>
+<th>Stat</th>
+<th>Archer</th>
+<th>Fire</th>
+<th>Spirit</th>
+<th>Volcano</th>
+<th>C</th>
+<th><strong>Base L1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HP</strong></td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>2</strong></td>
+</tr>
+<tr>
+<td><strong>STR</strong></td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td><strong>4</strong></td>
+</tr>
+<tr>
+<td><strong>SPI</strong></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td><strong>2</strong></td>
+</tr>
+<tr>
+<td><strong>AGI</strong></td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td><strong>4</strong></td>
+</tr>
+<tr>
+<td><strong><a href="../keywords/stat-spd.html">SPD</a></strong></td>
+<td>8</td>
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td><strong>12</strong></td>
+</tr>
+<tr>
+<td><strong><a href="../keywords/stat-toughness.html">Toughness</a></strong></td>
+<td>10</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td><strong>12</strong></td>
+</tr>
+<tr>
+<td><strong><a href="../keywords/stat-luck.html">LUK</a></strong></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>0</strong> <em>(only from gear / Lucky-Streak talent)</em></td>
+</tr>
+<tr>
+<td><strong><a href="../keywords/mechanic-starting-mana.html">Starting Mana</a></strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td><strong>10</strong> <em>(game default)</em></td>
+</tr>
+<tr>
+<td><strong><a href="../keywords/mechanic-max-mana.html">Max Mana</a></strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td><strong>30</strong> <em>(game default)</em></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Sum of 5 axes from <code>BasicAttrDataTable</code> filtered by <code>Type_EN ∈ {Class, Elements, Race, Terrain, Tier}</code>. HP/STR/SPI/AGI don't have keyword pages so labels stay plain.</p>
+</blockquote>
+<p><strong>Combat-stat mapping (<a href="../keywords/class-archer.html">Archer</a> class):</strong> TBD — only Mage mapping (ATK←SPI · DEF←AGI · Weakness←STR) is verified. For other classes, the in-game ATK/DEF/Weakness columns map onto raw stats but the exact triple needs in-game datapoint verification.</p>
+<table>
+<thead>
+<tr>
+<th>Pool</th>
+<th>Archer</th>
+<th>Fire</th>
+<th>Spirit</th>
+<th>Volcano</th>
+<th>C</th>
+<th>Sum</th>
+<th>→ Adds to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>initialAttack</td>
+<td>10</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>16</td>
+<td><strong>TBD</strong></td>
+</tr>
+<tr>
+<td>initialDefence</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>TBD</strong></td>
+</tr>
+<tr>
+<td>initialWeak</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>TBD</strong></td>
+</tr>
+</tbody>
+</table>
+<p>→ <strong>L1 displayed stats</strong> (raw + class combat-mapping):
+- Raw: HP 2 · STR 4 · SPI 2 · AGI 4 · SPD 12 · Toughness 12 · LUK 0 · Mana 10/30
+- <em>(Combat pools — Attack: 16, Defence: 0, Weak: 0 — fold into the mapped raw stat once class mapping is verified.)</em></p>
+<blockquote>
+<p>Higher-level stats = base + level growth + Insight + passive/talent modifiers + gear. Growth formula per <code>BasicAttrDataTable.GrowthType1..10</code> (cycle of 10) — exact application rule TBD pending in-game datapoint verification.</p>
+</blockquote>
+<h2>Activities</h2>
+<p><em>(No active skill data for <code>M12004_002</code> in <code>activities.json</code>.)</em></p>
+<h2>Attack (Normal Attack)</h2>
+<p><strong>Normal Attack</strong> (<code>BD30001</code>) — UnlockStar 1</p>
+<blockquote>
+<p>Targets the front enemy first. Deals <strong>1</strong> DMG.</p>
+<p><em>(Value0=1.)</em></p>
+</blockquote>
+<h2>Race</h2>
+<p><strong>Rodent</strong> (<code>BD20106</code>) — UnlockStar 2</p>
+<blockquote>
+<p>+<strong>2</strong> Counter range when afflicted with Weakness Exposed.</p>
+<p><em>(Value0=2.)</em></p>
+</blockquote>
+<h2>Trait</h2>
+<p><strong>Cautious</strong> (<code>BD10105</code>) — UnlockStar 3</p>
+<blockquote>
+<p>[Stat] Gain +<strong>1</strong> AGI per <strong>10</strong> levels.</p>
+<p><em>(Value0=10, Value1=1.)</em></p>
+</blockquote>
+<h2>Title</h2>
+<p><strong>Arsonist</strong> (<code>BD51017</code>) — UnlockStar 4</p>
+<blockquote>
+<p>[Debuff] Apply <strong>3</strong> <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-burn.html">Burn</a> after attacking.</p>
+<p><em>(Value0=3.)</em></p>
+</blockquote>
+<h2>Perk</h2>
+<p><strong>Heat Resist</strong> (<code>BD40410</code>) — UnlockStar 5</p>
+<blockquote>
+<p>[Resist] Take -<strong>12</strong> <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-burn.html">Burn</a>.</p>
+<p><em>(Value0=12.)</em></p>
+</blockquote>
+<h2>Level-up Materials</h2>
+<table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Material</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Mana Crystal</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Runic Ore</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Magic Stone</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Flamegold Ore</td>
+</tr>
+</tbody>
+</table>
+<h2>Talents</h2>
+<p>Talents unlock at <strong>5★</strong>, rolled / rerolled with <strong>Talent Fruit</strong>. Eligible pool for this unit = <strong>99</strong> total = 0 exclusive + 10 race + 21 class + 10 element + 58 generic.</p>
+<blockquote>
+<p><strong>Format:</strong> Effect column = canonical <code>TalentDataTable.Effect_EN</code> with <strong>highest-tier values filled</strong> (bold). <code>Tiers</code> column lists which tiers the talent has (e.g. <code>CBAS</code>, <code>AS</code>, <code>S</code>). Per-tier values in italic at end as <code>Value0[/Value1[/Value2]]</code>. Talent names are canonical from <code>Name_EN</code> — do NOT paraphrase.</p>
+</blockquote>
+<h3>Exclusive (0)</h3>
+<p><em>(none)</em></p>
+<h3>Race-restricted: Rodent (10 talents across 5 base IDs)</h3>
+<table>
+<thead>
+<tr>
+<th>Base ID</th>
+<th>Name</th>
+<th>Tiers</th>
+<th>Effect (highest-tier filled) &amp; per-tier values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TF14001</td>
+<td><strong>Wreck Master</strong></td>
+<td>AS</td>
+<td><strong>Apply +2 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-vulnerable.html">Vulnerable</a>. Apply +1 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-vulnerable.html">Vulnerable</a> per 100 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-vulnerable.html">Vulnerable</a> on target.</strong> <em>(A: 1/200/1 · S: 2/100/1)</em></td>
+</tr>
+<tr>
+<td>TF14002</td>
+<td><strong>Toxin Resist</strong></td>
+<td>CBAS</td>
+<td><strong>Take -16 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-hinder.html">Hinder</a>.</strong> <em>(C: 4 · B: 8 · A: 12 · S: 16)</em></td>
+</tr>
+<tr>
+<td>TF14003</td>
+<td><strong>Dig Expert</strong></td>
+<td>AS</td>
+<td><strong>Deal +6 <a href="../keywords/mechanic-total-dmg.html">total DMG</a>. Effect doubles on Mountain maps.</strong> <em>(A: 3 · S: 6)</em></td>
+</tr>
+<tr>
+<td>TF14004</td>
+<td><strong>Swarm Wreck</strong></td>
+<td>S</td>
+<td><strong>+2 Ally count. Apply +1 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-vulnerable.html">Vulnerable</a> per 1 ally count.</strong> <em>(S: 2/10/1)</em></td>
+</tr>
+<tr>
+<td>TF14005</td>
+<td><strong>Hoarder</strong></td>
+<td>S</td>
+<td><strong>Gain 3 Mana at action end but cannot take extra actions except after casting skill.</strong> <em>(S: 3)</em></td>
+</tr>
+</tbody>
+</table>
+<h3>Class-restricted: Archer (21 talents across 10 base IDs)</h3>
+<table>
+<thead>
+<tr>
+<th>Base ID</th>
+<th>Name</th>
+<th>Tiers</th>
+<th>Effect (highest-tier filled) &amp; per-tier values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TF10301</td>
+<td><strong>Fixed Turret</strong></td>
+<td>S</td>
+<td><strong>Deal +2 Follow-Up attacks but cannot take extra actions except after casting skill.</strong> <em>(S: 2)</em></td>
+</tr>
+<tr>
+<td>TF10302</td>
+<td><strong>Precise Track</strong></td>
+<td>AS</td>
+<td><strong>Deal +1 Follow-Up DMG per 25 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/buff-precision.html">Precision</a>.</strong> <em>(A: 50/1 · S: 25/1)</em></td>
+</tr>
+<tr>
+<td>TF10303</td>
+<td><strong>Opportunist</strong></td>
+<td>CBAS</td>
+<td><strong>Deal +8 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> during extra actions.</strong> <em>(C: 2 · B: 4 · A: 6 · S: 8)</em></td>
+</tr>
+<tr>
+<td>TF10304</td>
+<td><strong>Burst Combo</strong></td>
+<td>S</td>
+<td><strong>The first basic attack each turn triggers +2 Follow-Ups.</strong> <em>(S: 2)</em></td>
+</tr>
+<tr>
+<td>TF10305</td>
+<td><strong>Never Miss</strong></td>
+<td>CBAS</td>
+<td><strong>Ignore 40 enemy <a href="../keywords/stat-def.html">DEF</a> during basic attacks.</strong> <em>(C: 10 · B: 20 · A: 30 · S: 40)</em></td>
+</tr>
+<tr>
+<td>TF10306</td>
+<td><strong>Kite Master</strong></td>
+<td>AS</td>
+<td><strong>Take -1 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> per 40 <a href="../keywords/stat-spd.html">SPD</a>.</strong> <em>(A: 80/1 · S: 40/1)</em></td>
+</tr>
+<tr>
+<td>TF10307</td>
+<td><strong>Long Range</strong></td>
+<td>AS</td>
+<td><strong>Deal +2 Follow-Up attacks to the farthest enemy.</strong> <em>(A: 1 · S: 2)</em></td>
+</tr>
+<tr>
+<td>TF10308</td>
+<td><strong>Take Cover</strong></td>
+<td>AS</td>
+<td><strong>Take -8 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> while front allies are alive.</strong> <em>(A: 4 · S: 8)</em></td>
+</tr>
+<tr>
+<td>TF10309</td>
+<td><strong>Boot Master</strong></td>
+<td>AS</td>
+<td><strong>Gain +4 <a href="../keywords/stat-all-stats.html">all stats</a> from Boots gear. Boots gear's Basic Bond level +2.</strong> <em>(A: 2/1 · S: 4/2)</em></td>
+</tr>
+<tr>
+<td>TF10310</td>
+<td><strong>Bullet Screen</strong></td>
+<td>S</td>
+<td><strong>Gain +1 Follow-Up attacks this turn after casting skill.</strong> <em>(S: 1)</em></td>
+</tr>
+</tbody>
+</table>
+<h3>Element-restricted: Fire (10 talents across 6 base IDs)</h3>
+<table>
+<thead>
+<tr>
+<th>Base ID</th>
+<th>Name</th>
+<th>Tiers</th>
+<th>Effect (highest-tier filled) &amp; per-tier values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TF11301</td>
+<td><strong>Flame Body</strong></td>
+<td>AS</td>
+<td><strong>Apply +2 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-burn.html">Burn</a>. Apply 6 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-burn.html">Burn</a> to the nearest enemy after taking a hit.</strong> <em>(A: 1/3 · S: 2/6)</em></td>
+</tr>
+<tr>
+<td>TF11302</td>
+<td><strong>Vein Flow</strong></td>
+<td>AS</td>
+<td><strong>Gain +4 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/buff-bloodlust.html">Bloodlust</a>. <a href="../keywords/buff-bloodlust.html">Bloodlust</a> is not consumed after basic attacks.</strong> <em>(A: 2 · S: 4)</em></td>
+</tr>
+<tr>
+<td>TF11303</td>
+<td><strong>Fierce Fire</strong></td>
+<td>S</td>
+<td><strong>Total DMG +15, but total HP restored to targets -15.</strong> <em>(S: 15/15)</em></td>
+</tr>
+<tr>
+<td>TF11304</td>
+<td><strong>High Spirit</strong></td>
+<td>AS</td>
+<td><strong>+10 <a href="../keywords/stat-toughness.html">Toughness</a>. Deal +1 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> per 10 current <a href="../keywords/stat-toughness.html">Toughness</a>.</strong> <em>(A: 5/20/1 · S: 10/10/1)</em></td>
+</tr>
+<tr>
+<td>TF11305</td>
+<td><strong>Flame Control</strong></td>
+<td>AS</td>
+<td><strong>Apply +1 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-burn.html">Burn</a> per 50 SPI.</strong> <em>(A: 100/1 · S: 50/1)</em></td>
+</tr>
+<tr>
+<td>TF11306</td>
+<td><strong>Endless Rage</strong></td>
+<td>S</td>
+<td><strong>+1 <a href="../keywords/mechanic-hit-mana.html">Hit Mana</a>. Deal +1 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> per 1 <a href="../keywords/mechanic-hit-mana.html">Hit Mana</a>.</strong> <em>(S: 1/1/1)</em></td>
+</tr>
+</tbody>
+</table>
+<h3>Generic (no restriction) (58 talents across 19 base IDs)</h3>
+<table>
+<thead>
+<tr>
+<th>Base ID</th>
+<th>Name</th>
+<th>Tiers</th>
+<th>Effect (highest-tier filled) &amp; per-tier values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TF10001</td>
+<td><strong>Strong</strong></td>
+<td>CBAS</td>
+<td><strong>+16 STR. Effect doubles if STR is at least 100.</strong> <em>(C: 4/100 · B: 8/100 · A: 12/100 · S: 16/100)</em></td>
+</tr>
+<tr>
+<td>TF10002</td>
+<td><strong>Clear Mind</strong></td>
+<td>CBAS</td>
+<td><strong>+16 SPI. Effect doubles if SPI is at least 100.</strong> <em>(C: 4/100 · B: 8/100 · A: 12/100 · S: 16/100)</em></td>
+</tr>
+<tr>
+<td>TF10003</td>
+<td><strong>Quick Reflexes</strong></td>
+<td>CBAS</td>
+<td><strong>+16 AGI. Effect doubles if AGI is at least 100.</strong> <em>(C: 4/100 · B: 8/100 · A: 12/100 · S: 16/100)</em></td>
+</tr>
+<tr>
+<td>TF10004</td>
+<td><strong>Fit Body</strong></td>
+<td>CBAS</td>
+<td><strong>+16 HP. Effect doubles if HP is at least 100.</strong> <em>(C: 4/100 · B: 8/100 · A: 12/100 · S: 16/100)</em></td>
+</tr>
+<tr>
+<td>TF10005</td>
+<td><strong>Strong Will</strong></td>
+<td>CBAS</td>
+<td><strong>+16 <a href="../keywords/stat-toughness.html">Toughness</a>. Effect doubles if <a href="../keywords/stat-toughness.html">Toughness</a> is at least 100.</strong> <em>(C: 4/100 · B: 8/100 · A: 12/100 · S: 16/100)</em></td>
+</tr>
+<tr>
+<td>TF10006</td>
+<td><strong>Nimble Limbs</strong></td>
+<td>CBAS</td>
+<td><strong>+16 <a href="../keywords/stat-spd.html">SPD</a>. Effect doubles if <a href="../keywords/stat-spd.html">SPD</a> is at least 100.</strong> <em>(C: 4/100 · B: 8/100 · A: 12/100 · S: 16/100)</em></td>
+</tr>
+<tr>
+<td>TF10007</td>
+<td><strong>Battle Ready</strong></td>
+<td>CBAS</td>
+<td><strong>Take -12 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> when in front position.</strong> <em>(C: 3 · B: 6 · A: 9 · S: 12)</em></td>
+</tr>
+<tr>
+<td>TF10008</td>
+<td><strong>Lucky Streak</strong></td>
+<td>CBAS</td>
+<td><strong>+8 <a href="../keywords/stat-luck.html">Luck</a>. Effect doubles if <a href="../keywords/stat-luck.html">Luck</a> is at least 50.</strong> <em>(C: 2/50 · B: 4/50 · A: 6/50 · S: 8/50)</em></td>
+</tr>
+<tr>
+<td>TF10009</td>
+<td><strong>Core Position</strong></td>
+<td>CBAS</td>
+<td><strong>Deal +8 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> when in mid position.</strong> <em>(C: 2 · B: 4 · A: 6 · S: 8)</em></td>
+</tr>
+<tr>
+<td>TF10010</td>
+<td><strong>Glass Cannon</strong></td>
+<td>CBAS</td>
+<td><strong>Deal +12 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> but take +5 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> when in back position.</strong> <em>(C: 3/5 · B: 6/5 · A: 9/5 · S: 12/5)</em></td>
+</tr>
+<tr>
+<td>TF10011</td>
+<td><strong>Mana Surge</strong></td>
+<td>CB</td>
+<td><strong>Gain 30 Mana at turn 2 start.</strong> <em>(C: 4/30 · B: 2/30)</em></td>
+</tr>
+<tr>
+<td>TF10012</td>
+<td><strong>Life Rebuild</strong></td>
+<td>CB</td>
+<td><strong>Gain 100 HP at turn 2 start.</strong> <em>(C: 4/100 · B: 2/100)</em></td>
+</tr>
+<tr>
+<td>TF10013</td>
+<td><strong>Mind Reshape</strong></td>
+<td>CB</td>
+<td><strong>Gain 100 <a href="../keywords/stat-toughness.html">Toughness</a> at turn 2 start.</strong> <em>(C: 4/100 · B: 2/100)</em></td>
+</tr>
+<tr>
+<td>TF10014</td>
+<td><strong>Think First</strong></td>
+<td>AS</td>
+<td><strong>Cannot act on turn 1 but gain +8 <a href="../keywords/mechanic-action-mana.html">Action Mana</a> on subsequent turns.</strong> <em>(A: 4 · S: 8)</em></td>
+</tr>
+<tr>
+<td>TF10015</td>
+<td><strong>Mood Control</strong></td>
+<td>AS</td>
+<td><strong>Cannot act on turn 1 but gain +4 <a href="../keywords/mechanic-hit-mana.html">Hit Mana</a> on subsequent turns.</strong> <em>(A: 2 · S: 4)</em></td>
+</tr>
+<tr>
+<td>TF10016</td>
+<td><strong>Scrap Use</strong></td>
+<td>AS</td>
+<td><strong>Gain +2 <a href="../keywords/stat-all-stats.html">all stats</a> per Bronze Bond.</strong> <em>(A: 1 · S: 2)</em></td>
+</tr>
+<tr>
+<td>TF10017</td>
+<td><strong>Patchwork</strong></td>
+<td>AS</td>
+<td><strong>Gain +2 <a href="../keywords/stat-all-stats.html">all stats</a> per Silver Bond.</strong> <em>(A: 1 · S: 2)</em></td>
+</tr>
+<tr>
+<td>TF10018</td>
+<td><strong>Bond Master</strong></td>
+<td>AS</td>
+<td><strong>Gain +2 <a href="../keywords/stat-all-stats.html">all stats</a> per Gold Bond.</strong> <em>(A: 1 · S: 2)</em></td>
+</tr>
+<tr>
+<td>TF10019</td>
+<td><strong>Gear Expert</strong></td>
+<td>AS</td>
+<td><strong>Gain +2 <a href="../keywords/stat-all-stats.html">all stats</a> from each Orange+ gear.</strong> <em>(A: 1 · S: 2)</em></td>
+</tr>
+</tbody>
+</table>
+<h2>Cross-references</h2>
+<ul>
+<li><strong>Active skill localization:</strong> <code>Activeskills_Name_M12004_002</code> / <code>Activeskills_Des_M12004_002</code></li>
+<li><strong>In recruit pool:</strong> <code>SkinSummonDataTable.M12004_002</code></li>
+<li><strong>Other relics targeting this unit:</strong> <code>XD01001_092</code></li>
+</ul>
+<h2>Talents</h2>
+<p>Talents unlock at <strong>5★</strong>, rolled / rerolled with <strong>Talent Fruit</strong>. Eligible pool for this unit = <strong>99</strong> total = 0 exclusive + 10 race + 21 class + 10 element + 58 generic.</p>
+<blockquote>
+<p><strong>Format:</strong> Effect column = canonical <code>TalentDataTable.Effect_EN</code> with <strong>highest-tier values filled</strong> (bold). <code>Tiers</code> column lists which tiers the talent has (e.g. <code>CBAS</code>, <code>AS</code>, <code>S</code>). Per-tier values in italic at end as <code>Value0[/Value1[/Value2]]</code>. Talent names are canonical from <code>Name_EN</code> — do NOT paraphrase.</p>
+</blockquote>
+<h3>Exclusive (0)</h3>
+<p><em>(none)</em></p>
+<h3>Race-restricted: Rodent (10 talents across 5 base IDs)</h3>
+<table>
+<thead>
+<tr>
+<th>Base ID</th>
+<th>Name</th>
+<th>Tiers</th>
+<th>Effect (highest-tier filled) &amp; per-tier values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TF14001</td>
+<td><strong>Wreck Master</strong></td>
+<td>AS</td>
+<td><strong>Apply +2 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-vulnerable.html">Vulnerable</a>. Apply +1 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-vulnerable.html">Vulnerable</a> per 100 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-vulnerable.html">Vulnerable</a> on target.</strong> <em>(A: 1/200/1 · S: 2/100/1)</em></td>
+</tr>
+<tr>
+<td>TF14002</td>
+<td><strong>Toxin Resist</strong></td>
+<td>CBAS</td>
+<td><strong>Take -16 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-hinder.html">Hinder</a>.</strong> <em>(C: 4 · B: 8 · A: 12 · S: 16)</em></td>
+</tr>
+<tr>
+<td>TF14003</td>
+<td><strong>Dig Expert</strong></td>
+<td>AS</td>
+<td><strong>Deal +6 <a href="../keywords/mechanic-total-dmg.html">total DMG</a>. Effect doubles on Mountain maps.</strong> <em>(A: 3 · S: 6)</em></td>
+</tr>
+<tr>
+<td>TF14004</td>
+<td><strong>Swarm Wreck</strong></td>
+<td>S</td>
+<td><strong>+2 Ally count. Apply +1 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-vulnerable.html">Vulnerable</a> per 1 ally count.</strong> <em>(S: 2/10/1)</em></td>
+</tr>
+<tr>
+<td>TF14005</td>
+<td><strong>Hoarder</strong></td>
+<td>S</td>
+<td><strong>Gain 3 Mana at action end but cannot take extra actions except after casting skill.</strong> <em>(S: 3)</em></td>
+</tr>
+</tbody>
+</table>
+<h3>Class-restricted: Warrior (21 talents across 10 base IDs)</h3>
+<table>
+<thead>
+<tr>
+<th>Base ID</th>
+<th>Name</th>
+<th>Tiers</th>
+<th>Effect (highest-tier filled) &amp; per-tier values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TF10101</td>
+<td><strong>Guard Master</strong></td>
+<td>CBAS</td>
+<td><strong>All allies take -4 <a href="../keywords/mechanic-total-dmg.html">total DMG</a>.</strong> <em>(C: 1 · B: 2 · A: 3 · S: 4)</em></td>
+</tr>
+<tr>
+<td>TF10102</td>
+<td><strong>Unbreakable Defense</strong></td>
+<td>S</td>
+<td><strong>+15 <a href="../keywords/stat-def.html">DEF</a>. Take -1 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> per 50 <a href="../keywords/stat-def.html">DEF</a>.</strong> <em>(S: 15/50/1)</em></td>
+</tr>
+<tr>
+<td>TF10103</td>
+<td><strong>Anger Counter</strong></td>
+<td>S</td>
+<td><strong>Deal +1 Counter DMG after taking DMG.</strong> <em>(S: 1)</em></td>
+</tr>
+<tr>
+<td>TF10104</td>
+<td><strong>War Trample</strong></td>
+<td>AS</td>
+<td><strong>Nearest enemy loses 4 HP at action end. Effect increases by 1 per 40 STR.</strong> <em>(A: 2/80/1 · S: 4/40/1)</em></td>
+</tr>
+<tr>
+<td>TF10105</td>
+<td><strong>Shield Taunt</strong></td>
+<td>AS</td>
+<td><strong>Prioritize becoming enemy target. Take -4 <a href="../keywords/mechanic-total-dmg.html">total DMG</a>.</strong> <em>(A: 2 · S: 4)</em></td>
+</tr>
+<tr>
+<td>TF10106</td>
+<td><strong>Aura Pressure</strong></td>
+<td>CBAS</td>
+<td><strong>All enemies deal -4 <a href="../keywords/mechanic-total-dmg.html">total DMG</a>.</strong> <em>(C: 1 · B: 2 · A: 3 · S: 4)</em></td>
+</tr>
+<tr>
+<td>TF10107</td>
+<td><strong>Pommel Strike</strong></td>
+<td>AS</td>
+<td><strong>Apply 8 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-stun.html">Stun</a> to target after successful counter.</strong> <em>(A: 4 · S: 8)</em></td>
+</tr>
+<tr>
+<td>TF10108</td>
+<td><strong>Armor Expert</strong></td>
+<td>AS</td>
+<td><strong>Gain +4 <a href="../keywords/stat-all-stats.html">all stats</a> from Body gear. Body gear's Basic Bond level +2.</strong> <em>(A: 2/1 · S: 4/2)</em></td>
+</tr>
+<tr>
+<td>TF10109</td>
+<td><strong>Focus Defense</strong></td>
+<td>AS</td>
+<td><strong>+50 <a href="../keywords/stat-def.html">DEF</a> but cannot counter.</strong> <em>(A: 25 · S: 50)</em></td>
+</tr>
+<tr>
+<td>TF10110</td>
+<td><strong>Stand Firm</strong></td>
+<td>S</td>
+<td><strong>Single hit DMG cannot exceed 10% of Max HP when taking a hit on turn 1.</strong> <em>(S: 10)</em></td>
+</tr>
+</tbody>
+</table>
+<h3>Element-restricted: Fire (10 talents across 6 base IDs)</h3>
+<table>
+<thead>
+<tr>
+<th>Base ID</th>
+<th>Name</th>
+<th>Tiers</th>
+<th>Effect (highest-tier filled) &amp; per-tier values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TF11301</td>
+<td><strong>Flame Body</strong></td>
+<td>AS</td>
+<td><strong>Apply +2 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-burn.html">Burn</a>. Apply 6 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-burn.html">Burn</a> to the nearest enemy after taking a hit.</strong> <em>(A: 1/3 · S: 2/6)</em></td>
+</tr>
+<tr>
+<td>TF11302</td>
+<td><strong>Vein Flow</strong></td>
+<td>AS</td>
+<td><strong>Gain +4 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/buff-bloodlust.html">Bloodlust</a>. <a href="../keywords/buff-bloodlust.html">Bloodlust</a> is not consumed after basic attacks.</strong> <em>(A: 2 · S: 4)</em></td>
+</tr>
+<tr>
+<td>TF11303</td>
+<td><strong>Fierce Fire</strong></td>
+<td>S</td>
+<td><strong>Total DMG +15, but total HP restored to targets -15.</strong> <em>(S: 15/15)</em></td>
+</tr>
+<tr>
+<td>TF11304</td>
+<td><strong>High Spirit</strong></td>
+<td>AS</td>
+<td><strong>+10 <a href="../keywords/stat-toughness.html">Toughness</a>. Deal +1 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> per 10 current <a href="../keywords/stat-toughness.html">Toughness</a>.</strong> <em>(A: 5/20/1 · S: 10/10/1)</em></td>
+</tr>
+<tr>
+<td>TF11305</td>
+<td><strong>Flame Control</strong></td>
+<td>AS</td>
+<td><strong>Apply +1 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-burn.html">Burn</a> per 50 SPI.</strong> <em>(A: 100/1 · S: 50/1)</em></td>
+</tr>
+<tr>
+<td>TF11306</td>
+<td><strong>Endless Rage</strong></td>
+<td>S</td>
+<td><strong>+1 <a href="../keywords/mechanic-hit-mana.html">Hit Mana</a>. Deal +1 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> per 1 <a href="../keywords/mechanic-hit-mana.html">Hit Mana</a>.</strong> <em>(S: 1/1/1)</em></td>
+</tr>
+</tbody>
+</table>
+<h3>Generic (58 talents — same for every unit)</h3>
+<blockquote>
+<p>See <code>units/template-unit.md</code> or any other unit profile for the full generic table. Listed once globally to avoid duplication. Re-run with <code>--include-generic</code> to emit it.</p>
+</blockquote>
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.1.1.0 · alter-c-lava-mine-gatherer.md</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>
