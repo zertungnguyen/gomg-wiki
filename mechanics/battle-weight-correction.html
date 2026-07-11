@@ -93,7 +93,7 @@ where:
 - In an <strong>S-tier battle</strong>: C-loot is forced to zero (−1). B-loot at half. A/S unaffected. → You only get top-tier drops.
 - Symmetric ceiling-AND-floor design. SS column is always 0 (no battle ever boosts/blocks SS — SS-tier loot is presumably gated elsewhere).</p>
 <h3>prefixX rows — monster prefix tier × loot tier</h3>
-<p>The "prefix tier" is the rarity step of the <strong>prefix modifier rolled onto the killed monster</strong> (e.g. <em>Ancient</em> C, <em>Infected</em> A, <em>Astral</em> S — all from <span class="broken-link" title="missing: PrefixDataTable">PrefixDataTable</span>, 143 entries). Read row = monster's prefix tier, column = candidate drop's tier:</p>
+<p>The "prefix tier" is the rarity step of the <strong>prefix modifier rolled onto the killed monster</strong> (e.g. <em>Ancient</em> C, <em>Infected</em> A, <em>Astral</em> S — all from <code>PrefixDataTable</code>, 143 entries). Read row = monster's prefix tier, column = candidate drop's tier:</p>
 <table>
 <thead>
 <tr>
@@ -340,8 +340,8 @@ public Dictionary&lt;string, BattleWeightCorrectionEntry&gt; Battle_Weight_Corre
 <li><code>data-session/intermediate/decompiled_full_mainscripts.cs:35087</code> — main consumer (equip drop)</li>
 <li><code>data-session/intermediate/decompiled_full_mainscripts.cs:89268-89345</code> — <code>WeightTableHelper</code> (live hardcoded values + getters)</li>
 <li><code>data-session/intermediate/decompiled_full_mainscripts.cs:185730</code> — <code>BattleWeightCorrectionEntry</code> DTO</li>
-<li><span class="broken-link" title="missing: PrefixDataTable">PrefixDataTable</span> — 143 monster prefixes feeding the <code>role.prefix</code> field</li>
-<li><span class="broken-link" title="missing: DifficultySpecDataTable">DifficultySpecDataTable</span> — <code>FixC/FixB/FixA/FixS</code> per-difficulty correction supplying the ΔD term</li>
+<li><code>PrefixDataTable</code> — 143 monster prefixes feeding the <code>role.prefix</code> field</li>
+<li><code>DifficultySpecDataTable</code> — <code>FixC/FixB/FixA/FixS</code> per-difficulty correction supplying the ΔD term</li>
 </ul>
 </main>
 <footer>
