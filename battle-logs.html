@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ZerGPT Battle Logs</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0e0e12;--card:#16161d;--card2:#1c1c26;--border:#2a2a3a;
+  --text:#e0dfe6;--dim:#6b6b80;--accent:#c9a24e;
+  --orange:#ff9933;--purple:#b66dff;--blue:#4ea3ff;--green:#5fcf6b;
+  --good:#2ecc71;--bad:#e74c3c;--mp:#4ea3ff;
+}
+body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.4}
+.wrap{max-width:1180px;margin:0 auto;padding:18px 14px}
+h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:2px}
+.sub{color:var(--dim);font-size:12px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:12px}
+.card-title{font-family:'Chakra Petch',sans-serif;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--dim);margin-bottom:10px}
+select{background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px 12px;font-size:14px;font-family:'Noto Sans',sans-serif;min-width:260px;cursor:pointer}
+select:focus{outline:none;border-color:var(--accent)}
+.step-badge{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;padding:0 4px;border-radius:3px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:10px;color:#1a1a1a}
+.s-S{background:var(--orange)}.s-A{background:var(--purple);color:#fff}.s-B{background:var(--blue);color:#fff}.s-C{background:var(--green)}
+
+/* meta bar */
+.meta{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-size:13px}
+.meta .k{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-right:4px;font-family:'Chakra Petch',sans-serif}
+.badge-win{background:#2ecc7122;color:var(--good);border:1px solid var(--good)}
+.badge-loss{background:#e74c3c22;color:var(--bad);border:1px solid var(--bad)}
+.badge{padding:3px 12px;border-radius:999px;font-size:12px;font-weight:600;font-family:'Chakra Petch',sans-serif;letter-spacing:1px}
+
+/* team loadout */
+.team-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.char{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:12px}
+.char h3{font-family:'Chakra Petch',sans-serif;font-size:16px;font-weight:700;color:var(--text);line-height:1.2}
+.char .cmeta{font-size:11px;color:var(--accent);margin:2px 0 8px;font-style:italic}
+.sect{margin-top:9px}
+.sect .lbl{font-family:'Chakra Petch',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);margin-bottom:4px}
+.li{display:flex;gap:6px;align-items:baseline;font-size:12px;padding:2px 0;border-bottom:1px solid #22222c}
+.li:last-child{border-bottom:none}
+.li .slot{color:var(--dim);font-size:10px;min-width:58px;font-family:'Chakra Petch',sans-serif}
+.li .nm{flex:1;min-width:0}
+.li .star{color:var(--accent);font-size:10px;white-space:nowrap}
+.li .leg{color:var(--orange);font-size:9px;font-weight:700}
+.eff{color:var(--dim);font-size:10px;line-height:1.35}
+.jewel{border:1px solid var(--border);border-radius:6px;padding:6px 8px;margin-bottom:6px;background:var(--card)}
+.jewel .jn{font-size:12px;font-weight:600}
+.jewel .afx{font-size:10px;color:var(--dim);padding-left:8px;border-left:2px solid var(--border);margin-top:3px}
+
+/* replay widget */
+.rbadge{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:#c9a24e22;color:var(--accent);font-family:'Chakra Petch',sans-serif}
+.actor{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--card2);border:1px solid var(--border)}
+.sideL{color:var(--blue)}.sideR{color:var(--bad)}.sideN{color:var(--dim)}
+.rcols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ucard{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+.ucard .un{font-size:12px;font-weight:600}
+.ucard .ur{font-size:10px;color:var(--dim)}
+.bar{height:8px;border-radius:999px;background:#0a0a10;overflow:hidden;flex:1}
+.bar>div{height:100%;border-radius:999px;transition:width .2s}
+.barrow{display:flex;align-items:center;gap:6px;margin-top:5px}
+.barrow .t{font-size:10px;color:var(--dim);width:14px}
+.barrow .v{font-size:10px;color:var(--text);width:92px;text-align:right}
+.chip{font-size:10px;padding:1px 6px;border-radius:999px;display:inline-block}
+.chip.buff{background:#2ecc7122;color:var(--good)}
+.chip.debuff{background:#e74c3c22;color:var(--bad)}
+.chips{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px;min-height:16px}
+.ctrls{display:flex;align-items:center;gap:8px;margin-top:12px}
+.ctrls button{background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:6px;width:38px;height:32px;cursor:pointer;font-size:14px}
+.ctrls button:hover{border-color:var(--accent)}
+input[type=range]{flex:1;accent-color:var(--accent)}
+.logwrap{border:1px solid var(--border);border-radius:8px;max-height:320px;overflow:auto;margin-top:12px}
+table.log{width:100%;min-width:760px;border-collapse:collapse;font-size:11px;table-layout:fixed}
+table.log th{position:sticky;top:0;background:var(--card2);text-align:left;font-weight:600;color:var(--dim);padding:6px;border-bottom:1px solid var(--border);font-family:'Chakra Petch',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+table.log td{padding:5px 6px;line-height:1.4;vertical-align:top;word-break:break-word;border-bottom:1px solid #20202a}
+tr.cur{background:#c9a24e18}
+.pos{color:var(--good)}.neg{color:var(--bad)}.mpc{color:var(--mp)}.dimc{color:var(--dim)}
+
+/* sidenav */
+html,body{overflow-x:hidden}
+body{padding-left:220px}
+.mgg-sidenav{position:fixed;top:0;left:0;width:220px;height:100vh;background:#1d2025;border-right:1px solid #2c3038;padding:20px 16px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;z-index:100;box-sizing:border-box}
+.mgg-sidenav .mgg-brand{font-weight:700;color:#f5b342;text-decoration:none;font-size:17px;padding:4px 8px 12px;border-bottom:1px solid #2c3038}
+.mgg-sidenav nav{display:flex;flex-direction:column;gap:4px}
+.mgg-sidenav nav a{color:#e3e3e3;text-decoration:none;font-size:14px;padding:8px 12px;border-radius:4px;transition:background .12s}
+.mgg-sidenav nav a:hover{background:#15171a;color:#4ea1ff}
+.mgg-sidenav nav a.current{background:#15171a;color:#f5b342}
+@media(max-width:900px){
+  body{padding-left:0}
+  .mgg-sidenav{position:static;width:100%;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px;border-right:none;border-bottom:1px solid #2c3038;padding:10px 14px;overflow:visible}
+  .mgg-sidenav .mgg-brand{border-bottom:none;padding:4px 8px;font-size:15px}
+  .mgg-sidenav nav{flex-direction:row;flex-wrap:wrap;gap:4px}
+  .mgg-sidenav nav a{padding:4px 10px;font-size:13px}
+  .team-grid{grid-template-columns:1fr}
+  .rcols{grid-template-columns:1fr}
+}
+@media(max-width:480px){.mgg-sidenav nav a{font-size:12px;padding:3px 8px}h1{font-size:20px}}
+.footer{margin-top:24px;font-size:11px;color:#444;text-align:center;line-height:1.6}
+</style>
+</head>
+<body>
+<aside class="mgg-sidenav">
+  <a class="mgg-brand" href="index.html">GMG Wiki</a>
+  <nav>
+    <a href="units/index.html">Units</a>
+    <a href="keywords/index.html">Keywords</a>
+    <a href="gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="talent-simulator.html">Talent Simulator</a>
+    <a href="battle-logs.html" class="current">Battle Logs</a>
+    <a href="search-unit.html">Search · Units</a>
+    <a href="search-talent.html">Search · Talents</a>
+    <a href="search-gear.html">Search · Gear</a>
+    <a href="search-runes.html">Search · Runes</a>
+    <a href="search-godstone.html">Search · Jewels</a>
+    <a href="news.html">News</a>
+  </nav>
+</aside>
+
+<div class="wrap">
+<h1>⚔️ ZerGPT Battle Logs</h1>
+<div class="sub">Guild of Monster Girls · replay a recorded battle step-by-step with the team loadout used</div>
+
+<div id="loading" class="card" style="border-color:var(--bad)">Loading battle-logs-data.js…</div>
+
+<div id="app" style="display:none">
+  <div class="card">
+    <div class="card-title">Select battle</div>
+    <select id="pick"></select>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Battle</div>
+    <div class="meta" id="meta"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">My team · loadout</div>
+    <div class="team-grid" id="team"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>Replay</span>
+      <span style="text-transform:none;letter-spacing:0;color:var(--dim);font-size:10px">
+        <span class="chip buff">buff</span> <span class="chip debuff">debuff</span> · number = stack count · HP <span style="color:var(--good)">■</span>/<span style="color:var(--bad)">■</span> · MP <span style="color:var(--mp)">■</span>
+      </span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+      <span class="rbadge" id="rRound">Round 1</span>
+      <span class="actor" id="rActor">—</span>
+      <span style="flex:1"></span>
+      <span class="dimc" id="rStep" style="font-size:11px">1 / 1</span>
+    </div>
+    <div class="rcols">
+      <div>
+        <div class="lbl" style="font-family:'Chakra Petch';font-size:10px;letter-spacing:1.5px;color:var(--dim);margin-bottom:6px">YOUR TEAM</div>
+        <div id="rAlly" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+      <div>
+        <div class="lbl" style="font-family:'Chakra Petch';font-size:10px;letter-spacing:1.5px;color:var(--dim);margin-bottom:6px">ENEMIES</div>
+        <div id="rEnemy" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+    </div>
+    <div class="ctrls">
+      <button id="bPlay" aria-label="play">▶</button>
+      <button id="bPrev" aria-label="prev">‹</button>
+      <input id="slider" type="range" min="0" max="0" value="0" step="1">
+      <button id="bNext" aria-label="next">›</button>
+    </div>
+    <div class="logwrap">
+      <table class="log">
+        <thead><tr>
+          <th style="width:44px">Step</th><th style="width:160px">Action origin</th>
+          <th style="width:162px">HP log</th><th style="width:112px">MP log</th>
+          <th>Buff / Debuff</th><th style="width:90px">Defeated</th>
+        </tr></thead>
+        <tbody id="logBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="footer">ZerGPT Battle Logs · data extracted from in-game battle capture</div>
+</div>
+
+<script src="battle-logs-data.js"></script>
+<script>
+(function(){
+  var DATA = window.BATTLE_LOGS || [];
+  if(!DATA.length){ document.getElementById('loading').textContent='No battles found in battle-logs-data.js'; return; }
+  document.getElementById('loading').style.display='none';
+  document.getElementById('app').style.display='';
+
+  var CN=['Haste','Shield','Precision','Growth','Regen','Soothe','Stun','Chill','Burn'];
+  var isBuff=function(ci){return ci<6;};
+  var ATK={N:'Normal Attack',F:'Follow-up Attack',C:'Counter Attack'};
+  var fmt=function(n){return n.toLocaleString('en-US');};
+  var sfmt=function(n){return (n>0?'+':'')+n.toLocaleString('en-US');};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});};
+  var stepBadge=function(s){return s?'<span class="step-badge s-'+esc(s)+'">'+esc(s)+'</span>':'';};
+
+  // ---- populate selector ----
+  var pick=document.getElementById('pick');
+  DATA.forEach(function(r,i){
+    var o=document.createElement('option'); o.value=i;
+    o.textContent=(r.title||r.id)+' · '+(r.meta&&r.meta.result==='win'?'Win':'Loss');
+    pick.appendChild(o);
+  });
+  pick.onchange=function(){ show(DATA[+pick.value]); };
+
+  // ---- battle meta ----
+  function renderMeta(r){
+    var m=r.meta||{}, win=m.result==='win';
+    document.getElementById('meta').innerHTML=
+      '<span class="badge '+(win?'badge-win':'badge-loss')+'">'+(win?'VICTORY':'DEFEAT')+(m.fullTeam?' · full team':'')+'</span>'
+      +'<span><span class="k">Area</span>'+esc(m.areaEN||m.area||'—')+'</span>'
+      +'<span><span class="k">Difficulty</span>'+esc(m.difficulty!=null?m.difficulty:'—')+'</span>'
+      +'<span><span class="k">Type</span>'+esc(m.type||'—')+'</span>'
+      +'<span><span class="k">Date</span>'+esc(m.date||'—')+'</span>'
+      +'<span><span class="k">VS</span>'+ (r.enemyNames||[]).map(esc).join(' · ') +'</span>';
+  }
+
+  // ---- team loadout ----
+  function renderTeam(r){
+    var host=document.getElementById('team'); host.innerHTML='';
+    (r.team||[]).forEach(function(u){
+      var c=document.createElement('div'); c.className='char';
+      var h='<h3>'+stepBadge(u.step)+' '+esc(u.name)+'</h3>'
+        +'<div class="cmeta">'+esc(u.class||'')+(u.element?' · '+esc(u.element):'')
+        +(u.star!=null?' · ★'+u.star:'')+(u.level!=null?' · Lv'+u.level:'')+'</div>';
+      // gear
+      h+='<div class="sect"><div class="lbl">Gear</div>'+ (u.gear||[]).map(function(g){
+        return '<div class="li"><span class="slot">'+esc(g.slot||'')+'</span><span class="nm">'+stepBadge(g.step)+' '+esc(g.name)
+          +'</span><span class="star">★'+(g.star||0)+(g.heritage?' <span class="leg">LEG</span>':'')+'</span></div>';
+      }).join('')+'</div>';
+      // runes
+      h+='<div class="sect"><div class="lbl">Runes</div>'+ (u.runes||[]).map(function(x){
+        return '<div class="li"><span class="nm">'+stepBadge(x.step)+' '+esc(x.name)+'</span>'
+          +(x.material?'<span class="slot" style="min-width:auto">'+esc(x.material)+'</span>':'')+'</div>';
+      }).join('')+'</div>';
+      // talents
+      h+='<div class="sect"><div class="lbl">Talents</div>'+ (u.talents||[]).map(function(t){
+        return '<div class="li"><span class="nm">'+stepBadge(t.step)+' '+esc(t.name)
+          +(t.effect?'<div class="eff">'+esc(t.effect)+'</div>':'')+'</span></div>';
+      }).join('')+'</div>';
+      // support
+      h+='<div class="sect"><div class="lbl">Support</div>'+ (u.supports||[]).map(function(s){
+        return '<div class="li"><span class="slot">'+esc(s.slot)+'</span><span class="nm">'+esc(s.name)+'</span></div>';
+      }).join('')+'</div>';
+      // jewels
+      h+='<div class="sect"><div class="lbl">Jewels</div>'+ (u.jewels||[]).map(function(j){
+        return '<div class="jewel"><div class="jn">'+stepBadge(j.step)+' '+esc(j.name)+'</div>'
+          + (j.affixes||[]).map(function(a){return '<div class="afx">'+esc(a.text)+'</div>';}).join('') +'</div>';
+      }).join('')+'</div>';
+      c.innerHTML=h; host.appendChild(c);
+    });
+  }
+
+  // ---- replay ----
+  var R,MX,MM,NAMES,SKILLS,ST,rows,idx,playing,timer,ecards;
+  function actColor(ac){ return ac ? (ac[0]>3?'sideR':'sideL') : 'sideN'; }
+  function actText(ac){ if(!ac) return 'Status / DoT tick'; var u=ac[0], t=ac[1]==='S'?(SKILLS[u-1]||'Skill'):ATK[ac[1]]; return esc(NAMES[u-1])+' · '+t; }
+
+  function buildStates(F){
+    var run=[{},{},{},{},{},{}], out=[];
+    for(var g=0;g<F.length;g++){
+      var sd=F[g][4]||[];
+      for(var s=0;s<sd.length;s++){var u=sd[s][0],ci=sd[s][1],dv=sd[s][2],v=(run[u][ci]||0)+dv; if(v>0)run[u][ci]=v; else delete run[u][ci];}
+      var snap=[]; for(var i=0;i<6;i++){var m={}; for(var k in run[i])m[k]=run[i][k]; snap.push(m);} out.push(snap);
+    }
+    return out;
+  }
+  function chips(g,i){
+    var map=ST[g][i], pm=g>0?ST[g-1][i]:{}, codes=Object.keys(map).sort(function(a,b){return (isBuff(+a)?0:1)-(isBuff(+b)?0:1);}), h='';
+    for(var k=0;k<codes.length;k++){var ci=+codes[k], d=(map[ci]||0)-(pm[ci]||0), dd=d!==0?' <span style="opacity:.65">'+sfmt(d)+'</span>':'';
+      h+='<span class="chip '+(isBuff(ci)?'buff':'debuff')+'">'+CN[ci]+' '+map[ci]+dd+'</span>';}
+    return h;
+  }
+  function hpLog(g){if(g===0)return '<span class="dimc">-</span>';var c=R[g][1],p=R[g-1][1],o=[];for(var i=0;i<6;i++){var d=c[i]-p[i];if(d)o.push('<span class="'+(d<0?'neg':'pos')+'">'+esc(NAMES[i])+' '+sfmt(d)+'</span>');}return o.length?o.join('<br>'):'<span class="dimc">-</span>';}
+  function mpLog(g){if(g===0)return '<span class="dimc">-</span>';var c=R[g][2],p=R[g-1][2],o=[];for(var i=0;i<6;i++){var d=c[i]-p[i];if(d)o.push('<span class="mpc">'+esc(NAMES[i])+' '+sfmt(d)+'</span>');}return o.length?o.join('<br>'):'<span class="dimc">-</span>';}
+  function stLog(g){var sd=R[g][4]||[];if(!sd.length)return '<span class="dimc">-</span>';var per={};for(var s=0;s<sd.length;s++){var u=sd[s][0];(per[u]=per[u]||[]).push([sd[s][1],sd[s][2]]);}var o=[];for(var u in per){var parts=[];for(var j=0;j<per[u].length;j++){var ci=per[u][j][0],dv=per[u][j][1],now=(ST[g][u][ci]||0),cl=isBuff(ci)?'pos':'neg';var txt=now===0?('-'+CN[ci]):(now-dv===0?('+'+CN[ci]+' '+now):(CN[ci]+' '+sfmt(dv)));parts.push('<span class="'+cl+'">'+txt+'</span>');}o.push('<span class="dimc">'+esc(NAMES[u])+':</span> '+parts.join(', '));}return o.join('<br>');}
+  function defLog(g){if(g===0)return '';var c=R[g][1],p=R[g-1][1],o=[];for(var i=0;i<6;i++){if(c[i]===0&&p[i]>0)o.push('<span class="neg">'+esc(NAMES[i])+'</span>');}return o.join('<br>');}
+
+  function initReplay(r){
+    R=r.battle.F; MX=r.battle.mx; MM=r.battle.mm;
+    NAMES=(r.allyNames||[]).concat(r.enemyNames||[]); SKILLS=r.skillNames||[];
+    ST=buildStates(R);
+    var team=(r.team||[]);
+    function card(i,side){
+      var nm=NAMES[i], role=side?'':(team[i]?team[i].class:''), hpc=side?'var(--bad)':'var(--good)';
+      return '<div class="ucard" data-i="'+i+'"><div style="display:flex;justify-content:space-between"><span class="un">'+esc(nm)+'</span><span class="ur">'+esc(role)+'</span></div>'
+        +'<div class="barrow"><span class="t">HP</span><div class="bar"><div data-hb style="background:'+hpc+'"></div></div><span class="v" data-ht></span></div>'
+        +'<div class="barrow"><span class="t">MP</span><div class="bar"><div data-mb style="background:var(--mp)"></div></div><span class="v" data-mt></span></div>'
+        +'<div class="chips" data-st></div></div>';
+    }
+    document.getElementById('rAlly').innerHTML=[0,1,2].map(function(i){return card(i,0);}).join('');
+    document.getElementById('rEnemy').innerHTML=[3,4,5].map(function(i){return card(i,1);}).join('');
+    ecards=[];
+    document.querySelectorAll('.ucard').forEach(function(el){
+      ecards[+el.getAttribute('data-i')]={w:el,hb:el.querySelector('[data-hb]'),ht:el.querySelector('[data-ht]'),mb:el.querySelector('[data-mb]'),mt:el.querySelector('[data-mt]'),st:el.querySelector('[data-st]')};
+    });
+    // log rows
+    var body=document.getElementById('logBody'); body.innerHTML=''; rows=[];
+    for(var g=0;g<R.length;g++){(function(g){
+      var tr=document.createElement('tr');
+      tr.innerHTML='<td><b>#'+(g+1)+'</b><br><span class="dimc" style="font-size:10px">R'+R[g][0]+'</span></td>'
+        +'<td class="'+actColor(R[g][3])+'" style="font-weight:600">'+actText(R[g][3])+'</td>'
+        +'<td>'+hpLog(g)+'</td><td>'+mpLog(g)+'</td><td>'+stLog(g)+'</td><td>'+defLog(g)+'</td>';
+      tr.style.cursor='pointer'; tr.onclick=function(){stop();go(g);};
+      body.appendChild(tr); rows.push(tr);
+    })(g);}
+    var sl=document.getElementById('slider'); sl.max=R.length-1; sl.value=0;
+    idx=0; stop(); render();
+  }
+  function render(){
+    var g=idx, prev=g>0?g-1:null;
+    document.getElementById('rRound').textContent='Round '+R[g][0];
+    document.getElementById('rStep').textContent=(g+1)+' / '+R.length;
+    var ab=document.getElementById('rActor'); ab.className='actor '+actColor(R[g][3]); ab.innerHTML='▶ '+actText(R[g][3]);
+    document.getElementById('slider').value=g;
+    var hp=R[g][1],mp=R[g][2],ph=prev!=null?R[prev][1]:null,pm=prev!=null?R[prev][2]:null;
+    for(var i=0;i<6;i++){var e=ecards[i],dead=hp[i]===0;
+      e.hb.style.width=Math.max(0,Math.min(100,hp[i]/MX[i]*100)).toFixed(1)+'%';
+      e.mb.style.width=Math.max(0,Math.min(100,mp[i]/MM[i]*100)).toFixed(1)+'%';
+      var dh=ph?hp[i]-ph[i]:0,dm=pm?mp[i]-pm[i]:0;
+      e.ht.innerHTML=fmt(hp[i])+' / '+fmt(MX[i])+(dh?' <span class="'+(dh<0?'neg':'pos')+'">'+sfmt(dh)+'</span>':'');
+      e.mt.innerHTML=mp[i]+' / '+MM[i]+(dm?' <span class="mpc">'+sfmt(dm)+'</span>':'');
+      e.w.style.opacity=dead?0.4:1;
+      e.st.innerHTML=dead?'<span class="dimc" style="font-size:10px">defeated</span>':chips(g,i);
+    }
+    for(var k=0;k<rows.length;k++)rows[k].className=k===g?'cur':'';
+    var rw=document.querySelector('.logwrap'),tr=rows[g]; rw.scrollTop=tr.offsetTop-rw.clientHeight/2+tr.clientHeight/2;
+  }
+  function go(n){idx=Math.max(0,Math.min(R.length-1,n));render();}
+  function stop(){playing=false;clearInterval(timer);document.getElementById('bPlay').textContent='▶';}
+  document.getElementById('bPlay').onclick=function(){if(playing){stop();return;}if(idx>=R.length-1)idx=0;playing=true;this.textContent='⏸';timer=setInterval(function(){if(idx>=R.length-1){stop();return;}go(idx+1);},550);};
+  document.getElementById('bPrev').onclick=function(){stop();go(idx-1);};
+  document.getElementById('bNext').onclick=function(){stop();go(idx+1);};
+  document.getElementById('slider').oninput=function(){stop();go(+this.value);};
+
+  function show(r){ renderMeta(r); renderTeam(r); initReplay(r); }
+  show(DATA[0]);
+})();
+</script>
+</body>
+</html>

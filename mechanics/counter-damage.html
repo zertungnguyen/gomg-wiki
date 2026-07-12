@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Counter Damage & the Counter-Stun Condition — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="../index.html">GMG Wiki</a>
+  <nav>
+    <a href="../units/index.html">Units</a>
+    <a href="../keywords/index.html">Keywords</a>
+    <a href="../gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="../talent-simulator.html">Talent Simulator</a>
+    <a href="../battle-logs.html">Battle Logs</a>
+    <a href="../search-unit.html">Search · Units</a>
+    <a href="../search-talent.html">Search · Talents</a>
+    <a href="../search-gear.html">Search · Gear</a>
+    <a href="../search-runes.html">Search · Runes</a>
+    <a href="../search-godstone.html">Search · Jewels</a>
+    <a href="../news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>Counter Damage &amp; the Counter-Stun Condition</h1>
+<p><strong>How Counter DMG is calculated, how raw Counter DMG from Jewels stacks, and — critically — what actually triggers a counter's on-hit <a href="../keywords/debuff-stun.html">Stun</a> rider (Rogue set / Pommel-Strike style talents).</strong></p>
+<p>Community-tested in-game (training dummy), not decompile-verified. Complements the base keyword page <a href="../keywords/mechanic-counter.html">Counter</a> and the stat pipeline in <a href="../mechanics/stat-calculation.html">stat-calculation</a>.</p>
+<h2>TL;DR</h2>
+<ul>
+<li><strong>Counter = your DEF measured against the enemy's ATK.</strong> When you take a hit while within Counter range, you deal Counter DMG back.</li>
+<li><strong>Every 5 DEF above the enemy's ATK = +1 Counter DMG.</strong> (Only Warriors have a base Counter range of 1 — see <a href="../keywords/mechanic-counter.html">Counter</a>.)</li>
+<li><strong><a href="../mechanics/godstone.html">Jewels</a> add raw Counter DMG on top</strong> — up to <strong>8 Counter DMG per line</strong>, <strong>24 per Jewel</strong>, <strong>144 across 6 Jewels</strong>. That raw bonus is equivalent to ≈ <strong>720 DEF above the enemy's ATK</strong>, but it does <strong>not</strong> bypass the counter calculation — it just adds on top of it.</li>
+<li><strong>⚠️ The counter-stun rider needs <em>actual</em> DEF &gt; enemy ATK — not merely dealing ≥ 1 Counter DMG.</strong> Raw Counter DMG from Jewels can make a counter <em>deal damage</em> while your DEF is still below the enemy's ATK, and in that state <strong>the stun does NOT trigger</strong>. To reliably proc the stun, run <strong>green DEF-affix Jewels</strong>, not Counter-DMG Jewels.</li>
+</ul>
+<h2>Counter DMG formula</h2>
+<pre><code>CounterDMG = floor( (yourDEF − enemyATK) / 5 )   [floored at 0]
+           + rawCounterDMG (from Jewels / other sources)
+</code></pre>
+<ul>
+<li><code>yourDEF</code> and <code>enemyATK</code> are the class-mapped combat stats (see the ATK/DEF dispatch table in <a href="../mechanics/stat-calculation.html">stat-calculation</a> — e.g. a Warrior's DEF reads from INT).</li>
+<li>The <code>(DEF − ATK)/5</code> term rounds <strong>down</strong> and cannot go below 0. So at DEF 100 vs ATK 99 the term is <code>floor(1/5) = 0</code> — zero counter damage from the DEF term alone.</li>
+<li>Raw Counter DMG (Jewels) is added afterward and is unconditional — it lands even when the DEF term is 0, or when DEF is <em>below</em> ATK.</li>
+</ul>
+<p>You can further scale the result with <strong>Counter DMG%</strong> and <strong>Total DMG</strong> modifiers, same as any other damage source.</p>
+<h2>The stun-trigger condition (the important finding)</h2>
+<p>The counter-stun rider (Rogue set on Archers/Warriors, and Pommel-Strike-style talents) has a <strong>separate, stricter gate</strong> than "did the counter deal damage":</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>DEF vs enemy ATK</th>
+<th>Counter dealt DMG?</th>
+<th>Stun triggered?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lower DEF, no Counter Jewel</td>
+<td>DEF &lt; ATK</td>
+<td>0</td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td>Lower DEF + Counter-DMG Jewel</td>
+<td>DEF &lt; ATK</td>
+<td>✅ 1+ (raw)</td>
+<td>❌ <strong>No</strong></td>
+</tr>
+<tr>
+<td>Higher DEF, DEF term rounds to 0</td>
+<td>DEF 100 vs ATK 99</td>
+<td>0 (floored)</td>
+<td>✅ <strong>Yes</strong></td>
+</tr>
+<tr>
+<td>Higher DEF</td>
+<td>DEF &gt; ATK</td>
+<td>✅</td>
+<td>✅ Yes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Conclusion:</strong> the stun keys off <strong>actual DEF &gt; enemy ATK</strong>, <em>not</em> off the final Counter DMG number. A counter that deals 1 damage purely from a Jewel bonus, while DEF &lt; ATK, still fails to stun. Conversely, once DEF just edges above ATK, the stun fires even if the <code>(DEF−ATK)/5</code> term floors to 0 Counter DMG.</p>
+<p>This mirrors the "successful attack" condition discussed for ATK-side effects: a hit is only "successful" when it overcomes the opposing stat, not merely when it chips the life pool. The two sides may share one underlying mechanism, but the ATK-side equivalent was not confirmed in this test.</p>
+<h2>Practical build implication</h2>
+<ul>
+<li><strong>To proc counter-stun reliably:</strong> stack <strong>green DEF-affix Jewels</strong> so your raw DEF genuinely clears the enemy's ATK. Counter-DMG Jewels raise the number you see but do nothing for the stun gate.</li>
+<li><strong>For the Rogue set on Archers / Warriors</strong> (which grants +50% ATK until your ATK naturally exceeds enemy DEF): the intended play is to run <em>low ATK</em> and scale damage from other sources, keeping the trigger live as long as possible.</li>
+</ul>
+<h2>Open question</h2>
+<p>Whether the ATK side behaves identically — i.e. whether "successful attack" riders require ATK &gt; enemy DEF rather than merely dealing life damage — is untested here (the <a href="../keywords/debuff-stun.html">Stun</a>-immune / high-ATK Isekai portal enemy made this hard to isolate). Flagged for a future dedicated test.</p>
+<h2>References</h2>
+<ul>
+<li>Base keyword: <a href="../keywords/mechanic-counter.html">Counter</a> · <a href="../keywords/debuff-stun.html">Stun</a> · <a href="../keywords/stat-toughness.html">Toughness</a></li>
+<li>Jewel affix system: <a href="../mechanics/godstone.html">godstone</a></li>
+<li>Stat/combat pipeline: <a href="../mechanics/stat-calculation.html">stat-calculation</a></li>
+<li>Referenced page (author's own wiki): <code>gomg-wiki.pages.dev/mechanics/stat-calculation</code></li>
+</ul>
+<blockquote>
+<p>[!info] Source (original)
+Discord discussion, quoted <strong>ZerGPT</strong> (vault author) and <strong>Changed Name</strong>, 4:08–5:36 PM. Testing done on a training dummy with mirrored DEF/SPI vs the dummy's ATK. Key confirmations: (1) raw Counter DMG from Jewels adds on top of, and does not bypass, the DEF-vs-ATK counter calculation; (2) the counter-stun rider only fires when actual DEF exceeds enemy ATK, even when a Counter-DMG Jewel makes the counter deal ≥ 1 damage at DEF &lt; ATK; (3) DEF 100 vs ATK 99 (Counter DMG floored to 0) still triggers the stun.</p>
+</blockquote>
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.1.1.0 · counter-damage.md</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>
