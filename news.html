@@ -16,7 +16,8 @@
     <a href="talent-simulator.html">Talent Simulator</a>
     <a href="battle-logs.html">Battle Logs</a>
     <a href="search-unit.html">Search · Units</a>
-    <a href="search-talent.html">Search · Talents</a>
+    <a href="search-talent.html">Search · Talents (facet)</a>
+    <a href="search-talent-new.html">Search · Talents (fulltext)</a>
     <a href="search-gear.html">Search · Gear</a>
     <a href="search-runes.html">Search · Runes</a>
     <a href="search-godstone.html">Search · Jewels</a>
@@ -26,6 +27,15 @@
 <div class="page">
 <main class="content">
 <h1>News</h1>
+<h2>2026-07-14 — New page: Search Talents (fulltext)</h2>
+<p>Added <strong><a href="search-talent-new.html">Search Talents (fulltext)</a></strong> — a keyword search sibling to the existing facet-pill talent search.</p>
+<ul>
+<li>Type any mix of terms (name, effect text, unit, ID) separated by spaces or commas — matches require <strong>every</strong> term to hit somewhere (name, effect, restriction, or tag), same behavior CN players already expect from the community <code>hxsngh</code> tool this was inspired by, but tightened from "any term" to "every term" for cleaner multi-word results.</li>
+<li>Matched text is highlighted inline; zero-result searches offer a one-click "show results matching any term" fallback instead of silently failing.</li>
+<li>Search box state is saved to the URL (<code>?q=...&amp;cat=...</code>) so results can be shared via link.</li>
+<li>Both English and Chinese talent/unit names are indexed, so pasting a CN in-game term works directly.</li>
+<li>The original <strong><a href="search-talent.html">Search Talents (facet)</a></strong> page is unchanged — the two are cross-linked and will be maintained side-by-side going forward.</li>
+</ul>
 <h2>2026-07-12 — New page: ZerGPT Battle Logs</h2>
 <p>Added <strong><a href="battle-logs.html">Battle Logs</a></strong> — a step-by-step battle replayer.</p>
 <ul>

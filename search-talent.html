@@ -3,9 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Search Talents — Guild of Monster Girls Wiki</title>
+<title>Search Talents (facet) — Guild of Monster Girls Wiki</title>
 <link rel="stylesheet" href="style.css">
 <style>
+.crosslink { color: var(--fg-dim); font-size: 13px; margin: -6px 0 16px 0; }
+.crosslink a { color: var(--link); }
 .search-section { margin-bottom: 14px; }
 .search-section-title {
   font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
@@ -102,7 +104,8 @@ table.results td.eff b { color: var(--accent); }
     <a href="talent-simulator.html">Talent Simulator</a>
     <a href="battle-logs.html">Battle Logs</a>
     <a href="search-unit.html">Search · Units</a>
-    <a href="search-talent.html" class="current">Search · Talents</a>
+    <a href="search-talent.html" class="current">Search · Talents (facet)</a>
+    <a href="search-talent-new.html">Search · Talents (fulltext)</a>
     <a href="search-gear.html">Search · Gear</a>
     <a href="search-runes.html">Search · Runes</a>
     <a href="search-godstone.html">Search · Jewels</a>
@@ -111,7 +114,8 @@ table.results td.eff b { color: var(--accent); }
 </aside>
 <div class="page">
 <main class="content">
-<h1>Search Talents</h1>
+<h1>Search Talents (facet)</h1>
+<p class="crosslink">Prefer keyword search? → <a href="search-talent-new.html">Talents (fulltext)</a></p>
 <p>Filter 406 talent groups (0 raw rows — talent system moved to C# in 1.1.1.0) by tier, restriction (with specific values), and exclusivity. Effect column shows the highest-tier row's effect text with values substituted (<b>bold</b>).</p>
 
 <div class="search-section cat-Tier"><div class="search-section-title"><span class="dot"></span>Tier</div><div class="pills" id="pills-Tier"></div></div>
