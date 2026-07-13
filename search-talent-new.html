@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Search Talents (fulltext) — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.crosslink { color: var(--fg-dim); font-size: 13px; margin: -6px 0 16px 0; }
+.crosslink a { color: var(--link); }
+.st-search-row { position: sticky; top: 0; z-index: 3; background: var(--bg); padding: 4px 0 10px 0; }
+.st-input-wrap { position: relative; }
+.st-input {
+  width: 100%; padding: 12px 40px 12px 14px; font-size: 16px;
+  background: var(--bg-alt); color: var(--fg); border: 1.5px solid var(--border);
+  border-radius: 6px; outline: none; transition: border-color .15s;
+}
+.st-input:focus { border-color: var(--accent); }
+.st-clear-x {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  background: transparent; border: none; color: var(--fg-dim); font-size: 18px;
+  cursor: pointer; padding: 4px 6px; line-height: 1; display: none;
+}
+.st-clear-x:hover { color: var(--fg); }
+.st-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.st-chip {
+  padding: 5px 12px; border-radius: 4px; border: 1.5px solid var(--border);
+  background: transparent; color: var(--fg-dim); font-size: 13px;
+  cursor: pointer; user-select: none; transition: all .15s;
+}
+.st-chip:hover { border-color: #555; }
+.st-chip.on { color: #fff; background: rgba(255,255,255,.08); border-color: #ccc; }
+.st-chip[data-cat="Exclusive"].on { color: #4ea1ff; background: rgba(78,161,255,.12); border-color: #4ea1ff; }
+.st-chip[data-cat="Race"].on { color: #f08c5a; background: rgba(240,140,90,.12); border-color: #f08c5a; }
+.st-chip[data-cat="Class"].on { color: #f5b342; background: rgba(245,179,66,.12); border-color: #f5b342; }
+.st-chip[data-cat="Element"].on { color: #e74c3c; background: rgba(231,76,60,.12); border-color: #e74c3c; }
+.st-chip[data-cat="Generic"].on { color: #6cc090; background: rgba(108,192,144,.12); border-color: #6cc090; }
+.st-count-bar { color: var(--fg-dim); font-size: 13px; margin: 10px 0 12px 0; }
+.st-count-bar strong { color: var(--fg); }
+.st-or-retry {
+  margin-left: 8px; padding: 3px 10px; font-size: 12px; border-radius: 4px;
+  border: 1.5px solid var(--accent); background: rgba(245,179,66,.1); color: var(--accent);
+  cursor: pointer;
+}
+.st-or-retry:hover { background: rgba(245,179,66,.2); }
+.st-list { display: flex; flex-direction: column; gap: 8px; }
+.st-row {
+  border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px;
+  background: rgba(255,255,255,.015); display: flex; gap: 12px; align-items: flex-start;
+}
+.st-row img.st-icon {
+  width: 40px; height: 40px; flex: 0 0 40px; border-radius: 4px;
+  background: var(--bg-alt); image-rendering: pixelated; image-rendering: crisp-edges;
+}
+.st-row .st-icon-blank { width: 40px; height: 40px; flex: 0 0 40px; }
+.st-body { flex: 1; min-width: 0; }
+.st-top-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 4px; }
+.st-name { font-weight: 700; font-size: 14.5px; }
+.st-id { font-size: 11px; color: var(--fg-dim); font-family: "SF Mono", Consolas, Menlo, monospace; }
+.st-badge {
+  display: inline-block; padding: 2px 9px; border-radius: 3px;
+  font-size: 11px; font-weight: 700; letter-spacing: .3px;
+}
+.b-Orange { background: rgba(245,179,66,.18); color: #f5b342; }
+.b-Purple { background: rgba(194,144,232,.18); color: #c290e8; }
+.b-Blue   { background: rgba(78,161,255,.18); color: #4ea1ff; }
+.b-Green  { background: rgba(108,192,144,.18); color: #6cc090; }
+.st-source {
+  display: inline-block; padding: 1px 7px; border-radius: 3px;
+  font-size: 11px; font-weight: 600;
+}
+.st-source.cat-Exclusive { background: rgba(78,161,255,.15); color: #4ea1ff; }
+.st-source.cat-Race { background: rgba(240,140,90,.15); color: #f08c5a; }
+.st-source.cat-Class { background: rgba(245,179,66,.15); color: #f5b342; }
+.st-source.cat-Element { background: rgba(231,76,60,.15); color: #e74c3c; }
+.st-source.cat-Generic { background: rgba(255,255,255,.06); color: var(--fg-dim); }
+.st-effect { font-size: 13px; line-height: 1.55; color: var(--fg); }
+.st-effect-cn { font-size: 12px; line-height: 1.5; color: var(--fg-dim); margin-top: 2px; }
+.st-tags { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px; }
+.st-tag {
+  display: inline-block; padding: 1px 7px; border-radius: 3px;
+  font-size: 10.5px; font-weight: 600; background: rgba(255,255,255,.06); color: var(--fg-dim);
+}
+mark { background: rgba(245,179,66,.35); color: inherit; border-radius: 2px; padding: 0 1px; }
+.st-empty { padding: 32px 16px; text-align: center; color: var(--fg-dim); font-size: 14px; }
+</style>
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="index.html">GMG Wiki</a>
+  <nav>
+    <a href="units/index.html">Units</a>
+    <a href="keywords/index.html">Keywords</a>
+    <a href="gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="talent-simulator.html">Talent Simulator</a>
+    <a href="battle-logs.html">Battle Logs</a>
+    <a href="search-unit.html">Search · Units</a>
+    <a href="search-talent.html">Search · Talents (facet)</a>
+    <a href="search-talent-new.html" class="current">Search · Talents (fulltext)</a>
+    <a href="search-gear.html">Search · Gear</a>
+    <a href="search-runes.html">Search · Runes</a>
+    <a href="search-godstone.html">Search · Jewels</a>
+    <a href="news.html">News</a>
+  </nav>
+</aside>
+<div class="page">
+<main class="content">
+<h1>Search Talents (fulltext)</h1>
+<p class="crosslink">Keyword search across name, effect text (EN + CN), restriction, and archetype tags. Prefer browsing by facet pills instead? → <a href="search-talent.html">Talents (facet)</a></p>
+
+<div class="st-search-row">
+  <div class="st-input-wrap">
+    <input class="st-input" id="stQuery" type="text" placeholder="Search talents — name, effect, unit, ID… (space/comma separates multiple terms)" autocomplete="off" spellcheck="false">
+    <button class="st-clear-x" id="stClearX" title="Clear search">×</button>
+  </div>
+  <div class="st-chips" id="stChips"></div>
+</div>
+
+<div class="st-count-bar" id="stCount"></div>
+<div class="st-list" id="stList"></div>
+<div class="st-empty" id="stEmpty" style="display:none"></div>
+
+<script src="talent-search-index.js"></script>
+<script>
+(function () {
+  var DATA = window.TALENT_SEARCH_INDEX || [];
+  var CATS = ["All", "Exclusive", "Race", "Class", "Element", "Generic"];
+  var CAT_PRIORITY = { Exclusive: 1, Race: 2, Class: 3, Element: 4, Generic: 5 };
+  var TIER_ORDER = ["Orange", "Purple", "Blue", "Green"];
+  var TIER_WEIGHT = { Orange: 4, Purple: 3, Blue: 2, Green: 1 };
+
+  var elQuery = document.getElementById("stQuery");
+  var elClearX = document.getElementById("stClearX");
+  var elChips = document.getElementById("stChips");
+  var elCount = document.getElementById("stCount");
+  var elList = document.getElementById("stList");
+  var elEmpty = document.getElementById("stEmpty");
+
+  var state = { q: "", cat: "All", orMode: false };
+
+  function escapeHtml(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function escapeRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+
+  function tokenize(q) {
+    return q.toLowerCase().split(/[\s,，]+/).filter(Boolean);
+  }
+
+  function fieldsOf(rec) {
+    return [
+      (rec.name_en || "").toLowerCase(),
+      (rec.name_cn || "").toLowerCase(),
+      (rec.effect_en || "").toLowerCase(),
+      (rec.effect_cn || "").toLowerCase(),
+      (rec.source_label || "").toLowerCase(),
+      (rec.exclusive_name_cn || "").toLowerCase(),
+      (rec.id || "").toLowerCase(),
+      (rec.tags || []).join(" ").toLowerCase(),
+    ];
+  }
+
+  function matches(rec, tokens, orMode) {
+    var fields = fieldsOf(rec);
+    if (tokens.length === 0) return true;
+    if (orMode) {
+      return tokens.some(function (tok) { return fields.some(function (f) { return f.indexOf(tok) >= 0; }); });
+    }
+    return tokens.every(function (tok) { return fields.some(function (f) { return f.indexOf(tok) >= 0; }); });
+  }
+
+  function score(rec, tokens) {
+    if (tokens.length === 0) return 0;
+    var nameEn = (rec.name_en || "").toLowerCase();
+    var nameCn = (rec.name_cn || "").toLowerCase();
+    var id = (rec.id || "").toLowerCase();
+    var best = 0;
+    tokens.forEach(function (tok) {
+      var s = 0;
+      if (tok === id || tok === nameEn || tok === nameCn) s = 10;
+      else if (nameEn.indexOf(tok) === 0 || nameCn.indexOf(tok) === 0) s = 5;
+      else if (nameEn.indexOf(tok) >= 0 || nameCn.indexOf(tok) >= 0) s = 3;
+      else s = 1;
+      if (s > best) best = s;
+    });
+    return best;
+  }
+
+  function topTierWeight(rec) {
+    var w = 0;
+    (rec.tiers || []).forEach(function (t) { if (TIER_WEIGHT[t] > w) w = TIER_WEIGHT[t]; });
+    return w;
+  }
+
+  function highlight(text, tokens) {
+    if (!text || tokens.length === 0) return escapeHtml(text);
+    var escaped = escapeHtml(text);
+    var pattern = tokens.map(escapeRegex).sort(function (a, b) { return b.length - a.length; }).join("|");
+    if (!pattern) return escaped;
+    var re = new RegExp("(" + pattern + ")", "gi");
+    return escaped.replace(re, "<mark>$1</mark>");
+  }
+
+  function buildChips() {
+    elChips.innerHTML = "";
+    CATS.forEach(function (cat) {
+      var b = document.createElement("button");
+      b.className = "st-chip" + (state.cat === cat ? " on" : "");
+      b.dataset.cat = cat;
+      b.textContent = cat;
+      b.onclick = function () {
+        state.cat = state.cat === cat ? "All" : cat;
+        if (cat === "All") state.cat = "All";
+        syncUrl();
+        render();
+      };
+      elChips.appendChild(b);
+    });
+  }
+
+  function render() {
+    buildChips();
+    var tokens = tokenize(state.q);
+    var orMode = state.orMode && tokens.length >= 2;
+
+    var filtered = DATA.filter(function (rec) {
+      if (state.cat !== "All" && rec.source_cat !== state.cat) return false;
+      return matches(rec, tokens, orMode);
+    });
+
+    filtered.forEach(function (rec) { rec.__score = score(rec, tokens); });
+    filtered.sort(function (a, b) {
+      if (tokens.length) {
+        var ds = b.__score - a.__score;
+        if (ds) return ds;
+      }
+      var dp = (CAT_PRIORITY[a.source_cat] || 9) - (CAT_PRIORITY[b.source_cat] || 9);
+      if (dp) return dp;
+      var dt = topTierWeight(b) - topTierWeight(a);
+      if (dt) return dt;
+      return a.name_en.localeCompare(b.name_en);
+    });
+
+    elClearX.style.display = state.q ? "block" : "none";
+
+    var countHtml = "<strong>" + filtered.length + "</strong> of " + DATA.length + " talents";
+    if (!orMode && tokens.length >= 2 && filtered.length === 0) {
+      var orHits = DATA.filter(function (rec) {
+        if (state.cat !== "All" && rec.source_cat !== state.cat) return false;
+        return matches(rec, tokens, true);
+      }).length;
+      if (orHits > 0) {
+        countHtml += '<button class="st-or-retry" id="stOrRetry">Show ' + orHits + ' result' + (orHits === 1 ? "" : "s") + ' matching any term</button>';
+      }
+    }
+    elCount.innerHTML = countHtml;
+    var retryBtn = document.getElementById("stOrRetry");
+    if (retryBtn) retryBtn.onclick = function () { state.orMode = true; render(); };
+
+    elList.innerHTML = "";
+    if (!filtered.length) {
+      elEmpty.style.display = "block";
+      elEmpty.textContent = tokens.length
+        ? "No talents match all " + tokens.length + " term" + (tokens.length === 1 ? "" : "s") + "."
+        : "No talents in this category.";
+      return;
+    }
+    elEmpty.style.display = "none";
+
+    var frag = document.createDocumentFragment();
+    filtered.forEach(function (rec) {
+      var row = document.createElement("div");
+      row.className = "st-row";
+
+      var iconHtml = rec.icon
+        ? '<img class="st-icon" src="' + escapeHtml(rec.icon) + '" alt="">'
+        : '<div class="st-icon-blank"></div>';
+
+      var tierBadges = (rec.tiers || [])
+        .slice()
+        .sort(function (a, b) { return TIER_ORDER.indexOf(a) - TIER_ORDER.indexOf(b); })
+        .map(function (c) { return '<span class="st-badge b-' + c + '">' + c + "</span>"; })
+        .join(" ");
+
+      var tagsHtml = (rec.tags || [])
+        .map(function (t) { return '<span class="st-tag">' + highlight(t, tokens) + "</span>"; })
+        .join("");
+
+      row.innerHTML =
+        iconHtml +
+        '<div class="st-body">' +
+          '<div class="st-top-line">' +
+            '<span class="st-name">' + highlight(rec.name_en, tokens) + "</span>" +
+            (rec.name_cn ? '<span class="st-name" style="color:var(--fg-dim);font-weight:400;">' + highlight(rec.name_cn, tokens) + "</span>" : "") +
+            '<span class="st-id">' + escapeHtml(rec.id) + "</span>" +
+            tierBadges +
+            '<span class="st-source cat-' + rec.source_cat + '">' + highlight(rec.source_label, tokens) + "</span>" +
+          "</div>" +
+          '<div class="st-effect">' + highlight(rec.effect_en, tokens) + "</div>" +
+          (rec.effect_cn ? '<div class="st-effect-cn">' + highlight(rec.effect_cn, tokens) + "</div>" : "") +
+          (tagsHtml ? '<div class="st-tags">' + tagsHtml + "</div>" : "") +
+        "</div>";
+      frag.appendChild(row);
+    });
+    elList.appendChild(frag);
+  }
+
+  var urlWriteTimer = null;
+  function syncUrl() {
+    clearTimeout(urlWriteTimer);
+    urlWriteTimer = setTimeout(function () {
+      var params = new URLSearchParams();
+      if (state.q) params.set("q", state.q);
+      if (state.cat !== "All") params.set("cat", state.cat);
+      var qs = params.toString();
+      var url = window.location.pathname + (qs ? "?" + qs : "");
+      window.history.replaceState(null, "", url);
+    }, 150);
+  }
+
+  function hydrateFromUrl() {
+    var params = new URLSearchParams(window.location.search);
+    var q = params.get("q") || "";
+    var cat = params.get("cat") || "All";
+    state.q = q;
+    state.cat = CATS.indexOf(cat) >= 0 ? cat : "All";
+    elQuery.value = q;
+  }
+
+  var inputTimer = null;
+  elQuery.addEventListener("input", function () {
+    state.orMode = false;
+    clearTimeout(inputTimer);
+    inputTimer = setTimeout(function () {
+      state.q = elQuery.value.trim();
+      syncUrl();
+      render();
+    }, 150);
+  });
+
+  elClearX.addEventListener("click", function () {
+    elQuery.value = "";
+    state.q = "";
+    state.orMode = false;
+    syncUrl();
+    render();
+    elQuery.focus();
+  });
+
+  hydrateFromUrl();
+  render();
+})();
+</script>
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.1.1.0 · search-talent-new.html</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>
