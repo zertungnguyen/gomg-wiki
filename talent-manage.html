@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GMG My Talents</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0e0e12;--card:#16161d;--card2:#1c1c26;--border:#2a2a3a;
+  --text:#e0dfe6;--dim:#6b6b80;
+  --accent:#c9a24e;
+  --orange:#ff9933;--purple:#b66dff;--blue:#4ea3ff;--green:#5fcf6b;
+  --good:#2ecc71;--bad:#e74c3c;
+}
+body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.4}
+.wrap{max-width:1180px;margin:0 auto;padding:18px 14px}
+h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:2px}
+.sub{color:var(--dim);font-size:12px;margin-bottom:18px}
+
+/* MGG Wiki sidenav (mgg- prefix to scope) */
+html,body{overflow-x:hidden}
+body{padding-left:220px!important;min-height:100vh}
+.mgg-sidenav{
+  position:fixed;top:0;left:0;width:220px;height:100vh;
+  background:#1d2025;border-right:1px solid #2c3038;
+  padding:20px 16px;display:flex;flex-direction:column;gap:16px;
+  overflow-y:auto;z-index:100;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  box-sizing:border-box
+}
+.mgg-sidenav .mgg-brand{
+  font-weight:700;color:#f5b342;text-decoration:none;font-size:17px;
+  padding:4px 8px;padding-bottom:12px;border-bottom:1px solid #2c3038
+}
+.mgg-sidenav nav{display:flex;flex-direction:column;gap:4px}
+.mgg-sidenav nav a{
+  color:#e3e3e3;text-decoration:none;font-size:14px;
+  padding:8px 12px;border-radius:4px;transition:background .12s
+}
+.mgg-sidenav nav a:hover{background:#15171a;color:#4ea1ff}
+.mgg-sidenav nav a.current{background:#15171a;color:#f5b342}
+@media(max-width:900px){
+  body{padding-left:0!important}
+  .mgg-sidenav{
+    position:static;width:100%;height:auto;
+    flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px;
+    border-right:none;border-bottom:1px solid #2c3038;padding:10px 14px;overflow:visible
+  }
+  .mgg-sidenav .mgg-brand{border-bottom:none;padding:4px 8px;font-size:15px}
+  .mgg-sidenav nav{flex-direction:row;flex-wrap:wrap;gap:4px}
+  .mgg-sidenav nav a{padding:4px 10px;font-size:13px}
+}
+@media(max-width:480px){
+  .mgg-sidenav nav a{font-size:12px;padding:3px 8px}
+}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:12px}
+.card-title{font-family:'Chakra Petch',sans-serif;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--dim);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+
+button{background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px 14px;font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:12px;letter-spacing:.5px;cursor:pointer;transition:all .15s}
+button:hover{border-color:var(--accent);color:var(--accent)}
+button.primary{background:var(--accent);color:#1a1a1a;border-color:var(--accent)}
+button.primary:hover{background:#dbb35e;color:#1a1a1a}
+button.danger{border-color:var(--bad);color:var(--bad)}
+button.danger:hover{background:var(--bad);color:#fff}
+button:disabled{opacity:.4;cursor:not-allowed}
+input[type=text],textarea,select{width:100%;padding:8px 12px;background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:6px;font-size:13px;font-family:'Noto Sans',sans-serif}
+input[type=text]:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent)}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.toolbar input.search{flex:1 1 220px;min-width:180px}
+.toolbar .spacer{flex:1 1 auto}
+.chip-row{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{padding:4px 10px;border-radius:5px;border:1.5px solid var(--border);background:transparent;color:var(--dim);font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:10px;cursor:pointer;transition:all .15s;text-transform:uppercase;letter-spacing:.5px}
+.chip:hover{border-color:#555}
+.chip.on{color:#fff;border-color:var(--accent);background:#c9a24e25}
+.chip.s-S{border-color:var(--orange)}.chip.on.s-S{background:var(--orange);color:#1a1a1a}
+.chip.s-A{border-color:var(--purple)}.chip.on.s-A{background:var(--purple);color:#fff}
+.chip.s-B{border-color:var(--blue)}.chip.on.s-B{background:var(--blue);color:#fff}
+.chip.s-C{border-color:var(--green)}.chip.on.s-C{background:var(--green);color:#1a1a1a}
+
+.tag-pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;margin-right:4px;font-family:'Chakra Petch',sans-serif;letter-spacing:.5px}
+.tag-cls{background:#c9a24e20;color:#c9a24e}
+.tag-race{background:#2ecc7120;color:#2ecc71}
+.tag-elem{background:#e74c3c20;color:#e74c3c}
+.tag-step{color:#1a1a1a}
+.tag-step.s-S{background:var(--orange)}
+.tag-step.s-A{background:var(--purple);color:#fff}
+.tag-step.s-B{background:var(--blue);color:#fff}
+.tag-step.s-C{background:var(--green)}
+
+/* character card */
+.char-card{background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:10px;overflow:hidden}
+.char-card.match{border-color:var(--accent)}
+.char-head{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer}
+.char-head:hover{background:var(--card2)}
+.char-head .avatar{width:44px;height:44px;border-radius:6px;object-fit:cover;background:#0a0a10;flex:0 0 auto}
+.char-head .cbox{flex:0 0 auto}
+.char-head .info{flex:1;min-width:0}
+.char-head .name-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.char-head .cname{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:15px}
+.char-head .calter{color:var(--accent);font-size:11px;font-style:italic}
+.char-head .meta{font-size:11px;color:var(--dim);margin-top:2px}
+.char-head .updown{display:flex;flex-direction:column;gap:2px}
+.char-head .updown button{padding:2px 6px;font-size:10px}
+.char-head .talent-count{font-size:11px;color:var(--dim);font-family:'Chakra Petch',sans-serif;white-space:nowrap}
+.char-head .drag-handle{cursor:grab;color:var(--dim);font-size:14px;padding:2px 4px}
+.char-head .chevron{transition:transform .15s;color:var(--dim)}
+.char-card.expanded .chevron{transform:rotate(90deg)}
+
+.char-body{display:none;padding:0 12px 12px}
+.char-card.expanded .char-body{display:block}
+
+.page-tabs{display:flex;gap:4px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.page-tab{padding:4px 12px;border-radius:14px;border:1.5px solid var(--border);background:transparent;color:var(--dim);font-size:11px;font-family:'Chakra Petch',sans-serif;font-weight:600;cursor:pointer}
+.page-tab.active{border-color:var(--accent);color:var(--accent);background:#c9a24e15}
+.page-tab-add,.page-tab-del{width:24px;height:24px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1}
+
+.slots{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:600px){.slots{grid-template-columns:1fr}}
+.slot{background:var(--card2);border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;min-height:56px}
+.slot.filled{border-color:#3a3a4a}
+.slot.empty{display:flex;align-items:center;justify-content:center}
+.slot .stname{font-weight:700;font-size:13px;cursor:pointer}
+.slot .st-head{display:flex;justify-content:space-between;align-items:flex-start;gap:6px}
+.slot .st-actions{display:flex;gap:4px;flex:0 0 auto}
+.slot .st-actions button{padding:2px 6px;font-size:11px}
+.slot .steffect{font-size:11.5px;color:var(--dim);margin-top:4px;line-height:1.5}
+.slot .steffect b{color:var(--text)}
+.slot .stsrc{font-size:10px;color:var(--dim);margin-top:3px;font-family:'Chakra Petch',sans-serif}
+.slot-add-btn{background:transparent;border:1.5px dashed var(--border);color:var(--dim);width:100%;height:100%;padding:10px}
+.slot-add-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+.notes-wrap{margin-top:8px}
+.notes-wrap label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px;font-family:'Chakra Petch',sans-serif}
+.notes-wrap textarea{min-height:44px;resize:vertical;font-size:12px}
+
+.empty-state{text-align:center;padding:50px 20px;color:var(--dim)}
+.empty-state .big{font-size:15px;margin-bottom:6px}
+.empty-state .small{font-size:12px}
+
+/* modals */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:10px;max-width:640px;width:100%;max-height:86vh;display:flex;flex-direction:column}
+.modal-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--border)}
+.modal-head h3{font-family:'Chakra Petch',sans-serif;font-size:15px;color:var(--accent)}
+.modal-close{background:transparent;border:none;font-size:18px;color:var(--dim);cursor:pointer;padding:2px 8px}
+.modal-close:hover{color:var(--bad)}
+.modal-body{padding:14px 16px;overflow-y:auto;flex:1}
+.modal-foot{padding:12px 16px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
+
+.pick-list{display:flex;flex-direction:column;gap:6px;max-height:52vh;overflow-y:auto}
+.pick-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--border);border-radius:6px;cursor:pointer;background:var(--card2)}
+.pick-row:hover{border-color:var(--accent)}
+.pick-row.disabled{opacity:.4;cursor:not-allowed}
+.pick-row img{width:36px;height:36px;border-radius:5px;object-fit:cover;background:#0a0a10;flex:0 0 auto}
+.pick-row .prow-name{font-weight:700;font-size:13px}
+.pick-row .prow-alter{color:var(--accent);font-size:10px;font-style:italic;margin-left:4px}
+.pick-row .prow-tags{margin-top:3px}
+.pick-row .prow-effect{font-size:11px;color:var(--dim);margin-top:3px;line-height:1.4}
+.pick-load-more{text-align:center;padding:10px;color:var(--dim);font-size:11px}
+
+.overview-list{display:flex;flex-direction:column;gap:6px}
+.ov-row{padding:8px 10px;background:var(--card2);border:1px solid var(--border);border-radius:6px}
+.ov-row .ov-head{display:flex;justify-content:space-between;font-weight:700;font-size:13px}
+.ov-row .ov-entries{font-size:11px;color:var(--dim);margin-top:4px}
+
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--card2);border:1px solid var(--accent);color:var(--text);padding:10px 18px;border-radius:8px;font-size:13px;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.toast.error{border-color:var(--bad);color:#ffb3b3}
+
+.footer{margin-top:24px;font-size:11px;color:#444;text-align:center;line-height:1.6}
+.hidden-input{display:none}
+
+@media(max-width:900px){
+  body{padding-bottom:90px}
+  .wrap{padding:14px 10px}
+  h1{font-size:21px}
+  .slots{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<aside class="mgg-sidenav">
+  <a class="mgg-brand" href="index.html">GMG Wiki</a>
+  <nav>
+    <a href="units/index.html">Units</a>
+    <a href="keywords/index.html">Keywords</a>
+    <a href="gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="talent-simulator.html">Talent Simulator</a>
+    <a href="talent-manage.html" class="current">My Talents</a>
+    <a href="battle-logs.html">Battle Logs</a>
+    <a href="search-unit.html">Search · Units</a>
+    <a href="search-talent.html">Search · Talents (facet)</a>
+    <a href="search-talent-new.html">Search · Talents (fulltext)</a>
+    <a href="search-gear.html">Search · Gear</a>
+    <a href="search-runes.html">Search · Runes</a>
+    <a href="search-godstone.html">Search · Jewels</a>
+    <a href="news.html">News</a>
+  </nav>
+</aside>
+
+<div class="wrap">
+<h1>📋 My Talents</h1>
+<div class="sub">Personal talent tracker — client-side only, saved in this browser. Export a backup before clearing site data.</div>
+
+<div id="loading" class="card">Loading talent-manage-data.json...</div>
+
+<div id="app" style="display:none">
+
+<div class="card">
+  <div class="card-title">
+    <span id="overviewBtn" style="cursor:pointer;text-decoration:underline;text-decoration-style:dotted">Talent overview: <span id="ovCount">0</span> slotted</span>
+    <span id="charCount">0 characters</span>
+  </div>
+  <div class="toolbar">
+    <input type="text" class="search" id="globalSearch" placeholder="Search added characters by name or talent...">
+  </div>
+  <div class="toolbar">
+    <button class="primary" id="addCharBtn">+ Add Character</button>
+    <button id="deleteModeBtn">Delete Characters</button>
+    <button id="expandAllBtn">Expand all</button>
+    <button id="collapseAllBtn">Collapse all</button>
+    <span class="spacer"></span>
+    <select id="sortSelect" style="width:auto">
+      <option value="added">Sort: Added order</option>
+      <option value="class">Sort: Class</option>
+      <option value="step">Sort: Step</option>
+      <option value="element">Sort: Element</option>
+      <option value="star">Sort: Star (desc)</option>
+    </select>
+  </div>
+  <div class="chip-row" id="filterChips"></div>
+  <div class="toolbar" style="margin-top:2px">
+    <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--dim);cursor:pointer">
+      <input type="checkbox" id="showExclusive" style="width:auto"> Show Exclusive talents in picker
+    </label>
+  </div>
+  <div class="toolbar" style="margin-top:6px">
+    <button id="importSaveBtn">Import from player_save.json</button>
+    <button id="importJsonBtn">Import JSON backup</button>
+    <button id="exportJsonBtn">Export JSON backup</button>
+    <input type="file" id="importSaveFile" class="hidden-input" accept=".json">
+    <input type="file" id="importJsonFile" class="hidden-input" accept=".json">
+  </div>
+  <div class="toolbar" id="deleteModeBar" style="display:none;margin-top:6px">
+    <span id="deleteModeCount" style="font-size:12px;color:var(--dim)">0 selected</span>
+    <span class="spacer"></span>
+    <button class="danger" id="deleteConfirmBtn">Delete selected</button>
+    <button id="deleteCancelBtn">Cancel</button>
+  </div>
+</div>
+
+<div id="charList"></div>
+
+<div id="emptyState" class="empty-state" style="display:none">
+  <div class="big">No characters added.</div>
+  <div class="small">Click <strong>Add Character</strong> or <strong>Import player_save.json</strong> to start.</div>
+</div>
+
+<div class="card" style="margin-top:16px">
+  <div class="toolbar">
+    <button id="importSaveBtn2">Import from player_save.json</button>
+    <button id="importJsonBtn2">Import JSON backup</button>
+    <button id="exportJsonBtn2">Export JSON backup</button>
+  </div>
+</div>
+
+<div class="footer">Guild of Monster Girls · My Talents · data stored locally in your browser (localStorage), never uploaded anywhere.</div>
+
+</div>
+</div>
+
+<!-- Add character modal -->
+<div class="modal-overlay" id="addCharModal" style="display:none">
+  <div class="modal">
+    <div class="modal-head"><h3>Add Character <span id="addCharTotal" style="color:var(--dim);font-size:11px;font-weight:400"></span></h3><button class="modal-close" data-close="addCharModal">✕</button></div>
+    <div class="modal-body">
+      <input type="text" id="addCharSearch" placeholder="Search character name (fuzzy match, e.g. 'star arch')...">
+      <div class="pick-list" id="addCharList" style="margin-top:10px"></div>
+      <div class="pick-load-more" id="addCharLoadMore" style="display:none">Scroll for more...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Talent picker modal -->
+<div class="modal-overlay" id="talentPickModal" style="display:none">
+  <div class="modal">
+    <div class="modal-head"><h3>Choose a Talent</h3><button class="modal-close" data-close="talentPickModal">✕</button></div>
+    <div class="modal-body">
+      <input type="text" id="talentPickSearch" placeholder="Search talent name / effect...">
+      <div class="pick-list" id="talentPickList" style="margin-top:10px"></div>
+      <div class="pick-load-more" id="talentPickLoadMore" style="display:none">Scroll for more...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Overview modal -->
+<div class="modal-overlay" id="overviewModal" style="display:none">
+  <div class="modal">
+    <div class="modal-head"><h3>Talent Overview</h3><button class="modal-close" data-close="overviewModal">✕</button></div>
+    <div class="modal-body">
+      <div class="overview-list" id="overviewList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm modal (generic) -->
+<div class="modal-overlay" id="confirmModal" style="display:none">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-head"><h3 id="confirmTitle">Confirm</h3><button class="modal-close" data-close="confirmModal">✕</button></div>
+    <div class="modal-body"><p id="confirmMsg" style="font-size:13px;line-height:1.6"></p></div>
+    <div class="modal-foot">
+      <button id="confirmCancelBtn">Cancel</button>
+      <button class="danger" id="confirmOkBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'zergpt.talent-manage.v1';
+const LEGACY_KEY = ''; // no legacy key exists yet — placeholder for a future bump
+const PAGE_SIZE = 20;
+
+let DATA = null;           // { units:[], talents:{} }
+let unitById = {};
+let state = null;          // persisted+runtime state
+let deleteMode = false;
+let deleteSelected = new Set();
+let addCharVisibleCount = PAGE_SIZE;
+let talentPickVisibleCount = PAGE_SIZE;
+let talentPickCtx = null;  // {charIdx, pageIdx, slotIdx}
+let confirmCb = null;
+
+const $ = id => document.getElementById(id);
+
+// ---------- fuzzy matcher (ported from hxsngh) ----------
+function fuzzy(text, query) {
+  const n = (text || '').toLowerCase();
+  const r = (query || '').trim().toLowerCase();
+  if (!r) return true;
+  return n.includes(r) || [...r].every(c => n.includes(c));
+}
+
+// ---------- storage ----------
+function loadState() {
+  let raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw && LEGACY_KEY) {
+    raw = localStorage.getItem(LEGACY_KEY);
+    if (raw) { localStorage.setItem(STORAGE_KEY, raw); localStorage.removeItem(LEGACY_KEY); }
+  }
+  if (raw) {
+    try {
+      const parsed = JSON.parse(raw);
+      if (parsed && Array.isArray(parsed.characters)) return parsed;
+    } catch {}
+  }
+  return { version: 1, updated_at: new Date().toISOString(), characters: [], ui: { sort: 'added', filter: {}, showExclusive: false } };
+}
+
+function saveState() {
+  state.updated_at = new Date().toISOString();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+// ---------- helpers ----------
+function emptyPages() {
+  return [{ slots: [null, null, null, null] }];
+}
+
+function normalizePages(pages) {
+  const out = (pages || []).map(p => {
+    const slots = (p && Array.isArray(p.slots)) ? p.slots.slice(0, 4) : [];
+    while (slots.length < 4) slots.push(null);
+    return { slots };
+  });
+  if (out.length === 0) out.push({ slots: [null, null, null, null] });
+  return out.slice(0, 4);
+}
+
+function talentCount(ch) {
+  let n = 0;
+  ch.talentPages.forEach(p => p.slots.forEach(s => { if (s) n++; }));
+  return n;
+}
+
+function totalTalentCount() {
+  let n = 0;
+  state.characters.forEach(ch => n += talentCount(ch));
+  return n;
+}
+
+function stepWeight(step) {
+  return { S: 4, A: 3, B: 2, C: 1 }[String(step || '').toUpperCase()] || 0;
+}
+
+function toast(msg, isError) {
+  const el = document.createElement('div');
+  el.className = 'toast' + (isError ? ' error' : '');
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3200);
+}
+
+function showConfirm(title, msg, onOk) {
+  $('confirmTitle').textContent = title;
+  $('confirmMsg').textContent = msg;
+  confirmCb = onOk;
+  $('confirmModal').style.display = 'flex';
+}
+
+function closeModal(id) { $(id).style.display = 'none'; }
+
+document.querySelectorAll('[data-close]').forEach(btn => {
+  btn.addEventListener('click', () => closeModal(btn.dataset.close));
+});
+document.querySelectorAll('.modal-overlay').forEach(ov => {
+  ov.addEventListener('click', e => { if (e.target === ov) ov.style.display = 'none'; });
+});
+
+// ---------- render: character list ----------
+function visibleCharacters() {
+  let list = state.characters.map((ch, idx) => ({ ch, idx }));
+
+  // filter chips
+  const f = state.ui.filter || {};
+  if (f.cls) list = list.filter(({ ch }) => (unitById[ch.charId] || {}).cls === f.cls);
+  if (f.step) list = list.filter(({ ch }) => (unitById[ch.charId] || {}).step === f.step);
+  if (f.elem) list = list.filter(({ ch }) => (unitById[ch.charId] || {}).elem === f.elem);
+  if (f.hasNotes) list = list.filter(({ ch }) => (ch.notes || '').trim().length > 0);
+  if (f.starMax) list = list.filter(({ ch }) => (ch._star || 0) >= 5);
+
+  // search (two-bucket: name match first, then talent-content match)
+  const q = ($('globalSearch').value || '').trim();
+  if (q) {
+    const nameBucket = [], talentBucket = [];
+    list.forEach(item => {
+      const u = unitById[item.ch.charId] || {};
+      if (fuzzy(u.name, q) || fuzzy(u.alter, q)) { nameBucket.push(item); return; }
+      let hit = false;
+      item.ch.talentPages.forEach((p, pIdx) => p.slots.forEach(s => {
+        if (s && s.id) {
+          const t = DATA.talents[s.id];
+          if (t && (fuzzy(t.name, q) || fuzzy(t.effect, q))) { hit = true; item._matchPage = pIdx; }
+        }
+      }));
+      if (hit) talentBucket.push(item);
+    });
+    list = [...nameBucket, ...talentBucket];
+  } else {
+    list.forEach(item => delete item._matchPage);
+  }
+
+  // sort
+  const sort = state.ui.sort || 'added';
+  if (sort !== 'added') {
+    list = list.slice().sort((a, b) => {
+      const ua = unitById[a.ch.charId] || {}, ub = unitById[b.ch.charId] || {};
+      if (sort === 'class') return (ua.cls || '').localeCompare(ub.cls || '');
+      if (sort === 'element') return (ua.elem || '').localeCompare(ub.elem || '');
+      if (sort === 'step') return stepWeight(ub.step) - stepWeight(ua.step);
+      if (sort === 'star') return (b.ch._star || 0) - (a.ch._star || 0);
+      return 0;
+    });
+  }
+  return list;
+}
+
+function renderFilterChips() {
+  const classes = [...new Set(DATA.units.map(u => u.cls))].filter(Boolean).sort();
+  const steps = ['S', 'A', 'B', 'C'];
+  const elems = [...new Set(DATA.units.map(u => u.elem))].filter(Boolean).sort();
+  const f = state.ui.filter || {};
+  const wrap = $('filterChips');
+  wrap.innerHTML = '';
+
+  function addChip(label, key, value, extraClass) {
+    const on = f[key] === value;
+    const c = document.createElement('button');
+    c.className = 'chip' + (extraClass ? ' ' + extraClass : '') + (on ? ' on' : '');
+    c.textContent = label;
+    c.onclick = () => {
+      state.ui.filter = state.ui.filter || {};
+      state.ui.filter[key] = on ? null : value;
+      saveState(); render();
+    };
+    wrap.appendChild(c);
+  }
+  classes.forEach(c => addChip(c, 'cls', c));
+  steps.forEach(s => addChip(s, 'step', s, 's-' + s));
+  elems.forEach(e => addChip(e, 'elem', e));
+
+  const notesChip = document.createElement('button');
+  notesChip.className = 'chip' + (f.hasNotes ? ' on' : '');
+  notesChip.textContent = 'Has notes';
+  notesChip.onclick = () => { state.ui.filter.hasNotes = !f.hasNotes; saveState(); render(); };
+  wrap.appendChild(notesChip);
+
+  const starChip = document.createElement('button');
+  starChip.className = 'chip' + (f.starMax ? ' on' : '');
+  starChip.textContent = 'Star max (5★)';
+  starChip.onclick = () => { state.ui.filter.starMax = !f.starMax; saveState(); render(); };
+  wrap.appendChild(starChip);
+}
+
+function slotHtml(ch, chIdx, pageIdx, slotIdx, slot) {
+  if (!slot || !slot.id) {
+    return `<div class="slot empty">
+      <button class="slot-add-btn" onclick="openTalentPicker(${chIdx},${pageIdx},${slotIdx})">+ Add talent</button>
+    </div>`;
+  }
+  const t = DATA.talents[slot.id];
+  if (!t) {
+    return `<div class="slot filled">
+      <div class="st-head"><span class="stname" style="color:var(--dim)">Unknown talent (${slot.id})</span>
+      <div class="st-actions"><button onclick="removeSlot(${chIdx},${pageIdx},${slotIdx})">✕</button></div></div>
+    </div>`;
+  }
+  const stepColor = { S: 'var(--orange)', A: 'var(--purple)', B: 'var(--blue)', C: 'var(--green)' }[t.step] || 'var(--dim)';
+  const src = t.exclusive ? 'Exclusive' : (t.race ? 'Race: ' + t.race : t.cls ? 'Class: ' + t.cls : t.elem ? 'Element: ' + t.elem : 'Generic');
+  return `<div class="slot filled">
+    <div class="st-head">
+      <span class="stname" style="color:${stepColor}" onclick="toggleSlotExpand(this)">${escapeHtml(t.name)}</span>
+      <div class="st-actions"><button onclick="confirmRemoveSlot(${chIdx},${pageIdx},${slotIdx})">✕</button></div>
+    </div>
+    <div class="stsrc">${escapeHtml(src)}</div>
+    <div class="steffect">${t.effect}</div>
+  </div>`;
+}
+
+function toggleSlotExpand(el) {
+  const slot = el.closest('.slot');
+  const eff = slot.querySelector('.steffect');
+  eff.style.display = eff.style.display === 'none' ? 'block' : 'none';
+}
+
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function charCardHtml(item) {
+  const { ch, idx } = item;
+  const u = unitById[ch.charId] || { name: ch.charId, cls: '', race: '', elem: '', step: '', icon: '' };
+  const expandedCls = ch._expanded ? ' expanded' : '';
+  const matchCls = item._matchPage !== undefined ? ' match' : '';
+  const activePageIdx = ch._activePageIdx || 0;
+  const page = ch.talentPages[activePageIdx] || ch.talentPages[0];
+
+  const pageTabs = ch.talentPages.map((p, i) => `
+    <button class="page-tab${i === activePageIdx ? ' active' : ''}" onclick="event.stopPropagation();setActivePage(${idx},${i})">Page ${i + 1}</button>
+  `).join('');
+
+  const addPageBtn = ch.talentPages.length < 4
+    ? `<button class="page-tab-add" title="Add page" onclick="event.stopPropagation();addPage(${idx})">+</button>` : '';
+  const delPageBtn = ch.talentPages.length > 1
+    ? `<button class="page-tab-del" title="Remove this page" onclick="event.stopPropagation();confirmRemovePage(${idx},${activePageIdx})">−</button>` : '';
+
+  const slotsHtml = page.slots.map((s, si) => slotHtml(ch, idx, activePageIdx, si, s)).join('');
+
+  const starBadge = ch._star ? `<span class="talent-count">★${ch._star}${ch._level ? ' Lv' + ch._level : ''}</span>` : '';
+
+  return `<div class="char-card${expandedCls}${matchCls}" data-idx="${idx}">
+    <div class="char-head" onclick="toggleExpand(${idx})">
+      ${deleteMode ? `<input type="checkbox" class="cbox" onclick="event.stopPropagation();toggleDeleteSelect(${idx},this.checked)" ${deleteSelected.has(idx) ? 'checked' : ''}>` : `<span class="drag-handle" title="Reorder">⋮⋮</span>`}
+      <img class="avatar" src="${u.icon || ''}" onerror="this.style.visibility='hidden'" alt="">
+      <div class="info">
+        <div class="name-row">
+          <span class="cname">${escapeHtml(u.name)}</span>
+          ${u.alter ? `<span class="calter">${escapeHtml(u.alter)}</span>` : ''}
+          ${u.cls ? `<span class="tag-pill tag-cls">${escapeHtml(u.cls)}</span>` : ''}
+          ${u.elem ? `<span class="tag-pill tag-elem">${escapeHtml(u.elem)}</span>` : ''}
+          ${u.step ? `<span class="tag-pill tag-step s-${u.step}">${u.step}</span>` : ''}
+        </div>
+        <div class="meta">${talentCount(ch)} talent(s) slotted · ${ch.talentPages.length} page(s)${ch.notes ? ' · has notes' : ''}</div>
+      </div>
+      ${!deleteMode ? `<div class="updown"><button onclick="event.stopPropagation();moveChar(${idx},-1)">▲</button><button onclick="event.stopPropagation();moveChar(${idx},1)">▼</button></div>` : ''}
+      ${starBadge}
+      <span class="chevron">▶</span>
+    </div>
+    <div class="char-body">
+      <div class="page-tabs">${pageTabs}${addPageBtn}${delPageBtn}</div>
+      <div class="slots">${slotsHtml}</div>
+      <div class="notes-wrap">
+        <label>Notes</label>
+        <textarea placeholder="Freeform notes for this character..." onchange="setNotes(${idx}, this.value)">${escapeHtml(ch.notes || '')}</textarea>
+      </div>
+    </div>
+  </div>`;
+}
+
+function render() {
+  $('charCount').textContent = state.characters.length + ' character' + (state.characters.length === 1 ? '' : 's');
+  $('ovCount').textContent = totalTalentCount();
+  renderFilterChips();
+  $('showExclusive').checked = !!state.ui.showExclusive;
+  $('sortSelect').value = state.ui.sort || 'added';
+
+  const list = visibleCharacters();
+  $('charList').innerHTML = list.map(charCardHtml).join('');
+  $('emptyState').style.display = state.characters.length === 0 ? 'block' : 'none';
+  $('deleteModeBar').style.display = deleteMode ? 'flex' : 'none';
+  $('deleteModeCount').textContent = deleteSelected.size + ' selected';
+
+  document.querySelectorAll('.char-card').forEach(card => {
+    const idx = parseInt(card.dataset.idx, 10);
+    const ch = state.characters[idx];
+    if (ch && ch._expanded) card.classList.add('expanded');
+  });
+}
+
+// ---------- character actions ----------
+function toggleExpand(idx) {
+  if (deleteMode) return;
+  const ch = state.characters[idx];
+  ch._expanded = !ch._expanded;
+  render();
+}
+
+function setActivePage(idx, pageIdx) {
+  state.characters[idx]._activePageIdx = pageIdx;
+  render();
+}
+
+function addPage(idx) {
+  const ch = state.characters[idx];
+  if (ch.talentPages.length >= 4) return;
+  ch.talentPages.push({ slots: [null, null, null, null] });
+  ch._activePageIdx = ch.talentPages.length - 1;
+  saveState(); render();
+}
+
+function confirmRemovePage(idx, pageIdx) {
+  showConfirm('Remove page', `Remove Page ${pageIdx + 1} and its slotted talents?`, () => {
+    const ch = state.characters[idx];
+    ch.talentPages.splice(pageIdx, 1);
+    if (ch._activePageIdx >= ch.talentPages.length) ch._activePageIdx = ch.talentPages.length - 1;
+    saveState(); render();
+  });
+}
+
+function setNotes(idx, val) {
+  state.characters[idx].notes = val;
+  saveState();
+}
+
+function moveChar(idx, dir) {
+  const n = idx + dir;
+  if (n < 0 || n >= state.characters.length) return;
+  const arr = state.characters;
+  [arr[idx], arr[n]] = [arr[n], arr[idx]];
+  saveState(); render();
+}
+
+function removeSlot(chIdx, pageIdx, slotIdx) {
+  state.characters[chIdx].talentPages[pageIdx].slots[slotIdx] = null;
+  saveState(); render();
+}
+
+function confirmRemoveSlot(chIdx, pageIdx, slotIdx) {
+  const slot = state.characters[chIdx].talentPages[pageIdx].slots[slotIdx];
+  const t = slot ? DATA.talents[slot.id] : null;
+  showConfirm('Remove talent', `Remove ${t ? t.name : 'this talent'} from the slot?`, () => removeSlot(chIdx, pageIdx, slotIdx));
+}
+
+// ---------- delete mode ----------
+function toggleDeleteSelect(idx, checked) {
+  if (checked) deleteSelected.add(idx); else deleteSelected.delete(idx);
+  $('deleteModeCount').textContent = deleteSelected.size + ' selected';
+}
+
+// ---------- add character modal ----------
+function openAddCharModal() {
+  addCharVisibleCount = PAGE_SIZE;
+  $('addCharSearch').value = '';
+  $('addCharTotal').textContent = `(${DATA.units.length} total)`;
+  renderAddCharList();
+  $('addCharModal').style.display = 'flex';
+  $('addCharSearch').focus();
+}
+
+function renderAddCharList() {
+  const q = $('addCharSearch').value || '';
+  const addedIds = new Set(state.characters.map(c => c.charId));
+  let list = DATA.units;
+  if (q) list = list.filter(u => fuzzy(u.name, q) || fuzzy(u.alter, q));
+  const shown = list.slice(0, addCharVisibleCount);
+  $('addCharList').innerHTML = shown.map(u => {
+    const added = addedIds.has(u.id);
+    return `<div class="pick-row${added ? ' disabled' : ''}" onclick="${added ? '' : `pickAddChar('${u.id}')`}">
+      <img src="${u.icon || ''}" onerror="this.style.visibility='hidden'" alt="">
+      <div>
+        <span class="prow-name">${escapeHtml(u.name)}</span>${u.alter ? `<span class="prow-alter">${escapeHtml(u.alter)}</span>` : ''}
+        ${added ? '<span style="color:var(--dim);font-size:10px;margin-left:6px">(added)</span>' : ''}
+        <div class="prow-tags">
+          ${u.cls ? `<span class="tag-pill tag-cls">${escapeHtml(u.cls)}</span>` : ''}
+          ${u.elem ? `<span class="tag-pill tag-elem">${escapeHtml(u.elem)}</span>` : ''}
+          ${u.step ? `<span class="tag-pill tag-step s-${u.step}">${u.step}</span>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  $('addCharLoadMore').style.display = list.length > shown.length ? 'block' : 'none';
+}
+
+function pickAddChar(id) {
+  state.characters.push({ charId: id, notes: '', talentPages: emptyPages(), _expanded: false, _activePageIdx: 0 });
+  saveState();
+  closeModal('addCharModal');
+  render();
+}
+
+$('addCharSearch').addEventListener('input', () => { addCharVisibleCount = PAGE_SIZE; renderAddCharList(); });
+$('addCharList').parentElement.addEventListener('scroll', e => {
+  const el = e.target;
+  if (el.scrollTop + el.clientHeight > el.scrollHeight - 60) {
+    addCharVisibleCount += PAGE_SIZE; renderAddCharList();
+  }
+});
+
+// ---------- talent picker modal ----------
+function openTalentPicker(chIdx, pageIdx, slotIdx) {
+  talentPickCtx = { chIdx, pageIdx, slotIdx };
+  talentPickVisibleCount = PAGE_SIZE;
+  $('talentPickSearch').value = '';
+  renderTalentPickList();
+  $('talentPickModal').style.display = 'flex';
+  $('talentPickSearch').focus();
+}
+window.openTalentPicker = openTalentPicker;
+window.removeSlot = removeSlot;
+window.confirmRemoveSlot = confirmRemoveSlot;
+window.toggleSlotExpand = toggleSlotExpand;
+window.toggleExpand = toggleExpand;
+window.setActivePage = setActivePage;
+window.addPage = addPage;
+window.confirmRemovePage = confirmRemovePage;
+window.setNotes = setNotes;
+window.moveChar = moveChar;
+window.toggleDeleteSelect = toggleDeleteSelect;
+window.pickAddChar = pickAddChar;
+
+function talentEntries() {
+  const showExcl = !!state.ui.showExclusive;
+  return Object.entries(DATA.talents)
+    .filter(([, t]) => showExcl || !t.exclusive)
+    .map(([uid, t]) => ({ uid, ...t }));
+}
+
+function renderTalentPickList() {
+  const q = $('talentPickSearch').value || '';
+  let list = talentEntries();
+  if (q) list = list.filter(t => fuzzy(t.name, q) || fuzzy(t.effect, q));
+  // group by name, highest step first
+  list.sort((a, b) => {
+    if (a.name !== b.name) return a.name.localeCompare(b.name);
+    return stepWeight(b.step) - stepWeight(a.step);
+  });
+  const shown = list.slice(0, talentPickVisibleCount);
+  const stepColor = { S: 'var(--orange)', A: 'var(--purple)', B: 'var(--blue)', C: 'var(--green)' };
+  $('talentPickList').innerHTML = shown.map(t => {
+    const src = t.exclusive ? 'Exclusive' : (t.race ? 'Race: ' + t.race : t.cls ? 'Class: ' + t.cls : t.elem ? 'Element: ' + t.elem : 'Generic');
+    return `<div class="pick-row" onclick="pickTalent('${t.uid}')">
+      <div>
+        <span class="prow-name" style="color:${stepColor[t.step] || 'var(--text)'}">${escapeHtml(t.name)}</span>
+        <span style="font-size:10px;color:var(--dim);margin-left:6px">${escapeHtml(src)}</span>
+        <div class="prow-effect">${t.effect}</div>
+      </div>
+    </div>`;
+  }).join('');
+  $('talentPickLoadMore').style.display = list.length > shown.length ? 'block' : 'none';
+}
+
+function pickTalent(uid) {
+  const { chIdx, pageIdx, slotIdx } = talentPickCtx;
+  state.characters[chIdx].talentPages[pageIdx].slots[slotIdx] = { id: uid };
+  saveState();
+  closeModal('talentPickModal');
+  render();
+}
+window.pickTalent = pickTalent;
+
+$('talentPickSearch').addEventListener('input', () => { talentPickVisibleCount = PAGE_SIZE; renderTalentPickList(); });
+$('talentPickList').parentElement.addEventListener('scroll', e => {
+  const el = e.target;
+  if (el.scrollTop + el.clientHeight > el.scrollHeight - 60) {
+    talentPickVisibleCount += PAGE_SIZE; renderTalentPickList();
+  }
+});
+
+// ---------- overview modal ----------
+function openOverview() {
+  const groups = {};
+  state.characters.forEach(ch => {
+    ch.talentPages.forEach((p, pIdx) => p.slots.forEach(s => {
+      if (!s || !s.id) return;
+      const t = DATA.talents[s.id];
+      if (!t) return;
+      groups[t.name] = groups[t.name] || { step: t.step, entries: [], total: 0 };
+      groups[t.name].total++;
+      const u = unitById[ch.charId] || { name: ch.charId };
+      groups[t.name].entries.push(`${u.name} (Page ${pIdx + 1})`);
+    }));
+  });
+  const rows = Object.entries(groups).sort((a, b) => stepWeight(b[1].step) - stepWeight(a[1].step) || a[0].localeCompare(b[0]));
+  const stepColor = { S: 'var(--orange)', A: 'var(--purple)', B: 'var(--blue)', C: 'var(--green)' };
+  $('overviewList').innerHTML = rows.length ? rows.map(([name, g]) => `
+    <div class="ov-row">
+      <div class="ov-head"><span style="color:${stepColor[g.step] || 'var(--text)'}">${escapeHtml(name)}</span><span>${g.total}×</span></div>
+      <div class="ov-entries">${g.entries.map(escapeHtml).join(' · ')}</div>
+    </div>
+  `).join('') : '<div style="color:var(--dim);font-size:12px;text-align:center;padding:20px">No talents slotted yet.</div>';
+  $('overviewModal').style.display = 'flex';
+}
+
+// ---------- import from player_save.json ----------
+function importFromSave(json) {
+  const roleList = json.roleList;
+  if (!Array.isArray(roleList)) { toast('Invalid save file: missing roleList', true); return; }
+  const built = [];
+  roleList.forEach(r => {
+    const charId = r.iDs;
+    if (!charId || !unitById[charId]) return; // skip unknown
+    const talentIDs = (r.talent && r.talent.talentIDs) || [];
+    const pages = talentIDs.length ? talentIDs.map(page => ({
+      slots: (page || []).slice(0, 4).map(id => (id ? { id } : null))
+    })) : emptyPages();
+    built.push({
+      charId,
+      notes: '',
+      talentPages: normalizePages(pages),
+      _expanded: false,
+      _activePageIdx: 0,
+      _star: r.star || 0,
+      _level: r.level || 0,
+    });
+  });
+  if (built.length === 0) { toast('No matching characters found in save file', true); return; }
+
+  const doImport = () => {
+    state.characters = built;
+    saveState();
+    render();
+    toast(`Imported ${built.length} characters from save`);
+  };
+  if (state.characters.length > 0) {
+    showConfirm('Import from save', `This will replace your ${state.characters.length} saved character(s). Continue?`, doImport);
+  } else {
+    doImport();
+  }
+}
+
+// ---------- manual JSON import/export ----------
+function exportJson() {
+  const data = state.characters.map(ch => ({
+    charId: ch.charId,
+    notes: ch.notes || '',
+    talentPages: ch.talentPages.map(p => ({ slots: p.slots.map(s => (s && s.id) ? { id: s.id } : null) })),
+  }));
+  const payload = { _type: 'talent-manage', data };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const date = new Date().toISOString().slice(0, 10);
+  a.href = url; a.download = `talent-manage-${date}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function importJson(json) {
+  if (!json || json._type !== 'talent-manage' || !Array.isArray(json.data)) {
+    toast('Invalid file: missing _type or data', true); return;
+  }
+  const built = [];
+  json.data.forEach(e => {
+    if (!e.charId || !unitById[e.charId]) return; // skip unknown
+    built.push({
+      charId: e.charId,
+      notes: e.notes || '',
+      talentPages: normalizePages(e.talentPages),
+      _expanded: false,
+      _activePageIdx: 0,
+    });
+  });
+
+  const doImport = () => {
+    state.characters = built;
+    saveState();
+    render();
+    toast(`Imported ${built.length} characters`);
+  };
+  if (state.characters.length > 0) {
+    showConfirm('Import JSON backup', `This will replace your ${state.characters.length} saved character(s). Continue?`, doImport);
+  } else {
+    doImport();
+  }
+}
+
+function readFileAsJson(file, cb) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    try { cb(JSON.parse(reader.result)); }
+    catch (e) { toast('Failed to parse file: ' + e.message, true); }
+  };
+  reader.readAsText(file);
+}
+
+// ---------- toolbar wiring ----------
+$('globalSearch').addEventListener('input', render);
+$('addCharBtn').addEventListener('click', openAddCharModal);
+$('expandAllBtn').addEventListener('click', () => { state.characters.forEach(c => c._expanded = true); render(); });
+$('collapseAllBtn').addEventListener('click', () => { state.characters.forEach(c => c._expanded = false); render(); });
+$('sortSelect').addEventListener('change', () => { state.ui.sort = $('sortSelect').value; saveState(); render(); });
+$('showExclusive').addEventListener('change', () => { state.ui.showExclusive = $('showExclusive').checked; saveState(); });
+$('overviewBtn').addEventListener('click', openOverview);
+
+$('deleteModeBtn').addEventListener('click', () => {
+  deleteMode = true; deleteSelected = new Set(); render();
+});
+$('deleteCancelBtn').addEventListener('click', () => {
+  deleteMode = false; deleteSelected = new Set(); render();
+});
+$('deleteConfirmBtn').addEventListener('click', () => {
+  if (deleteSelected.size === 0) { deleteMode = false; render(); return; }
+  showConfirm('Delete characters', `Delete ${deleteSelected.size} selected character(s)? This cannot be undone.`, () => {
+    const toDelete = [...deleteSelected].sort((a, b) => b - a);
+    toDelete.forEach(i => state.characters.splice(i, 1));
+    deleteMode = false; deleteSelected = new Set();
+    saveState(); render();
+  });
+});
+
+$('confirmOkBtn').addEventListener('click', () => {
+  closeModal('confirmModal');
+  if (confirmCb) { confirmCb(); confirmCb = null; }
+});
+$('confirmCancelBtn').addEventListener('click', () => { closeModal('confirmModal'); confirmCb = null; });
+
+function wireImportExport(suffix) {
+  $('exportJsonBtn' + suffix).addEventListener('click', exportJson);
+  $('importJsonBtn' + suffix).addEventListener('click', () => $('importJsonFile').click());
+  $('importSaveBtn' + suffix).addEventListener('click', () => $('importSaveFile').click());
+}
+wireImportExport('');
+wireImportExport('2');
+
+$('importJsonFile').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (file) readFileAsJson(file, importJson);
+  e.target.value = '';
+});
+$('importSaveFile').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (file) readFileAsJson(file, importFromSave);
+  e.target.value = '';
+});
+
+// ---------- init ----------
+function init() {
+  fetch('talent-manage-data.json').then(r => r.json()).then(data => {
+    DATA = data;
+    unitById = {};
+    DATA.units.forEach(u => unitById[u.id] = u);
+    state = loadState();
+    state.characters.forEach(ch => {
+      ch.talentPages = normalizePages(ch.talentPages);
+      if (ch._expanded === undefined) ch._expanded = false;
+      if (ch._activePageIdx === undefined) ch._activePageIdx = 0;
+    });
+    state.ui = state.ui || { sort: 'added', filter: {}, showExclusive: false };
+    state.ui.filter = state.ui.filter || {};
+
+    // deep-link ?char=ID
+    const params = new URLSearchParams(location.search);
+    const charParam = params.get('char');
+    if (charParam) {
+      const idx = state.characters.findIndex(c => c.charId === charParam);
+      if (idx >= 0) state.characters[idx]._expanded = true;
+    }
+
+    $('loading').style.display = 'none';
+    $('app').style.display = 'block';
+    render();
+
+    if (charParam) {
+      const idx = state.characters.findIndex(c => c.charId === charParam);
+      if (idx >= 0) {
+        const el = document.querySelector(`.char-card[data-idx="${idx}"]`);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }).catch(err => {
+    $('loading').textContent = '⚠ Failed to load talent-manage-data.json — make sure it is in the same folder as this HTML.';
+    console.error(err);
+  });
+}
+
+init();
+</script>
+
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>
