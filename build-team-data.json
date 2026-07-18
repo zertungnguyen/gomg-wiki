@@ -9,36 +9,12 @@
       "element": "Dark"
     },
     {
-      "id": "M53301_001",
-      "name": "Astral Fiend",
-      "step": "S",
-      "cls": "Mage",
-      "race": "Divine",
-      "element": "Water"
-    },
-    {
-      "id": "M53301_002",
-      "name": "Astral Fiend",
-      "step": "S",
-      "cls": "Warrior",
-      "race": "Dummy",
-      "element": "Earth"
-    },
-    {
       "id": "M31302",
       "name": "Core Golem",
       "step": "S",
       "cls": "Warrior",
       "race": "Construct",
       "element": "Earth"
-    },
-    {
-      "id": "M31302_000",
-      "name": "Core Golem",
-      "step": "S",
-      "cls": "Archer",
-      "race": "Construct",
-      "element": "Wind"
     },
     {
       "id": "M13310",
@@ -57,27 +33,11 @@
       "element": "Light"
     },
     {
-      "id": "M13306_000",
-      "name": "Crystal Shroom",
-      "step": "S",
-      "cls": "Mage",
-      "race": "Dark star mushroom",
-      "element": "Dark"
-    },
-    {
       "id": "M51302",
       "name": "Dawn Dragoness",
       "step": "S",
       "cls": "Warrior",
       "race": "Draconic",
-      "element": "Water"
-    },
-    {
-      "id": "M51302_001",
-      "name": "Dawn Dragoness",
-      "step": "S",
-      "cls": "Warrior",
-      "race": "Aquatic",
       "element": "Water"
     },
     {
@@ -89,28 +49,12 @@
       "element": "Fire"
     },
     {
-      "id": "M12211_000",
-      "name": "Desert Dancer",
-      "step": "S",
-      "cls": "Mage",
-      "race": "Feline",
-      "element": "Dark"
-    },
-    {
       "id": "M13302",
       "name": "Earth Herald",
       "step": "S",
       "cls": "Mage",
       "race": "Goblinoid",
       "element": "Earth"
-    },
-    {
-      "id": "M13302_000",
-      "name": "Earth Herald",
-      "step": "S",
-      "cls": "Mage",
-      "race": "Demonic",
-      "element": "Dark"
     },
     {
       "id": "M13303",
@@ -121,31 +65,7 @@
       "element": "Earth"
     },
     {
-      "id": "M13303_001",
-      "name": "Earth Witch",
-      "step": "S",
-      "cls": "Mage",
-      "race": "Rodent",
-      "element": "Earth"
-    },
-    {
-      "id": "M13303_002",
-      "name": "Earth Witch",
-      "step": "S",
-      "cls": "Mage",
-      "race": "Rodent",
-      "element": "Fire"
-    },
-    {
       "id": "M14301",
-      "name": "Flawless Sage",
-      "step": "S",
-      "cls": "Priest",
-      "race": "Aquatic",
-      "element": "Light"
-    },
-    {
-      "id": "M14301_000",
       "name": "Flawless Sage",
       "step": "S",
       "cls": "Priest",
@@ -159,14 +79,6 @@
       "cls": "Priest",
       "race": "Divine",
       "element": "Light"
-    },
-    {
-      "id": "M54301_000",
-      "name": "Forest Nymph",
-      "step": "S",
-      "cls": "Priest",
-      "race": "Divine",
-      "element": "Fire"
     },
     {
       "id": "M22301",
@@ -185,28 +97,12 @@
       "element": "Dark"
     },
     {
-      "id": "M41301_000",
-      "name": "Ghost Captain",
-      "step": "S",
-      "cls": "Warrior",
-      "race": "Undead",
-      "element": "Earth"
-    },
-    {
       "id": "M21301",
       "name": "Golden Maiden",
       "step": "S",
       "cls": "Warrior",
       "race": "Metallic",
       "element": "Light"
-    },
-    {
-      "id": "M21301_000",
-      "name": "Golden Maiden",
-      "step": "S",
-      "cls": "Warrior",
-      "race": "Lava Elemental",
-      "element": "Fire"
     },
     {
       "id": "M13305",
@@ -217,23 +113,7 @@
       "element": "Dark"
     },
     {
-      "id": "M13305_000",
-      "name": "Grand Magician",
-      "step": "S",
-      "cls": "Mage",
-      "race": "Leporine",
-      "element": "Light"
-    },
-    {
       "id": "M12301",
-      "name": "Harpy Princess",
-      "step": "S",
-      "cls": "Archer",
-      "race": "Avian",
-      "element": "Wind"
-    },
-    {
-      "id": "M12301_001",
       "name": "Harpy Princess",
       "step": "S",
       "cls": "Archer",
@@ -249,28 +129,12 @@
       "element": "Light"
     },
     {
-      "id": "M31301_001",
-      "name": "Holy Blade",
-      "step": "S",
-      "cls": "Warrior",
-      "race": "Relic Soul",
-      "element": "Water"
-    },
-    {
       "id": "M51303",
       "name": "Imp",
       "step": "S",
       "cls": "Warrior",
       "race": "Demonic",
       "element": "Dark"
-    },
-    {
-      "id": "M51303_000",
-      "name": "Imp",
-      "step": "S",
-      "cls": "Warrior",
-      "race": "Demonic",
-      "element": "Earth"
     },
     {
       "id": "M14303",
@@ -289,28 +153,12 @@
       "element": "Earth"
     },
     {
-      "id": "M11301_000",
-      "name": "Legion Commander",
-      "step": "S",
-      "cls": "Warrior",
-      "race": "Centauran",
-      "element": "Fire"
-    },
-    {
       "id": "M11304",
       "name": "Minotaur Brave",
       "step": "S",
       "cls": "Warrior",
       "race": "Taurian",
       "element": "Fire"
-    },
-    {
-      "id": "M11304_000",
-      "name": "Minotaur Brave",
-      "step": "S",
-      "cls": "Warrior",
-      "race": "Taurian",
-      "element": "Earth"
     },
     {
       "id": "M24301",
@@ -321,23 +169,7 @@
       "element": "Water"
     },
     {
-      "id": "M24301_000",
-      "name": "Serene Undine",
-      "step": "S",
-      "cls": "Priest",
-      "race": "Silver element",
-      "element": "Light"
-    },
-    {
       "id": "M11302",
-      "name": "Shadow Dragoness",
-      "step": "S",
-      "cls": "Warrior",
-      "race": "Draconic",
-      "element": "Dark"
-    },
-    {
-      "id": "M11302_000",
       "name": "Shadow Dragoness",
       "step": "S",
       "cls": "Warrior",
@@ -353,36 +185,12 @@
       "element": "Light"
     },
     {
-      "id": "M23301_000",
-      "name": "Slime Queen",
-      "step": "S",
-      "cls": "Mage",
-      "race": "Crystalline",
-      "element": "Light"
-    },
-    {
-      "id": "M23301_001",
-      "name": "Slime Queen",
-      "step": "S",
-      "cls": "Mage",
-      "race": "Gelatinous",
-      "element": "Fire"
-    },
-    {
       "id": "M11303",
       "name": "Snowman Knightess",
       "step": "S",
       "cls": "Warrior",
       "race": "Elemental",
       "element": "Water"
-    },
-    {
-      "id": "M11303_002",
-      "name": "Snowman Knightess",
-      "step": "S",
-      "cls": "Warrior",
-      "race": "Lava Elemental",
-      "element": "Fire"
     },
     {
       "id": "M52301",
@@ -393,28 +201,12 @@
       "element": "Light"
     },
     {
-      "id": "M52301_000",
-      "name": "Stellar Archer",
-      "step": "S",
-      "cls": "Warrior",
-      "race": "Immortal",
-      "element": "Wind"
-    },
-    {
       "id": "M21302",
       "name": "Timeless Lord",
       "step": "S",
       "cls": "Warrior",
       "race": "Sandborne",
       "element": "Earth"
-    },
-    {
-      "id": "M21302_000",
-      "name": "Timeless Lord",
-      "step": "S",
-      "cls": "Warrior",
-      "race": "Metallic",
-      "element": "Light"
     },
     {
       "id": "M31303",
@@ -425,14 +217,6 @@
       "element": "Earth"
     },
     {
-      "id": "M31303_000",
-      "name": "Titan Lancer",
-      "step": "S",
-      "cls": "Warrior",
-      "race": "Gigantic",
-      "element": "Wind"
-    },
-    {
       "id": "M13304",
       "name": "Wasp Witch",
       "step": "S",
@@ -441,28 +225,12 @@
       "element": "Dark"
     },
     {
-      "id": "M13304_001",
-      "name": "Wasp Witch",
-      "step": "S",
-      "cls": "Mage",
-      "race": "Insectoid",
-      "element": "Water"
-    },
-    {
       "id": "M12205",
       "name": "Windstrider",
       "step": "S",
       "cls": "Archer",
       "race": "Leporine",
       "element": "Wind"
-    },
-    {
-      "id": "M12205_000",
-      "name": "Windstrider",
-      "step": "S",
-      "cls": "Archer",
-      "race": "Leporine",
-      "element": "Light"
     },
     {
       "id": "M34301",
@@ -474,11 +242,243 @@
     },
     {
       "id": "M34301_000",
-      "name": "Wish Djinn",
+      "name": "[Astral] Wish Djinn",
       "step": "S",
       "cls": "Priest",
       "race": "Djinn Soul",
       "element": "Light"
+    },
+    {
+      "id": "M13305_000",
+      "name": "[Bunny] Grand Magician",
+      "step": "S",
+      "cls": "Mage",
+      "race": "Leporine",
+      "element": "Light"
+    },
+    {
+      "id": "M12205_000",
+      "name": "[Bunny] Windstrider",
+      "step": "S",
+      "cls": "Archer",
+      "race": "Leporine",
+      "element": "Light"
+    },
+    {
+      "id": "M41301_000",
+      "name": "[Circus] Ghost Captain",
+      "step": "S",
+      "cls": "Warrior",
+      "race": "Undead",
+      "element": "Earth"
+    },
+    {
+      "id": "M23301_000",
+      "name": "[Crystal] Slime Queen",
+      "step": "S",
+      "cls": "Mage",
+      "race": "Crystalline",
+      "element": "Light"
+    },
+    {
+      "id": "M13306_000",
+      "name": "[Dark Star] Crystal Shroom",
+      "step": "S",
+      "cls": "Mage",
+      "race": "Dark star mushroom",
+      "element": "Dark"
+    },
+    {
+      "id": "M52301_000",
+      "name": "[Fairy World] Stellar Archer",
+      "step": "S",
+      "cls": "Warrior",
+      "race": "Immortal",
+      "element": "Wind"
+    },
+    {
+      "id": "M53301_001",
+      "name": "[Frostbound] Astral Fiend",
+      "step": "S",
+      "cls": "Mage",
+      "race": "Divine",
+      "element": "Water"
+    },
+    {
+      "id": "M12301_001",
+      "name": "[Frostbound] Harpy Princess",
+      "step": "S",
+      "cls": "Archer",
+      "race": "Avian",
+      "element": "Wind"
+    },
+    {
+      "id": "M31301_001",
+      "name": "[Frostbound] Holy Blade",
+      "step": "S",
+      "cls": "Warrior",
+      "race": "Relic Soul",
+      "element": "Water"
+    },
+    {
+      "id": "M13304_001",
+      "name": "[Frostbound] Wasp Witch",
+      "step": "S",
+      "cls": "Mage",
+      "race": "Insectoid",
+      "element": "Water"
+    },
+    {
+      "id": "M21302_000",
+      "name": "[Golden] Timeless Lord",
+      "step": "S",
+      "cls": "Warrior",
+      "race": "Metallic",
+      "element": "Light"
+    },
+    {
+      "id": "M54301_000",
+      "name": "[Inferno] Forest Nymph",
+      "step": "S",
+      "cls": "Priest",
+      "race": "Divine",
+      "element": "Fire"
+    },
+    {
+      "id": "M53301_002",
+      "name": "[Jester] Astral Fiend",
+      "step": "S",
+      "cls": "Warrior",
+      "race": "Dummy",
+      "element": "Earth"
+    },
+    {
+      "id": "M13303_002",
+      "name": "[Lava] Earth Witch",
+      "step": "S",
+      "cls": "Mage",
+      "race": "Rodent",
+      "element": "Fire"
+    },
+    {
+      "id": "M21301_000",
+      "name": "[Lava] Golden Maiden",
+      "step": "S",
+      "cls": "Warrior",
+      "race": "Lava Elemental",
+      "element": "Fire"
+    },
+    {
+      "id": "M23301_001",
+      "name": "[Lava] Slime Queen",
+      "step": "S",
+      "cls": "Mage",
+      "race": "Gelatinous",
+      "element": "Fire"
+    },
+    {
+      "id": "M11303_002",
+      "name": "[Lava] Snowman Knightess",
+      "step": "S",
+      "cls": "Warrior",
+      "race": "Lava Elemental",
+      "element": "Fire"
+    },
+    {
+      "id": "M11304_000",
+      "name": "[Legion] Minotaur Brave",
+      "step": "S",
+      "cls": "Warrior",
+      "race": "Taurian",
+      "element": "Earth"
+    },
+    {
+      "id": "M12211_000",
+      "name": "[Lunar] Desert Dancer",
+      "step": "S",
+      "cls": "Mage",
+      "race": "Feline",
+      "element": "Dark"
+    },
+    {
+      "id": "M31302_000",
+      "name": "[Mecha] Core Golem",
+      "step": "S",
+      "cls": "Archer",
+      "race": "Construct",
+      "element": "Wind"
+    },
+    {
+      "id": "M13302_000",
+      "name": "[Nightmare] Earth Herald",
+      "step": "S",
+      "cls": "Mage",
+      "race": "Demonic",
+      "element": "Dark"
+    },
+    {
+      "id": "M51303_000",
+      "name": "[Pajama] Imp",
+      "step": "S",
+      "cls": "Warrior",
+      "race": "Demonic",
+      "element": "Earth"
+    },
+    {
+      "id": "M11302_000",
+      "name": "[Pale] Shadow Dragoness",
+      "step": "S",
+      "cls": "Warrior",
+      "race": "Draconic",
+      "element": "Dark"
+    },
+    {
+      "id": "M13303_001",
+      "name": "[Sandstorm] Earth Witch",
+      "step": "S",
+      "cls": "Mage",
+      "race": "Rodent",
+      "element": "Earth"
+    },
+    {
+      "id": "M24301_000",
+      "name": "[Silver] Serene Undine",
+      "step": "S",
+      "cls": "Priest",
+      "race": "Silver element",
+      "element": "Light"
+    },
+    {
+      "id": "M14301_000",
+      "name": "[Sovereign] Flawless Sage",
+      "step": "S",
+      "cls": "Priest",
+      "race": "Aquatic",
+      "element": "Light"
+    },
+    {
+      "id": "M51302_001",
+      "name": "[Swimsuit] Dawn Dragoness",
+      "step": "S",
+      "cls": "Warrior",
+      "race": "Aquatic",
+      "element": "Water"
+    },
+    {
+      "id": "M31303_000",
+      "name": "[Thunder] Titan Lancer",
+      "step": "S",
+      "cls": "Warrior",
+      "race": "Gigantic",
+      "element": "Wind"
+    },
+    {
+      "id": "M11301_000",
+      "name": "[Tribal] Legion Commander",
+      "step": "S",
+      "cls": "Warrior",
+      "race": "Centauran",
+      "element": "Fire"
     },
     {
       "id": "M13203",
@@ -505,14 +505,6 @@
       "element": "Dark"
     },
     {
-      "id": "M51201_001",
-      "name": "Astral Guardian",
-      "step": "A",
-      "cls": "Warrior",
-      "race": "Divine",
-      "element": "Water"
-    },
-    {
       "id": "M14204",
       "name": "Boom Shroom",
       "step": "A",
@@ -537,14 +529,6 @@
       "element": "Earth"
     },
     {
-      "id": "M22201_002",
-      "name": "Boulder Gunner",
-      "step": "A",
-      "cls": "Archer",
-      "race": "Lava Elemental",
-      "element": "Fire"
-    },
-    {
       "id": "M31201",
       "name": "Broken Blade",
       "step": "A",
@@ -561,14 +545,6 @@
       "element": "Fire"
     },
     {
-      "id": "M12207_000",
-      "name": "Candy",
-      "step": "A",
-      "cls": "Archer",
-      "race": "Feline",
-      "element": "Wind"
-    },
-    {
       "id": "M12203",
       "name": "Coco Tosser",
       "step": "A",
@@ -583,14 +559,6 @@
       "cls": "Warrior",
       "race": "Canine",
       "element": "Wind"
-    },
-    {
-      "id": "M11205_001",
-      "name": "Dire Wolf",
-      "step": "A",
-      "cls": "Warrior",
-      "race": "Canine",
-      "element": "Water"
     },
     {
       "id": "M23205",
@@ -641,14 +609,6 @@
       "element": "Wind"
     },
     {
-      "id": "M21202_000",
-      "name": "Gale Warrior",
-      "step": "A",
-      "cls": "Warrior",
-      "race": "Elemental",
-      "element": "Light"
-    },
-    {
       "id": "M41201",
       "name": "Ghost Mate",
       "step": "A",
@@ -673,28 +633,12 @@
       "element": "Light"
     },
     {
-      "id": "M22202_002",
-      "name": "Gilt Archer",
-      "step": "A",
-      "cls": "Archer",
-      "race": "Lava Elemental",
-      "element": "Fire"
-    },
-    {
       "id": "M14202",
       "name": "Goblin Priest",
       "step": "A",
       "cls": "Priest",
       "race": "Goblinoid",
       "element": "Wind"
-    },
-    {
-      "id": "M14202_000",
-      "name": "Goblin Priest",
-      "step": "A",
-      "cls": "Priest",
-      "race": "Demonic",
-      "element": "Dark"
     },
     {
       "id": "M14208",
@@ -711,14 +655,6 @@
       "cls": "Warrior",
       "race": "Goblinoid",
       "element": "Fire"
-    },
-    {
-      "id": "M11201_000",
-      "name": "Hunter Brave",
-      "step": "A",
-      "cls": "Warrior",
-      "race": "Demonic",
-      "element": "Dark"
     },
     {
       "id": "M33101",
@@ -769,14 +705,6 @@
       "element": "Dark"
     },
     {
-      "id": "M12201_000",
-      "name": "Lurking Shadow",
-      "step": "A",
-      "cls": "Archer",
-      "race": "Leporine",
-      "element": "Light"
-    },
-    {
       "id": "M13204",
       "name": "Magic Attendant",
       "step": "A",
@@ -825,28 +753,12 @@
       "element": "Earth"
     },
     {
-      "id": "M11203_000",
-      "name": "Pepper",
-      "step": "A",
-      "cls": "Warrior",
-      "race": "Feline",
-      "element": "Light"
-    },
-    {
       "id": "M13201",
       "name": "Poppy",
       "step": "A",
       "cls": "Mage",
       "race": "Feline",
       "element": "Light"
-    },
-    {
-      "id": "M13201_000",
-      "name": "Poppy",
-      "step": "A",
-      "cls": "Mage",
-      "race": "Feline",
-      "element": "Fire"
     },
     {
       "id": "M22203",
@@ -897,28 +809,12 @@
       "element": "Earth"
     },
     {
-      "id": "M21201_002",
-      "name": "Stone Guard",
-      "step": "A",
-      "cls": "Warrior",
-      "race": "Lava Elemental",
-      "element": "Fire"
-    },
-    {
       "id": "M23204",
       "name": "Tempest Herald",
       "step": "A",
       "cls": "Mage",
       "race": "Elemental",
       "element": "Wind"
-    },
-    {
-      "id": "M23204_000",
-      "name": "Tempest Herald",
-      "step": "A",
-      "cls": "Mage",
-      "race": "Elemental",
-      "element": "Light"
     },
     {
       "id": "M12304",
@@ -953,14 +849,6 @@
       "element": "Earth"
     },
     {
-      "id": "M14206_002",
-      "name": "Troll Overseer",
-      "step": "A",
-      "cls": "Mage",
-      "race": "Trollish",
-      "element": "Fire"
-    },
-    {
       "id": "M14201",
       "name": "War Priest",
       "step": "A",
@@ -969,28 +857,12 @@
       "element": "Fire"
     },
     {
-      "id": "M14201_001",
-      "name": "War Priest",
-      "step": "A",
-      "cls": "Priest",
-      "race": "Canine",
-      "element": "Water"
-    },
-    {
       "id": "M12202",
       "name": "Warg Archer",
       "step": "A",
       "cls": "Archer",
       "race": "Canine",
       "element": "Earth"
-    },
-    {
-      "id": "M12202_001",
-      "name": "Warg Archer",
-      "step": "A",
-      "cls": "Archer",
-      "race": "Canine",
-      "element": "Wind"
     },
     {
       "id": "M11202",
@@ -1025,12 +897,140 @@
       "element": "Light"
     },
     {
+      "id": "M12201_000",
+      "name": "[Bunny] Lurking Shadow",
+      "step": "A",
+      "cls": "Archer",
+      "race": "Leporine",
+      "element": "Light"
+    },
+    {
+      "id": "M12207_000",
+      "name": "[Elf] Candy",
+      "step": "A",
+      "cls": "Archer",
+      "race": "Feline",
+      "element": "Wind"
+    },
+    {
+      "id": "M51201_001",
+      "name": "[Frostbound] Astral Guardian",
+      "step": "A",
+      "cls": "Warrior",
+      "race": "Divine",
+      "element": "Water"
+    },
+    {
+      "id": "M11205_001",
+      "name": "[Frostbound] Dire Wolf",
+      "step": "A",
+      "cls": "Warrior",
+      "race": "Canine",
+      "element": "Water"
+    },
+    {
+      "id": "M14201_001",
+      "name": "[Frostbound] War Priest",
+      "step": "A",
+      "cls": "Priest",
+      "race": "Canine",
+      "element": "Water"
+    },
+    {
+      "id": "M12202_001",
+      "name": "[Frostbound] Warg Archer",
+      "step": "A",
+      "cls": "Archer",
+      "race": "Canine",
+      "element": "Wind"
+    },
+    {
+      "id": "M11203_000",
+      "name": "[Knightess] Pepper",
+      "step": "A",
+      "cls": "Warrior",
+      "race": "Feline",
+      "element": "Light"
+    },
+    {
+      "id": "M22201_002",
+      "name": "[Lava] Boulder Gunner",
+      "step": "A",
+      "cls": "Archer",
+      "race": "Lava Elemental",
+      "element": "Fire"
+    },
+    {
+      "id": "M22202_002",
+      "name": "[Lava] Gilt Archer",
+      "step": "A",
+      "cls": "Archer",
+      "race": "Lava Elemental",
+      "element": "Fire"
+    },
+    {
+      "id": "M21201_002",
+      "name": "[Lava] Stone Guard",
+      "step": "A",
+      "cls": "Warrior",
+      "race": "Lava Elemental",
+      "element": "Fire"
+    },
+    {
+      "id": "M14206_002",
+      "name": "[Lava] Troll Overseer",
+      "step": "A",
+      "cls": "Mage",
+      "race": "Trollish",
+      "element": "Fire"
+    },
+    {
+      "id": "M13201_000",
+      "name": "[Mage] Poppy",
+      "step": "A",
+      "cls": "Mage",
+      "race": "Feline",
+      "element": "Fire"
+    },
+    {
+      "id": "M14202_000",
+      "name": "[Nightmare] Goblin Priest",
+      "step": "A",
+      "cls": "Priest",
+      "race": "Demonic",
+      "element": "Dark"
+    },
+    {
+      "id": "M11201_000",
+      "name": "[Nightmare] Hunter Brave",
+      "step": "A",
+      "cls": "Warrior",
+      "race": "Demonic",
+      "element": "Dark"
+    },
+    {
       "id": "M14203_000",
-      "name": "Zhaocai",
+      "name": "[Priest] Zhaocai",
       "step": "A",
       "cls": "Priest",
       "race": "Feline",
       "element": "Dark"
+    },
+    {
+      "id": "M21202_000",
+      "name": "[Thunder] Gale Warrior",
+      "step": "A",
+      "cls": "Warrior",
+      "race": "Elemental",
+      "element": "Light"
+    },
+    {
+      "id": "M23204_000",
+      "name": "[Thunder] Tempest Herald",
+      "step": "A",
+      "cls": "Mage",
+      "race": "Elemental",
+      "element": "Light"
     },
     {
       "id": "M13106",
@@ -1138,14 +1138,6 @@
     },
     {
       "id": "M11109",
-      "name": "Harpy Girl",
-      "step": "B",
-      "cls": "Warrior",
-      "race": "Avian",
-      "element": "Wind"
-    },
-    {
-      "id": "M11109_001",
       "name": "Harpy Girl",
       "step": "B",
       "cls": "Warrior",
@@ -1273,28 +1265,12 @@
       "element": "Earth"
     },
     {
-      "id": "M11106_002",
-      "name": "Troll Guard",
-      "step": "B",
-      "cls": "Warrior",
-      "race": "Trollish",
-      "element": "Fire"
-    },
-    {
       "id": "M12102",
       "name": "Troll Hurler",
       "step": "B",
       "cls": "Archer",
       "race": "Trollish",
       "element": "Earth"
-    },
-    {
-      "id": "M12102_002",
-      "name": "Troll Hurler",
-      "step": "B",
-      "cls": "Archer",
-      "race": "Trollish",
-      "element": "Fire"
     },
     {
       "id": "M32103",
@@ -1313,28 +1289,12 @@
       "element": "Fire"
     },
     {
-      "id": "M11103_001",
-      "name": "Warg Warrior",
-      "step": "B",
-      "cls": "Warrior",
-      "race": "Canine",
-      "element": "Water"
-    },
-    {
       "id": "M12101",
       "name": "Wolfkin Hunter",
       "step": "B",
       "cls": "Archer",
       "race": "Canine",
       "element": "Fire"
-    },
-    {
-      "id": "M12101_001",
-      "name": "Wolfkin Hunter",
-      "step": "B",
-      "cls": "Archer",
-      "race": "Canine",
-      "element": "Wind"
     },
     {
       "id": "M13104",
@@ -1345,12 +1305,52 @@
       "element": "Earth"
     },
     {
+      "id": "M11109_001",
+      "name": "[Frostbound] Harpy Girl",
+      "step": "B",
+      "cls": "Warrior",
+      "race": "Avian",
+      "element": "Wind"
+    },
+    {
+      "id": "M11103_001",
+      "name": "[Frostbound] Warg Warrior",
+      "step": "B",
+      "cls": "Warrior",
+      "race": "Canine",
+      "element": "Water"
+    },
+    {
+      "id": "M12101_001",
+      "name": "[Frostbound] Wolfkin Hunter",
+      "step": "B",
+      "cls": "Archer",
+      "race": "Canine",
+      "element": "Wind"
+    },
+    {
       "id": "M13104_001",
-      "name": "Wolfkin Shaman",
+      "name": "[Frostbound] Wolfkin Shaman",
       "step": "B",
       "cls": "Mage",
       "race": "Canine",
       "element": "Water"
+    },
+    {
+      "id": "M11106_002",
+      "name": "[Lava] Troll Guard",
+      "step": "B",
+      "cls": "Warrior",
+      "race": "Trollish",
+      "element": "Fire"
+    },
+    {
+      "id": "M12102_002",
+      "name": "[Lava] Troll Hurler",
+      "step": "B",
+      "cls": "Archer",
+      "race": "Trollish",
+      "element": "Fire"
     },
     {
       "id": "M12003",
@@ -1361,28 +1361,12 @@
       "element": "Dark"
     },
     {
-      "id": "M12003_001",
-      "name": "Bee Hunter",
-      "step": "C",
-      "cls": "Archer",
-      "race": "Insectoid",
-      "element": "Wind"
-    },
-    {
       "id": "M11005",
       "name": "Bee Warrior",
       "step": "C",
       "cls": "Warrior",
       "race": "Insectoid",
       "element": "Dark"
-    },
-    {
-      "id": "M11005_001",
-      "name": "Bee Warrior",
-      "step": "C",
-      "cls": "Warrior",
-      "race": "Insectoid",
-      "element": "Wind"
     },
     {
       "id": "M13002",
@@ -1457,14 +1441,6 @@
       "element": "Earth"
     },
     {
-      "id": "M11007_002",
-      "name": "Gold Digger",
-      "step": "C",
-      "cls": "Warrior",
-      "race": "Rodent",
-      "element": "Fire"
-    },
-    {
       "id": "M14103",
       "name": "Legion Priest",
       "step": "C",
@@ -1487,14 +1463,6 @@
       "cls": "Archer",
       "race": "Rodent",
       "element": "Earth"
-    },
-    {
-      "id": "M12004_002",
-      "name": "Mine Gatherer",
-      "step": "C",
-      "cls": "Archer",
-      "race": "Rodent",
-      "element": "Fire"
     },
     {
       "id": "M14102",
@@ -1543,6 +1511,38 @@
       "cls": "Archer",
       "race": "Feline",
       "element": "Earth"
+    },
+    {
+      "id": "M12003_001",
+      "name": "[Frostbound] Bee Hunter",
+      "step": "C",
+      "cls": "Archer",
+      "race": "Insectoid",
+      "element": "Wind"
+    },
+    {
+      "id": "M11005_001",
+      "name": "[Frostbound] Bee Warrior",
+      "step": "C",
+      "cls": "Warrior",
+      "race": "Insectoid",
+      "element": "Wind"
+    },
+    {
+      "id": "M11007_002",
+      "name": "[Lava] Gold Digger",
+      "step": "C",
+      "cls": "Warrior",
+      "race": "Rodent",
+      "element": "Fire"
+    },
+    {
+      "id": "M12004_002",
+      "name": "[Lava] Mine Gatherer",
+      "step": "C",
+      "cls": "Archer",
+      "race": "Rodent",
+      "element": "Fire"
     }
   ],
   "talents": [
