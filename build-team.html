@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build Team — Guild of Monster Girls Wiki</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0e0e12; --card:#16161d; --card2:#1c1c26; --border:#2a2a3a;
+  --text:#e0dfe6; --dim:#6b6b80; --accent:#c9a24e;
+  --orange:#ff9933; --purple:#b66dff; --blue:#4ea3ff; --green:#5fcf6b;
+  --SS:#ff5c5c;
+}
+html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;line-height:1.4;min-height:100vh}
+.wrap{max-width:1200px;margin:0 auto;padding:18px 14px 40px}
+h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:2px}
+h2{font-family:'Chakra Petch',sans-serif;font-size:14px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin:14px 0 8px}
+.sub{color:var(--dim);font-size:12px;margin-bottom:18px}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:12px}
+
+.top-actions{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+button{font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:1px;padding:8px 14px;background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:6px;cursor:pointer;transition:background .15s,border-color .15s}
+button:hover{background:#242433;border-color:var(--accent)}
+button.primary{background:var(--accent);color:#000;border-color:var(--accent)}
+button.primary:hover{background:#dab466}
+
+.tab-bar{display:flex;gap:2px;margin-bottom:12px;border-bottom:2px solid var(--border)}
+.tab-btn{padding:10px 18px;background:transparent;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--dim);font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:600;cursor:pointer;text-transform:uppercase;letter-spacing:1px}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-btn:hover{color:var(--text)}
+
+.char-panel{display:none}
+.char-panel.active{display:block}
+
+.field{margin-bottom:8px}
+.field label{display:block;font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;font-family:'Chakra Petch',sans-serif}
+.field input, .field select{width:100%;padding:7px 10px;background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:6px;font-family:'Noto Sans',sans-serif;font-size:13px}
+.field input:focus, .field select:focus{outline:none;border-color:var(--accent)}
+.field select{cursor:pointer}
+.field select option{background:var(--card2)}
+
+.slot-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.slot-grid.slot-4{grid-template-columns:repeat(2,1fr)}
+.slot-grid.slot-3{grid-template-columns:repeat(3,1fr)}
+.slot-grid.slot-10{grid-template-columns:repeat(2,1fr)}
+.slot-grid.slot-6{grid-template-columns:repeat(2,1fr)}
+@media(max-width:800px){
+  .slot-grid, .slot-grid.slot-3, .slot-grid.slot-10, .slot-grid.slot-6{grid-template-columns:1fr}
+}
+
+.slot{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:8px 10px}
+.slot-label{font-family:'Chakra Petch',sans-serif;font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.slot-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.slot-row select{flex:1;min-width:0;padding:5px 8px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:4px;font-size:12px}
+.slot-row .mini{width:60px;padding:5px 8px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:4px;font-size:12px}
+.slot-row .cb{display:inline-flex;align-items:center;gap:3px;font-size:11px;color:var(--dim);white-space:nowrap}
+.slot-row .cb input{width:auto}
+
+.godstone-block{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:8px}
+.godstone-block .gs-title{font-family:'Chakra Petch',sans-serif;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.gs-affixes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+@media(max-width:700px){.gs-affixes{grid-template-columns:1fr}}
+.gs-affix .affix-row{display:flex;gap:4px;align-items:center}
+.gs-affix .affix-row select{flex:1;min-width:0;padding:4px 6px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:4px;font-size:11px}
+.gs-affix .affix-row .tier{width:50px;padding:4px 6px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:4px;font-size:11px}
+
+.export-box{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:10px;margin-top:12px}
+.export-box textarea{width:100%;height:280px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:4px;padding:8px;font-family:'Consolas',monospace;font-size:11px;resize:vertical}
+
+.step-S{color:var(--orange)}
+.step-A{color:var(--purple)}
+.step-B{color:var(--blue)}
+.step-C{color:var(--green)}
+.step-SS{color:var(--SS)}
+
+.status{padding:8px 12px;border-radius:4px;font-size:12px;font-family:'Chakra Petch',sans-serif;margin-left:auto}
+.status.ok{background:#2ecc7120;color:#2ecc71}
+.status.err{background:#e74c3c20;color:#e74c3c}
+
+/* Sidenav (copied from other pages) */
+.sidenav{position:fixed;top:0;left:0;width:180px;height:100vh;background:var(--card);border-right:1px solid var(--border);padding:16px 12px;overflow-y:auto;z-index:10}
+.sidenav .brand{display:block;font-family:'Chakra Petch',sans-serif;font-size:16px;font-weight:700;color:var(--accent);text-decoration:none;letter-spacing:1px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.sidenav nav{display:flex;flex-direction:column;gap:2px}
+.sidenav nav a{color:var(--dim);text-decoration:none;font-size:12px;padding:6px 8px;border-radius:4px;font-family:'Chakra Petch',sans-serif;letter-spacing:0.5px}
+.sidenav nav a:hover{background:var(--card2);color:var(--text)}
+.sidenav nav a.current{background:var(--accent)20;color:var(--accent)}
+.main{margin-left:180px}
+@media(max-width:900px){
+  .sidenav{position:relative;width:100%;height:auto;border-right:0;border-bottom:1px solid var(--border)}
+  .main{margin-left:0}
+}
+</style>
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="index.html">GMG Wiki</a>
+  <nav>
+    <a href="units/index.html">Units</a>
+    <a href="keywords/index.html">Keywords</a>
+    <a href="gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="talent-simulator.html">Talent Simulator</a>
+    <a href="talent-manage.html">My Talents</a>
+    <a href="build-team.html" class="current">Build Team</a>
+    <a href="battle-logs.html">Battle Logs</a>
+    <a href="search-unit.html">Search · Units</a>
+    <a href="search-talent.html">Search · Talents (facet)</a>
+    <a href="search-talent-new.html">Search · Talents (fulltext)</a>
+    <a href="search-gear.html">Search · Gear</a>
+    <a href="search-runes.html">Search · Runes</a>
+    <a href="search-godstone.html">Search · Jewels</a>
+    <a href="news.html">News</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="wrap">
+
+<h1>Build Team</h1>
+<div class="sub">Set overrides for 3 characters — talents, supports, gear, runes, jewel affixes. Export as JSON for <code>character_overrides.json</code>.</div>
+
+<div class="top-actions">
+  <button onclick="doExport()" class="primary">Export JSON</button>
+  <button onclick="doImport()">Import JSON</button>
+  <button onclick="doReset()">Reset All</button>
+  <button onclick="saveLocal()">Save to browser</button>
+  <button onclick="loadLocal()">Load from browser</button>
+  <span id="status" class="status"></span>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" data-char="0" onclick="switchTab(0)">Character 1</button>
+  <button class="tab-btn" data-char="1" onclick="switchTab(1)">Character 2</button>
+  <button class="tab-btn" data-char="2" onclick="switchTab(2)">Character 3</button>
+</div>
+
+<div id="char-panels"></div>
+
+<div class="card export-box" id="exportBox" style="display:none">
+  <h2>Exported JSON</h2>
+  <textarea id="exportArea" readonly></textarea>
+  <div style="margin-top:8px;display:flex;gap:8px">
+    <button onclick="copyExport()">Copy to Clipboard</button>
+    <button onclick="downloadJson()">Download</button>
+    <button onclick="document.getElementById('exportBox').style.display='none'">Close</button>
+  </div>
+</div>
+
+<div class="card" id="importBox" style="display:none">
+  <h2>Paste JSON to Import</h2>
+  <textarea id="importArea" style="width:100%;height:200px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:4px;padding:8px;font-family:Consolas,monospace;font-size:11px"></textarea>
+  <div style="margin-top:8px;display:flex;gap:8px">
+    <button onclick="applyImport()" class="primary">Load</button>
+    <button onclick="document.getElementById('importBox').style.display='none'">Cancel</button>
+  </div>
+</div>
+
+</div>
+</div>
+
+<script src="build-team-data.js"></script>
+<script>
+const DATA = window.BUILD_TEAM_DATA;
+const SLOT_TYPES = DATA.slotTypes;
+const SUPPORT_LABELS = ["Perk source", "Trait source", "Title source"];
+
+const state = [
+  makeEmptyChar(), makeEmptyChar(), makeEmptyChar()
+];
+let currentTab = 0;
+
+function makeEmptyChar() {
+  return {
+    roleId: "",
+    talents: ["", "", "", ""],
+    supports: ["", "", ""],
+    equipList: Array.from({length: 10}, () => ({IDs: "", star: 3, Heritage: false})),
+    runeList: Array.from({length: 10}, () => ({IDs: "", star: 3})),
+    godStones: Array.from({length: 6}, () => ({
+      affixes: [
+        {IDs: "", tier0: 1, tier1: 1},
+        {IDs: "", tier0: 1, tier1: 1},
+        {IDs: "", tier0: 1, tier1: 1}
+      ]
+    }))
+  };
+}
+
+// Group helpers
+function talentsByStep() {
+  const groups = {S: [], A: [], B: [], C: [], "": []};
+  DATA.talents.forEach(t => (groups[t.step] || groups[""]).push(t));
+  return groups;
+}
+function equipsBySlot() {
+  const groups = {};
+  SLOT_TYPES.forEach(s => groups[s] = []);
+  DATA.equips.forEach(e => {
+    if (!e.type) return;
+    (groups[e.type] = groups[e.type] || []).push(e);
+  });
+  return groups;
+}
+const TALENTS_BY_STEP = talentsByStep();
+const EQUIPS_BY_SLOT = equipsBySlot();
+
+function opt(value, label, selected) {
+  const s = selected ? " selected" : "";
+  return `<option value="${escapeHtml(value)}"${s}>${escapeHtml(label)}</option>`;
+}
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
+}
+
+function renderRoleSelect(charIdx, selectedId) {
+  const opts = [`<option value="">— None —</option>`];
+  const steps = ["S", "A", "B", "C"];
+  steps.forEach(step => {
+    const list = DATA.roles.filter(r => r.step === step);
+    if (list.length === 0) return;
+    opts.push(`<optgroup label="${step}-step">`);
+    list.forEach(r => {
+      const label = `${r.name} (${r.cls}/${r.race}/${r.element})`;
+      opts.push(opt(r.id, label, r.id === selectedId));
+    });
+    opts.push(`</optgroup>`);
+  });
+  return `<select onchange="onRoleChange(${charIdx}, this.value)">${opts.join("")}</select>`;
+}
+
+function renderTalentSelect(charIdx, slotIdx, selectedId) {
+  const opts = [`<option value="">— None —</option>`];
+  ["S", "A", "B", "C"].forEach(step => {
+    const list = TALENTS_BY_STEP[step] || [];
+    if (!list.length) return;
+    opts.push(`<optgroup label="${step}-step">`);
+    list.forEach(t => {
+      opts.push(opt(t.id, `${t.name}`, t.id === selectedId));
+    });
+    opts.push(`</optgroup>`);
+  });
+  return `<select onchange="onTalentChange(${charIdx}, ${slotIdx}, this.value)">${opts.join("")}</select>`;
+}
+
+function renderSupportSelect(charIdx, slotIdx, selectedId) {
+  const opts = [`<option value="">— None —</option>`];
+  ["S", "A", "B", "C"].forEach(step => {
+    const list = DATA.roles.filter(r => r.step === step);
+    if (!list.length) return;
+    opts.push(`<optgroup label="${step}-step">`);
+    list.forEach(r => {
+      opts.push(opt(r.id, `${r.name}`, r.id === selectedId));
+    });
+    opts.push(`</optgroup>`);
+  });
+  return `<select onchange="onSupportChange(${charIdx}, ${slotIdx}, this.value)">${opts.join("")}</select>`;
+}
+
+function renderEquipSelect(charIdx, slotIdx, slotType, selectedId) {
+  const opts = [`<option value="">— None —</option>`];
+  const list = EQUIPS_BY_SLOT[slotType] || [];
+  ["SS", "S", "A", "B", "C"].forEach(step => {
+    const filtered = list.filter(e => e.step === step);
+    if (!filtered.length) return;
+    opts.push(`<optgroup label="${step}-step">`);
+    filtered.forEach(e => {
+      opts.push(opt(e.id, `${e.name} · ${e.area || ""}`, e.id === selectedId));
+    });
+    opts.push(`</optgroup>`);
+  });
+  return `<select onchange="onEquipChange(${charIdx}, ${slotIdx}, this.value)">${opts.join("")}</select>`;
+}
+
+function renderRuneSelect(charIdx, slotIdx, selectedId) {
+  const opts = [`<option value="">— None —</option>`];
+  ["SS", "S", "A", "B", "C"].forEach(step => {
+    const list = DATA.runes.filter(r => r.step === step);
+    if (!list.length) return;
+    opts.push(`<optgroup label="${step}-step">`);
+    list.forEach(r => {
+      opts.push(opt(r.id, `${r.name} · ${r.material}`, r.id === selectedId));
+    });
+    opts.push(`</optgroup>`);
+  });
+  return `<select onchange="onRuneChange(${charIdx}, ${slotIdx}, this.value)">${opts.join("")}</select>`;
+}
+
+function renderAffixSelect(charIdx, gsIdx, affixIdx, selectedId) {
+  const opts = [`<option value="">— None —</option>`];
+  ["SS", "S", "A", "B", "C"].forEach(step => {
+    const list = DATA.godStoneAffixes.filter(a => a.step === step);
+    if (!list.length) return;
+    opts.push(`<optgroup label="${step}-step (${list.length})">`);
+    list.forEach(a => {
+      opts.push(opt(a.id, `${a.location} — ${a.effect.slice(0, 60)}`, a.id === selectedId));
+    });
+    opts.push(`</optgroup>`);
+  });
+  return `<select onchange="onAffixChange(${charIdx}, ${gsIdx}, ${affixIdx}, this.value)">${opts.join("")}</select>`;
+}
+
+function findAffix(id) {
+  return DATA.godStoneAffixes.find(a => a.id === id);
+}
+
+function renderCharPanel(charIdx) {
+  const c = state[charIdx];
+
+  // Role picker
+  let html = `<div class="card"><h2>Character</h2><div class="field"><label>Unit</label>${renderRoleSelect(charIdx, c.roleId)}</div></div>`;
+
+  // Talents
+  html += `<div class="card"><h2>Talents (4 slots)</h2><div class="slot-grid slot-4">`;
+  for (let i = 0; i < 4; i++) {
+    html += `<div class="slot"><div class="slot-label">Slot ${i+1}</div><div class="slot-row">${renderTalentSelect(charIdx, i, c.talents[i])}</div></div>`;
+  }
+  html += `</div></div>`;
+
+  // Supports
+  html += `<div class="card"><h2>Supports (3 slots, order matters)</h2><div class="slot-grid slot-3">`;
+  for (let i = 0; i < 3; i++) {
+    html += `<div class="slot"><div class="slot-label">Slot ${i+1}: ${SUPPORT_LABELS[i]}</div><div class="slot-row">${renderSupportSelect(charIdx, i, c.supports[i])}</div></div>`;
+  }
+  html += `</div></div>`;
+
+  // Equip
+  html += `<div class="card"><h2>Equip (10 slots, star default 3)</h2><div class="slot-grid slot-10">`;
+  for (let i = 0; i < 10; i++) {
+    const slotType = SLOT_TYPES[i];
+    const e = c.equipList[i];
+    html += `<div class="slot">
+      <div class="slot-label">${slotType}</div>
+      <div class="slot-row">
+        ${renderEquipSelect(charIdx, i, slotType, e.IDs)}
+        <input class="mini" type="number" min="0" max="3" value="${e.star}" onchange="onEquipStar(${charIdx}, ${i}, this.value)" title="Star (0-3)">
+        <label class="cb"><input type="checkbox" ${e.Heritage ? "checked" : ""} onchange="onEquipHeritage(${charIdx}, ${i}, this.checked)"> Heritage</label>
+      </div>
+    </div>`;
+  }
+  html += `</div></div>`;
+
+  // Rune
+  html += `<div class="card"><h2>Rune (10 slots, star default 3)</h2><div class="slot-grid slot-10">`;
+  for (let i = 0; i < 10; i++) {
+    const r = c.runeList[i];
+    html += `<div class="slot">
+      <div class="slot-label">${SLOT_TYPES[i]}</div>
+      <div class="slot-row">
+        ${renderRuneSelect(charIdx, i, r.IDs)}
+        <input class="mini" type="number" min="0" max="3" value="${r.star}" onchange="onRuneStar(${charIdx}, ${i}, this.value)" title="Star (0-3)">
+      </div>
+    </div>`;
+  }
+  html += `</div></div>`;
+
+  // Godstones
+  html += `<div class="card"><h2>God Stones (6 stones × 3 affix slots, tier default max)</h2>`;
+  for (let g = 0; g < 6; g++) {
+    const gs = c.godStones[g];
+    html += `<div class="godstone-block"><div class="gs-title">Stone ${g+1}</div><div class="gs-affixes">`;
+    for (let a = 0; a < 3; a++) {
+      const affix = gs.affixes[a];
+      const affixData = affix.IDs ? findAffix(affix.IDs) : null;
+      const maxV0 = affixData ? affixData.value0Count : 1;
+      const maxV1 = affixData ? affixData.value1Count : 1;
+      html += `<div class="gs-affix">
+        <div class="slot-label">Affix ${a+1}</div>
+        <div class="affix-row">
+          ${renderAffixSelect(charIdx, g, a, affix.IDs)}
+        </div>
+        <div class="affix-row" style="margin-top:4px">
+          <input class="tier" type="number" min="1" max="${maxV0 || 1}" value="${affix.tier0}" title="Value0 tier (max ${maxV0})" onchange="onAffixTier(${charIdx}, ${g}, ${a}, 0, this.value)">
+          <input class="tier" type="number" min="1" max="${maxV1 || 1}" value="${affix.tier1}" title="Value1 tier (max ${maxV1})" onchange="onAffixTier(${charIdx}, ${g}, ${a}, 1, this.value)">
+        </div>
+      </div>`;
+    }
+    html += `</div></div>`;
+  }
+  html += `</div>`;
+
+  return html;
+}
+
+function renderAll() {
+  const panels = document.getElementById("char-panels");
+  let html = "";
+  for (let i = 0; i < 3; i++) {
+    html += `<div class="char-panel ${i === currentTab ? "active" : ""}" data-char="${i}">${renderCharPanel(i)}</div>`;
+  }
+  panels.innerHTML = html;
+}
+
+function switchTab(idx) {
+  currentTab = idx;
+  document.querySelectorAll(".tab-btn").forEach((b, i) => b.classList.toggle("active", i === idx));
+  document.querySelectorAll(".char-panel").forEach((p, i) => p.classList.toggle("active", i === idx));
+}
+
+// Change handlers
+function onRoleChange(c, v) { state[c].roleId = v; }
+function onTalentChange(c, i, v) { state[c].talents[i] = v; }
+function onSupportChange(c, i, v) { state[c].supports[i] = v; }
+function onEquipChange(c, i, v) { state[c].equipList[i].IDs = v; }
+function onEquipStar(c, i, v) { state[c].equipList[i].star = parseInt(v) || 0; }
+function onEquipHeritage(c, i, v) { state[c].equipList[i].Heritage = !!v; }
+function onRuneChange(c, i, v) { state[c].runeList[i].IDs = v; }
+function onRuneStar(c, i, v) { state[c].runeList[i].star = parseInt(v) || 0; }
+function onAffixChange(c, g, a, v) {
+  state[c].godStones[g].affixes[a].IDs = v;
+  // Set tier to max on select to match "default max value tier" requirement
+  const ad = findAffix(v);
+  if (ad) {
+    state[c].godStones[g].affixes[a].tier0 = ad.value0Count || 1;
+    state[c].godStones[g].affixes[a].tier1 = ad.value1Count || 1;
+  }
+  renderAll();
+}
+function onAffixTier(c, g, a, which, v) {
+  const val = parseInt(v) || 1;
+  if (which === 0) state[c].godStones[g].affixes[a].tier0 = val;
+  else state[c].godStones[g].affixes[a].tier1 = val;
+}
+
+// Build character_overrides.json compatible object
+function buildOverrideJson() {
+  const out = {};
+  for (let i = 0; i < 3; i++) {
+    const c = state[i];
+    if (!c.roleId) continue;
+    const entry = {};
+    const talents = c.talents.filter(t => t);
+    if (talents.length) entry.talents = talents;
+    // Supports: preserve order + empty slots ("" for empty)
+    if (c.supports.some(s => s)) entry.supports = c.supports.slice();
+    const equipList = c.equipList
+      .map(e => e.IDs ? {IDs: e.IDs, star: e.star, Heritage: e.Heritage} : null)
+      .filter(e => e);
+    if (equipList.length) entry.equipList = equipList;
+    const runeList = c.runeList
+      .map(r => r.IDs ? {IDs: r.IDs, star: r.star} : null)
+      .filter(r => r);
+    if (runeList.length) entry.runeList = runeList;
+    // Godstones: flatten to affix list
+    const affixes = [];
+    c.godStones.forEach(gs => {
+      gs.affixes.forEach(a => {
+        if (a.IDs) affixes.push({IDs: a.IDs, valueTiers: [a.tier0, a.tier1]});
+      });
+    });
+    if (affixes.length) entry.godStoneAffixes = affixes;
+    out[c.roleId] = entry;
+  }
+  return out;
+}
+
+function doExport() {
+  const json = buildOverrideJson();
+  const text = JSON.stringify(json, null, 4);
+  const area = document.getElementById("exportArea");
+  area.value = text;
+  document.getElementById("exportBox").style.display = "block";
+  document.getElementById("exportBox").scrollIntoView({behavior: "smooth"});
+  setStatus("Exported " + Object.keys(json).length + " unit(s)", "ok");
+}
+
+function copyExport() {
+  const area = document.getElementById("exportArea");
+  area.select();
+  document.execCommand("copy");
+  setStatus("Copied to clipboard", "ok");
+}
+
+function downloadJson() {
+  const text = document.getElementById("exportArea").value;
+  const blob = new Blob([text], {type: "application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "character_overrides.json";
+  a.click();
+  URL.revokeObjectURL(url);
+  setStatus("Downloaded", "ok");
+}
+
+function doImport() {
+  document.getElementById("importBox").style.display = "block";
+  document.getElementById("importArea").focus();
+}
+
+function applyImport() {
+  const text = document.getElementById("importArea").value.trim();
+  if (!text) return;
+  let obj;
+  try {
+    obj = JSON.parse(text);
+  } catch (e) {
+    setStatus("Invalid JSON", "err");
+    return;
+  }
+  // Reset state, then fill from obj
+  for (let i = 0; i < 3; i++) state[i] = makeEmptyChar();
+  const roleIds = Object.keys(obj).filter(k => !k.startsWith("_"));
+  roleIds.slice(0, 3).forEach((roleId, i) => {
+    const entry = obj[roleId] || {};
+    if (typeof entry !== "object") return;
+    state[i].roleId = roleId;
+    (entry.talents || []).slice(0, 4).forEach((t, j) => state[i].talents[j] = t);
+    (entry.supports || []).slice(0, 3).forEach((s, j) => state[i].supports[j] = s);
+    (entry.equipList || []).slice(0, 10).forEach((e, j) => {
+      state[i].equipList[j] = {
+        IDs: e.IDs || "",
+        star: e.star ?? 3,
+        Heritage: !!e.Heritage
+      };
+    });
+    (entry.runeList || []).slice(0, 10).forEach((r, j) => {
+      state[i].runeList[j] = {IDs: r.IDs || "", star: r.star ?? 3};
+    });
+    // Godstones: distribute 18 affixes across 6×3
+    (entry.godStoneAffixes || []).slice(0, 18).forEach((a, j) => {
+      const g = Math.floor(j / 3);
+      const k = j % 3;
+      if (g >= 6) return;
+      const tiers = a.valueTiers || [1, 1];
+      state[i].godStones[g].affixes[k] = {
+        IDs: a.IDs || "",
+        tier0: tiers[0] || 1,
+        tier1: tiers[1] || 1
+      };
+    });
+  });
+  renderAll();
+  document.getElementById("importBox").style.display = "none";
+  setStatus("Imported " + roleIds.length + " unit(s)", "ok");
+}
+
+function doReset() {
+  if (!confirm("Clear all 3 characters?")) return;
+  for (let i = 0; i < 3; i++) state[i] = makeEmptyChar();
+  renderAll();
+  setStatus("Reset", "ok");
+}
+
+const STORAGE_KEY = "gmg_build_team_v1";
+function saveLocal() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  setStatus("Saved to browser", "ok");
+}
+function loadLocal() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) { setStatus("Nothing saved", "err"); return; }
+  try {
+    const arr = JSON.parse(raw);
+    if (!Array.isArray(arr) || arr.length !== 3) throw new Error("bad shape");
+    for (let i = 0; i < 3; i++) state[i] = Object.assign(makeEmptyChar(), arr[i]);
+    renderAll();
+    setStatus("Loaded from browser", "ok");
+  } catch (e) {
+    setStatus("Load failed: " + e.message, "err");
+  }
+}
+
+let statusTimer = null;
+function setStatus(msg, cls) {
+  const el = document.getElementById("status");
+  el.textContent = msg;
+  el.className = "status " + (cls || "");
+  clearTimeout(statusTimer);
+  statusTimer = setTimeout(() => { el.textContent = ""; el.className = "status"; }, 3000);
+}
+
+if (!DATA) {
+  document.body.innerHTML = "<div style='padding:40px;text-align:center;color:#e74c3c'>Failed to load build-team-data.js — regenerate via <code>py web-session/tools/build_team_data.py</code></div>";
+} else {
+  renderAll();
+}
+</script>
+</body>
+</html>
