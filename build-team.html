@@ -536,13 +536,13 @@ function onEquipHeritage(c, i, v) { state[c].equipList[i].Heritage = !!v; }
 function onRuneChange(c, i, v) { state[c].runeList[i].IDs = v; }
 function onRuneStar(c, i, v) { state[c].runeList[i].star = parseInt(v) || 0; }
 function onAffixChange(c, g, a, v) {
-  state[c].godStones[g].affixes[a].IDs = v;
-  // Set tier to max on select to match "default max value tier" requirement
-  const ad = findAffix(v);
-  if (ad) {
-    state[c].godStones[g].affixes[a].tier0 = ad.value0Count || 1;
-    state[c].godStones[g].affixes[a].tier1 = ad.value1Count || 1;
-  }
+  const slot = state[c].godStones[g].affixes[a];
+  slot.IDs = v;
+  // Always reset tiers to the new affix's max (or 1 if cleared / affix has no value slot).
+  // "Default max value tier" — new affix always starts at its max, even when switching.
+  const ad = v ? findAffix(v) : null;
+  slot.tier0 = ad && ad.value0Count > 0 ? ad.value0Count : 1;
+  slot.tier1 = ad && ad.value1Count > 0 ? ad.value1Count : 1;
   renderAll();
 }
 function onAffixTier(c, g, a, which, v) {
