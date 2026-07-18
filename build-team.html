@@ -488,16 +488,29 @@ function renderCharPanel(charIdx) {
       const affixData = affix.IDs ? findAffix(affix.IDs) : null;
       const maxV0 = affixData ? affixData.value0Count : 1;
       const maxV1 = affixData ? affixData.value1Count : 1;
-      const hasV0 = maxV0 > 0;
-      const hasV1 = maxV1 > 0;
+      // Empty affix → both tier inputs disabled with "—" placeholder.
+      // Selected affix → tier input enabled ONLY if that affix has Value0 / Value1
+      // (per data.value0Count / value1Count from GodStoneEffectDataTable).
+      const isEmpty = !affix.IDs;
+      const hasV0 = !isEmpty && maxV0 > 0;
+      const hasV1 = !isEmpty && maxV1 > 0;
+      // Show live effect value alongside the tier index so user sees what "tier N" means.
+      let effectPreview = "";
+      if (affixData) {
+        const v0str = (affixData.effect || "").match(/\{0\}/) ? null : "";
+        // We already substituted {0}/{1} with max values in effect; show effect as tooltip
+        effectPreview = affixData.effect || "";
+      }
       html += `<div class="gs-affix">
-        <div class="slot-label">Affix ${a+1}</div>
+        <div class="slot-label">Affix ${a+1}${effectPreview ? ` <span style="color:var(--dim);font-size:9px;text-transform:none">· ${escapeHtml(effectPreview.slice(0, 40))}${effectPreview.length > 40 ? "…" : ""}</span>` : ""}</div>
         <div class="affix-row">
           ${renderAffixSelect(charIdx, g, a, affix.IDs)}
         </div>
         <div class="affix-row" style="margin-top:4px">
-          <input class="tier${hasV0 ? "" : " disabled"}" type="number" min="1" max="${maxV0 || 1}" value="${hasV0 ? affix.tier0 : ""}" placeholder="${hasV0 ? "" : "—"}" title="${hasV0 ? "Value0 tier (max " + maxV0 + ")" : "This affix has no Value0"}" onchange="onAffixTier(${charIdx}, ${g}, ${a}, 0, this.value)" ${hasV0 ? "" : "disabled"}>
-          <input class="tier${hasV1 ? "" : " disabled"}" type="number" min="1" max="${maxV1 || 1}" value="${hasV1 ? affix.tier1 : ""}" placeholder="${hasV1 ? "" : "—"}" title="${hasV1 ? "Value1 tier (max " + maxV1 + ")" : "This affix has no Value1"}" onchange="onAffixTier(${charIdx}, ${g}, ${a}, 1, this.value)" ${hasV1 ? "" : "disabled"}>
+          <input class="tier${hasV0 ? "" : " disabled"}" type="number" min="1" max="${hasV0 ? maxV0 : 1}" value="${hasV0 ? affix.tier0 : ""}" placeholder="${isEmpty ? "—" : (hasV0 ? "" : "—")}" title="${isEmpty ? "Pick an affix first" : (hasV0 ? "Value0 tier — max " + maxV0 : "No Value0")}" onchange="onAffixTier(${charIdx}, ${g}, ${a}, 0, this.value)" ${hasV0 ? "" : "disabled"}>
+          <input class="tier${hasV1 ? "" : " disabled"}" type="number" min="1" max="${hasV1 ? maxV1 : 1}" value="${hasV1 ? affix.tier1 : ""}" placeholder="${isEmpty ? "—" : (hasV1 ? "" : "—")}" title="${isEmpty ? "Pick an affix first" : (hasV1 ? "Value1 tier — max " + maxV1 : "No Value1")}" onchange="onAffixTier(${charIdx}, ${g}, ${a}, 1, this.value)" ${hasV1 ? "" : "disabled"}>
+          ${hasV0 && !hasV1 ? '<span style="color:var(--dim);font-size:10px;align-self:center;margin-left:4px">/' + maxV0 + '</span>' : ""}
+          ${hasV0 && hasV1 ? '<span style="color:var(--dim);font-size:10px;align-self:center">max ' + maxV0 + '/' + maxV1 + '</span>' : ""}
         </div>
       </div>`;
     }
