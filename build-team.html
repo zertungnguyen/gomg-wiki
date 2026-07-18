@@ -397,13 +397,23 @@ function equipGroups(slotType) {
     return items.length ? {label: `${step}-step`, items} : null;
   }).filter(Boolean);
 }
-function runeGroups() {
+function runeGroups(c, currentSlot) {
+  // Runes must be unique within a character. Exclude IDs picked in OTHER slots
+  // of state[c].runeList (skip currentSlot's own selection so it still appears).
+  const usedElsewhere = new Set();
+  if (typeof c === "number") {
+    state[c].runeList.forEach((r, i) => {
+      if (i !== currentSlot && r.IDs) usedElsewhere.add(r.IDs);
+    });
+  }
   return ["SS", "S", "A", "B", "C"].map(step => {
-    const items = DATA.runes.filter(r => r.step === step).map(r => ({
-      value: r.id,
-      label: r.material ? `${r.name} · ${r.material}` : r.name,
-      icon: runeIcon(r.id)
-    }));
+    const items = DATA.runes
+      .filter(r => r.step === step && !usedElsewhere.has(r.id))
+      .map(r => ({
+        value: r.id,
+        label: r.material ? `${r.name} · ${r.material}` : r.name,
+        icon: runeIcon(r.id)
+      }));
     return items.length ? {label: `${step}-step`, items} : null;
   }).filter(Boolean);
 }
@@ -431,7 +441,7 @@ function renderEquipSelect(c, i, slotType, selId) {
   return cbxRender({groups: equipGroups(slotType), selectedValue: selId, onChangeKey: `equip:${c}:${i}`, placeholder: `Search ${slotType}…`});
 }
 function renderRuneSelect(c, i, selId) {
-  return cbxRender({groups: runeGroups(), selectedValue: selId, onChangeKey: `rune:${c}:${i}`, placeholder: "Search rune…"});
+  return cbxRender({groups: runeGroups(c, i), selectedValue: selId, onChangeKey: `rune:${c}:${i}`, placeholder: "Search rune…"});
 }
 function renderAffixSelect(c, g, a, selId) {
   return cbxRender({groups: affixGroups(), selectedValue: selId, onChangeKey: `affix:${c}:${g}:${a}`, placeholder: "Search affix…"});
@@ -559,7 +569,7 @@ function onSupportChange(c, i, v) { state[c].supports[i] = v; }
 function onEquipChange(c, i, v) { state[c].equipList[i].IDs = v; }
 function onEquipStar(c, i, v) { state[c].equipList[i].star = parseInt(v) || 0; }
 function onEquipHeritage(c, i, v) { state[c].equipList[i].Heritage = !!v; }
-function onRuneChange(c, i, v) { state[c].runeList[i].IDs = v; }
+function onRuneChange(c, i, v) { state[c].runeList[i].IDs = v; renderAll(); }
 function onRuneStar(c, i, v) { state[c].runeList[i].star = parseInt(v) || 0; }
 function onAffixChange(c, g, a, v) {
   const slot = state[c].godStones[g].affixes[a];
