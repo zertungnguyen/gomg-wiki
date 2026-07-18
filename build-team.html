@@ -66,6 +66,7 @@ button.primary:hover{background:#dab466}
 .gs-affix .affix-row{display:flex;gap:4px;align-items:center}
 .gs-affix .affix-row select{flex:1;min-width:0;padding:4px 6px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:4px;font-size:11px}
 .gs-affix .affix-row .tier{width:50px;padding:4px 6px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:4px;font-size:11px}
+.gs-affix .affix-row .tier:disabled,.gs-affix .affix-row .tier.disabled{opacity:0.35;background:transparent;cursor:not-allowed;color:var(--dim)}
 
 .export-box{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:10px;margin-top:12px}
 .export-box textarea{width:100%;height:280px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:4px;padding:8px;font-family:'Consolas',monospace;font-size:11px;resize:vertical}
@@ -365,14 +366,16 @@ function renderCharPanel(charIdx) {
       const affixData = affix.IDs ? findAffix(affix.IDs) : null;
       const maxV0 = affixData ? affixData.value0Count : 1;
       const maxV1 = affixData ? affixData.value1Count : 1;
+      const hasV0 = maxV0 > 0;
+      const hasV1 = maxV1 > 0;
       html += `<div class="gs-affix">
         <div class="slot-label">Affix ${a+1}</div>
         <div class="affix-row">
           ${renderAffixSelect(charIdx, g, a, affix.IDs)}
         </div>
         <div class="affix-row" style="margin-top:4px">
-          <input class="tier" type="number" min="1" max="${maxV0 || 1}" value="${affix.tier0}" title="Value0 tier (max ${maxV0})" onchange="onAffixTier(${charIdx}, ${g}, ${a}, 0, this.value)">
-          <input class="tier" type="number" min="1" max="${maxV1 || 1}" value="${affix.tier1}" title="Value1 tier (max ${maxV1})" onchange="onAffixTier(${charIdx}, ${g}, ${a}, 1, this.value)">
+          <input class="tier${hasV0 ? "" : " disabled"}" type="number" min="1" max="${maxV0 || 1}" value="${hasV0 ? affix.tier0 : ""}" placeholder="${hasV0 ? "" : "—"}" title="${hasV0 ? "Value0 tier (max " + maxV0 + ")" : "This affix has no Value0"}" onchange="onAffixTier(${charIdx}, ${g}, ${a}, 0, this.value)" ${hasV0 ? "" : "disabled"}>
+          <input class="tier${hasV1 ? "" : " disabled"}" type="number" min="1" max="${maxV1 || 1}" value="${hasV1 ? affix.tier1 : ""}" placeholder="${hasV1 ? "" : "—"}" title="${hasV1 ? "Value1 tier (max " + maxV1 + ")" : "This affix has no Value1"}" onchange="onAffixTier(${charIdx}, ${g}, ${a}, 1, this.value)" ${hasV1 ? "" : "disabled"}>
         </div>
       </div>`;
     }
@@ -446,7 +449,14 @@ function buildOverrideJson() {
     const affixes = [];
     c.godStones.forEach(gs => {
       gs.affixes.forEach(a => {
-        if (a.IDs) affixes.push({IDs: a.IDs, valueTiers: [a.tier0, a.tier1]});
+        if (!a.IDs) return;
+        const ad = findAffix(a.IDs);
+        const hasV0 = ad ? ad.value0Count > 0 : true;
+        const hasV1 = ad ? ad.value1Count > 0 : true;
+        const tiers = [];
+        if (hasV0) tiers.push(a.tier0);
+        if (hasV1) tiers.push(a.tier1);
+        affixes.push({IDs: a.IDs, valueTiers: tiers.length ? tiers : [1]});
       });
     });
     if (affixes.length) entry.godStoneAffixes = affixes;
