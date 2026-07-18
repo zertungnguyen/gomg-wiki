@@ -147,7 +147,7 @@ table.results td.col-img { width: 48px; padding: 4px 8px; }
 <div id="resultsWrap">
 <table class="results">
 <thead><tr>
-  <th>Image</th><th>Name</th><th>Class</th><th>Type</th><th>Race</th><th>Element</th><th>Terrain</th><th>Step</th><th>Variant</th>
+  <th>Image</th><th>Unit ID</th><th>Name</th><th>Class</th><th>Type</th><th>Race</th><th>Element</th><th>Terrain</th><th>Step</th><th>Variant</th>
 </tr></thead>
 <tbody id="tbody"></tbody>
 </table>
@@ -240,6 +240,7 @@ function render(){
     const nameCell=u.stem?`<a href="units/${u.stem}.html"><strong>${u.name}</strong></a>`:`<strong>${u.name}</strong>`;
     tr.innerHTML=`
       <td class="col-img">${imgCell}</td>
+      <td style="font-size:11px;color:var(--fg-dim)">${u.id||"—"}</td>
       <td>${nameCell}</td>
       <td><span class="tag t-cls">${u.class}</span></td>
       <td><span class="tag t-typ">${u.type}</span></td>
