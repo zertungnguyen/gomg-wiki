@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Build Team — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="style.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -14,7 +15,7 @@
   --orange:#ff9933; --purple:#b66dff; --blue:#4ea3ff; --green:#5fcf6b;
   --SS:#c25c5c;
 }
-html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;line-height:1.4;min-height:100vh}
+/* Body font/bg inherited from style.css; only page-specific overrides below. */
 .wrap{max-width:1200px;margin:0 auto;padding:18px 14px 40px}
 h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:2px}
 h2{font-family:'Chakra Petch',sans-serif;font-size:14px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin:14px 0 8px}
@@ -114,18 +115,7 @@ button.primary:hover{background:#dab466}
 .status.ok{background:#2ecc7120;color:#2ecc71}
 .status.err{background:#e74c3c20;color:#e74c3c}
 
-/* Sidenav — match standard style.css geometry so it stays consistent with other pages */
-.sidenav{position:fixed;top:0;left:0;width:220px;height:100vh;background:var(--card);border-right:1px solid var(--border);padding:20px 16px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;z-index:10}
-.sidenav .brand{font-weight:700;color:var(--accent);text-decoration:none;font-size:17px;padding:4px 8px;font-family:'Chakra Petch',sans-serif;letter-spacing:0.5px;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:0}
-.sidenav nav{display:flex;flex-direction:column;gap:2px}
-.sidenav nav a{color:var(--text);text-decoration:none;font-size:14px;padding:8px 12px;border-radius:4px;font-family:'Chakra Petch',sans-serif;letter-spacing:0.3px}
-.sidenav nav a:hover{background:var(--bg);color:var(--accent)}
-.sidenav nav a.current{background:var(--bg);color:var(--accent)}
-.main{margin-left:220px}
-@media(max-width:900px){
-  .sidenav{position:relative;width:100%;height:auto;border-right:0;border-bottom:1px solid var(--border)}
-  .main{margin-left:0}
-}
+/* Sidenav + page margin handled by standard style.css — no inline overrides. */
 </style>
 </head>
 <body>
@@ -149,7 +139,7 @@ button.primary:hover{background:#dab466}
   </nav>
 </aside>
 
-<div class="main">
+<div class="page">
 <div class="wrap">
 
 <h1>Build Team</h1>
