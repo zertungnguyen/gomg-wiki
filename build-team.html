@@ -116,6 +116,56 @@ button.primary:hover{background:#dab466}
 .status.err{background:#e74c3c20;color:#e74c3c}
 
 /* Sidenav + page margin handled by standard style.css — no inline overrides. */
+
+/* ============ Talent-Simulator-style unit picker (Character + Support sections) ============ */
+.unit-selected{display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:center;padding:10px;background:var(--card2);border-radius:8px;border:1px solid var(--border);margin-bottom:12px}
+.unit-selected .portrait-big{width:96px;height:96px;border-radius:8px;background:var(--card);border:2px solid var(--accent);object-fit:cover;display:block}
+.unit-selected .info{min-width:0}
+.unit-selected .info .uname{font-weight:700;font-size:20px;color:var(--text);margin-bottom:2px;line-height:1.2}
+.unit-selected .info .ualter{color:var(--accent);font-size:13px;font-style:italic;margin-bottom:6px}
+.unit-selected .info .upool{font-size:11px;color:var(--dim)}
+.unit-empty{padding:16px;text-align:center;color:var(--dim);font-size:12px;font-style:italic;background:var(--card2);border-radius:8px;border:1px dashed var(--border);margin-bottom:12px}
+
+.picker{margin-bottom:0}
+.picker-bar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;align-items:center}
+.picker-bar input.search{flex:1;min-width:160px;padding:7px 12px;background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:6px;font-size:13px}
+.picker-bar input.search:focus{outline:none;border-color:var(--accent)}
+.picker-bar .filter-label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;padding:0 4px}
+.f-pill{padding:5px 10px;border-radius:5px;border:1.5px solid var(--border);background:transparent;color:var(--dim);font-weight:600;font-size:11px;cursor:pointer;transition:all .12s;text-transform:uppercase;letter-spacing:1px}
+.f-pill:hover{border-color:#555}
+.f-pill.on{color:#fff;border-color:var(--accent);background:#f5b34225}
+.f-pill.on.s-S{color:#1a1a1a;background:var(--orange);border-color:var(--orange)}
+.f-pill.on.s-A{color:#fff;background:var(--purple);border-color:var(--purple)}
+.f-pill.on.s-B{color:#fff;background:var(--blue);border-color:var(--blue)}
+.f-pill.on.s-C{color:#1a1a1a;background:var(--green);border-color:var(--green)}
+
+.picker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;max-height:340px;overflow-y:auto;padding:8px;background:var(--card2);border:1px solid var(--border);border-radius:6px}
+.u-card{position:relative;border-radius:6px;padding:4px;cursor:pointer;text-align:center;background:var(--card);border:1.5px solid var(--border);transition:all .12s;overflow:hidden;display:flex;flex-direction:column;gap:2px;align-items:center}
+.u-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.u-card.selected{border-color:var(--accent);background:#f5b34215;box-shadow:0 0 12px #f5b34244}
+.u-card img{width:80px;height:80px;border-radius:4px;object-fit:cover;background:var(--card2);display:block}
+.u-card .step{position:absolute;top:6px;left:6px;width:18px;height:18px;border-radius:3px;font-weight:700;font-size:10px;display:flex;align-items:center;justify-content:center}
+.u-card .step.s-S{background:var(--orange);color:#1a1a1a}
+.u-card .step.s-A{background:var(--purple);color:#fff}
+.u-card .step.s-B{background:var(--blue);color:#fff}
+.u-card .step.s-C{background:var(--green);color:#1a1a1a}
+.u-card .uname-s{font-size:11px;font-weight:600;line-height:1.15;padding:0 2px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%}
+.u-card .ualter-s{font-size:9px;color:var(--accent);line-height:1;font-style:italic;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%}
+.picker-empty{grid-column:1/-1;text-align:center;padding:20px;color:var(--dim);font-size:12px}
+
+/* Support-slot chips (3 chips sharing 1 picker below) */
+.support-slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.support-slot{padding:8px 10px;background:var(--card2);border:1.5px solid var(--border);border-radius:6px;cursor:pointer;transition:border-color .12s;display:flex;flex-direction:column;gap:4px;min-height:76px}
+.support-slot:hover{border-color:#555}
+.support-slot.active{border-color:var(--accent);background:#f5b34215}
+.support-slot .ss-label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.support-slot.active .ss-label{color:var(--accent)}
+.support-slot .ss-body{display:flex;align-items:center;gap:8px;min-width:0}
+.support-slot .ss-body img{width:36px;height:36px;border-radius:4px;background:var(--card);object-fit:cover;flex-shrink:0}
+.support-slot .ss-body .sname{font-size:12px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:1}
+.support-slot .ss-body .empty-mark{font-size:11px;color:var(--dim);font-style:italic}
+.support-slot .ss-clear{background:transparent;border:none;color:var(--dim);font-size:14px;cursor:pointer;padding:0 4px;line-height:1;align-self:flex-end;margin-top:-16px}
+.support-slot .ss-clear:hover{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -208,9 +258,14 @@ function makeEmptyChar() {
         {IDs: "", tier0: 1, tier1: 1},
         {IDs: "", tier0: 1, tier1: 1}
       ]
-    }))
+    })),
+    // Picker state (Talent-Simulator-style grid picker for Character + Support sections).
+    charFilter: {search: "", steps: {S: true, A: true, B: false, C: false}, classes: {Warrior: true, Archer: true, Mage: true, Priest: true}},
+    supportFilter: {search: "", steps: {S: true, A: true, B: true, C: true}, classes: {Warrior: true, Archer: true, Mage: true, Priest: true}},
+    activeSupport: 0    // which support slot (0/1/2) the picker click will fill
   };
 }
+function findRole(id) { return DATA.roles.find(r => r.id === id); }
 
 // Group helpers
 function talentsByStep() {
@@ -459,25 +514,172 @@ function findAffix(id) {
   return DATA.godStoneAffixes.find(a => a.id === id);
 }
 
+// ============ Character/Support picker (talent-simulator style) ============
+
+function renderSelectedUnit(roleId) {
+  if (!roleId) {
+    return `<div class="unit-empty">No unit selected — pick one below</div>`;
+  }
+  const r = findRole(roleId);
+  if (!r) return `<div class="unit-empty">Unknown unit "${escapeHtml(roleId)}"</div>`;
+  return `<div class="unit-selected">
+    <img class="portrait-big" src="${escapeAttr(roleIcon(r.id))}" alt="" onerror="this.style.visibility='hidden'">
+    <div class="info">
+      <div class="uname">${escapeHtml(r.name)}</div>
+      <div class="ualter">${escapeHtml(r.cls)} · ${escapeHtml(r.race)} · ${escapeHtml(r.element)}</div>
+      <div class="upool">${escapeHtml(r.id)} · Step ${escapeHtml(r.step)}</div>
+    </div>
+  </div>`;
+}
+
+function renderPickerBlock({kind, charIdx, filter, selectedIds, placeholder}) {
+  // kind = "char" or "support"
+  const steps = ["S","A","B","C"];
+  const cls = ["Warrior","Archer","Mage","Priest"];
+  let html = `<div class="picker"><div class="picker-bar">`;
+  html += `<input type="text" class="search" value="${escapeAttr(filter.search || "")}" placeholder="${escapeAttr(placeholder)}" oninput="onFilterSearch('${kind}', ${charIdx}, this.value)">`;
+  html += `<span class="filter-label">Step:</span>`;
+  for (const s of steps) {
+    const on = filter.steps[s] ? "on" : "";
+    html += `<button class="f-pill ${on} s-${s}" onclick="toggleFilterStep('${kind}', ${charIdx}, '${s}')">${s}</button>`;
+  }
+  html += `<span class="filter-label">Class:</span>`;
+  for (const cl of cls) {
+    const on = filter.classes[cl] ? "on" : "";
+    html += `<button class="f-pill ${on}" onclick="toggleFilterClass('${kind}', ${charIdx}, '${cl}')">${cl}</button>`;
+  }
+  html += `</div>`;
+
+  // Grid: filtered role list
+  const q = (filter.search || "").toLowerCase().trim();
+  const selSet = new Set(selectedIds);
+  const list = DATA.roles.filter(u => {
+    if (!filter.steps[u.step]) return false;
+    if (!filter.classes[u.cls]) return false;
+    if (q) {
+      const hay = `${u.name} ${u.id} ${u.race} ${u.element} ${u.cls}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  }).sort((a, b) => {
+    const sr = {S:0,A:1,B:2,C:3};
+    return (sr[a.step] ?? 9) - (sr[b.step] ?? 9) || a.cls.localeCompare(b.cls) || a.name.localeCompare(b.name);
+  });
+
+  html += `<div class="picker-grid">`;
+  if (!list.length) {
+    html += `<div class="picker-empty">No units match these filters</div>`;
+  } else {
+    for (const u of list.slice(0, 400)) {
+      const sel = selSet.has(u.id) ? "selected" : "";
+      const clickHandler = kind === "char"
+        ? `onPickChar(${charIdx}, '${escapeAttr(u.id)}')`
+        : `onPickSupport(${charIdx}, '${escapeAttr(u.id)}')`;
+      html += `<div class="u-card ${sel}" onclick="${clickHandler}" title="${escapeAttr(u.name + ' · ' + u.cls + '/' + u.race + '/' + u.element + ' · ' + u.id)}">
+        <div class="step s-${u.step}">${u.step}</div>
+        <img src="${escapeAttr(roleIcon(u.id))}" alt="" loading="lazy" onerror="this.style.background='var(--card2)';this.removeAttribute('src')">
+        <div class="uname-s">${escapeHtml(u.name)}</div>
+        <div class="ualter-s">${escapeHtml(u.cls)} · ${escapeHtml(u.element)}</div>
+      </div>`;
+    }
+  }
+  html += `</div></div>`;
+  return html;
+}
+
+function onFilterSearch(kind, c, val) {
+  const filter = kind === "char" ? state[c].charFilter : state[c].supportFilter;
+  filter.search = val;
+  renderAll();
+  // Restore focus + caret at end of the search input (renderAll rebuilt the DOM).
+  setTimeout(() => {
+    const inputs = document.querySelectorAll(`.char-panel.active .picker input.search`);
+    const targetInput = kind === "char" ? inputs[0] : inputs[1];
+    if (targetInput) { targetInput.focus(); targetInput.setSelectionRange(val.length, val.length); }
+  }, 0);
+}
+function toggleFilterStep(kind, c, s) {
+  const filter = kind === "char" ? state[c].charFilter : state[c].supportFilter;
+  filter.steps[s] = !filter.steps[s];
+  renderAll();
+}
+function toggleFilterClass(kind, c, cl) {
+  const filter = kind === "char" ? state[c].charFilter : state[c].supportFilter;
+  filter.classes[cl] = !filter.classes[cl];
+  renderAll();
+}
+function onPickChar(c, id) {
+  state[c].roleId = state[c].roleId === id ? "" : id;
+  renderAll();
+}
+function onPickSupport(c, id) {
+  const slot = state[c].activeSupport;
+  // Toggle off if same unit already in this slot
+  state[c].supports[slot] = state[c].supports[slot] === id ? "" : id;
+  // Advance to next empty slot for convenience
+  if (state[c].supports[slot]) {
+    for (let i = 1; i <= 3; i++) {
+      const next = (slot + i) % 3;
+      if (!state[c].supports[next]) { state[c].activeSupport = next; break; }
+    }
+  }
+  renderAll();
+}
+function setActiveSupport(c, i) {
+  state[c].activeSupport = i;
+  renderAll();
+}
+function clearSupport(c, i) {
+  state[c].supports[i] = "";
+  renderAll();
+}
+
 function renderCharPanel(charIdx) {
   const c = state[charIdx];
 
-  // Role picker
-  let html = `<div class="card"><h2>Character</h2><div class="field"><label>Unit</label>${renderRoleSelect(charIdx, c.roleId)}</div></div>`;
+  // === Character: selected block + grid picker ===
+  let html = `<div class="card"><h2>Character</h2>`;
+  html += renderSelectedUnit(c.roleId);
+  html += renderPickerBlock({
+    kind: "char", charIdx, filter: c.charFilter,
+    selectedIds: c.roleId ? [c.roleId] : [],
+    placeholder: "Search unit by name / id / race / element / class…"
+  });
+  html += `</div>`;
 
-  // Talents
+  // Talents (unchanged — still combobox)
   html += `<div class="card"><h2>Talents (4 slots)</h2><div class="slot-grid slot-4">`;
   for (let i = 0; i < 4; i++) {
     html += `<div class="slot"><div class="slot-label">Slot ${i+1}</div><div class="slot-row">${renderTalentSelect(charIdx, i, c.talents[i])}</div></div>`;
   }
   html += `</div></div>`;
 
-  // Supports
-  html += `<div class="card"><h2>Supports (3 slots, order matters)</h2><div class="slot-grid slot-3">`;
+  // === Supports: 3 slot chips + shared grid picker ===
+  html += `<div class="card"><h2>Supports (3 slots — click a slot, then pick a unit below)</h2>`;
+  html += `<div class="support-slots">`;
   for (let i = 0; i < 3; i++) {
-    html += `<div class="slot"><div class="slot-label">Slot ${i+1}: ${SUPPORT_LABELS[i]}</div><div class="slot-row">${renderSupportSelect(charIdx, i, c.supports[i])}</div></div>`;
+    const srcId = c.supports[i];
+    const src = srcId ? findRole(srcId) : null;
+    const active = c.activeSupport === i ? "active" : "";
+    const bodyHtml = src
+      ? `<img src="${escapeAttr(roleIcon(src.id))}" alt="" onerror="this.style.visibility='hidden'"><div class="sname">${escapeHtml(src.name)}</div>`
+      : `<div class="empty-mark">(empty)</div>`;
+    const clearBtn = src
+      ? `<button class="ss-clear" onclick="event.stopPropagation();clearSupport(${charIdx}, ${i})" title="Clear">×</button>`
+      : "";
+    html += `<div class="support-slot ${active}" onclick="setActiveSupport(${charIdx}, ${i})">
+      <div class="ss-label">${SUPPORT_LABELS[i]}</div>
+      <div class="ss-body">${bodyHtml}</div>
+      ${clearBtn}
+    </div>`;
   }
-  html += `</div></div>`;
+  html += `</div>`;
+  html += renderPickerBlock({
+    kind: "support", charIdx, filter: c.supportFilter,
+    selectedIds: c.supports.filter(x => x),
+    placeholder: `Search source unit for slot ${c.activeSupport + 1} (${SUPPORT_LABELS[c.activeSupport]})…`
+  });
+  html += `</div>`;
 
   // Equip
   html += `<div class="card"><h2>Equip (10 slots, star default 3)</h2><div class="slot-grid slot-10">`;
