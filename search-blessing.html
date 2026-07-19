@@ -4,17 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Search Blessings — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="style.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0e0e12; --card:#16161d; --card2:#1c1c26; --border:#2a2a3a;
-  --text:#e0dfe6; --dim:#6b6b80; --accent:#c9a24e;
-  --S:#ff9933; --A:#b66dff; --B:#4ea3ff; --C:#5fcf6b;
-  --pc2:#e74c3c;
+  --card:#1d2025; --card2:#0f1114;
+  --text:#e3e3e3; --dim:#a8a8a8;
+  --S:#f5b342; --A:#c290e8; --B:#4ea1ff; --C:#6cc090;
+  --pc2:#c25c5c;
+  --accent:#f5b342;
 }
-html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;line-height:1.4;min-height:100vh}
-.wrap{max-width:1200px;margin:0 auto;padding:18px 14px 40px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 0 40px}
 h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:2px}
 .sub{color:var(--dim);font-size:13px;margin-bottom:18px;line-height:1.5}
 
@@ -58,22 +57,11 @@ table.results tbody tr:hover{background:var(--card)}
 .values-row{margin-top:4px;font-family:'Consolas',monospace;font-size:11px;color:var(--dim)}
 .empty{padding:40px;text-align:center;color:var(--dim);font-style:italic}
 
-/* Sidenav */
-.sidenav{position:fixed;top:0;left:0;width:180px;height:100vh;background:var(--card);border-right:1px solid var(--border);padding:16px 12px;overflow-y:auto;z-index:10}
-.sidenav .brand{display:block;font-family:'Chakra Petch',sans-serif;font-size:16px;font-weight:700;color:var(--accent);text-decoration:none;letter-spacing:1px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-.sidenav nav{display:flex;flex-direction:column;gap:2px}
-.sidenav nav a{color:var(--dim);text-decoration:none;font-size:12px;padding:6px 8px;border-radius:4px;font-family:'Chakra Petch',sans-serif;letter-spacing:0.5px}
-.sidenav nav a:hover{background:var(--card2);color:var(--text)}
-.sidenav nav a.current{background:rgba(201,162,78,0.2);color:var(--accent)}
-.main{margin-left:180px}
-@media(max-width:900px){
-  .sidenav{position:relative;width:100%;height:auto;border-right:0;border-bottom:1px solid var(--border)}
-  .main{margin-left:0}
-}
 </style>
 </head>
 <body>
 <aside class="sidenav">
+  <button class="sn-collapse-btn" onclick="toggleSidenav()" title="Hide menu" aria-label="Hide menu">&#8249;</button>
   <a class="brand" href="index.html">GMG Wiki</a>
   <nav>
     <a href="units/index.html">Units</a>
@@ -83,18 +71,36 @@ table.results tbody tr:hover{background:var(--card)}
     <a href="talent-manage.html">My Talents</a>
     <a href="build-team.html">Build Team</a>
     <a href="battle-logs.html">Battle Logs</a>
-    <a href="search-unit.html">Search · Units</a>
-    <a href="search-talent.html">Search · Talents (facet)</a>
-    <a href="search-talent-new.html">Search · Talents (fulltext)</a>
-    <a href="search-gear.html">Search · Gear</a>
-    <a href="search-runes.html">Search · Runes</a>
-    <a href="search-godstone.html">Search · Jewels</a>
-    <a href="search-blessing.html" class="current">Search · Blessings</a>
+    <a href="search-unit.html">Search &middot; Units</a>
+    <a href="search-talent.html">Search &middot; Talents (facet)</a>
+    <a href="search-talent-new.html">Search &middot; Talents (fulltext)</a>
+    <a href="search-gear.html">Search &middot; Gear</a>
+    <a href="search-runes.html">Search &middot; Runes</a>
+    <a href="search-godstone.html">Search &middot; Jewels</a>
+    <a href="search-blessing.html" class="current">Search &middot; Blessings</a>
     <a href="news.html">News</a>
   </nav>
 </aside>
+<button class="sn-expand-btn" onclick="toggleSidenav()" title="Show menu" aria-label="Show menu">&#9776;</button>
+<script>
+(function(){
+  var KEY='mgg-sidenav-collapsed';
+  function apply(){
+    var c=localStorage.getItem(KEY)==='1';
+    document.body.classList.toggle('sn-collapsed',c);
+  }
+  window.toggleSidenav=function(){
+    var now=document.body.classList.toggle('sn-collapsed');
+    try{localStorage.setItem(KEY,now?'1':'0');}catch(e){}
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+})();
+</script>
 
-<div class="main">
+
+
+<div class="page">
+<main class="content">
 <div class="wrap">
 
 <h1>Search · Blessings</h1>
@@ -228,5 +234,8 @@ if (!DATA) {
   render();
 }
 </script>
+</div>
+</main>
+</div>
 </body>
 </html>
