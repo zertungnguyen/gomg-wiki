@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Search Blessings — Guild of Monster Girls Wiki</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0e0e12; --card:#16161d; --card2:#1c1c26; --border:#2a2a3a;
+  --text:#e0dfe6; --dim:#6b6b80; --accent:#c9a24e;
+  --S:#ff9933; --A:#b66dff; --B:#4ea3ff; --C:#5fcf6b;
+  --pc2:#e74c3c;
+}
+html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;line-height:1.4;min-height:100vh}
+.wrap{max-width:1200px;margin:0 auto;padding:18px 14px 40px}
+h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:2px}
+.sub{color:var(--dim);font-size:13px;margin-bottom:18px;line-height:1.5}
+
+.filter-row{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:14px;align-items:flex-start}
+.filter-col h4{font-family:'Chakra Petch',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);margin:0 0 6px 0;font-weight:600}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{padding:5px 12px;border-radius:4px;border:1.5px solid var(--border);background:transparent;color:var(--dim);font-size:12px;cursor:pointer;user-select:none;transition:all .15s;font-family:'Chakra Petch',sans-serif;font-weight:600;letter-spacing:.5px}
+.pill:hover{border-color:#555}
+.pill.on{color:#fff;border-color:currentColor}
+.pill.on.step-S{color:var(--S);background:rgba(255,153,51,.15);border-color:var(--S)}
+.pill.on.step-A{color:var(--A);background:rgba(182,109,255,.15);border-color:var(--A)}
+.pill.on.step-B{color:var(--B);background:rgba(78,163,255,.15);border-color:var(--B)}
+.pill.on.step-C{color:var(--C);background:rgba(95,207,107,.15);border-color:var(--C)}
+.pill.on.pc-2{color:var(--pc2);background:rgba(231,76,60,.15);border-color:var(--pc2)}
+.pill.on.pc-1{color:var(--accent);background:rgba(201,162,78,.15);border-color:var(--accent)}
+.pill.on.pc-0{color:var(--dim);background:rgba(107,107,128,.15);border-color:#888}
+
+.controls-row{display:flex;align-items:center;gap:12px;margin:16px 0 12px 0;flex-wrap:wrap}
+#searchInput{padding:8px 14px;background:var(--card2);color:var(--text);border:1px solid var(--border);border-radius:4px;font-size:13px;width:360px;max-width:100%;font-family:'Noto Sans',sans-serif}
+#searchInput:focus{outline:none;border-color:var(--accent)}
+.btn-clear{padding:7px 14px;background:var(--card2);color:var(--text);border:1px solid var(--border);border-radius:4px;cursor:pointer;font-size:12px;font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:1px}
+.btn-clear:hover{border-color:var(--accent)}
+.results-meta{color:var(--dim);font-size:12px;font-family:'Chakra Petch',sans-serif;letter-spacing:.5px}
+
+table.results{width:100%;font-size:13px;border-collapse:collapse}
+table.results thead th{background:var(--card2);position:sticky;top:0;z-index:2;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:9px 10px;border-bottom:1px solid var(--border);white-space:nowrap;font-family:'Chakra Petch',sans-serif;color:var(--dim)}
+table.results td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+table.results tbody tr:hover{background:var(--card)}
+.badge{display:inline-block;padding:2px 9px;border-radius:3px;font-size:11px;font-weight:700;letter-spacing:.3px;font-family:'Chakra Petch',sans-serif}
+.badge-S{background:rgba(255,153,51,.2);color:var(--S)}
+.badge-A{background:rgba(182,109,255,.2);color:var(--A)}
+.badge-B{background:rgba(78,163,255,.2);color:var(--B)}
+.badge-C{background:rgba(95,207,107,.2);color:var(--C)}
+.badge-pc-2{background:rgba(231,76,60,.2);color:var(--pc2)}
+.badge-pc-1{background:rgba(201,162,78,.2);color:var(--accent)}
+.badge-pc-0{background:rgba(107,107,128,.2);color:var(--dim)}
+.col-id{font-family:'Consolas',monospace;font-size:11px;color:var(--dim)}
+.col-name{font-weight:600;color:var(--text)}
+.col-effect{line-height:1.5;color:var(--text);max-width:520px}
+.effect-line{margin-bottom:2px}
+.values-row{margin-top:4px;font-family:'Consolas',monospace;font-size:11px;color:var(--dim)}
+.empty{padding:40px;text-align:center;color:var(--dim);font-style:italic}
+
+/* Sidenav */
+.sidenav{position:fixed;top:0;left:0;width:180px;height:100vh;background:var(--card);border-right:1px solid var(--border);padding:16px 12px;overflow-y:auto;z-index:10}
+.sidenav .brand{display:block;font-family:'Chakra Petch',sans-serif;font-size:16px;font-weight:700;color:var(--accent);text-decoration:none;letter-spacing:1px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.sidenav nav{display:flex;flex-direction:column;gap:2px}
+.sidenav nav a{color:var(--dim);text-decoration:none;font-size:12px;padding:6px 8px;border-radius:4px;font-family:'Chakra Petch',sans-serif;letter-spacing:0.5px}
+.sidenav nav a:hover{background:var(--card2);color:var(--text)}
+.sidenav nav a.current{background:rgba(201,162,78,0.2);color:var(--accent)}
+.main{margin-left:180px}
+@media(max-width:900px){
+  .sidenav{position:relative;width:100%;height:auto;border-right:0;border-bottom:1px solid var(--border)}
+  .main{margin-left:0}
+}
+</style>
+</head>
+<body>
+<aside class="sidenav">
+  <a class="brand" href="index.html">GMG Wiki</a>
+  <nav>
+    <a href="units/index.html">Units</a>
+    <a href="keywords/index.html">Keywords</a>
+    <a href="gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="talent-simulator.html">Talent Simulator</a>
+    <a href="talent-manage.html">My Talents</a>
+    <a href="build-team.html">Build Team</a>
+    <a href="battle-logs.html">Battle Logs</a>
+    <a href="search-unit.html">Search · Units</a>
+    <a href="search-talent.html">Search · Talents (facet)</a>
+    <a href="search-talent-new.html">Search · Talents (fulltext)</a>
+    <a href="search-gear.html">Search · Gear</a>
+    <a href="search-runes.html">Search · Runes</a>
+    <a href="search-godstone.html">Search · Jewels</a>
+    <a href="search-blessing.html" class="current">Search · Blessings</a>
+    <a href="news.html">News</a>
+  </nav>
+</aside>
+
+<div class="main">
+<div class="wrap">
+
+<h1>Search · Blessings</h1>
+<div class="sub">Peak Challenge modifiers (加护 / JH prefixes) — enemy buffs applied when picked for a Peak Match fight. <strong>PC value</strong> = Peak Level points earned per clear. All 147 blessings across C→S tiers.</div>
+
+<div class="filter-row">
+  <div class="filter-col">
+    <h4>Step (tier)</h4>
+    <div class="pills" id="pills-step"></div>
+  </div>
+  <div class="filter-col">
+    <h4>PC (Peak points/clear)</h4>
+    <div class="pills" id="pills-pc"></div>
+  </div>
+</div>
+
+<div class="controls-row">
+  <input id="searchInput" placeholder="Search name or effect (e.g. Burn, Shield, Stun immune)…" autocomplete="off">
+  <button class="btn-clear" onclick="clearAll()">Clear all</button>
+  <span class="results-meta" id="meta"></span>
+</div>
+
+<div id="resultsWrap">
+  <table class="results">
+    <thead><tr>
+      <th style="width:60px">Step</th>
+      <th style="width:60px">PC</th>
+      <th style="width:100px">ID</th>
+      <th style="width:150px">Name</th>
+      <th>Effect (max tier substituted)</th>
+    </tr></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <div class="empty" id="empty" style="display:none">No blessings match the selected filters.</div>
+</div>
+
+</div>
+</div>
+
+<script src="blessing-search-data.js"></script>
+<script>
+const DATA = window.BLESSING_DATA;
+const BLESSINGS = DATA ? DATA.blessings : [];
+
+const STEP_ORDER = ['S', 'A', 'B', 'C'];
+const PC_ORDER = [2, 1, 0];
+
+const selStep = new Set();
+const selPc = new Set();
+let queryStr = '';
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
+}
+
+function buildPills() {
+  const stepWrap = document.getElementById('pills-step');
+  stepWrap.innerHTML = '';
+  STEP_ORDER.forEach(s => {
+    const b = document.createElement('button');
+    b.className = 'pill step-' + s + (selStep.has(s) ? ' on' : '');
+    b.textContent = s;
+    b.onclick = () => { if (selStep.has(s)) selStep.delete(s); else selStep.add(s); buildPills(); render(); };
+    stepWrap.appendChild(b);
+  });
+  const pcWrap = document.getElementById('pills-pc');
+  pcWrap.innerHTML = '';
+  PC_ORDER.forEach(p => {
+    const b = document.createElement('button');
+    b.className = 'pill pc-' + p + (selPc.has(p) ? ' on' : '');
+    b.textContent = 'PC ' + p;
+    b.onclick = () => { if (selPc.has(p)) selPc.delete(p); else selPc.add(p); buildPills(); render(); };
+    pcWrap.appendChild(b);
+  });
+}
+
+function render() {
+  let rows = BLESSINGS.slice();
+  if (selStep.size) rows = rows.filter(b => selStep.has(b.step));
+  if (selPc.size) rows = rows.filter(b => selPc.has(b.pc));
+  if (queryStr) {
+    const q = queryStr.toLowerCase();
+    rows = rows.filter(b =>
+      (b.name || '').toLowerCase().includes(q) ||
+      (b.effect || '').toLowerCase().includes(q) ||
+      (b.id || '').toLowerCase().includes(q)
+    );
+  }
+  document.getElementById('meta').textContent = rows.length + ' of ' + BLESSINGS.length;
+  const tbody = document.getElementById('tbody');
+  const empty = document.getElementById('empty');
+  tbody.innerHTML = '';
+  if (!rows.length) {
+    empty.style.display = '';
+    document.getElementById('resultsWrap').querySelector('table').style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  document.getElementById('resultsWrap').querySelector('table').style.display = '';
+  rows.forEach(b => {
+    const tr = document.createElement('tr');
+    const effectLines = (b.effect || '').split(/\s*\/\s*/).map(x => x.trim()).filter(Boolean);
+    const effHtml = effectLines.map(l => '<div class="effect-line">' + escapeHtml(l) + '</div>').join('');
+    const vals = (b.values || []).length
+      ? '<div class="values-row">Values: ' + escapeHtml(b.values.join(' · ')) + '</div>'
+      : '';
+    tr.innerHTML =
+      '<td><span class="badge badge-' + escapeHtml(b.step) + '">' + escapeHtml(b.step) + '</span></td>' +
+      '<td><span class="badge badge-pc-' + b.pc + '">PC ' + b.pc + '</span></td>' +
+      '<td class="col-id">' + escapeHtml(b.id) + '</td>' +
+      '<td class="col-name">' + escapeHtml(b.name) + '</td>' +
+      '<td class="col-effect">' + effHtml + vals + '</td>';
+    tbody.appendChild(tr);
+  });
+}
+
+function clearAll() {
+  selStep.clear();
+  selPc.clear();
+  queryStr = '';
+  document.getElementById('searchInput').value = '';
+  buildPills();
+  render();
+}
+
+if (!DATA) {
+  document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#e74c3c">Failed to load blessing-search-data.js — regenerate via <code>py web-session/tools/build_blessing_data.py</code></div>';
+} else {
+  document.getElementById('searchInput').addEventListener('input', e => { queryStr = e.target.value.trim(); render(); });
+  buildPills();
+  render();
+}
+</script>
+</body>
+</html>

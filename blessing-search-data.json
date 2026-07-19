@@ -1,0 +1,2357 @@
+{
+  "blessings": [
+    {
+      "id": "JH40011",
+      "name": "Mirrored",
+      "step": "S",
+      "pc": 2,
+      "weight": 500,
+      "effect": "Cannot basic attack but always Counter when taking a hit.<br>Apply same status to target after receiving status from enemies.<br>Retaliate against attackers by reducing their HP equal to half the DMG taken.<br>Enemy in same position loses all HP when defeated.",
+      "effectTpl": "Cannot basic attack but always Counter when taking a hit.<br>Apply same status to target after receiving status from enemies.<br>Retaliate against attackers by reducing their HP equal to half the DMG taken.<br>Enemy in same position loses all HP when defeated.",
+      "values": [],
+      "areaLimit": "All",
+      "classLimit": "Warrior",
+      "element": "All"
+    },
+    {
+      "id": "JH40024",
+      "name": "Spellbreaking",
+      "step": "S",
+      "pc": 2,
+      "weight": 2500,
+      "effect": "Take 3 less Skill DMG.<br>Target loses 50 Mana after dealing DMG.<br>Enemies lose Toughness equal to half their Max Mana after casting skill.<br>Enemies lose HP equal to half their Max Mana after casting skill.",
+      "effectTpl": "Take {0} less Skill DMG.<br>Target loses {1} Mana after dealing DMG.<br>Enemies lose Toughness equal to half their Max Mana after casting skill.<br>Enemies lose HP equal to half their Max Mana after casting skill.",
+      "values": [
+        "3",
+        "50"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer",
+      "element": "All"
+    },
+    {
+      "id": "JH40027",
+      "name": "Evil-Eyed",
+      "step": "S",
+      "pc": 2,
+      "weight": 1250,
+      "effect": "Not considered a priority target by enemies.<br>Enemies lose 20 HP at action end.<br>Enemies lose 20 HP at action start.<br>All enemies lose 5 more HP when only self remains.",
+      "effectTpl": "Not considered a priority target by enemies.<br>Enemies lose {0} HP at action end.<br>Enemies lose {1} HP at action start.<br>All enemies lose {2} more HP when only self remains.",
+      "values": [
+        "20",
+        "20",
+        "5"
+      ],
+      "areaLimit": "Mounts,Ocean,Volcano",
+      "classLimit": "Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH40037",
+      "name": "Liquefied",
+      "step": "S",
+      "pc": 2,
+      "weight": 1250,
+      "effect": "HP Loss effects cannot cause defeat.<br>[CN: 回合开始前使自身获得自身生命损伤25%层数的坚韧。]<br>[CN: 回合开始前使自身获得自身生命损伤20%层数的防护。]<br>[CN: 回合开始前使自身获得自身生命损伤10%层数的再生。]",
+      "effectTpl": "HP Loss effects cannot cause defeat.<br>[CN: 回合开始前使自身获得自身生命损伤{0}%层数的坚韧。]<br>[CN: 回合开始前使自身获得自身生命损伤{1}%层数的防护。]<br>[CN: 回合开始前使自身获得自身生命损伤{2}%层数的再生。]",
+      "values": [
+        "25",
+        "20",
+        "10"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All",
+      "element": "All"
+    },
+    {
+      "id": "JH40038",
+      "name": "Mad",
+      "step": "S",
+      "pc": 2,
+      "weight": 1250,
+      "effect": "Gain 200 Extra Actions each turn, but deal 50% less total DMG.<br>Follow-Up count +50.<br>Counter count +50.<br>Multi-hit skill count +50.",
+      "effectTpl": "Gain {0} Extra Actions each turn, but deal 50% less total DMG.<br>Follow-Up count +{1}.<br>Counter count +{2}.<br>Multi-hit skill count +{3}.",
+      "values": [
+        "200",
+        "50",
+        "50",
+        "50"
+      ],
+      "areaLimit": "Plains,Volcano",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH40039",
+      "name": "Eternal",
+      "step": "S",
+      "pc": 2,
+      "weight": 0,
+      "effect": "HP +10000.<br>Toughness lost -10.<br>Mana Loss -20<br>Current Toughness cannot drop below 1.",
+      "effectTpl": "HP +10000.<br>Toughness lost -{0}.<br>Mana Loss -{1}<br>Current Toughness cannot drop below 1.",
+      "values": [
+        "10",
+        "20"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All",
+      "element": "All"
+    },
+    {
+      "id": "JH40001",
+      "name": "Ancient",
+      "step": "S",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Immune to Stun.<br>Gain 1 HP but lose 2 SPD.<br>Deal 10 more total DMG.<br>Gain 3 HP at action start.",
+      "effectTpl": "Immune to Stun.<br>Gain {0} HP but lose {1} SPD.<br>Deal {2} more total DMG.<br>Gain {3} HP at action start.",
+      "values": [
+        "1",
+        "2",
+        "10",
+        "3"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "All"
+    },
+    {
+      "id": "JH40002",
+      "name": "Infected",
+      "step": "S",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 50 stacks of Hinder to all targets at action start.<br>Apply Hinder equal to own stacks to target after countering.<br>All enemies lose HP equal to their Hinder stacks at action end.<br>Apply 10 more stacks of Hinder.",
+      "effectTpl": "Apply {0} stacks of Hinder to all targets at action start.<br>Apply Hinder equal to own stacks to target after countering.<br>All enemies lose HP equal to their Hinder stacks at action end.<br>Apply {1} more stacks of Hinder.",
+      "values": [
+        "50",
+        "10"
+      ],
+      "areaLimit": "Forest,Mounts,Desert",
+      "classLimit": "Warrior",
+      "element": "Earth,Dark"
+    },
+    {
+      "id": "JH40003",
+      "name": "Frozen",
+      "step": "S",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 10 stacks of Chill after attacking.<br>Apply 10 stacks of Chill to all enemies at action start.<br>On skill cast, the enemy target loses HP equal to 25% of their Chill stacks.<br>Apply +10 Chill stacks.",
+      "effectTpl": "Apply {0} stacks of Chill after attacking.<br>Apply {1} stacks of Chill to all enemies at action start.<br>On skill cast, the enemy target loses HP equal to 25% of their Chill stacks.<br>Apply +{2} Chill stacks.",
+      "values": [
+        "10",
+        "10",
+        "10"
+      ],
+      "areaLimit": "Ocean,Tundra",
+      "classLimit": "All-Class",
+      "element": "Wind,Water"
+    },
+    {
+      "id": "JH40004",
+      "name": "Scorching",
+      "step": "S",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 10 stacks of Burn to target after taking DMG.<br>Apply 5 stacks of Burn to target after countering.<br>All enemies gain 10 more stacks of Burn at action end.<br>Apply 10 more stacks of Burn.",
+      "effectTpl": "Apply {0} stacks of Burn to target after taking DMG.<br>Apply {1} stacks of Burn to target after countering.<br>All enemies gain {2} more stacks of Burn at action end.<br>Apply {3} more stacks of Burn.",
+      "values": [
+        "10",
+        "5",
+        "10",
+        "10"
+      ],
+      "areaLimit": "Mounts,Desert,Volcano",
+      "classLimit": "Warrior",
+      "element": "Fire"
+    },
+    {
+      "id": "JH40005",
+      "name": "Invisible",
+      "step": "S",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 2 stacks of Expose to target after a basic attack.<br>Apply 2 stacks of Expose to target after following up.<br>All enemies gain 10 more stacks of Expose at action end.<br>Apply 10 more stacks of Expose.",
+      "effectTpl": "Apply {0} stacks of Expose to target after a basic attack.<br>Apply {1} stacks of Expose to target after following up.<br>All enemies gain {2} more stacks of Expose at action end.<br>Apply {3} more stacks of Expose.",
+      "values": [
+        "2",
+        "2",
+        "10",
+        "10"
+      ],
+      "areaLimit": "Plains,Tundra",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Wind"
+    },
+    {
+      "id": "JH40006",
+      "name": "Astral",
+      "step": "S",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 5 Starting Mana.<br>Gain 10 Action Mana.<br>Gain 5 skill DMG and 5 skill healing.<br>Gain 10 Mana after casting skill.",
+      "effectTpl": "Gain {0} Starting Mana.<br>Gain {1} Action Mana.<br>Gain {2} skill DMG and {3} skill healing.<br>Gain {4} Mana after casting skill.",
+      "values": [
+        "5",
+        "10",
+        "5",
+        "5",
+        "10"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "Dark,Light"
+    },
+    {
+      "id": "JH40007",
+      "name": "Celestial",
+      "step": "S",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 10 stacks of Cleanse at action end.<br>When having no debuffs, deal 5 more total DMG and restore 5 more total HP to targets.<br>When having no debuffs, take 5 less total DMG.<br>Gain 10 more stacks of Cleanse.",
+      "effectTpl": "Gain {0} stacks of Cleanse at action end.<br>When having no debuffs, deal {1} more total DMG and restore {2} more total HP to targets.<br>When having no debuffs, take {3} less total DMG.<br>Gain {4} more stacks of Cleanse.",
+      "values": [
+        "10",
+        "5",
+        "5",
+        "5",
+        "10"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "Light,Water"
+    },
+    {
+      "id": "JH40008",
+      "name": "Lightless",
+      "step": "S",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Not considered a priority target by enemies.<br>Deal 5 more total DMG to low HP targets.<br>Deal 5 more total DMG after defeating a target.<br>Take 1 extra action immediately after defeating a target.",
+      "effectTpl": "Not considered a priority target by enemies.<br>Deal {0} more total DMG to low HP targets.<br>Deal {1} more total DMG after defeating a target.<br>Take 1 extra action immediately after defeating a target.",
+      "values": [
+        "5",
+        "5"
+      ],
+      "areaLimit": "Mounts",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Dark"
+    },
+    {
+      "id": "JH40009",
+      "name": "Savage",
+      "step": "S",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 2 HP after attacking at low HP.<br>Deal 5 more total DMG at low HP.<br>Take 5 less total DMG at low HP.<br>Gain 50 basic attack targets at low HP.",
+      "effectTpl": "Gain {0} HP after attacking at low HP.<br>Deal {1} more total DMG at low HP.<br>Take {2} less total DMG at low HP.<br>Gain {3} basic attack targets at low HP.",
+      "values": [
+        "2",
+        "5",
+        "5",
+        "50"
+      ],
+      "areaLimit": "Plains,Desert",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH40010",
+      "name": "Abyssal",
+      "step": "S",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 2 HP after defeating a target.<br>Deal 5 more total DMG after defeating a target.<br>Take 5 less total DMG after defeating a target.<br>Gain 5 Mana after defeating a target.",
+      "effectTpl": "Gain {0} HP after defeating a target.<br>Deal {1} more total DMG after defeating a target.<br>Take {2} less total DMG after defeating a target.<br>Gain {3} Mana after defeating a target.",
+      "values": [
+        "2",
+        "5",
+        "5",
+        "5"
+      ],
+      "areaLimit": "Mounts,Ocean,Volcano",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH40012",
+      "name": "Restless",
+      "step": "S",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 1 stacks of Haste at battle start.<br>Gain 5 stacks of Haste at action end.<br>Deal 1 more Follow-Up attack per 100 SPD.<br>Gain 10 more stacks of Haste.",
+      "effectTpl": "Gain {0} stacks of Haste at battle start.<br>Gain {1} stacks of Haste at action end.<br>Deal 1 more Follow-Up attack per 100 SPD.<br>Gain {2} more stacks of Haste.",
+      "values": [
+        "1",
+        "5",
+        "10"
+      ],
+      "areaLimit": "Plains,Volcano",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH40016",
+      "name": "Nightmarish",
+      "step": "S",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Deal 4 more total DMG to targets with Weakness Exposed.<br>All enemies lose 2 Toughness at battle start.<br>Other enemies lose 2 Toughness when an enemy is defeated.<br>Gain 100 Mana when any target loses Toughness.",
+      "effectTpl": "Deal {0} more total DMG to targets with Weakness Exposed.<br>All enemies lose {1} Toughness at battle start.<br>Other enemies lose {2} Toughness when an enemy is defeated.<br>Gain {3} Mana when any target loses Toughness.",
+      "values": [
+        "4",
+        "2",
+        "2",
+        "100"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Dark"
+    },
+    {
+      "id": "JH40017",
+      "name": "Chaotic",
+      "step": "S",
+      "pc": 1,
+      "weight": 500,
+      "effect": "The front enemy loses HP equal to 200% of Max Mana when defeated.<br>The mid enemy loses HP equal to 50% of Max Mana when defeated.<br>The back enemy loses HP equal to 50% of Max Mana when defeated.<br>Gain 1 Max Mana.",
+      "effectTpl": "The front enemy loses HP equal to 200% of Max Mana when defeated.<br>The mid enemy loses HP equal to 50% of Max Mana when defeated.<br>The back enemy loses HP equal to 50% of Max Mana when defeated.<br>Gain {0} Max Mana.",
+      "values": [
+        "1"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "All"
+    },
+    {
+      "id": "JH40018",
+      "name": "Damp",
+      "step": "S",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 1 stacks of Soothe at battle start.<br>All allies gain 10 stacks of Soothe after casting skill.<br>Take 5 less total DMG while having Soothe.<br>Gain 10 more stacks of Soothe.",
+      "effectTpl": "Gain {0} stacks of Soothe at battle start.<br>All allies gain {1} stacks of Soothe after casting skill.<br>Take {2} less total DMG while having Soothe.<br>Gain {3} more stacks of Soothe.",
+      "values": [
+        "1",
+        "10",
+        "5",
+        "10"
+      ],
+      "areaLimit": "Forest,Ocean,Beach",
+      "classLimit": "All-Class",
+      "element": "Water"
+    },
+    {
+      "id": "JH40019",
+      "name": "Fused",
+      "step": "S",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 1 HP and max HP after an ally is defeated.<br>+10 Total DMG dealt and total HP restored to targets after an ally is defeated.<br>Take -10 total DMG after an ally is defeated.<br>Take 1 extra action immediately after an ally is defeated.",
+      "effectTpl": "Gain {0} HP and max HP after an ally is defeated.<br>+{1} Total DMG dealt and total HP restored to targets after an ally is defeated.<br>Take -{2} total DMG after an ally is defeated.<br>Take 1 extra action immediately after an ally is defeated.",
+      "values": [
+        "1",
+        "10",
+        "10"
+      ],
+      "areaLimit": "Forest,Mounts",
+      "classLimit": "All-Class",
+      "element": "All"
+    },
+    {
+      "id": "JH40020",
+      "name": "Feral",
+      "step": "S",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 3 stacks of Growth at action end.<br>Gain 3 stacks of Growth after casting skill.<br>+100 Total DMG dealt and total HP restored to targets per 10 stacks of Growth the unit owns.<br>Take -200 less total DMG per 10 stacks of Growth.",
+      "effectTpl": "Gain {0} stacks of Growth at action end.<br>Gain {1} stacks of Growth after casting skill.<br>+{2} Total DMG dealt and total HP restored to targets per 10 stacks of Growth the unit owns.<br>Take -{3} less total DMG per 10 stacks of Growth.",
+      "values": [
+        "3",
+        "3",
+        "100",
+        "200"
+      ],
+      "areaLimit": "Forest",
+      "classLimit": "All-Class",
+      "element": "All"
+    },
+    {
+      "id": "JH40021",
+      "name": "Sluggish",
+      "step": "S",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 2 stacks of Slow to all enemies at battle start.<br>Apply 10 stacks of Slow to all enemies at action start.<br>Remove all Slow from enemies and apply equal Stun after casting skill.<br>Apply 10 more stacks of Slow.",
+      "effectTpl": "Apply {0} stacks of Slow to all enemies at battle start.<br>Apply {1} stacks of Slow to all enemies at action start.<br>Remove all Slow from enemies and apply equal Stun after casting skill.<br>Apply {2} more stacks of Slow.",
+      "values": [
+        "2",
+        "10",
+        "10"
+      ],
+      "areaLimit": "Forest,Mounts,Desert",
+      "classLimit": "All-Class",
+      "element": "Earth,Water"
+    },
+    {
+      "id": "JH40022",
+      "name": "Malicious",
+      "step": "S",
+      "pc": 1,
+      "weight": 2500,
+      "effect": "Gain 1 stacks of Thorns at battle start.<br>Gain 3 stacks of Thorns after casting skill.<br>Gain HP equal to half the stacks after Thorns takes effect.<br>Gain 10 more stacks of Thorns.",
+      "effectTpl": "Gain {0} stacks of Thorns at battle start.<br>Gain {1} stacks of Thorns after casting skill.<br>Gain HP equal to half the stacks after Thorns takes effect.<br>Gain {2} more stacks of Thorns.",
+      "values": [
+        "1",
+        "3",
+        "10"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Priest",
+      "element": "All"
+    },
+    {
+      "id": "JH40023",
+      "name": "Conductive",
+      "step": "S",
+      "pc": 1,
+      "weight": 2500,
+      "effect": "Apply 10 stacks of Shock after taking DMG.<br>Gain 20 Mana after applying Shock.<br>On skill cast, the enemy target loses HP equal to 25% of their Shock stacks.<br>Apply +10 Shock stacks.",
+      "effectTpl": "Apply {0} stacks of Shock after taking DMG.<br>Gain {1} Mana after applying Shock.<br>On skill cast, the enemy target loses HP equal to 25% of their Shock stacks.<br>Apply +{2} Shock stacks.",
+      "values": [
+        "10",
+        "20",
+        "10"
+      ],
+      "areaLimit": "Plains,Beach,Ocean",
+      "classLimit": "All-Class",
+      "element": "Wind,Water"
+    },
+    {
+      "id": "JH40026",
+      "name": "Predatory",
+      "step": "S",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Deal 5 more total DMG to targets with Weakness Exposed.<br>Deal 5 more total DMG to targets with lower SPD.<br>Deal 5 more total DMG to targets with lower Max HP.<br>Deal 5 more total DMG to targets with lower level.",
+      "effectTpl": "Deal {0} more total DMG to targets with Weakness Exposed.<br>Deal {1} more total DMG to targets with lower SPD.<br>Deal {2} more total DMG to targets with lower Max HP.<br>Deal {3} more total DMG to targets with lower level.",
+      "values": [
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "areaLimit": "Plains",
+      "classLimit": "Warrior,Archer",
+      "element": "All"
+    },
+    {
+      "id": "JH40028",
+      "name": "Undying",
+      "step": "S",
+      "pc": 1,
+      "weight": 2500,
+      "effect": "Gain 10 stacks of Regen after taking DMG.<br>Gain 2 Max HP after gaining Regen.<br>Survive with 1 HP when taking fatal DMG for the first time.<br>Gain 10 more stacks of Regen.",
+      "effectTpl": "Gain {0} stacks of Regen after taking DMG.<br>Gain {1} Max HP after gaining Regen.<br>Survive with 1 HP when taking fatal DMG for the first time.<br>Gain {2} more stacks of Regen.",
+      "values": [
+        "10",
+        "2",
+        "10"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "Earth,Dark"
+    },
+    {
+      "id": "JH40029",
+      "name": "Judging",
+      "step": "S",
+      "pc": 1,
+      "weight": 2500,
+      "effect": "Apply 10 stacks of Cleanse to all enemies at action start.<br>Apply 5 stacks of Cleanse to enemies after casting skill.<br>Enemies lose HP equal to 50% of stacks removed.<br>Apply 10 more stacks of Cleanse.",
+      "effectTpl": "Apply {0} stacks of Cleanse to all enemies at action start.<br>Apply {1} stacks of Cleanse to enemies after casting skill.<br>Enemies lose HP equal to 50% of stacks removed.<br>Apply {2} more stacks of Cleanse.",
+      "values": [
+        "10",
+        "5",
+        "10"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Light"
+    },
+    {
+      "id": "JH40030",
+      "name": "Companionate",
+      "step": "S",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Enemy in same position loses 1 HP when defeated.<br>Deal 5 more total DMG to enemy in same position.<br>Enemy in same position receives same status after receiving debuffs.<br>Enemy in same position and self lose 1 Toughness at battle start.",
+      "effectTpl": "Enemy in same position loses {0} HP when defeated.<br>Deal {1} more total DMG to enemy in same position.<br>Enemy in same position receives same status after receiving debuffs.<br>Enemy in same position and self lose {2} Toughness at battle start.",
+      "values": [
+        "1",
+        "5",
+        "1"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Dark"
+    },
+    {
+      "id": "JH40031",
+      "name": "Dejected",
+      "step": "S",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "All enemies gain 25 fewer stacks of Inspire.<br>Apply 10 stacks of Decay to all enemies at turn start.<br>Apply 20 stacks of Decay to target after taking a hit.<br>Apply 20 more stacks of Decay.",
+      "effectTpl": "All enemies gain {0} fewer stacks of Inspire.<br>Apply {1} stacks of Decay to all enemies at turn start.<br>Apply {2} stacks of Decay to target after taking a hit.<br>Apply {3} more stacks of Decay.",
+      "values": [
+        "25",
+        "10",
+        "20",
+        "20"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "Dark"
+    },
+    {
+      "id": "JH40032",
+      "name": "Ironwalled",
+      "step": "S",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 3 stacks of Shield at action end.<br>All allies gain 10 stacks of Shield after casting skill.<br>Gain HP equal to half the stacks after consuming Shield.<br>Apply 10 more stacks of Shield.",
+      "effectTpl": "Gain {0} stacks of Shield at action end.<br>All allies gain {1} stacks of Shield after casting skill.<br>Gain HP equal to half the stacks after consuming Shield.<br>Apply {2} more stacks of Shield.",
+      "values": [
+        "3",
+        "10",
+        "10"
+      ],
+      "areaLimit": "Mounts,Forest,Volcano",
+      "classLimit": "Warrior,Priest",
+      "element": "Earth"
+    },
+    {
+      "id": "JH40033",
+      "name": "Shy",
+      "step": "S",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 2 DEF. Do not lose Toughness on successful defense.<br>All allies gain 10 Toughness at action start.<br>Other allies gain 2 Toughness when defeated.<br>Take 1 extra action immediately when Weakness is exposed.",
+      "effectTpl": "Gain {0} DEF. Do not lose Toughness on successful defense.<br>All allies gain {1} Toughness at action start.<br>Other allies gain {2} Toughness when defeated.<br>Take 1 extra action immediately when Weakness is exposed.",
+      "values": [
+        "2",
+        "10",
+        "2"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Earth"
+    },
+    {
+      "id": "JH40036",
+      "name": "Somnolent",
+      "step": "S",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "All enemies lose 10 HP at action end.<br>All enemies lose 10 Toughness at action end.<br>All enemies lose 50 Mana at action end.<br>Enemy defeat effects trigger 50 fewer times.",
+      "effectTpl": "All enemies lose {0} HP at action end.<br>All enemies lose {1} Toughness at action end.<br>All enemies lose {2} Mana at action end.<br>Enemy defeat effects trigger {3} fewer times.",
+      "values": [
+        "10",
+        "10",
+        "50",
+        "50"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Priest",
+      "element": "All"
+    },
+    {
+      "id": "JH40040",
+      "name": "Infernal",
+      "step": "S",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 10 stacks of Burn to all enemies at action start.<br>Gain 2 HP when enemies trigger Burn.<br>Gain 20 Mana when enemies trigger Burn.<br>Deal +100 total DMG per 25 stacks of Burn on target.",
+      "effectTpl": "Apply {0} stacks of Burn to all enemies at action start.<br>Gain {1} HP when enemies trigger Burn.<br>Gain {2} Mana when enemies trigger Burn.<br>Deal +{3} total DMG per 25 stacks of Burn on target.",
+      "values": [
+        "10",
+        "2",
+        "20",
+        "100"
+      ],
+      "areaLimit": "Volcano",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Fire"
+    },
+    {
+      "id": "JH40013",
+      "name": "Silent",
+      "step": "S",
+      "pc": 0,
+      "weight": 10000,
+      "effect": "Gain 1 max Mana, but cannot cast skills.<br>Deal 20 more total DMG per 20 Mana.<br>Gain 1 basic attack target per 40 Mana.<br>Gain 5 Starting Mana.",
+      "effectTpl": "Gain {0} max Mana, but cannot cast skills.<br>Deal {1} more total DMG per 20 Mana.<br>Gain 1 basic attack target per 40 Mana.<br>Gain {2} Starting Mana.",
+      "values": [
+        "1",
+        "20",
+        "5"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer",
+      "element": "All"
+    },
+    {
+      "id": "JH40015",
+      "name": "Blind",
+      "step": "S",
+      "pc": 0,
+      "weight": 5000,
+      "effect": "Gain 50 Counter range, but cannot perform basic attacks.<br>Deal 20 more Counter DMG next time after taking DMG.<br>Gain 20 Mana after Countering.<br>Deal 20 more Counters at low HP.",
+      "effectTpl": "Gain {0} Counter range, but cannot perform basic attacks.<br>Deal {1} more Counter DMG next time after taking DMG.<br>Gain {2} Mana after Countering.<br>Deal {3} more Counters at low HP.",
+      "values": [
+        "50",
+        "20",
+        "20",
+        "20"
+      ],
+      "areaLimit": "Mounts,Volcano",
+      "classLimit": "Warrior",
+      "element": "All"
+    },
+    {
+      "id": "JH40025",
+      "name": "Hardened",
+      "step": "S",
+      "pc": 0,
+      "weight": 2500,
+      "effect": "Max HP fixed at 4, and immune to all statuses.<br>DMG taken and HP restored capped at 1 per instance.<br>HP Loss and HP Gain capped at 1 per instance.<br>Gain 1 HP at action end.",
+      "effectTpl": "Max HP fixed at {0}, and immune to all statuses.<br>DMG taken and HP restored capped at 1 per instance.<br>HP Loss and HP Gain capped at 1 per instance.<br>Gain 1 HP at action end.",
+      "values": [
+        "4"
+      ],
+      "areaLimit": "Mounts,Volcano",
+      "classLimit": "Warrior,Priest",
+      "element": "All"
+    },
+    {
+      "id": "JH40034",
+      "name": "Bountiful",
+      "step": "S",
+      "pc": 0,
+      "weight": 250,
+      "effect": "Material drop increased by 1000%.<br>Always drop Clover. Clover drop increased by 2.<br>Gear drop increased by 4.<br>Rune drop increased by 2.",
+      "effectTpl": "Material drop increased by 1000%.<br>Always drop Clover. Clover drop increased by 2.<br>Gear drop increased by 4.<br>Rune drop increased by 2.",
+      "values": [],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "All"
+    },
+    {
+      "id": "JH40035",
+      "name": "Magnetic",
+      "step": "S",
+      "pc": 0,
+      "weight": 1250,
+      "effect": "+50 Counter range.<br>All enemies' Follow-Up attacks -20.<br>Apply 20 stacks of Taunt to enemies at action end.<br>Apply +10 Taunt stacks.",
+      "effectTpl": "+{0} Counter range.<br>All enemies' Follow-Up attacks -{1}.<br>Apply {2} stacks of Taunt to enemies at action end.<br>Apply +{3} Taunt stacks.",
+      "values": [
+        "50",
+        "20",
+        "20",
+        "10"
+      ],
+      "areaLimit": "Mounts,Volcano",
+      "classLimit": "Warrior",
+      "element": "Earth"
+    },
+    {
+      "id": "JH30001",
+      "name": "Ancient",
+      "step": "A",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Immune to Stun.<br>Gain 1 HP but lose 2 SPD.<br>Deal 10 more total DMG.",
+      "effectTpl": "Immune to Stun.<br>Gain {0} HP but lose {1} SPD.<br>Deal {2} more total DMG.",
+      "values": [
+        "1",
+        "2",
+        "10"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "All"
+    },
+    {
+      "id": "JH30002",
+      "name": "Infected",
+      "step": "A",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 50 stacks of Hinder to all targets at action start.<br>Apply Hinder equal to own stacks to target after countering.<br>All enemies lose HP equal to their Hinder stacks at action end.",
+      "effectTpl": "Apply {0} stacks of Hinder to all targets at action start.<br>Apply Hinder equal to own stacks to target after countering.<br>All enemies lose HP equal to their Hinder stacks at action end.",
+      "values": [
+        "50"
+      ],
+      "areaLimit": "Forest,Mounts,Desert",
+      "classLimit": "Warrior",
+      "element": "Earth,Dark"
+    },
+    {
+      "id": "JH30003",
+      "name": "Frozen",
+      "step": "A",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 10 stacks of Chill after attacking.<br>Apply 10 stacks of Chill to all enemies at action start.<br>On skill cast, the enemy target loses HP equal to 25% of their Chill stacks.",
+      "effectTpl": "Apply {0} stacks of Chill after attacking.<br>Apply {1} stacks of Chill to all enemies at action start.<br>On skill cast, the enemy target loses HP equal to 25% of their Chill stacks.",
+      "values": [
+        "10",
+        "10"
+      ],
+      "areaLimit": "Ocean,Tundra",
+      "classLimit": "All-Class",
+      "element": "Wind,Water"
+    },
+    {
+      "id": "JH30004",
+      "name": "Scorching",
+      "step": "A",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 10 stacks of Burn to target after taking DMG.<br>Apply 5 stacks of Burn to target after countering.<br>All enemies gain 10 more stacks of Burn at action end.",
+      "effectTpl": "Apply {0} stacks of Burn to target after taking DMG.<br>Apply {1} stacks of Burn to target after countering.<br>All enemies gain {2} more stacks of Burn at action end.",
+      "values": [
+        "10",
+        "5",
+        "10"
+      ],
+      "areaLimit": "Mounts,Desert,Volcano",
+      "classLimit": "Warrior",
+      "element": "Fire"
+    },
+    {
+      "id": "JH30005",
+      "name": "Invisible",
+      "step": "A",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 2 stacks of Expose to target after a basic attack.<br>Apply 2 stacks of Expose to target after following up.<br>All enemies gain 10 more stacks of Expose at action end.",
+      "effectTpl": "Apply {0} stacks of Expose to target after a basic attack.<br>Apply {1} stacks of Expose to target after following up.<br>All enemies gain {2} more stacks of Expose at action end.",
+      "values": [
+        "2",
+        "2",
+        "10"
+      ],
+      "areaLimit": "Plains,Tundra",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Wind"
+    },
+    {
+      "id": "JH30006",
+      "name": "Astral",
+      "step": "A",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 5 Starting Mana.<br>Gain 10 Action Mana.<br>Gain 5 skill DMG and 5 skill healing.",
+      "effectTpl": "Gain {0} Starting Mana.<br>Gain {1} Action Mana.<br>Gain {2} skill DMG and {3} skill healing.",
+      "values": [
+        "5",
+        "10",
+        "5",
+        "5"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "Dark,Light"
+    },
+    {
+      "id": "JH30007",
+      "name": "Celestial",
+      "step": "A",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 10 stacks of Cleanse at action end.<br>When having no debuffs, deal 5 more total DMG and restore 5 more total HP to targets.<br>When having no debuffs, take 5 less total DMG.",
+      "effectTpl": "Gain {0} stacks of Cleanse at action end.<br>When having no debuffs, deal {1} more total DMG and restore {2} more total HP to targets.<br>When having no debuffs, take {3} less total DMG.",
+      "values": [
+        "10",
+        "5",
+        "5",
+        "5"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "Light,Water"
+    },
+    {
+      "id": "JH30008",
+      "name": "Lightless",
+      "step": "A",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Not considered a priority target by enemies.<br>Deal 5 more total DMG to low HP targets.<br>Deal 5 more total DMG after defeating a target.",
+      "effectTpl": "Not considered a priority target by enemies.<br>Deal {0} more total DMG to low HP targets.<br>Deal {1} more total DMG after defeating a target.",
+      "values": [
+        "5",
+        "5"
+      ],
+      "areaLimit": "Mounts",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Dark"
+    },
+    {
+      "id": "JH30009",
+      "name": "Savage",
+      "step": "A",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 2 HP after attacking at low HP.<br>Deal 5 more total DMG at low HP.<br>Take 5 less total DMG at low HP.",
+      "effectTpl": "Gain {0} HP after attacking at low HP.<br>Deal {1} more total DMG at low HP.<br>Take {2} less total DMG at low HP.",
+      "values": [
+        "2",
+        "5",
+        "5"
+      ],
+      "areaLimit": "Plains,Desert",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH30010",
+      "name": "Abyssal",
+      "step": "A",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 2 HP after defeating a target.<br>Deal 5 more total DMG after defeating a target.<br>Take 5 less total DMG after defeating a target.",
+      "effectTpl": "Gain {0} HP after defeating a target.<br>Deal {1} more total DMG after defeating a target.<br>Take {2} less total DMG after defeating a target.",
+      "values": [
+        "2",
+        "5",
+        "5"
+      ],
+      "areaLimit": "Mounts,Ocean,Volcano",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH30012",
+      "name": "Restless",
+      "step": "A",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 1 stacks of Haste at battle start.<br>Gain 5 stacks of Haste at action end.<br>Deal 1 more Follow-Up attack per 100 SPD.",
+      "effectTpl": "Gain {0} stacks of Haste at battle start.<br>Gain {1} stacks of Haste at action end.<br>Deal 1 more Follow-Up attack per 100 SPD.",
+      "values": [
+        "1",
+        "5"
+      ],
+      "areaLimit": "Plains,Volcano",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH30016",
+      "name": "Nightmarish",
+      "step": "A",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Deal 4 more total DMG to targets with Weakness Exposed.<br>All enemies lose 2 Toughness at battle start.<br>Other enemies lose 2 Toughness when an enemy is defeated.",
+      "effectTpl": "Deal {0} more total DMG to targets with Weakness Exposed.<br>All enemies lose {1} Toughness at battle start.<br>Other enemies lose {2} Toughness when an enemy is defeated.",
+      "values": [
+        "4",
+        "2",
+        "2"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Dark"
+    },
+    {
+      "id": "JH30017",
+      "name": "Chaotic",
+      "step": "A",
+      "pc": 1,
+      "weight": 500,
+      "effect": "The front enemy loses HP equal to 150% of Max Mana when defeated.<br>The mid enemy loses HP equal to 50% of Max Mana when defeated.<br>The back enemy loses HP equal to 50% of Max Mana when defeated.",
+      "effectTpl": "The front enemy loses HP equal to 150% of Max Mana when defeated.<br>The mid enemy loses HP equal to 50% of Max Mana when defeated.<br>The back enemy loses HP equal to 50% of Max Mana when defeated.",
+      "values": [],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "All"
+    },
+    {
+      "id": "JH30018",
+      "name": "Damp",
+      "step": "A",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 1 stacks of Soothe at battle start.<br>All allies gain 10 stacks of Soothe after casting skill.<br>Take 5 less total DMG while having Soothe.",
+      "effectTpl": "Gain {0} stacks of Soothe at battle start.<br>All allies gain {1} stacks of Soothe after casting skill.<br>Take {2} less total DMG while having Soothe.",
+      "values": [
+        "1",
+        "10",
+        "5"
+      ],
+      "areaLimit": "Forest,Ocean,Beach",
+      "classLimit": "All-Class",
+      "element": "Water"
+    },
+    {
+      "id": "JH30019",
+      "name": "Fused",
+      "step": "A",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 1 HP and max HP after an ally is defeated.<br>+10 Total DMG dealt and total HP restored to targets after an ally is defeated.<br>Take -10 total DMG after an ally is defeated.",
+      "effectTpl": "Gain {0} HP and max HP after an ally is defeated.<br>+{1} Total DMG dealt and total HP restored to targets after an ally is defeated.<br>Take -{2} total DMG after an ally is defeated.",
+      "values": [
+        "1",
+        "10",
+        "10"
+      ],
+      "areaLimit": "Forest,Mounts",
+      "classLimit": "All-Class",
+      "element": "All"
+    },
+    {
+      "id": "JH30020",
+      "name": "Feral",
+      "step": "A",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 3 stacks of Growth at action end.<br>Gain 3 stacks of Growth after casting skill.<br>+100 Total DMG dealt and total HP restored to targets per 10 stacks of Growth the unit owns.",
+      "effectTpl": "Gain {0} stacks of Growth at action end.<br>Gain {1} stacks of Growth after casting skill.<br>+{2} Total DMG dealt and total HP restored to targets per 10 stacks of Growth the unit owns.",
+      "values": [
+        "3",
+        "3",
+        "100"
+      ],
+      "areaLimit": "Forest",
+      "classLimit": "All-Class",
+      "element": "All"
+    },
+    {
+      "id": "JH30021",
+      "name": "Sluggish",
+      "step": "A",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 2 stacks of Slow to all enemies at battle start.<br>Apply 10 stacks of Slow to all enemies at action start.<br>Remove all Slow from enemies and apply equal Stun after casting skill.",
+      "effectTpl": "Apply {0} stacks of Slow to all enemies at battle start.<br>Apply {1} stacks of Slow to all enemies at action start.<br>Remove all Slow from enemies and apply equal Stun after casting skill.",
+      "values": [
+        "2",
+        "10"
+      ],
+      "areaLimit": "Forest,Mounts,Desert",
+      "classLimit": "All-Class",
+      "element": "Earth,Water"
+    },
+    {
+      "id": "JH30022",
+      "name": "Malicious",
+      "step": "A",
+      "pc": 1,
+      "weight": 2500,
+      "effect": "Gain 1 stacks of Thorns at battle start.<br>Gain 3 stacks of Thorns after casting skill.<br>Gain HP equal to half the stacks after Thorns takes effect.",
+      "effectTpl": "Gain {0} stacks of Thorns at battle start.<br>Gain {1} stacks of Thorns after casting skill.<br>Gain HP equal to half the stacks after Thorns takes effect.",
+      "values": [
+        "1",
+        "3"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Priest",
+      "element": "All"
+    },
+    {
+      "id": "JH30023",
+      "name": "Conductive",
+      "step": "A",
+      "pc": 1,
+      "weight": 2500,
+      "effect": "Apply 10 stacks of Shock after taking DMG.<br>Gain 20 Mana after applying Shock.<br>On skill cast, the enemy target loses HP equal to 25% of their Shock stacks.",
+      "effectTpl": "Apply {0} stacks of Shock after taking DMG.<br>Gain {1} Mana after applying Shock.<br>On skill cast, the enemy target loses HP equal to 25% of their Shock stacks.",
+      "values": [
+        "10",
+        "20"
+      ],
+      "areaLimit": "Plains,Beach,Ocean",
+      "classLimit": "All-Class",
+      "element": "Wind,Water"
+    },
+    {
+      "id": "JH30026",
+      "name": "Predatory",
+      "step": "A",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Deal 5 more total DMG to targets with Weakness Exposed.<br>Deal 5 more total DMG to targets with lower SPD.<br>Deal 5 more total DMG to targets with lower Max HP.",
+      "effectTpl": "Deal {0} more total DMG to targets with Weakness Exposed.<br>Deal {1} more total DMG to targets with lower SPD.<br>Deal {2} more total DMG to targets with lower Max HP.",
+      "values": [
+        "5",
+        "5",
+        "5"
+      ],
+      "areaLimit": "Plains",
+      "classLimit": "Warrior,Archer",
+      "element": "All"
+    },
+    {
+      "id": "JH30028",
+      "name": "Undying",
+      "step": "A",
+      "pc": 1,
+      "weight": 2500,
+      "effect": "Gain 10 stacks of Regen after taking DMG.<br>Gain 2 Max HP after gaining Regen.<br>Survive with 1 HP when taking fatal DMG for the first time.",
+      "effectTpl": "Gain {0} stacks of Regen after taking DMG.<br>Gain {1} Max HP after gaining Regen.<br>Survive with 1 HP when taking fatal DMG for the first time.",
+      "values": [
+        "10",
+        "2"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "Earth,Dark"
+    },
+    {
+      "id": "JH30029",
+      "name": "Judging",
+      "step": "A",
+      "pc": 1,
+      "weight": 2500,
+      "effect": "Apply 10 stacks of Cleanse to all enemies at action start.<br>Apply 5 stacks of Cleanse to enemies after casting skill.<br>Enemies lose HP equal to 50% of stacks removed.",
+      "effectTpl": "Apply {0} stacks of Cleanse to all enemies at action start.<br>Apply {1} stacks of Cleanse to enemies after casting skill.<br>Enemies lose HP equal to 50% of stacks removed.",
+      "values": [
+        "10",
+        "5"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Light"
+    },
+    {
+      "id": "JH30030",
+      "name": "Companionate",
+      "step": "A",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Enemy in same position loses 1 HP when defeated.<br>Deal 5 more total DMG to enemy in same position.<br>Enemy in same position receives same status after receiving debuffs.",
+      "effectTpl": "Enemy in same position loses {0} HP when defeated.<br>Deal {1} more total DMG to enemy in same position.<br>Enemy in same position receives same status after receiving debuffs.",
+      "values": [
+        "1",
+        "5"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Dark"
+    },
+    {
+      "id": "JH30031",
+      "name": "Dejected",
+      "step": "A",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "All enemies gain 25 fewer stacks of Inspire.<br>Apply 10 stacks of Decay to all enemies at turn start.<br>Apply 20 stacks of Decay to target after taking a hit.",
+      "effectTpl": "All enemies gain {0} fewer stacks of Inspire.<br>Apply {1} stacks of Decay to all enemies at turn start.<br>Apply {2} stacks of Decay to target after taking a hit.",
+      "values": [
+        "25",
+        "10",
+        "20"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "Dark"
+    },
+    {
+      "id": "JH30032",
+      "name": "Ironwalled",
+      "step": "A",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 3 stacks of Shield at action end.<br>All allies gain 10 stacks of Shield after casting skill.<br>Gain HP equal to half the stacks after consuming Shield.",
+      "effectTpl": "Gain {0} stacks of Shield at action end.<br>All allies gain {1} stacks of Shield after casting skill.<br>Gain HP equal to half the stacks after consuming Shield.",
+      "values": [
+        "3",
+        "10"
+      ],
+      "areaLimit": "Mounts,Forest,Volcano",
+      "classLimit": "Warrior,Priest",
+      "element": "Earth"
+    },
+    {
+      "id": "JH30033",
+      "name": "Shy",
+      "step": "A",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 2 DEF. Do not lose Toughness on successful defense.<br>All allies gain 10 Toughness at action start.<br>Other allies gain 2 Toughness when defeated.",
+      "effectTpl": "Gain {0} DEF. Do not lose Toughness on successful defense.<br>All allies gain {1} Toughness at action start.<br>Other allies gain {2} Toughness when defeated.",
+      "values": [
+        "2",
+        "10",
+        "2"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Earth"
+    },
+    {
+      "id": "JH30036",
+      "name": "Somnolent",
+      "step": "A",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "All enemies lose 10 HP at action end.<br>All enemies lose 10 Toughness at action end.<br>All enemies lose 50 Mana at action end.",
+      "effectTpl": "All enemies lose {0} HP at action end.<br>All enemies lose {1} Toughness at action end.<br>All enemies lose {2} Mana at action end.",
+      "values": [
+        "10",
+        "10",
+        "50"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Priest",
+      "element": "All"
+    },
+    {
+      "id": "JH30040",
+      "name": "Infernal",
+      "step": "A",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 10 stacks of Burn to all enemies at action start.<br>Gain 2 HP when enemies trigger Burn.<br>Gain 20 Mana when enemies trigger Burn.",
+      "effectTpl": "Apply {0} stacks of Burn to all enemies at action start.<br>Gain {1} HP when enemies trigger Burn.<br>Gain {2} Mana when enemies trigger Burn.",
+      "values": [
+        "10",
+        "2",
+        "20"
+      ],
+      "areaLimit": "Volcano",
+      "classLimit": "All-Class",
+      "element": "Fire"
+    },
+    {
+      "id": "JH30011",
+      "name": "Mirrored",
+      "step": "A",
+      "pc": 0,
+      "weight": 500,
+      "effect": "Cannot basic attack but always Counter when taking a hit.<br>Apply same status to target after receiving status from enemies.<br>Retaliate against attackers by reducing their HP equal to half the DMG taken.",
+      "effectTpl": "Cannot basic attack but always Counter when taking a hit.<br>Apply same status to target after receiving status from enemies.<br>Retaliate against attackers by reducing their HP equal to half the DMG taken.",
+      "values": [],
+      "areaLimit": "All",
+      "classLimit": "Warrior",
+      "element": "All"
+    },
+    {
+      "id": "JH30013",
+      "name": "Silent",
+      "step": "A",
+      "pc": 0,
+      "weight": 10000,
+      "effect": "Gain 1 max Mana, but cannot cast skills.<br>Deal 20 more total DMG per 20 Mana.<br>Gain 1 basic attack target per 40 Mana.",
+      "effectTpl": "Gain {0} max Mana, but cannot cast skills.<br>Deal {1} more total DMG per 20 Mana.<br>Gain 1 basic attack target per 40 Mana.",
+      "values": [
+        "1",
+        "20"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer",
+      "element": "All"
+    },
+    {
+      "id": "JH30015",
+      "name": "Blind",
+      "step": "A",
+      "pc": 0,
+      "weight": 5000,
+      "effect": "Gain 50 Counter range, but cannot perform basic attacks.<br>Deal 20 more Counter DMG next time after taking DMG.<br>Gain 20 Mana after Countering.",
+      "effectTpl": "Gain {0} Counter range, but cannot perform basic attacks.<br>Deal {1} more Counter DMG next time after taking DMG.<br>Gain {2} Mana after Countering.",
+      "values": [
+        "50",
+        "20",
+        "20"
+      ],
+      "areaLimit": "Mounts,Volcano",
+      "classLimit": "Warrior",
+      "element": "All"
+    },
+    {
+      "id": "JH30024",
+      "name": "Spellbreaking",
+      "step": "A",
+      "pc": 0,
+      "weight": 2500,
+      "effect": "Take 3 less Skill DMG.<br>Target loses 50 Mana after dealing DMG.<br>Enemies lose Toughness equal to half their Max Mana after casting skill.",
+      "effectTpl": "Take {0} less Skill DMG.<br>Target loses {1} Mana after dealing DMG.<br>Enemies lose Toughness equal to half their Max Mana after casting skill.",
+      "values": [
+        "3",
+        "50"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer",
+      "element": "All"
+    },
+    {
+      "id": "JH30025",
+      "name": "Hardened",
+      "step": "A",
+      "pc": 0,
+      "weight": 2500,
+      "effect": "Max HP fixed at 4, and immune to all statuses.<br>DMG taken and HP restored capped at 1 per instance.<br>HP Loss and HP Gain capped at 1 per instance.",
+      "effectTpl": "Max HP fixed at {0}, and immune to all statuses.<br>DMG taken and HP restored capped at 1 per instance.<br>HP Loss and HP Gain capped at 1 per instance.",
+      "values": [
+        "4"
+      ],
+      "areaLimit": "Mounts,Volcano",
+      "classLimit": "Warrior,Priest",
+      "element": "All"
+    },
+    {
+      "id": "JH30027",
+      "name": "Evil-Eyed",
+      "step": "A",
+      "pc": 0,
+      "weight": 1250,
+      "effect": "Not considered a priority target by enemies.<br>Enemies lose 20 HP at action end.<br>Enemies lose 20 HP at action start.",
+      "effectTpl": "Not considered a priority target by enemies.<br>Enemies lose {0} HP at action end.<br>Enemies lose {1} HP at action start.",
+      "values": [
+        "20",
+        "20"
+      ],
+      "areaLimit": "Mounts,Ocean,Volcano",
+      "classLimit": "Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH30034",
+      "name": "Bountiful",
+      "step": "A",
+      "pc": 0,
+      "weight": 250,
+      "effect": "Material drop increased by 500%.<br>Always drop Clover. Clover drop increased by 1.<br>Gear drop increased by 2.",
+      "effectTpl": "Material drop increased by 500%.<br>Always drop Clover. Clover drop increased by 1.<br>Gear drop increased by 2.",
+      "values": [],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "All"
+    },
+    {
+      "id": "JH30035",
+      "name": "Magnetic",
+      "step": "A",
+      "pc": 0,
+      "weight": 1250,
+      "effect": "+50 Counter range.<br>All enemies' Follow-Up attacks -20.<br>Apply 20 stacks of Taunt to enemies at action end.",
+      "effectTpl": "+{0} Counter range.<br>All enemies' Follow-Up attacks -{1}.<br>Apply {2} stacks of Taunt to enemies at action end.",
+      "values": [
+        "50",
+        "20",
+        "20"
+      ],
+      "areaLimit": "Mounts,Volcano",
+      "classLimit": "Warrior",
+      "element": "Earth"
+    },
+    {
+      "id": "JH30037",
+      "name": "Liquefied",
+      "step": "A",
+      "pc": 0,
+      "weight": 1250,
+      "effect": "HP Loss effects cannot cause defeat.<br>[CN: 回合开始前使自身获得自身生命损伤25%层数的坚韧。]<br>[CN: 回合开始前使自身获得自身生命损伤20%层数的防护。]",
+      "effectTpl": "HP Loss effects cannot cause defeat.<br>[CN: 回合开始前使自身获得自身生命损伤{0}%层数的坚韧。]<br>[CN: 回合开始前使自身获得自身生命损伤{1}%层数的防护。]",
+      "values": [
+        "25",
+        "20"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All",
+      "element": "All"
+    },
+    {
+      "id": "JH30038",
+      "name": "Mad",
+      "step": "A",
+      "pc": 0,
+      "weight": 1250,
+      "effect": "Gain 200 Extra Actions each turn, but deal 50% less total DMG.<br>Follow-Up count +50.<br>Counter count +50.",
+      "effectTpl": "Gain {0} Extra Actions each turn, but deal 50% less total DMG.<br>Follow-Up count +{1}.<br>Counter count +{2}.",
+      "values": [
+        "200",
+        "50",
+        "50"
+      ],
+      "areaLimit": "Plains,Volcano",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH20001",
+      "name": "Ancient",
+      "step": "B",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Immune to Stun.<br>Gain 1 HP but lose 2 SPD.",
+      "effectTpl": "Immune to Stun.<br>Gain {0} HP but lose {1} SPD.",
+      "values": [
+        "1",
+        "2"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "All"
+    },
+    {
+      "id": "JH20002",
+      "name": "Infected",
+      "step": "B",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 50 stacks of Hinder to all targets at action start.<br>Apply Hinder equal to own stacks to target after countering.",
+      "effectTpl": "Apply {0} stacks of Hinder to all targets at action start.<br>Apply Hinder equal to own stacks to target after countering.",
+      "values": [
+        "50"
+      ],
+      "areaLimit": "Forest,Mounts,Desert",
+      "classLimit": "Warrior",
+      "element": "Earth,Dark"
+    },
+    {
+      "id": "JH20003",
+      "name": "Frozen",
+      "step": "B",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 10 stacks of Chill to target after attacking.<br>Apply 10 stacks of Chill to all enemies at action start.",
+      "effectTpl": "Apply {0} stacks of Chill to target after attacking.<br>Apply {1} stacks of Chill to all enemies at action start.",
+      "values": [
+        "10",
+        "10"
+      ],
+      "areaLimit": "Ocean,Tundra",
+      "classLimit": "All-Class",
+      "element": "Wind,Water"
+    },
+    {
+      "id": "JH20004",
+      "name": "Scorching",
+      "step": "B",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 10 stacks of Burn to target after taking DMG.<br>Apply 5 stacks of Burn to target after countering.",
+      "effectTpl": "Apply {0} stacks of Burn to target after taking DMG.<br>Apply {1} stacks of Burn to target after countering.",
+      "values": [
+        "10",
+        "5"
+      ],
+      "areaLimit": "Mounts,Desert,Volcano",
+      "classLimit": "Warrior",
+      "element": "Fire"
+    },
+    {
+      "id": "JH20005",
+      "name": "Invisible",
+      "step": "B",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 2 stacks of Expose to target after a basic attack.<br>Apply 2 stacks of Expose to target after following up.",
+      "effectTpl": "Apply {0} stacks of Expose to target after a basic attack.<br>Apply {1} stacks of Expose to target after following up.",
+      "values": [
+        "2",
+        "2"
+      ],
+      "areaLimit": "Plains,Tundra",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Wind"
+    },
+    {
+      "id": "JH20006",
+      "name": "Astral",
+      "step": "B",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 5 Starting Mana.<br>Gain 10 Action Mana.",
+      "effectTpl": "Gain {0} Starting Mana.<br>Gain {1} Action Mana.",
+      "values": [
+        "5",
+        "10"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "Dark,Light"
+    },
+    {
+      "id": "JH20007",
+      "name": "Celestial",
+      "step": "B",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 10 stacks of Cleanse at action end.<br>When having no debuffs, deal 5 more total DMG and restore 5 more total HP to targets.",
+      "effectTpl": "Gain {0} stacks of Cleanse at action end.<br>When having no debuffs, deal {1} more total DMG and restore {2} more total HP to targets.",
+      "values": [
+        "10",
+        "5",
+        "5"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "Light,Water"
+    },
+    {
+      "id": "JH20008",
+      "name": "Lightless",
+      "step": "B",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Not considered a priority target by enemies.<br>Deal 5 more total DMG to low HP targets.",
+      "effectTpl": "Not considered a priority target by enemies.<br>Deal {0} more total DMG to low HP targets.",
+      "values": [
+        "5"
+      ],
+      "areaLimit": "Mounts",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Dark"
+    },
+    {
+      "id": "JH20009",
+      "name": "Savage",
+      "step": "B",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 2 HP after attacking at low HP.<br>Deal 5 more total DMG at low HP.",
+      "effectTpl": "Gain {0} HP after attacking at low HP.<br>Deal {1} more total DMG at low HP.",
+      "values": [
+        "2",
+        "5"
+      ],
+      "areaLimit": "Plains,Desert",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH20010",
+      "name": "Abyssal",
+      "step": "B",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 2 HP after defeating a target.<br>Deal 5 more total DMG after defeating a target.",
+      "effectTpl": "Gain {0} HP after defeating a target.<br>Deal {1} more total DMG after defeating a target.",
+      "values": [
+        "2",
+        "5"
+      ],
+      "areaLimit": "Mounts,Ocean,Volcano",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH20012",
+      "name": "Restless",
+      "step": "B",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 1 stacks of Haste at battle start.<br>Gain 5 stacks of Haste at action end.",
+      "effectTpl": "Gain {0} stacks of Haste at battle start.<br>Gain {1} stacks of Haste at action end.",
+      "values": [
+        "1",
+        "5"
+      ],
+      "areaLimit": "Plains,Volcano",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH20016",
+      "name": "Nightmarish",
+      "step": "B",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Deal 4 more total DMG to targets with Weakness Exposed.<br>All enemies lose 2 Toughness at battle start.",
+      "effectTpl": "Deal {0} more total DMG to targets with Weakness Exposed.<br>All enemies lose {1} Toughness at battle start.",
+      "values": [
+        "4",
+        "2"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Dark"
+    },
+    {
+      "id": "JH20017",
+      "name": "Chaotic",
+      "step": "B",
+      "pc": 1,
+      "weight": 500,
+      "effect": "The front enemy loses HP equal to 100% of Max Mana when defeated.<br>The mid enemy loses HP equal to 50% of Max Mana when defeated.",
+      "effectTpl": "The front enemy loses HP equal to 100% of Max Mana when defeated.<br>The mid enemy loses HP equal to 50% of Max Mana when defeated.",
+      "values": [],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "All"
+    },
+    {
+      "id": "JH20018",
+      "name": "Damp",
+      "step": "B",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 1 stacks of Soothe at battle start.<br>All allies gain 10 stacks of Soothe after casting skill.",
+      "effectTpl": "Gain {0} stacks of Soothe at battle start.<br>All allies gain {1} stacks of Soothe after casting skill.",
+      "values": [
+        "1",
+        "10"
+      ],
+      "areaLimit": "Forest,Ocean,Beach",
+      "classLimit": "All-Class",
+      "element": "Water"
+    },
+    {
+      "id": "JH20019",
+      "name": "Fused",
+      "step": "B",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 1 HP and max HP after an ally is defeated.<br>+10 Total DMG dealt and total HP restored to targets after an ally is defeated.",
+      "effectTpl": "Gain {0} HP and max HP after an ally is defeated.<br>+{1} Total DMG dealt and total HP restored to targets after an ally is defeated.",
+      "values": [
+        "1",
+        "10"
+      ],
+      "areaLimit": "Forest,Mounts",
+      "classLimit": "All-Class",
+      "element": "All"
+    },
+    {
+      "id": "JH20020",
+      "name": "Feral",
+      "step": "B",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 3 stacks of Growth at action end.<br>Gain 3 stacks of Growth after casting skill.",
+      "effectTpl": "Gain {0} stacks of Growth at action end.<br>Gain {1} stacks of Growth after casting skill.",
+      "values": [
+        "3",
+        "3"
+      ],
+      "areaLimit": "Forest",
+      "classLimit": "All-Class",
+      "element": "All"
+    },
+    {
+      "id": "JH20021",
+      "name": "Sluggish",
+      "step": "B",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 2 stacks of Slow to all enemies at battle start.<br>Apply 10 stacks of Slow to all enemies at action start.",
+      "effectTpl": "Apply {0} stacks of Slow to all enemies at battle start.<br>Apply {1} stacks of Slow to all enemies at action start.",
+      "values": [
+        "2",
+        "10"
+      ],
+      "areaLimit": "Forest,Mounts,Desert",
+      "classLimit": "All-Class",
+      "element": "Earth,Water"
+    },
+    {
+      "id": "JH20022",
+      "name": "Malicious",
+      "step": "B",
+      "pc": 1,
+      "weight": 2500,
+      "effect": "Gain 1 stacks of Thorns at battle start.<br>Gain 3 stacks of Thorns after casting skill.",
+      "effectTpl": "Gain {0} stacks of Thorns at battle start.<br>Gain {1} stacks of Thorns after casting skill.",
+      "values": [
+        "1",
+        "3"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Priest",
+      "element": "All"
+    },
+    {
+      "id": "JH20023",
+      "name": "Conductive",
+      "step": "B",
+      "pc": 1,
+      "weight": 2500,
+      "effect": "Apply 10 stacks of Shock to target after taking DMG.<br>Gain 20 Mana after applying Shock.",
+      "effectTpl": "Apply {0} stacks of Shock to target after taking DMG.<br>Gain {1} Mana after applying Shock.",
+      "values": [
+        "10",
+        "20"
+      ],
+      "areaLimit": "Plains,Beach,Ocean",
+      "classLimit": "All-Class",
+      "element": "Wind,Water"
+    },
+    {
+      "id": "JH20026",
+      "name": "Predatory",
+      "step": "B",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Deal 5 more total DMG to targets with Weakness Exposed.<br>Deal 5 more total DMG to targets with lower SPD.",
+      "effectTpl": "Deal {0} more total DMG to targets with Weakness Exposed.<br>Deal {1} more total DMG to targets with lower SPD.",
+      "values": [
+        "5",
+        "5"
+      ],
+      "areaLimit": "Plains",
+      "classLimit": "Warrior,Archer",
+      "element": "All"
+    },
+    {
+      "id": "JH20028",
+      "name": "Undying",
+      "step": "B",
+      "pc": 1,
+      "weight": 2500,
+      "effect": "Gain 10 stacks of Regen after taking DMG.<br>Gain 2 Max HP after gaining Regen.",
+      "effectTpl": "Gain {0} stacks of Regen after taking DMG.<br>Gain {1} Max HP after gaining Regen.",
+      "values": [
+        "10",
+        "2"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "Earth,Dark"
+    },
+    {
+      "id": "JH20029",
+      "name": "Judging",
+      "step": "B",
+      "pc": 1,
+      "weight": 2500,
+      "effect": "Apply 10 stacks of Cleanse to all enemies at action start.<br>Apply 5 stacks of Cleanse to enemies after casting skill.",
+      "effectTpl": "Apply {0} stacks of Cleanse to all enemies at action start.<br>Apply {1} stacks of Cleanse to enemies after casting skill.",
+      "values": [
+        "10",
+        "5"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Light"
+    },
+    {
+      "id": "JH20030",
+      "name": "Companionate",
+      "step": "B",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Enemy in same position loses 1 HP when defeated.<br>Deal 5 more total DMG to enemy in same position.",
+      "effectTpl": "Enemy in same position loses {0} HP when defeated.<br>Deal {1} more total DMG to enemy in same position.",
+      "values": [
+        "1",
+        "5"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Dark"
+    },
+    {
+      "id": "JH20031",
+      "name": "Dejected",
+      "step": "B",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "All enemies gain 25 fewer stacks of Inspire.<br>Apply 10 stacks of Decay to all enemies at turn start.",
+      "effectTpl": "All enemies gain {0} fewer stacks of Inspire.<br>Apply {1} stacks of Decay to all enemies at turn start.",
+      "values": [
+        "25",
+        "10"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "Dark"
+    },
+    {
+      "id": "JH20032",
+      "name": "Ironwalled",
+      "step": "B",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 3 stacks of Shield at action end.<br>All allies gain 10 stacks of Shield after casting skill.",
+      "effectTpl": "Gain {0} stacks of Shield at action end.<br>All allies gain {1} stacks of Shield after casting skill.",
+      "values": [
+        "3",
+        "10"
+      ],
+      "areaLimit": "Mounts,Forest,Volcano",
+      "classLimit": "Warrior,Priest",
+      "element": "Earth"
+    },
+    {
+      "id": "JH20033",
+      "name": "Shy",
+      "step": "B",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 2 DEF. Do not lose Toughness on successful defense.<br>All allies gain 10 Toughness at action start.",
+      "effectTpl": "Gain {0} DEF. Do not lose Toughness on successful defense.<br>All allies gain {1} Toughness at action start.",
+      "values": [
+        "2",
+        "10"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Earth"
+    },
+    {
+      "id": "JH20036",
+      "name": "Somnolent",
+      "step": "B",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "All enemies lose 10 HP at action end.<br>All enemies lose 10 Toughness at action end.",
+      "effectTpl": "All enemies lose {0} HP at action end.<br>All enemies lose {1} Toughness at action end.",
+      "values": [
+        "10",
+        "10"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Priest",
+      "element": "All"
+    },
+    {
+      "id": "JH20040",
+      "name": "Infernal",
+      "step": "B",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 10 stacks of Burn to all enemies at action start.<br>Gain 2 HP when enemies trigger Burn.",
+      "effectTpl": "Apply {0} stacks of Burn to all enemies at action start.<br>Gain {1} HP when enemies trigger Burn.",
+      "values": [
+        "10",
+        "2"
+      ],
+      "areaLimit": "Volcano",
+      "classLimit": "All-Class",
+      "element": "Fire"
+    },
+    {
+      "id": "JH20013",
+      "name": "Silent",
+      "step": "B",
+      "pc": 0,
+      "weight": 10000,
+      "effect": "Gain 1 Max Mana. Cannot cast skills.<br>Deal 20 more total DMG per 20 Mana.",
+      "effectTpl": "Gain {0} Max Mana. Cannot cast skills.<br>Deal {1} more total DMG per 20 Mana.",
+      "values": [
+        "1",
+        "20"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer",
+      "element": "All"
+    },
+    {
+      "id": "JH20015",
+      "name": "Blind",
+      "step": "B",
+      "pc": 0,
+      "weight": 5000,
+      "effect": "Gain 50 Counter range, but cannot perform basic attacks.<br>Deal 20 more Counter DMG next time after taking DMG.",
+      "effectTpl": "Gain {0} Counter range, but cannot perform basic attacks.<br>Deal {1} more Counter DMG next time after taking DMG.",
+      "values": [
+        "50",
+        "20"
+      ],
+      "areaLimit": "Mounts,Volcano",
+      "classLimit": "Warrior",
+      "element": "All"
+    },
+    {
+      "id": "JH20024",
+      "name": "Spellbreaking",
+      "step": "B",
+      "pc": 0,
+      "weight": 2500,
+      "effect": "Take 3 less Skill DMG.<br>Target loses 50 Mana after dealing DMG.",
+      "effectTpl": "Take {0} less Skill DMG.<br>Target loses {1} Mana after dealing DMG.",
+      "values": [
+        "3",
+        "50"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer",
+      "element": "All"
+    },
+    {
+      "id": "JH20025",
+      "name": "Hardened",
+      "step": "B",
+      "pc": 0,
+      "weight": 2500,
+      "effect": "Max HP fixed at 4, and immune to all statuses.<br>DMG taken and HP restored capped at 1 per instance.",
+      "effectTpl": "Max HP fixed at {0}, and immune to all statuses.<br>DMG taken and HP restored capped at 1 per instance.",
+      "values": [
+        "4"
+      ],
+      "areaLimit": "Mounts,Volcano",
+      "classLimit": "Warrior,Priest",
+      "element": "All"
+    },
+    {
+      "id": "JH20027",
+      "name": "Evil-Eyed",
+      "step": "B",
+      "pc": 0,
+      "weight": 1250,
+      "effect": "Not considered a priority target by enemies.<br>Enemies lose 20 HP at action end.",
+      "effectTpl": "Not considered a priority target by enemies.<br>Enemies lose {0} HP at action end.",
+      "values": [
+        "20"
+      ],
+      "areaLimit": "Mounts,Ocean,Volcano",
+      "classLimit": "Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH20035",
+      "name": "Magnetic",
+      "step": "B",
+      "pc": 0,
+      "weight": 1250,
+      "effect": "+50 Counter range.<br>All enemies' Follow-Up attacks -20.",
+      "effectTpl": "+{0} Counter range.<br>All enemies' Follow-Up attacks -{1}.",
+      "values": [
+        "50",
+        "20"
+      ],
+      "areaLimit": "Mounts,Volcano",
+      "classLimit": "Warrior",
+      "element": "Earth"
+    },
+    {
+      "id": "JH20037",
+      "name": "Liquefied",
+      "step": "B",
+      "pc": 0,
+      "weight": 1250,
+      "effect": "HP Loss effects cannot cause defeat.<br>[CN: 回合开始前使自身获得自身生命损伤25%层数的坚韧。]",
+      "effectTpl": "HP Loss effects cannot cause defeat.<br>[CN: 回合开始前使自身获得自身生命损伤{0}%层数的坚韧。]",
+      "values": [
+        "25"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All",
+      "element": "All"
+    },
+    {
+      "id": "JH20038",
+      "name": "Mad",
+      "step": "B",
+      "pc": 0,
+      "weight": 1250,
+      "effect": "Gain 200 Extra Actions each turn, but deal 50% less total DMG.<br>Follow-Up count +50.",
+      "effectTpl": "Gain {0} Extra Actions each turn, but deal 50% less total DMG.<br>Follow-Up count +{1}.",
+      "values": [
+        "200",
+        "50"
+      ],
+      "areaLimit": "Plains,Volcano",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH10001",
+      "name": "Ancient",
+      "step": "C",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Immune to Stun.",
+      "effectTpl": "Immune to Stun.",
+      "values": [],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "All"
+    },
+    {
+      "id": "JH10002",
+      "name": "Infected",
+      "step": "C",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 50 stacks of Hinder to all targets at action start.",
+      "effectTpl": "Apply {0} stacks of Hinder to all targets at action start.",
+      "values": [
+        "50"
+      ],
+      "areaLimit": "Forest,Mounts,Desert",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Earth,Dark"
+    },
+    {
+      "id": "JH10003",
+      "name": "Frozen",
+      "step": "C",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 10 stacks of Chill to target after attacking.",
+      "effectTpl": "Apply {0} stacks of Chill to target after attacking.",
+      "values": [
+        "10"
+      ],
+      "areaLimit": "Ocean,Tundra",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Wind,Water"
+    },
+    {
+      "id": "JH10004",
+      "name": "Scorching",
+      "step": "C",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 10 stacks of Burn to target after taking DMG.",
+      "effectTpl": "Apply {0} stacks of Burn to target after taking DMG.",
+      "values": [
+        "10"
+      ],
+      "areaLimit": "Mounts,Desert,Volcano",
+      "classLimit": "All-Class",
+      "element": "Fire"
+    },
+    {
+      "id": "JH10005",
+      "name": "Invisible",
+      "step": "C",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 2 stacks of Expose to target after a basic attack.",
+      "effectTpl": "Apply {0} stacks of Expose to target after a basic attack.",
+      "values": [
+        "2"
+      ],
+      "areaLimit": "Plains,Tundra",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Wind"
+    },
+    {
+      "id": "JH10006",
+      "name": "Astral",
+      "step": "C",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 5 Starting Mana.",
+      "effectTpl": "Gain {0} Starting Mana.",
+      "values": [
+        "5"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "Dark,Light"
+    },
+    {
+      "id": "JH10007",
+      "name": "Celestial",
+      "step": "C",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 10 stacks of Cleanse at action end.",
+      "effectTpl": "Gain {0} stacks of Cleanse at action end.",
+      "values": [
+        "10"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "Light,Water"
+    },
+    {
+      "id": "JH10008",
+      "name": "Lightless",
+      "step": "C",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Not considered a priority target by enemies.",
+      "effectTpl": "Not considered a priority target by enemies.",
+      "values": [],
+      "areaLimit": "Mounts",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Dark"
+    },
+    {
+      "id": "JH10009",
+      "name": "Savage",
+      "step": "C",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 2 HP after attacking at low HP.",
+      "effectTpl": "Gain {0} HP after attacking at low HP.",
+      "values": [
+        "2"
+      ],
+      "areaLimit": "Plains,Desert",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH10010",
+      "name": "Abyssal",
+      "step": "C",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 2 HP after defeating a target.",
+      "effectTpl": "Gain {0} HP after defeating a target.",
+      "values": [
+        "2"
+      ],
+      "areaLimit": "Mounts,Ocean,Volcano",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH10012",
+      "name": "Restless",
+      "step": "C",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 1 stacks of Haste at battle start.",
+      "effectTpl": "Gain {0} stacks of Haste at battle start.",
+      "values": [
+        "1"
+      ],
+      "areaLimit": "Plains,Volcano",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH10016",
+      "name": "Nightmarish",
+      "step": "C",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Deal 4 more total DMG to targets with Weakness exposed.",
+      "effectTpl": "Deal {0} more total DMG to targets with Weakness exposed.",
+      "values": [
+        "4"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Dark"
+    },
+    {
+      "id": "JH10017",
+      "name": "Chaotic",
+      "step": "C",
+      "pc": 1,
+      "weight": 500,
+      "effect": "The front enemy loses HP equal to 50% of Max Mana when defeated.",
+      "effectTpl": "The front enemy loses HP equal to 50% of Max Mana when defeated.",
+      "values": [],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "All"
+    },
+    {
+      "id": "JH10018",
+      "name": "Damp",
+      "step": "C",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 1 stacks of Soothe at battle start.",
+      "effectTpl": "Gain {0} stacks of Soothe at battle start.",
+      "values": [
+        "1"
+      ],
+      "areaLimit": "Forest,Ocean,Beach",
+      "classLimit": "All-Class",
+      "element": "Water"
+    },
+    {
+      "id": "JH10019",
+      "name": "Fused",
+      "step": "C",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Gain 1 HP and Max HP after an ally is defeated.",
+      "effectTpl": "Gain {0} HP and Max HP after an ally is defeated.",
+      "values": [
+        "1"
+      ],
+      "areaLimit": "Forest,Mounts",
+      "classLimit": "All-Class",
+      "element": "All"
+    },
+    {
+      "id": "JH10020",
+      "name": "Feral",
+      "step": "C",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 3 stacks of Growth at action end.",
+      "effectTpl": "Gain {0} stacks of Growth at action end.",
+      "values": [
+        "3"
+      ],
+      "areaLimit": "Forest",
+      "classLimit": "All-Class",
+      "element": "All"
+    },
+    {
+      "id": "JH10021",
+      "name": "Sluggish",
+      "step": "C",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 2 stacks of Slow to all enemies at battle start.",
+      "effectTpl": "Apply {0} stacks of Slow to all enemies at battle start.",
+      "values": [
+        "2"
+      ],
+      "areaLimit": "Forest,Mounts,Desert",
+      "classLimit": "All-Class",
+      "element": "Earth,Water"
+    },
+    {
+      "id": "JH10022",
+      "name": "Malicious",
+      "step": "C",
+      "pc": 1,
+      "weight": 2500,
+      "effect": "Gain 1 stacks of Thorns at battle start.",
+      "effectTpl": "Gain {0} stacks of Thorns at battle start.",
+      "values": [
+        "1"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Priest",
+      "element": "All"
+    },
+    {
+      "id": "JH10023",
+      "name": "Conductive",
+      "step": "C",
+      "pc": 1,
+      "weight": 2500,
+      "effect": "Apply 10 stacks of Shock to target after taking DMG.",
+      "effectTpl": "Apply {0} stacks of Shock to target after taking DMG.",
+      "values": [
+        "10"
+      ],
+      "areaLimit": "Plains,Beach,Ocean",
+      "classLimit": "All-Class",
+      "element": "Wind,Water"
+    },
+    {
+      "id": "JH10026",
+      "name": "Predatory",
+      "step": "C",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Deal 5 more total DMG to targets with Weakness exposed.",
+      "effectTpl": "Deal {0} more total DMG to targets with Weakness exposed.",
+      "values": [
+        "5"
+      ],
+      "areaLimit": "Plains",
+      "classLimit": "Warrior,Archer",
+      "element": "All"
+    },
+    {
+      "id": "JH10028",
+      "name": "Undying",
+      "step": "C",
+      "pc": 1,
+      "weight": 2500,
+      "effect": "Gain 10 stacks of Regen after taking DMG.",
+      "effectTpl": "Gain {0} stacks of Regen after taking DMG.",
+      "values": [
+        "10"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "Earth,Dark"
+    },
+    {
+      "id": "JH10029",
+      "name": "Judging",
+      "step": "C",
+      "pc": 1,
+      "weight": 2500,
+      "effect": "Apply 10 stacks of Cleanse to all enemies at action start.",
+      "effectTpl": "Apply {0} stacks of Cleanse to all enemies at action start.",
+      "values": [
+        "10"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Light"
+    },
+    {
+      "id": "JH10030",
+      "name": "Companionate",
+      "step": "C",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Enemy in same position loses 1 HP when defeated.",
+      "effectTpl": "Enemy in same position loses {0} HP when defeated.",
+      "values": [
+        "1"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Dark"
+    },
+    {
+      "id": "JH10031",
+      "name": "Dejected",
+      "step": "C",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "All enemies gain 25 fewer stacks of Inspire.",
+      "effectTpl": "All enemies gain {0} fewer stacks of Inspire.",
+      "values": [
+        "25"
+      ],
+      "areaLimit": "All",
+      "classLimit": "All-Class",
+      "element": "Dark"
+    },
+    {
+      "id": "JH10032",
+      "name": "Ironwalled",
+      "step": "C",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 3 stacks of Shield at action end.",
+      "effectTpl": "Gain {0} stacks of Shield at action end.",
+      "values": [
+        "3"
+      ],
+      "areaLimit": "Mounts,Forest,Volcano",
+      "classLimit": "Warrior,Priest",
+      "element": "Earth"
+    },
+    {
+      "id": "JH10033",
+      "name": "Shy",
+      "step": "C",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 2 DEF. Do not lose Toughness on successful defense.",
+      "effectTpl": "Gain {0} DEF. Do not lose Toughness on successful defense.",
+      "values": [
+        "2"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Earth"
+    },
+    {
+      "id": "JH10036",
+      "name": "Somnolent",
+      "step": "C",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "All enemies lose 10 HP at action end.",
+      "effectTpl": "All enemies lose {0} HP at action end.",
+      "values": [
+        "10"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Priest",
+      "element": "All"
+    },
+    {
+      "id": "JH10040",
+      "name": "Infernal",
+      "step": "C",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Apply 10 stacks of Burn to all enemies at action start.",
+      "effectTpl": "Apply {0} stacks of Burn to all enemies at action start.",
+      "values": [
+        "10"
+      ],
+      "areaLimit": "Volcano",
+      "classLimit": "All-Class",
+      "element": "Fire"
+    },
+    {
+      "id": "JH10015",
+      "name": "Blind",
+      "step": "C",
+      "pc": 0,
+      "weight": 5000,
+      "effect": "Gain 50 Counter range, but cannot perform basic attacks.",
+      "effectTpl": "Gain {0} Counter range, but cannot perform basic attacks.",
+      "values": [
+        "50"
+      ],
+      "areaLimit": "Mounts,Volcano",
+      "classLimit": "Warrior",
+      "element": "All"
+    },
+    {
+      "id": "JH10024",
+      "name": "Spellbreaking",
+      "step": "C",
+      "pc": 0,
+      "weight": 2500,
+      "effect": "Take 3 less Skill DMG.",
+      "effectTpl": "Take {0} less Skill DMG.",
+      "values": [
+        "3"
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer",
+      "element": "All"
+    },
+    {
+      "id": "JH10027",
+      "name": "Evil-Eyed",
+      "step": "C",
+      "pc": 0,
+      "weight": 1250,
+      "effect": "Not considered a priority target by enemies.",
+      "effectTpl": "Not considered a priority target by enemies.",
+      "values": [],
+      "areaLimit": "Mounts,Ocean,Volcano",
+      "classLimit": "Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH10035",
+      "name": "Magnetic",
+      "step": "C",
+      "pc": 0,
+      "weight": 1250,
+      "effect": "+50 Counter Range.",
+      "effectTpl": "+{0} Counter Range.",
+      "values": [
+        "50"
+      ],
+      "areaLimit": "Mounts,Volcano",
+      "classLimit": "Warrior",
+      "element": "Earth"
+    },
+    {
+      "id": "JH10037",
+      "name": "Liquefied",
+      "step": "C",
+      "pc": 0,
+      "weight": 1250,
+      "effect": "HP Loss effects cannot cause defeat.",
+      "effectTpl": "HP Loss effects cannot cause defeat.",
+      "values": [],
+      "areaLimit": "All",
+      "classLimit": "All",
+      "element": "All"
+    },
+    {
+      "id": "JH10038",
+      "name": "Mad",
+      "step": "C",
+      "pc": 0,
+      "weight": 1250,
+      "effect": "Gain 200 Extra Actions each turn, but deal 50% less total DMG.",
+      "effectTpl": "Gain {0} Extra Actions each turn, but deal 50% less total DMG.",
+      "values": [
+        "200"
+      ],
+      "areaLimit": "Plains,Volcano",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    }
+  ]
+}
