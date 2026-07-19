@@ -286,7 +286,12 @@ function unitPct(r){
 function render(){
   const mp=Math.min(maxPicks,available.length);
   document.getElementById("maxVal").textContent=mp;
-  document.getElementById("maxPicks").max=Math.min(available.length,5);
+  const slider=document.getElementById("maxPicks");
+  slider.max=Math.min(available.length,5);
+  // Keep slider thumb in sync with the effective mp — browsers clamp .value to .max
+  // when .max shrinks, leaving the visible thumb at 0 while our JS state (maxPicks)
+  // still holds the higher intent. Sync explicitly so thumb reflects the display.
+  slider.value=mp;
   buildHeaderRow();
   if(!available.length){
     document.getElementById("emptyMsg").style.display="";
