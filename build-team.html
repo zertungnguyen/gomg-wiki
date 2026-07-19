@@ -216,6 +216,56 @@ button.primary:hover{background:#dab466}
 .g-card .step.s-A{background:var(--purple);color:#fff}
 .g-card .step.s-B{background:var(--blue);color:#fff}
 .g-card .step.s-C{background:var(--green);color:#1a1a1a}
+
+/* Rune slot chips (same pattern as equip; no Heritage, unique per-char) */
+.rune-slots{display:grid;grid-template-columns:1fr;gap:6px;margin-bottom:10px}
+.rune-slot{padding:6px 30px 6px 8px;background:var(--card2);border:1.5px solid var(--border);border-radius:6px;cursor:pointer;transition:border-color .12s;display:flex;flex-direction:column;gap:2px;position:relative;min-height:48px}
+.rune-slot:hover{border-color:#555}
+.rune-slot.active{border-color:var(--accent);background:#f5b34215}
+.rune-slot .rs-label{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.rune-slot.active .rs-label{color:var(--accent)}
+.rune-slot .rs-body{display:flex;align-items:center;gap:6px;min-width:0}
+.rune-slot .rs-body img{width:28px;height:28px;border-radius:3px;object-fit:contain;background:var(--card);flex-shrink:0}
+.rune-slot .rs-body .rsname{font-size:11px;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rune-slot .rs-body .empty-mark{font-size:11px;color:var(--dim);font-style:italic;flex:1}
+.rune-slot .rs-body .rs-star{width:34px;padding:2px 4px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:3px;font-size:11px;flex-shrink:0}
+.rune-slot .rs-clear{position:absolute;top:4px;right:6px;background:var(--card);border:1px solid var(--border);color:var(--dim);font-size:16px;cursor:pointer;padding:0;line-height:1;width:22px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:700}
+.rune-slot .rs-clear:hover{color:var(--accent)}
+
+/* Rune picker grid (uses same .gear-grid + .g-card since visual pattern matches) */
+
+/* Godstone: 6 stones LEFT (each with 3 affix mini-chips) + affix grid picker RIGHT */
+.gs-slots{display:flex;flex-direction:column;gap:8px;margin-bottom:0}
+.gs-stone{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:6px 8px}
+.gs-stone .gs-stone-title{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:4px}
+.gs-stone .gs-affix-row{display:grid;grid-template-columns:1fr;gap:3px}
+.gs-affix-chip{padding:5px 26px 5px 8px;background:var(--card);border:1.5px solid var(--border);border-radius:4px;cursor:pointer;position:relative;transition:border-color .12s;display:flex;align-items:center;gap:6px;min-height:32px}
+.gs-affix-chip:hover{border-color:#555}
+.gs-affix-chip.active{border-color:var(--accent);background:#f5b34215}
+.gs-affix-chip .gac-name{font-size:11px;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gs-affix-chip .gac-name.empty{color:var(--dim);font-style:italic;font-size:10px}
+.gs-affix-chip .gac-tier{font-size:9px;color:var(--dim);font-weight:600;padding:1px 4px;border-radius:2px;background:var(--card2);white-space:nowrap;flex-shrink:0}
+.gs-affix-chip .gac-clear{position:absolute;top:50%;right:4px;transform:translateY(-50%);background:transparent;border:none;color:var(--dim);font-size:14px;cursor:pointer;padding:0;line-height:1;width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center}
+.gs-affix-chip .gac-clear:hover{color:var(--accent);background:var(--card2)}
+
+/* Affix picker grid (text-only cards) */
+.affix-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px;max-height:340px;overflow-y:auto;padding:8px;background:var(--card2);border:1px solid var(--border);border-radius:6px}
+.a-card{position:relative;border-radius:6px;padding:8px 10px;cursor:pointer;background:var(--card);border:1.5px solid var(--border);transition:all .12s;display:flex;flex-direction:column;gap:2px;min-height:60px}
+.a-card:hover{border-color:var(--accent)}
+.a-card.selected{border-color:var(--accent);background:#f5b34215;box-shadow:0 0 8px #f5b34244}
+.a-card .aname{font-size:11px;font-weight:700;color:var(--text);line-height:1.2;padding-right:24px}
+.a-card .aeffect{font-size:10px;color:var(--dim);line-height:1.35;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.a-card .step{position:absolute;top:6px;right:6px;width:16px;height:16px;border-radius:3px;font-weight:700;font-size:9px;display:flex;align-items:center;justify-content:center}
+.a-card .step.s-SS{background:var(--SS);color:#fff}
+.a-card .step.s-S{background:var(--orange);color:#1a1a1a}
+.a-card .step.s-A{background:var(--purple);color:#fff}
+.a-card .step.s-B{background:var(--blue);color:#fff}
+.a-card .step.s-C{background:var(--green);color:#1a1a1a}
+
+/* Godstone affix tier inputs (small inline, below chip) — kept via existing .gs-affix .tier CSS */
+.gs-affix-chip .gac-tier-inputs{display:flex;gap:2px}
+.gs-affix-chip .gac-tier-inputs input{width:32px;padding:1px 3px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:2px;font-size:10px;text-align:center}
+.gs-affix-chip .gac-tier-inputs input:disabled{opacity:0.35;background:transparent;cursor:not-allowed}
 /* Team-slot chips (Character + 3 Supports) */
 .support-slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
 @media(max-width:800px){.support-slots{grid-template-columns:repeat(2,1fr)}}
@@ -272,6 +322,8 @@ button.primary:hover{background:#dab466}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 })();
 </script>
+
+
 
 
 
@@ -362,7 +414,11 @@ function makeEmptyChar() {
     talentFilter: {search: "", steps: {S: true, A: true, B: false, C: false}},
     activeTalent: 0,    // which talent slot (0..3) the picker click will fill
     equipFilter: {search: "", steps: {SS: true, S: true, A: true, B: false, C: false}},
-    activeEquip: 0      // which equip slot (0..9) the picker click will fill; also drives slot-type filter
+    activeEquip: 0,     // which equip slot (0..9) the picker click will fill; also drives slot-type filter
+    runeFilter: {search: "", steps: {SS: true, S: true, A: true, B: false, C: false}},
+    activeRune: 0,      // which rune slot (0..9)
+    godstoneFilter: {search: "", steps: {SS: true, S: true, A: true, B: true, C: true}},
+    activeGodstone: {stone: 0, affix: 0}   // which of 6 stones × 3 affixes is active
   };
 }
 function findRole(id) { return DATA.roles.find(r => r.id === id); }
@@ -821,6 +877,190 @@ function renderTalentPickerBlock(charIdx) {
 
 function findTalent(id) { return DATA.talents.find(t => t.id === id); }
 function findEquip(id)  { return DATA.equips.find(e => e.id === id); }
+function findRune(id)   { return DATA.runes.find(r => r.id === id); }
+
+// === Rune picker (2-col; uniqueness enforced — no dup rune in other slots) ===
+function setActiveRune(c, i) { state[c].activeRune = i; renderAll(); }
+function clearRune(c, i)     { state[c].runeList[i].IDs = ""; renderAll(); }
+function onPickRune(c, id) {
+  const slot = state[c].activeRune;
+  state[c].runeList[slot].IDs = state[c].runeList[slot].IDs === id ? "" : id;
+  if (state[c].runeList[slot].IDs) {
+    for (let i = 1; i <= 10; i++) {
+      const next = (slot + i) % 10;
+      if (!state[c].runeList[next].IDs) { state[c].activeRune = next; break; }
+    }
+  }
+  renderAll();
+}
+function onRuneFilterSearch(c, val) {
+  state[c].runeFilter.search = val;
+  renderAll();
+  setTimeout(() => {
+    const inp = document.querySelector(`.char-panel.active .rune-picker input.search`);
+    if (inp) { inp.focus(); inp.setSelectionRange(val.length, val.length); }
+  }, 0);
+}
+function toggleRuneStep(c, s) {
+  state[c].runeFilter.steps[s] = !state[c].runeFilter.steps[s];
+  renderAll();
+}
+
+function renderRunePickerBlock(charIdx) {
+  const c = state[charIdx];
+  const filter = c.runeFilter;
+  const steps = ["SS","S","A","B","C"];
+  const q = (filter.search || "").toLowerCase().trim();
+  // Uniqueness: exclude rune IDs already in OTHER slots (keep current slot's own to allow it as visible/selected)
+  const usedElsewhere = new Set();
+  c.runeList.forEach((r, i) => { if (i !== c.activeRune && r.IDs) usedElsewhere.add(r.IDs); });
+  const currentSlotId = c.runeList[c.activeRune].IDs;
+  const list = DATA.runes.filter(r => {
+    if (usedElsewhere.has(r.id)) return false;
+    if (!filter.steps[r.step]) return false;
+    if (q) {
+      const hay = `${r.name} ${r.id} ${r.material || ""}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  }).sort((a, b) => {
+    const sr = {SS:0,S:1,A:2,B:3,C:4};
+    return (sr[a.step] ?? 9) - (sr[b.step] ?? 9) || a.name.localeCompare(b.name);
+  });
+
+  let html = `<div class="picker rune-picker"><div class="picker-bar">`;
+  html += `<input type="text" class="search" value="${escapeAttr(filter.search || "")}" placeholder="Search rune for slot ${c.activeRune + 1} (${SLOT_TYPES[c.activeRune]})…" oninput="onRuneFilterSearch(${charIdx}, this.value)">`;
+  html += `<span class="filter-label">Step:</span>`;
+  for (const s of steps) {
+    const on = filter.steps[s] ? "on" : "";
+    html += `<button class="f-pill ${on} s-${s}" onclick="toggleRuneStep(${charIdx}, '${s}')">${s}</button>`;
+  }
+  html += `</div><div class="gear-grid">`;
+  if (!list.length) {
+    html += `<div class="picker-empty">No runes match these filters</div>`;
+  } else {
+    for (const r of list.slice(0, 500)) {
+      const sel = r.id === currentSlotId ? "selected" : "";
+      html += `<div class="g-card ${sel}" onclick="onPickRune(${charIdx}, '${escapeAttr(r.id)}')" title="${escapeAttr(r.id + ' — ' + r.name + (r.material ? ' · ' + r.material : ''))}">
+        <div class="step s-${r.step}">${r.step}</div>
+        <img src="${escapeAttr(runeIcon(r.id))}" alt="" loading="lazy" onerror="this.style.background='var(--card2)';this.removeAttribute('src')">
+        <div class="gname">${escapeHtml(r.name)}</div>
+        <div class="garea">${escapeHtml(r.material || "")}</div>
+      </div>`;
+    }
+  }
+  html += `</div></div>`;
+  return html;
+}
+
+// === Godstone picker (2-col; 6 stones × 3 affix chips LEFT + affix grid RIGHT) ===
+function findAffix(id) { return DATA.godStoneAffixes.find(a => a.id === id); }
+function setActiveGodstone(c, stone, affix) {
+  state[c].activeGodstone = {stone, affix};
+  renderAll();
+}
+function clearGodstone(c, stone, affix) {
+  state[c].godStones[stone].affixes[affix].IDs = "";
+  state[c].godStones[stone].affixes[affix].tier0 = 1;
+  state[c].godStones[stone].affixes[affix].tier1 = 1;
+  renderAll();
+}
+function onPickAffix(c, id) {
+  const {stone, affix} = state[c].activeGodstone;
+  const slot = state[c].godStones[stone].affixes[affix];
+  if (slot.IDs === id) {
+    slot.IDs = ""; slot.tier0 = 1; slot.tier1 = 1;
+  } else {
+    slot.IDs = id;
+    const ad = findAffix(id);
+    slot.tier0 = ad && ad.value0Count > 0 ? ad.value0Count : 1;
+    slot.tier1 = ad && ad.value1Count > 0 ? ad.value1Count : 1;
+    // Auto-advance to next empty affix slot within same stone, else next stone
+    let advanced = false;
+    for (let a = 1; a <= 3; a++) {
+      const nextA = (affix + a) % 3;
+      if (!state[c].godStones[stone].affixes[nextA].IDs) {
+        state[c].activeGodstone = {stone, affix: nextA};
+        advanced = true; break;
+      }
+    }
+    if (!advanced) {
+      for (let s = 1; s <= 6; s++) {
+        const nextS = (stone + s) % 6;
+        for (let a = 0; a < 3; a++) {
+          if (!state[c].godStones[nextS].affixes[a].IDs) {
+            state[c].activeGodstone = {stone: nextS, affix: a};
+            advanced = true; break;
+          }
+        }
+        if (advanced) break;
+      }
+    }
+  }
+  renderAll();
+}
+function onGodstoneFilterSearch(c, val) {
+  state[c].godstoneFilter.search = val;
+  renderAll();
+  setTimeout(() => {
+    const inp = document.querySelector(`.char-panel.active .godstone-picker input.search`);
+    if (inp) { inp.focus(); inp.setSelectionRange(val.length, val.length); }
+  }, 0);
+}
+function toggleGodstoneStep(c, s) {
+  state[c].godstoneFilter.steps[s] = !state[c].godstoneFilter.steps[s];
+  renderAll();
+}
+function onGodstoneTier(c, stone, affix, which, val) {
+  const v = parseInt(val) || 1;
+  const slot = state[c].godStones[stone].affixes[affix];
+  if (which === 0) slot.tier0 = v; else slot.tier1 = v;
+}
+
+function renderGodstonePickerBlock(charIdx) {
+  const c = state[charIdx];
+  const filter = c.godstoneFilter;
+  const steps = ["SS","S","A","B","C"];
+  const q = (filter.search || "").toLowerCase().trim();
+  // Selected = affix currently in active slot
+  const {stone: aStone, affix: aAffix} = c.activeGodstone;
+  const currentSlotId = c.godStones[aStone].affixes[aAffix].IDs;
+  const list = DATA.godStoneAffixes.filter(a => {
+    if (!filter.steps[a.step]) return false;
+    if (q) {
+      const hay = `${a.effect} ${a.id} ${a.location || ""}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  }).sort((x, y) => {
+    const sr = {SS:0,S:1,A:2,B:3,C:4};
+    return (sr[x.step] ?? 9) - (sr[y.step] ?? 9) || (x.location || "").localeCompare(y.location || "") || (x.effect || "").localeCompare(y.effect || "");
+  });
+
+  let html = `<div class="picker godstone-picker"><div class="picker-bar">`;
+  html += `<input type="text" class="search" value="${escapeAttr(filter.search || "")}" placeholder="Search affix for Stone ${aStone + 1} · Affix ${aAffix + 1}…" oninput="onGodstoneFilterSearch(${charIdx}, this.value)">`;
+  html += `<span class="filter-label">Step:</span>`;
+  for (const s of steps) {
+    const on = filter.steps[s] ? "on" : "";
+    html += `<button class="f-pill ${on} s-${s}" onclick="toggleGodstoneStep(${charIdx}, '${s}')">${s}</button>`;
+  }
+  html += `</div><div class="affix-grid">`;
+  if (!list.length) {
+    html += `<div class="picker-empty">No affixes match these filters</div>`;
+  } else {
+    for (const a of list.slice(0, 500)) {
+      const sel = a.id === currentSlotId ? "selected" : "";
+      const effectShort = (a.effect || "").slice(0, 100);
+      html += `<div class="a-card ${sel}" onclick="onPickAffix(${charIdx}, '${escapeAttr(a.id)}')" title="${escapeAttr(a.id + ' — ' + a.effect)}">
+        <div class="step s-${a.step}">${a.step}</div>
+        <div class="aname">${escapeHtml(a.location || a.id)}</div>
+        <div class="aeffect">${escapeHtml(effectShort)}</div>
+      </div>`;
+    }
+  }
+  html += `</div></div>`;
+  return html;
+}
 
 // === Equip picker (2-col; 10 slots LEFT + shared grid RIGHT, grid auto-filters by active slot type) ===
 function setActiveEquip(c, i)  { state[c].activeEquip = i; renderAll(); }
@@ -990,59 +1230,67 @@ function renderCharPanel(charIdx) {
   html += renderEquipPickerBlock(charIdx);
   html += `</div></div></div>`;
 
-  // Rune
-  html += `<div class="card"><h2>Rune (10 slots, star default 3)</h2><div class="slot-grid slot-10">`;
+  // === Rune: 10 slot chips LEFT + shared grid picker RIGHT (uniqueness enforced) ===
+  html += `<div class="card"><h2>Rune (click a slot on the left; unique per character — a rune can't repeat)</h2>`;
+  html += `<div class="team-row"><div class="rune-slots">`;
   for (let i = 0; i < 10; i++) {
     const r = c.runeList[i];
-    html += `<div class="slot">
-      <div class="slot-label">${SLOT_TYPES[i]}</div>
-      <div class="slot-row">
-        ${renderRuneSelect(charIdx, i, r.IDs)}
-        <input class="mini" type="number" min="0" max="3" value="${r.star}" onchange="onRuneStar(${charIdx}, ${i}, this.value)" title="Star (0-3)">
-      </div>
+    const rn = r.IDs ? findRune(r.IDs) : null;
+    const active = c.activeRune === i ? "active" : "";
+    const bodyHtml = rn
+      ? `<img src="${escapeAttr(runeIcon(rn.id))}" alt="" onerror="this.style.visibility='hidden'"><div class="rsname">${escapeHtml(rn.name)}</div>`
+      : `<div class="empty-mark">(empty)</div>`;
+    const starInput = `<input class="rs-star" type="number" min="0" max="3" value="${r.star}" onclick="event.stopPropagation()" onchange="onRuneStar(${charIdx}, ${i}, this.value)" title="Star (0-3)">`;
+    const clearBtn = rn
+      ? `<button class="rs-clear" onclick="event.stopPropagation();clearRune(${charIdx}, ${i})" title="Clear">×</button>`
+      : "";
+    html += `<div class="rune-slot ${active}" onclick="setActiveRune(${charIdx}, ${i})">
+      <div class="rs-label">${SLOT_TYPES[i]}</div>
+      <div class="rs-body">${bodyHtml}${starInput}</div>
+      ${clearBtn}
     </div>`;
   }
-  html += `</div></div>`;
+  html += `</div><div class="team-picker">`;
+  html += renderRunePickerBlock(charIdx);
+  html += `</div></div></div>`;
 
-  // Godstones
-  html += `<div class="card"><h2>God Stones (6 stones × 3 affix slots, tier default max)</h2>`;
+  // === Godstone: 6 stones × 3 affix chips LEFT + affix grid RIGHT ===
+  html += `<div class="card"><h2>God Stones (click any affix slot; tier defaults to max on pick)</h2>`;
+  html += `<div class="team-row"><div class="gs-slots">`;
   for (let g = 0; g < 6; g++) {
     const gs = c.godStones[g];
-    html += `<div class="godstone-block"><div class="gs-title">Stone ${g+1}</div><div class="gs-affixes">`;
+    html += `<div class="gs-stone"><div class="gs-stone-title">Stone ${g + 1}</div><div class="gs-affix-row">`;
     for (let a = 0; a < 3; a++) {
       const affix = gs.affixes[a];
-      const affixData = affix.IDs ? findAffix(affix.IDs) : null;
-      const maxV0 = affixData ? affixData.value0Count : 1;
-      const maxV1 = affixData ? affixData.value1Count : 1;
-      // Empty affix → both tier inputs disabled with "—" placeholder.
-      // Selected affix → tier input enabled ONLY if that affix has Value0 / Value1
-      // (per data.value0Count / value1Count from GodStoneEffectDataTable).
-      const isEmpty = !affix.IDs;
-      const hasV0 = !isEmpty && maxV0 > 0;
-      const hasV1 = !isEmpty && maxV1 > 0;
-      // Show live effect value alongside the tier index so user sees what "tier N" means.
-      let effectPreview = "";
-      if (affixData) {
-        const v0str = (affixData.effect || "").match(/\{0\}/) ? null : "";
-        // We already substituted {0}/{1} with max values in effect; show effect as tooltip
-        effectPreview = affixData.effect || "";
-      }
-      html += `<div class="gs-affix">
-        <div class="slot-label">Affix ${a+1}${effectPreview ? ` <span style="color:var(--dim);font-size:9px;text-transform:none">· ${escapeHtml(effectPreview.slice(0, 40))}${effectPreview.length > 40 ? "…" : ""}</span>` : ""}</div>
-        <div class="affix-row">
-          ${renderAffixSelect(charIdx, g, a, affix.IDs)}
-        </div>
-        <div class="affix-row" style="margin-top:4px">
-          <input class="tier${hasV0 ? "" : " disabled"}" type="number" min="1" max="${hasV0 ? maxV0 : 1}" value="${hasV0 ? affix.tier0 : ""}" placeholder="${isEmpty ? "—" : (hasV0 ? "" : "—")}" title="${isEmpty ? "Pick an affix first" : (hasV0 ? "Value0 tier — max " + maxV0 : "No Value0")}" onchange="onAffixTier(${charIdx}, ${g}, ${a}, 0, this.value)" ${hasV0 ? "" : "disabled"}>
-          <input class="tier${hasV1 ? "" : " disabled"}" type="number" min="1" max="${hasV1 ? maxV1 : 1}" value="${hasV1 ? affix.tier1 : ""}" placeholder="${isEmpty ? "—" : (hasV1 ? "" : "—")}" title="${isEmpty ? "Pick an affix first" : (hasV1 ? "Value1 tier — max " + maxV1 : "No Value1")}" onchange="onAffixTier(${charIdx}, ${g}, ${a}, 1, this.value)" ${hasV1 ? "" : "disabled"}>
-          ${hasV0 && !hasV1 ? '<span style="color:var(--dim);font-size:10px;align-self:center;margin-left:4px">/' + maxV0 + '</span>' : ""}
-          ${hasV0 && hasV1 ? '<span style="color:var(--dim);font-size:10px;align-self:center">max ' + maxV0 + '/' + maxV1 + '</span>' : ""}
-        </div>
+      const active = (c.activeGodstone.stone === g && c.activeGodstone.affix === a) ? "active" : "";
+      const ad = affix.IDs ? findAffix(affix.IDs) : null;
+      const maxV0 = ad ? ad.value0Count : 0;
+      const maxV1 = ad ? ad.value1Count : 0;
+      const hasV0 = maxV0 > 0;
+      const hasV1 = maxV1 > 0;
+      const nameHtml = ad
+        ? `<div class="gac-name">${escapeHtml(ad.location || ad.id)}: ${escapeHtml((ad.effect || "").slice(0, 42))}${(ad.effect || "").length > 42 ? "…" : ""}</div>`
+        : `<div class="gac-name empty">Affix ${a + 1} (empty)</div>`;
+      const tierInputs = ad
+        ? `<div class="gac-tier-inputs" onclick="event.stopPropagation()">
+             <input type="number" min="1" max="${hasV0 ? maxV0 : 1}" value="${hasV0 ? affix.tier0 : ""}" placeholder="${hasV0 ? "" : "—"}" title="${hasV0 ? "Value0 tier max " + maxV0 : "No Value0"}" ${hasV0 ? "" : "disabled"} onchange="onGodstoneTier(${charIdx}, ${g}, ${a}, 0, this.value)">
+             <input type="number" min="1" max="${hasV1 ? maxV1 : 1}" value="${hasV1 ? affix.tier1 : ""}" placeholder="${hasV1 ? "" : "—"}" title="${hasV1 ? "Value1 tier max " + maxV1 : "No Value1"}" ${hasV1 ? "" : "disabled"} onchange="onGodstoneTier(${charIdx}, ${g}, ${a}, 1, this.value)">
+           </div>`
+        : "";
+      const clearBtn = ad
+        ? `<button class="gac-clear" onclick="event.stopPropagation();clearGodstone(${charIdx}, ${g}, ${a})" title="Clear">×</button>`
+        : "";
+      html += `<div class="gs-affix-chip ${active}" onclick="setActiveGodstone(${charIdx}, ${g}, ${a})">
+        ${nameHtml}
+        ${tierInputs}
+        ${clearBtn}
       </div>`;
     }
     html += `</div></div>`;
   }
-  html += `</div>`;
+  html += `</div><div class="team-picker">`;
+  html += renderGodstonePickerBlock(charIdx);
+  html += `</div></div></div>`;
 
   return html;
 }
