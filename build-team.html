@@ -341,6 +341,8 @@ button.primary:hover{background:#dab466}
 
 
 
+
+
 <div class="page">
 <div class="wrap">
 
@@ -696,8 +698,8 @@ function renderPickerBlock({kind, charIdx, filter, selectedIds, placeholder}) {
   // kind = "char" or "support"
   const steps = ["S","A","B","C"];
   const cls = ["Warrior","Archer","Mage","Priest"];
-  let html = `<div class="picker"><div class="picker-bar">`;
-  html += `<input type="text" class="search" value="${escapeAttr(filter.search || "")}" placeholder="${escapeAttr(placeholder)}" oninput="onFilterSearch('${kind}', ${charIdx}, this.value)">`;
+  let html = `<div class="picker ${kind}-picker-inner"><div class="picker-bar">`;
+  html += `<input type="text" class="search" data-picker-kind="${kind}" value="${escapeAttr(filter.search || "")}" placeholder="${escapeAttr(placeholder)}" oninput="onFilterSearch('${kind}', ${charIdx}, this.value)">`;
   html += `<span class="filter-label">Step:</span>`;
   for (const s of steps) {
     const on = filter.steps[s] ? "on" : "";
@@ -750,11 +752,11 @@ function onFilterSearch(kind, c, val) {
   const filter = kind === "char" ? state[c].charFilter : state[c].supportFilter;
   filter.search = val;
   renderAll();
-  // Restore focus + caret at end of the search input (renderAll rebuilt the DOM).
+  // Restore focus + caret at end. Query by data-picker-kind so the correct
+  // input is found even with multiple pickers (Team/Talent/Equip/Rune/GS).
   setTimeout(() => {
-    const inputs = document.querySelectorAll(`.char-panel.active .picker input.search`);
-    const targetInput = kind === "char" ? inputs[0] : inputs[1];
-    if (targetInput) { targetInput.focus(); targetInput.setSelectionRange(val.length, val.length); }
+    const target = document.querySelector(`.char-panel.active .picker input.search[data-picker-kind="${kind}"]`);
+    if (target) { target.focus(); target.setSelectionRange(val.length, val.length); }
   }, 0);
 }
 function toggleFilterStep(kind, c, s) {
