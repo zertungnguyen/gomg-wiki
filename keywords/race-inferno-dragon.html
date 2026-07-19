@@ -8,6 +8,7 @@
 </head>
 <body>
 <aside class="sidenav">
+  <button class="sn-collapse-btn" onclick="toggleSidenav()" title="Hide menu" aria-label="Hide menu">&#8249;</button>
   <a class="brand" href="../index.html">GMG Wiki</a>
   <nav>
     <a href="../units/index.html">Units</a>
@@ -26,6 +27,21 @@
     <a href="../news.html">News</a>
   </nav>
 </aside>
+<button class="sn-expand-btn" onclick="toggleSidenav()" title="Show menu" aria-label="Show menu">&#9776;</button>
+<script>
+(function(){
+  var KEY='mgg-sidenav-collapsed';
+  function apply(){
+    var c=localStorage.getItem(KEY)==='1';
+    document.body.classList.toggle('sn-collapsed',c);
+  }
+  window.toggleSidenav=function(){
+    var now=document.body.classList.toggle('sn-collapsed');
+    try{localStorage.setItem(KEY,now?'1':'0');}catch(e){}
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+})();
+</script>
 <div class="page">
 <main class="content">
 <h1>Inferno Dragon</h1>

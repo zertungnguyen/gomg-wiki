@@ -36,7 +36,30 @@ aside.sidenav {
   gap: 16px;
   overflow-y: auto;
   z-index: 10;
+  transition: transform 0.2s ease;
 }
+/* Sidenav collapse/expand toggle */
+.sn-collapse-btn {
+  position: absolute; top: 10px; right: 8px;
+  width: 24px; height: 24px;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 4px;
+  color: var(--fg-dim); cursor: pointer; padding: 0; line-height: 1;
+  display: flex; align-items: center; justify-content: center; font-size: 16px;
+  z-index: 11; transition: color .12s, border-color .12s;
+}
+.sn-collapse-btn:hover { color: var(--accent); border-color: var(--accent); }
+.sn-expand-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 200;
+  width: 34px; height: 34px;
+  background: var(--bg-alt); border: 1px solid var(--border); border-radius: 4px;
+  color: var(--fg); cursor: pointer; padding: 0;
+  align-items: center; justify-content: center; font-size: 18px;
+  display: none;
+}
+.sn-expand-btn:hover { color: var(--accent); border-color: var(--accent); }
+body.sn-collapsed aside.sidenav { transform: translateX(-100%); }
+body.sn-collapsed .page { margin-left: 0; }
+body.sn-collapsed .sn-expand-btn { display: flex; }
 aside.sidenav .brand {
   font-weight: 700;
   color: var(--accent);
