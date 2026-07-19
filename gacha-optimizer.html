@@ -27,7 +27,9 @@ h1{font-family:'Chakra Petch',sans-serif;font-size:28px;font-weight:700;color:va
 .cat-Terrain .pill.on{color:#3498db;background:#3498db18;border-color:#3498db}
 .controls{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--card);border-radius:10px;border:1px solid var(--border);margin-bottom:20px}
 .controls label{font-size:13px;color:var(--dim);white-space:nowrap}
-.controls input[type=range]{flex:1;accent-color:var(--accent)}
+.controls input[type=range]{-webkit-appearance:none;appearance:none;flex:0 0 220px;height:6px;background:var(--card2);border-radius:3px;outline:none;accent-color:var(--accent);cursor:pointer;padding:0}
+.controls input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);border:2px solid var(--card);cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.controls input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--accent);border:2px solid var(--card);cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.4)}
 .controls .val{font-family:'Chakra Petch',sans-serif;font-size:22px;font-weight:600;min-width:28px;text-align:center;color:var(--accent)}
 .best{padding:16px 20px;border-radius:10px;margin-bottom:20px;background:linear-gradient(135deg,#f5b34212,#2ecc7112);border:1.5px solid #f5b34240}
 .best .label{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
