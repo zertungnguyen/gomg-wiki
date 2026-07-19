@@ -277,8 +277,7 @@ button.primary:hover{background:#dab466}
 .gs-affix-chip .gac-tier-inputs input{width:32px;padding:1px 3px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:2px;font-size:10px;text-align:center}
 .gs-affix-chip .gac-tier-inputs input:disabled{opacity:0.35;background:transparent;cursor:not-allowed}
 /* Team-slot chips (Character + 3 Supports) */
-.support-slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
-@media(max-width:800px){.support-slots{grid-template-columns:repeat(2,1fr)}}
+.support-slots{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin-bottom:10px;min-width:0}
 .support-slot{padding:8px 10px;background:var(--card2);border:1.5px solid var(--border);border-radius:6px;cursor:pointer;transition:border-color .12s;display:flex;flex-direction:column;gap:4px;min-height:76px;position:relative}
 .support-slot:hover{border-color:#555}
 .support-slot.active{border-color:var(--accent);background:#f5b34215}
@@ -332,6 +331,8 @@ button.primary:hover{background:#dab466}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 })();
 </script>
+
+
 
 
 
