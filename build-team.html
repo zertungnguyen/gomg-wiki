@@ -343,6 +343,8 @@ button.primary:hover{background:#dab466}
 
 
 
+
+
 <div class="page">
 <div class="wrap">
 
@@ -694,8 +696,37 @@ function renderSelectedUnit(roleId) {
   </div>`;
 }
 
+function renderTeamUnitGridBody(charIdx, kind, selectedIds) {
+  const c = state[charIdx];
+  const filter = kind === "char" ? c.charFilter : c.supportFilter;
+  const q = (filter.search || "").toLowerCase().trim();
+  const selSet = new Set(selectedIds);
+  const list = DATA.roles.filter(u => {
+    if (!filter.steps[u.step]) return false;
+    if (!filter.classes[u.cls]) return false;
+    if (q) {
+      const hay = `${u.name} ${u.id} ${u.race} ${u.element} ${u.cls}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  }).sort((a, b) => {
+    const sr = {S:0,A:1,B:2,C:3};
+    return (sr[a.step] ?? 9) - (sr[b.step] ?? 9) || a.cls.localeCompare(b.cls) || a.name.localeCompare(b.name);
+  });
+  if (!list.length) return `<div class="picker-empty">No units match these filters</div>`;
+  let html = "";
+  for (const u of list.slice(0, 400)) {
+    const sel = selSet.has(u.id) ? "selected" : "";
+    html += `<div class="u-card ${sel}" onclick="onPickTeamUnit(${charIdx}, '${escapeAttr(u.id)}')" title="${escapeAttr(u.name + ' · ' + u.cls + '/' + u.race + '/' + u.element + ' · ' + u.id)}">
+      <div class="step s-${u.step}">${u.step}</div>
+      <img src="${escapeAttr(roleIcon(u.id))}" alt="" loading="lazy" onerror="this.style.background='var(--card2)';this.removeAttribute('src')">
+      <div class="uname-s">${escapeHtml(u.name)}</div>
+      <div class="ualter-s">${escapeHtml(u.cls)} · ${escapeHtml(u.element)}</div>
+    </div>`;
+  }
+  return html;
+}
 function renderPickerBlock({kind, charIdx, filter, selectedIds, placeholder}) {
-  // kind = "char" or "support"
   const steps = ["S","A","B","C"];
   const cls = ["Warrior","Archer","Mage","Priest"];
   let html = `<div class="picker ${kind}-picker-inner"><div class="picker-bar">`;
@@ -711,53 +742,23 @@ function renderPickerBlock({kind, charIdx, filter, selectedIds, placeholder}) {
     html += `<button class="f-pill ${on}" onclick="toggleFilterClass('${kind}', ${charIdx}, '${cl}')">${cl}</button>`;
   }
   html += `</div>`;
-
-  // Grid: filtered role list
-  const q = (filter.search || "").toLowerCase().trim();
-  const selSet = new Set(selectedIds);
-  const list = DATA.roles.filter(u => {
-    if (!filter.steps[u.step]) return false;
-    if (!filter.classes[u.cls]) return false;
-    if (q) {
-      const hay = `${u.name} ${u.id} ${u.race} ${u.element} ${u.cls}`.toLowerCase();
-      if (!hay.includes(q)) return false;
-    }
-    return true;
-  }).sort((a, b) => {
-    const sr = {S:0,A:1,B:2,C:3};
-    return (sr[a.step] ?? 9) - (sr[b.step] ?? 9) || a.cls.localeCompare(b.cls) || a.name.localeCompare(b.name);
-  });
-
-  html += `<div class="picker-grid">`;
-  if (!list.length) {
-    html += `<div class="picker-empty">No units match these filters</div>`;
-  } else {
-    for (const u of list.slice(0, 400)) {
-      const sel = selSet.has(u.id) ? "selected" : "";
-      // Unified click routing — active slot in state[c].activeSupport decides target.
-      const clickHandler = `onPickTeamUnit(${charIdx}, '${escapeAttr(u.id)}')`;
-      html += `<div class="u-card ${sel}" onclick="${clickHandler}" title="${escapeAttr(u.name + ' · ' + u.cls + '/' + u.race + '/' + u.element + ' · ' + u.id)}">
-        <div class="step s-${u.step}">${u.step}</div>
-        <img src="${escapeAttr(roleIcon(u.id))}" alt="" loading="lazy" onerror="this.style.background='var(--card2)';this.removeAttribute('src')">
-        <div class="uname-s">${escapeHtml(u.name)}</div>
-        <div class="ualter-s">${escapeHtml(u.cls)} · ${escapeHtml(u.element)}</div>
-      </div>`;
-    }
-  }
-  html += `</div></div>`;
+  // Cache selectedIds on the grid div so search patches can rebuild with the same selection set.
+  const gridId = `unitGrid-${kind}-${charIdx}`;
+  const selJson = escapeAttr(JSON.stringify(selectedIds));
+  html += `<div class="picker-grid" id="${gridId}" data-kind="${kind}" data-selected='${selJson}'>${renderTeamUnitGridBody(charIdx, kind, selectedIds)}</div></div>`;
   return html;
 }
 
 function onFilterSearch(kind, c, val) {
   const filter = kind === "char" ? state[c].charFilter : state[c].supportFilter;
   filter.search = val;
-  renderAll();
-  // Restore focus + caret at end. Query by data-picker-kind so the correct
-  // input is found even with multiple pickers (Team/Talent/Equip/Rune/GS).
-  setTimeout(() => {
-    const target = document.querySelector(`.char-panel.active .picker input.search[data-picker-kind="${kind}"]`);
-    if (target) { target.focus(); target.setSelectionRange(val.length, val.length); }
-  }, 0);
+  // Targeted grid patch — no full renderAll flicker on each keystroke.
+  const grid = document.getElementById(`unitGrid-${kind}-${c}`);
+  if (grid) {
+    let selectedIds = [];
+    try { selectedIds = JSON.parse(grid.getAttribute("data-selected") || "[]"); } catch (e) {}
+    grid.innerHTML = renderTeamUnitGridBody(c, kind, selectedIds);
+  }
 }
 function toggleFilterStep(kind, c, s) {
   const filter = kind === "char" ? state[c].charFilter : state[c].supportFilter;
@@ -826,21 +827,17 @@ function onPickTalent(c, id) {
 }
 function onTalentFilterSearch(c, val) {
   state[c].talentFilter.search = val;
-  renderAll();
-  setTimeout(() => {
-    const inp = document.querySelector(`.char-panel.active .talent-picker input.search`);
-    if (inp) { inp.focus(); inp.setSelectionRange(val.length, val.length); }
-  }, 0);
+  const grid = document.getElementById(`talentGrid-${c}`);
+  if (grid) grid.innerHTML = renderTalentGridBody(c);
 }
 function toggleTalentStep(c, s) {
   state[c].talentFilter.steps[s] = !state[c].talentFilter.steps[s];
   renderAll();
 }
 
-function renderTalentPickerBlock(charIdx) {
+function renderTalentGridBody(charIdx) {
   const c = state[charIdx];
   const filter = c.talentFilter;
-  const steps = ["S","A","B","C"];
   const q = (filter.search || "").toLowerCase().trim();
   const selSet = new Set(c.talents.filter(x => x));
   const list = DATA.talents.filter(t => {
@@ -854,30 +851,32 @@ function renderTalentPickerBlock(charIdx) {
     const sr = {S:0,A:1,B:2,C:3};
     return (sr[a.step] ?? 9) - (sr[b.step] ?? 9) || a.name.localeCompare(b.name);
   });
-
-  let html = `<div class="picker talent-picker"><div class="picker-bar">`;
+  if (!list.length) return `<div class="picker-empty">No talents match these filters</div>`;
+  let html = "";
+  for (const t of list.slice(0, 500)) {
+    const sel = selSet.has(t.id) ? "selected" : "";
+    const effect = t.effect ? t.effect.slice(0, 120) : "";
+    html += `<div class="t-card ${sel}" onclick="onPickTalent(${charIdx}, '${escapeAttr(t.id)}')" title="${escapeAttr(t.id + ' — ' + t.effect)}">
+      <div class="step s-${t.step}">${t.step}</div>
+      <div class="tname">${escapeHtml(t.name)}</div>
+      <div class="teffect">${escapeHtml(effect)}</div>
+    </div>`;
+  }
+  return html;
+}
+function renderTalentPickerBlock(charIdx) {
+  const c = state[charIdx];
+  const filter = c.talentFilter;
+  const steps = ["S","A","B","C"];
   const activeLabel = `slot ${c.activeTalent + 1}`;
+  let html = `<div class="picker talent-picker"><div class="picker-bar">`;
   html += `<input type="text" class="search" value="${escapeAttr(filter.search || "")}" placeholder="Search talent for ${activeLabel}…" oninput="onTalentFilterSearch(${charIdx}, this.value)">`;
   html += `<span class="filter-label">Step:</span>`;
   for (const s of steps) {
     const on = filter.steps[s] ? "on" : "";
     html += `<button class="f-pill ${on} s-${s}" onclick="toggleTalentStep(${charIdx}, '${s}')">${s}</button>`;
   }
-  html += `</div><div class="talent-grid">`;
-  if (!list.length) {
-    html += `<div class="picker-empty">No talents match these filters</div>`;
-  } else {
-    for (const t of list.slice(0, 500)) {
-      const sel = selSet.has(t.id) ? "selected" : "";
-      const effect = t.effect ? t.effect.slice(0, 120) : "";
-      html += `<div class="t-card ${sel}" onclick="onPickTalent(${charIdx}, '${escapeAttr(t.id)}')" title="${escapeAttr(t.id + ' — ' + t.effect)}">
-        <div class="step s-${t.step}">${t.step}</div>
-        <div class="tname">${escapeHtml(t.name)}</div>
-        <div class="teffect">${escapeHtml(effect)}</div>
-      </div>`;
-    }
-  }
-  html += `</div></div>`;
+  html += `</div><div class="talent-grid" id="talentGrid-${charIdx}">${renderTalentGridBody(charIdx)}</div></div>`;
   return html;
 }
 
@@ -901,23 +900,19 @@ function onPickRune(c, id) {
 }
 function onRuneFilterSearch(c, val) {
   state[c].runeFilter.search = val;
-  renderAll();
-  setTimeout(() => {
-    const inp = document.querySelector(`.char-panel.active .rune-picker input.search`);
-    if (inp) { inp.focus(); inp.setSelectionRange(val.length, val.length); }
-  }, 0);
+  // Targeted grid update — avoids full-page renderAll flicker on each keystroke.
+  const grid = document.getElementById(`runeGrid-${c}`);
+  if (grid) grid.innerHTML = renderRuneGridBody(c);
 }
 function toggleRuneStep(c, s) {
   state[c].runeFilter.steps[s] = !state[c].runeFilter.steps[s];
   renderAll();
 }
 
-function renderRunePickerBlock(charIdx) {
+function renderRuneGridBody(charIdx) {
   const c = state[charIdx];
   const filter = c.runeFilter;
-  const steps = ["SS","S","A","B","C"];
   const q = (filter.search || "").toLowerCase().trim();
-  // Uniqueness: exclude rune IDs already in OTHER slots (keep current slot's own to allow it as visible/selected)
   const usedElsewhere = new Set();
   c.runeList.forEach((r, i) => { if (i !== c.activeRune && r.IDs) usedElsewhere.add(r.IDs); });
   const currentSlotId = c.runeList[c.activeRune].IDs;
@@ -933,7 +928,23 @@ function renderRunePickerBlock(charIdx) {
     const sr = {SS:0,S:1,A:2,B:3,C:4};
     return (sr[a.step] ?? 9) - (sr[b.step] ?? 9) || a.name.localeCompare(b.name);
   });
-
+  if (!list.length) return `<div class="picker-empty">No runes match these filters</div>`;
+  let html = "";
+  for (const r of list.slice(0, 500)) {
+    const sel = r.id === currentSlotId ? "selected" : "";
+    html += `<div class="g-card ${sel}" onclick="onPickRune(${charIdx}, '${escapeAttr(r.id)}')" title="${escapeAttr(r.id + ' — ' + r.name + (r.material ? ' · ' + r.material : ''))}">
+      <div class="step s-${r.step}">${r.step}</div>
+      <img src="${escapeAttr(runeIcon(r.id))}" alt="" loading="lazy" onerror="this.style.background='var(--card2)';this.removeAttribute('src')">
+      <div class="gname">${escapeHtml(r.name)}</div>
+      <div class="garea">${escapeHtml(r.material || "")}</div>
+    </div>`;
+  }
+  return html;
+}
+function renderRunePickerBlock(charIdx) {
+  const c = state[charIdx];
+  const filter = c.runeFilter;
+  const steps = ["SS","S","A","B","C"];
   let html = `<div class="picker rune-picker"><div class="picker-bar">`;
   html += `<input type="text" class="search" value="${escapeAttr(filter.search || "")}" placeholder="Search rune for slot ${c.activeRune + 1} (${SLOT_TYPES[c.activeRune]})…" oninput="onRuneFilterSearch(${charIdx}, this.value)">`;
   html += `<span class="filter-label">Step:</span>`;
@@ -941,21 +952,7 @@ function renderRunePickerBlock(charIdx) {
     const on = filter.steps[s] ? "on" : "";
     html += `<button class="f-pill ${on} s-${s}" onclick="toggleRuneStep(${charIdx}, '${s}')">${s}</button>`;
   }
-  html += `</div><div class="gear-grid">`;
-  if (!list.length) {
-    html += `<div class="picker-empty">No runes match these filters</div>`;
-  } else {
-    for (const r of list.slice(0, 500)) {
-      const sel = r.id === currentSlotId ? "selected" : "";
-      html += `<div class="g-card ${sel}" onclick="onPickRune(${charIdx}, '${escapeAttr(r.id)}')" title="${escapeAttr(r.id + ' — ' + r.name + (r.material ? ' · ' + r.material : ''))}">
-        <div class="step s-${r.step}">${r.step}</div>
-        <img src="${escapeAttr(runeIcon(r.id))}" alt="" loading="lazy" onerror="this.style.background='var(--card2)';this.removeAttribute('src')">
-        <div class="gname">${escapeHtml(r.name)}</div>
-        <div class="garea">${escapeHtml(r.material || "")}</div>
-      </div>`;
-    }
-  }
-  html += `</div></div>`;
+  html += `</div><div class="gear-grid" id="runeGrid-${charIdx}">${renderRuneGridBody(charIdx)}</div></div>`;
   return html;
 }
 
@@ -1007,11 +1004,8 @@ function onPickAffix(c, id) {
 }
 function onGodstoneFilterSearch(c, val) {
   state[c].godstoneFilter.search = val;
-  renderAll();
-  setTimeout(() => {
-    const inp = document.querySelector(`.char-panel.active .godstone-picker input.search`);
-    if (inp) { inp.focus(); inp.setSelectionRange(val.length, val.length); }
-  }, 0);
+  const grid = document.getElementById(`godstoneGrid-${c}`);
+  if (grid) grid.innerHTML = renderGodstoneGridBody(c);
 }
 function toggleGodstoneStep(c, s) {
   state[c].godstoneFilter.steps[s] = !state[c].godstoneFilter.steps[s];
@@ -1023,12 +1017,10 @@ function onGodstoneTier(c, stone, affix, which, val) {
   if (which === 0) slot.tier0 = v; else slot.tier1 = v;
 }
 
-function renderGodstonePickerBlock(charIdx) {
+function renderGodstoneGridBody(charIdx) {
   const c = state[charIdx];
   const filter = c.godstoneFilter;
-  const steps = ["SS","S","A","B","C"];
   const q = (filter.search || "").toLowerCase().trim();
-  // Selected = affix currently in active slot
   const {stone: aStone, affix: aAffix} = c.activeGodstone;
   const currentSlotId = c.godStones[aStone].affixes[aAffix].IDs;
   const list = DATA.godStoneAffixes.filter(a => {
@@ -1042,7 +1034,24 @@ function renderGodstonePickerBlock(charIdx) {
     const sr = {SS:0,S:1,A:2,B:3,C:4};
     return (sr[x.step] ?? 9) - (sr[y.step] ?? 9) || (x.location || "").localeCompare(y.location || "") || (x.effect || "").localeCompare(y.effect || "");
   });
-
+  if (!list.length) return `<div class="picker-empty">No affixes match these filters</div>`;
+  let html = "";
+  for (const a of list.slice(0, 500)) {
+    const sel = a.id === currentSlotId ? "selected" : "";
+    const effectShort = (a.effect || "").slice(0, 100);
+    html += `<div class="a-card ${sel}" onclick="onPickAffix(${charIdx}, '${escapeAttr(a.id)}')" title="${escapeAttr(a.id + ' — ' + a.effect)}">
+      <div class="step s-${a.step}">${a.step}</div>
+      <div class="aname">${escapeHtml(a.location || a.id)}</div>
+      <div class="aeffect">${escapeHtml(effectShort)}</div>
+    </div>`;
+  }
+  return html;
+}
+function renderGodstonePickerBlock(charIdx) {
+  const c = state[charIdx];
+  const filter = c.godstoneFilter;
+  const steps = ["SS","S","A","B","C"];
+  const {stone: aStone, affix: aAffix} = c.activeGodstone;
   let html = `<div class="picker godstone-picker"><div class="picker-bar">`;
   html += `<input type="text" class="search" value="${escapeAttr(filter.search || "")}" placeholder="Search affix for Stone ${aStone + 1} · Affix ${aAffix + 1}…" oninput="onGodstoneFilterSearch(${charIdx}, this.value)">`;
   html += `<span class="filter-label">Step:</span>`;
@@ -1050,21 +1059,7 @@ function renderGodstonePickerBlock(charIdx) {
     const on = filter.steps[s] ? "on" : "";
     html += `<button class="f-pill ${on} s-${s}" onclick="toggleGodstoneStep(${charIdx}, '${s}')">${s}</button>`;
   }
-  html += `</div><div class="affix-grid">`;
-  if (!list.length) {
-    html += `<div class="picker-empty">No affixes match these filters</div>`;
-  } else {
-    for (const a of list.slice(0, 500)) {
-      const sel = a.id === currentSlotId ? "selected" : "";
-      const effectShort = (a.effect || "").slice(0, 100);
-      html += `<div class="a-card ${sel}" onclick="onPickAffix(${charIdx}, '${escapeAttr(a.id)}')" title="${escapeAttr(a.id + ' — ' + a.effect)}">
-        <div class="step s-${a.step}">${a.step}</div>
-        <div class="aname">${escapeHtml(a.location || a.id)}</div>
-        <div class="aeffect">${escapeHtml(effectShort)}</div>
-      </div>`;
-    }
-  }
-  html += `</div></div>`;
+  html += `</div><div class="affix-grid" id="godstoneGrid-${charIdx}">${renderGodstoneGridBody(charIdx)}</div></div>`;
   return html;
 }
 
@@ -1085,31 +1080,24 @@ function onPickEquip(c, id) {
 }
 function onEquipFilterSearch(c, val) {
   state[c].equipFilter.search = val;
-  renderAll();
-  setTimeout(() => {
-    const inp = document.querySelector(`.char-panel.active .equip-picker input.search`);
-    if (inp) { inp.focus(); inp.setSelectionRange(val.length, val.length); }
-  }, 0);
+  const grid = document.getElementById(`equipGrid-${c}`);
+  if (grid) grid.innerHTML = renderEquipGridBody(c);
 }
 function toggleEquipStep(c, s) {
   state[c].equipFilter.steps[s] = !state[c].equipFilter.steps[s];
   renderAll();
 }
 
-function renderEquipPickerBlock(charIdx) {
+function renderEquipGridBody(charIdx) {
   const c = state[charIdx];
   const filter = c.equipFilter;
   const activeSlotType = SLOT_TYPES[c.activeEquip];
-  const steps = ["SS","S","A","B","C"];
   const q = (filter.search || "").toLowerCase().trim();
-  // Selected set = all filled equip IDs
   const selSet = new Set(c.equipList.map(e => e.IDs).filter(x => x));
-  // Class filter: if a character is picked, only show gear this class can wear
-  // (matches "All-Class" or comma-separated list containing the char's class).
   const roleCls = c.roleId ? (findRole(c.roleId)?.cls || null) : null;
   const matchesClass = (gearCls) => {
-    if (!roleCls) return true;                 // no character picked → show all
-    if (!gearCls) return true;                 // gear has no restriction data → show
+    if (!roleCls) return true;
+    if (!gearCls) return true;
     if (gearCls === "All-Class") return true;
     return gearCls.split(",").map(s => s.trim()).includes(roleCls);
   };
@@ -1125,33 +1113,37 @@ function renderEquipPickerBlock(charIdx) {
     const sr = {SS:0,S:1,A:2,B:3,C:4};
     return (sr[a.step] ?? 9) - (sr[b.step] ?? 9) || a.name.localeCompare(b.name);
   });
-
-  let html = `<div class="picker equip-picker"><div class="picker-bar">`;
+  if (!list.length) return `<div class="picker-empty">No ${activeSlotType} gear matches these filters</div>`;
+  let html = "";
+  for (const e of list.slice(0, 500)) {
+    const sel = selSet.has(e.id) ? "selected" : "";
+    const clsShort = e.cls === "All-Class" ? "All" : (e.cls || "").replace(/,/g, "/");
+    html += `<div class="g-card ${sel}" onclick="onPickEquip(${charIdx}, '${escapeAttr(e.id)}')" title="${escapeAttr(e.id + ' — ' + e.name + (e.area ? ' · ' + e.area : '') + (e.cls ? ' · ' + e.cls : ''))}">
+      <div class="step s-${e.step}">${e.step}</div>
+      <img src="${escapeAttr(equipIcon(e.id))}" alt="" loading="lazy" onerror="this.style.background='var(--card2)';this.removeAttribute('src')">
+      <div class="gname">${escapeHtml(e.name)}</div>
+      <div class="garea">${escapeHtml(clsShort)}${e.area ? " · " + escapeHtml(e.area) : ""}</div>
+    </div>`;
+  }
+  return html;
+}
+function renderEquipPickerBlock(charIdx) {
+  const c = state[charIdx];
+  const filter = c.equipFilter;
+  const activeSlotType = SLOT_TYPES[c.activeEquip];
+  const steps = ["SS","S","A","B","C"];
+  const roleCls = c.roleId ? (findRole(c.roleId)?.cls || null) : null;
   const placeholderText = roleCls
     ? `Search ${activeSlotType} gear for ${roleCls}…`
     : `Search ${activeSlotType} gear (pick a Character to filter by class)…`;
+  let html = `<div class="picker equip-picker"><div class="picker-bar">`;
   html += `<input type="text" class="search" value="${escapeAttr(filter.search || "")}" placeholder="${escapeAttr(placeholderText)}" oninput="onEquipFilterSearch(${charIdx}, this.value)">`;
   html += `<span class="filter-label">Step:</span>`;
   for (const s of steps) {
     const on = filter.steps[s] ? "on" : "";
     html += `<button class="f-pill ${on} s-${s}" onclick="toggleEquipStep(${charIdx}, '${s}')">${s}</button>`;
   }
-  html += `</div><div class="gear-grid">`;
-  if (!list.length) {
-    html += `<div class="picker-empty">No ${activeSlotType} gear matches these filters</div>`;
-  } else {
-    for (const e of list.slice(0, 500)) {
-      const sel = selSet.has(e.id) ? "selected" : "";
-      const clsShort = e.cls === "All-Class" ? "All" : (e.cls || "").replace(/,/g, "/");
-      html += `<div class="g-card ${sel}" onclick="onPickEquip(${charIdx}, '${escapeAttr(e.id)}')" title="${escapeAttr(e.id + ' — ' + e.name + (e.area ? ' · ' + e.area : '') + (e.cls ? ' · ' + e.cls : ''))}">
-        <div class="step s-${e.step}">${e.step}</div>
-        <img src="${escapeAttr(equipIcon(e.id))}" alt="" loading="lazy" onerror="this.style.background='var(--card2)';this.removeAttribute('src')">
-        <div class="gname">${escapeHtml(e.name)}</div>
-        <div class="garea">${escapeHtml(clsShort)}${e.area ? " · " + escapeHtml(e.area) : ""}</div>
-      </div>`;
-    }
-  }
-  html += `</div></div>`;
+  html += `</div><div class="gear-grid" id="equipGrid-${charIdx}">${renderEquipGridBody(charIdx)}</div></div>`;
   return html;
 }
 
