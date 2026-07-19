@@ -339,6 +339,8 @@ button.primary:hover{background:#dab466}
 
 
 
+
+
 <div class="page">
 <div class="wrap">
 
@@ -1100,7 +1102,17 @@ function renderEquipPickerBlock(charIdx) {
   const q = (filter.search || "").toLowerCase().trim();
   // Selected set = all filled equip IDs
   const selSet = new Set(c.equipList.map(e => e.IDs).filter(x => x));
+  // Class filter: if a character is picked, only show gear this class can wear
+  // (matches "All-Class" or comma-separated list containing the char's class).
+  const roleCls = c.roleId ? (findRole(c.roleId)?.cls || null) : null;
+  const matchesClass = (gearCls) => {
+    if (!roleCls) return true;                 // no character picked → show all
+    if (!gearCls) return true;                 // gear has no restriction data → show
+    if (gearCls === "All-Class") return true;
+    return gearCls.split(",").map(s => s.trim()).includes(roleCls);
+  };
   const list = (EQUIPS_BY_SLOT[activeSlotType] || []).filter(e => {
+    if (!matchesClass(e.cls)) return false;
     if (!filter.steps[e.step]) return false;
     if (q) {
       const hay = `${e.name} ${e.id} ${e.area || ""} ${e.cls || ""}`.toLowerCase();
@@ -1113,7 +1125,10 @@ function renderEquipPickerBlock(charIdx) {
   });
 
   let html = `<div class="picker equip-picker"><div class="picker-bar">`;
-  html += `<input type="text" class="search" value="${escapeAttr(filter.search || "")}" placeholder="Search ${activeSlotType} gear…" oninput="onEquipFilterSearch(${charIdx}, this.value)">`;
+  const placeholderText = roleCls
+    ? `Search ${activeSlotType} gear for ${roleCls}…`
+    : `Search ${activeSlotType} gear (pick a Character to filter by class)…`;
+  html += `<input type="text" class="search" value="${escapeAttr(filter.search || "")}" placeholder="${escapeAttr(placeholderText)}" oninput="onEquipFilterSearch(${charIdx}, this.value)">`;
   html += `<span class="filter-label">Step:</span>`;
   for (const s of steps) {
     const on = filter.steps[s] ? "on" : "";
@@ -1125,11 +1140,12 @@ function renderEquipPickerBlock(charIdx) {
   } else {
     for (const e of list.slice(0, 500)) {
       const sel = selSet.has(e.id) ? "selected" : "";
-      html += `<div class="g-card ${sel}" onclick="onPickEquip(${charIdx}, '${escapeAttr(e.id)}')" title="${escapeAttr(e.id + ' — ' + e.name + (e.area ? ' · ' + e.area : ''))}">
+      const clsShort = e.cls === "All-Class" ? "All" : (e.cls || "").replace(/,/g, "/");
+      html += `<div class="g-card ${sel}" onclick="onPickEquip(${charIdx}, '${escapeAttr(e.id)}')" title="${escapeAttr(e.id + ' — ' + e.name + (e.area ? ' · ' + e.area : '') + (e.cls ? ' · ' + e.cls : ''))}">
         <div class="step s-${e.step}">${e.step}</div>
         <img src="${escapeAttr(equipIcon(e.id))}" alt="" loading="lazy" onerror="this.style.background='var(--card2)';this.removeAttribute('src')">
         <div class="gname">${escapeHtml(e.name)}</div>
-        <div class="garea">${escapeHtml(e.area || "")}</div>
+        <div class="garea">${escapeHtml(clsShort)}${e.area ? " · " + escapeHtml(e.area) : ""}</div>
       </div>`;
     }
   }
