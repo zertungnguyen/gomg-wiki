@@ -153,18 +153,23 @@ button.primary:hover{background:#dab466}
 .u-card .ualter-s{font-size:9px;color:var(--accent);line-height:1;font-style:italic;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%}
 .picker-empty{grid-column:1/-1;text-align:center;padding:20px;color:var(--dim);font-size:12px}
 
-/* Support-slot chips (3 chips sharing 1 picker below) */
-.support-slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
-.support-slot{padding:8px 10px;background:var(--card2);border:1.5px solid var(--border);border-radius:6px;cursor:pointer;transition:border-color .12s;display:flex;flex-direction:column;gap:4px;min-height:76px}
+/* Team-slot chips — Character + 3 Supports sharing 1 picker below (4 in a row) */
+.support-slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+@media(max-width:800px){.support-slots{grid-template-columns:repeat(2,1fr)}}
+.support-slot{padding:8px 10px;background:var(--card2);border:1.5px solid var(--border);border-radius:6px;cursor:pointer;transition:border-color .12s;display:flex;flex-direction:column;gap:4px;min-height:76px;position:relative}
 .support-slot:hover{border-color:#555}
 .support-slot.active{border-color:var(--accent);background:#f5b34215}
+.support-slot.char-slot{border-color:var(--accent)70}
+.support-slot.char-slot.active{border-color:var(--accent);background:#f5b34225}
 .support-slot .ss-label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;font-weight:600}
 .support-slot.active .ss-label{color:var(--accent)}
+.support-slot.char-slot .ss-label{color:var(--accent)}
 .support-slot .ss-body{display:flex;align-items:center;gap:8px;min-width:0}
 .support-slot .ss-body img{width:36px;height:36px;border-radius:4px;background:var(--card);object-fit:cover;flex-shrink:0}
-.support-slot .ss-body .sname{font-size:12px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:1}
+.support-slot.char-slot .ss-body img{width:44px;height:44px;border:1.5px solid var(--accent)}
+.support-slot .ss-body .sname{font-size:12px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:1;line-height:1.2}
 .support-slot .ss-body .empty-mark{font-size:11px;color:var(--dim);font-style:italic}
-.support-slot .ss-clear{background:transparent;border:none;color:var(--dim);font-size:14px;cursor:pointer;padding:0 4px;line-height:1;align-self:flex-end;margin-top:-16px}
+.support-slot .ss-clear{position:absolute;top:4px;right:6px;background:transparent;border:none;color:var(--dim);font-size:14px;cursor:pointer;padding:0 4px;line-height:1}
 .support-slot .ss-clear:hover{color:var(--accent)}
 </style>
 </head>
@@ -204,6 +209,8 @@ button.primary:hover{background:#dab466}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 })();
 </script>
+
+
 
 
 
@@ -590,9 +597,8 @@ function renderPickerBlock({kind, charIdx, filter, selectedIds, placeholder}) {
   } else {
     for (const u of list.slice(0, 400)) {
       const sel = selSet.has(u.id) ? "selected" : "";
-      const clickHandler = kind === "char"
-        ? `onPickChar(${charIdx}, '${escapeAttr(u.id)}')`
-        : `onPickSupport(${charIdx}, '${escapeAttr(u.id)}')`;
+      // Unified click routing — active slot in state[c].activeSupport decides target.
+      const clickHandler = `onPickTeamUnit(${charIdx}, '${escapeAttr(u.id)}')`;
       html += `<div class="u-card ${sel}" onclick="${clickHandler}" title="${escapeAttr(u.name + ' · ' + u.cls + '/' + u.race + '/' + u.element + ' · ' + u.id)}">
         <div class="step s-${u.step}">${u.step}</div>
         <img src="${escapeAttr(roleIcon(u.id))}" alt="" loading="lazy" onerror="this.style.background='var(--card2)';this.removeAttribute('src')">
@@ -626,19 +632,29 @@ function toggleFilterClass(kind, c, cl) {
   filter.classes[cl] = !filter.classes[cl];
   renderAll();
 }
-function onPickChar(c, id) {
-  state[c].roleId = state[c].roleId === id ? "" : id;
-  renderAll();
-}
-function onPickSupport(c, id) {
+// Unified team slots: activeSupport = -1 means Character slot; 0/1/2 = support slots.
+function onPickTeamUnit(c, id) {
   const slot = state[c].activeSupport;
-  // Toggle off if same unit already in this slot
-  state[c].supports[slot] = state[c].supports[slot] === id ? "" : id;
-  // Advance to next empty slot for convenience
-  if (state[c].supports[slot]) {
-    for (let i = 1; i <= 3; i++) {
-      const next = (slot + i) % 3;
-      if (!state[c].supports[next]) { state[c].activeSupport = next; break; }
+  if (slot === -1) {
+    // Character slot
+    state[c].roleId = state[c].roleId === id ? "" : id;
+    // Auto-advance to first empty support slot
+    if (state[c].roleId) {
+      for (let i = 0; i < 3; i++) {
+        if (!state[c].supports[i]) { state[c].activeSupport = i; break; }
+      }
+    }
+  } else {
+    state[c].supports[slot] = state[c].supports[slot] === id ? "" : id;
+    if (state[c].supports[slot]) {
+      // Cycle: -1 → 0 → 1 → 2 → -1, find next empty
+      const order = [0, 1, 2, -1];
+      const startIdx = order.indexOf(slot);
+      for (let step = 1; step <= order.length; step++) {
+        const next = order[(startIdx + step) % order.length];
+        const filled = next === -1 ? !!state[c].roleId : !!state[c].supports[next];
+        if (!filled) { state[c].activeSupport = next; break; }
+      }
     }
   }
   renderAll();
@@ -648,21 +664,55 @@ function setActiveSupport(c, i) {
   renderAll();
 }
 function clearSupport(c, i) {
-  state[c].supports[i] = "";
+  if (i === -1) state[c].roleId = "";
+  else state[c].supports[i] = "";
   renderAll();
 }
+// Backward-compat aliases (old buttons might still call these).
+function onPickChar(c, id)    { setActiveSupport(c, -1); onPickTeamUnit(c, id); }
+function onPickSupport(c, id) { onPickTeamUnit(c, id); }
 
 function renderCharPanel(charIdx) {
   const c = state[charIdx];
 
-  // === Character: selected block + grid picker ===
-  let html = `<div class="card"><h2>Character</h2>`;
-  html += renderSelectedUnit(c.roleId);
-  html += renderPickerBlock({
-    kind: "char", charIdx, filter: c.charFilter,
-    selectedIds: c.roleId ? [c.roleId] : [],
-    placeholder: "Search unit by name / id / race / element / class…"
-  });
+  // === Unified Team card: 1 Character slot + 3 Support slots + shared picker ===
+  //   activeSupport = -1 → Character; 0/1/2 → Perk/Trait/Title source.
+  // Slot definitions: [id, label, filledId, isCharacter]
+  const slots = [
+    [-1, "Character",     c.roleId,      true],
+    [ 0, SUPPORT_LABELS[0], c.supports[0], false],
+    [ 1, SUPPORT_LABELS[1], c.supports[1], false],
+    [ 2, SUPPORT_LABELS[2], c.supports[2], false],
+  ];
+  const activeLabel = slots.find(s => s[0] === c.activeSupport)?.[1] || "";
+  let html = `<div class="card"><h2>Team (click a slot, then pick a unit below)</h2>`;
+  html += `<div class="support-slots">`;
+  for (const [sid, label, filledId, isChar] of slots) {
+    const src = filledId ? findRole(filledId) : null;
+    const active = c.activeSupport === sid ? "active" : "";
+    const charCls = isChar ? "char-slot" : "";
+    const bodyHtml = src
+      ? `<img src="${escapeAttr(roleIcon(src.id))}" alt="" onerror="this.style.visibility='hidden'"><div class="sname">${escapeHtml(src.name)}</div>`
+      : `<div class="empty-mark">(empty)</div>`;
+    const clearBtn = src
+      ? `<button class="ss-clear" onclick="event.stopPropagation();clearSupport(${charIdx}, ${sid})" title="Clear">×</button>`
+      : "";
+    html += `<div class="support-slot ${active} ${charCls}" onclick="setActiveSupport(${charIdx}, ${sid})">
+      <div class="ss-label">${escapeHtml(label)}</div>
+      <div class="ss-body">${bodyHtml}</div>
+      ${clearBtn}
+    </div>`;
+  }
+  html += `</div>`;
+  // Shared picker — filter state = c.charFilter when active char, else c.supportFilter.
+  const isCharActive = c.activeSupport === -1;
+  const pickerFilter = isCharActive ? c.charFilter : c.supportFilter;
+  const pickerKind   = isCharActive ? "char" : "support";
+  const selectedIds  = (c.roleId ? [c.roleId] : []).concat(c.supports.filter(x => x));
+  const placeholder  = isCharActive
+    ? "Search unit for Character slot — name / id / race / element / class…"
+    : `Search source unit for ${activeLabel}…`;
+  html += renderPickerBlock({kind: pickerKind, charIdx, filter: pickerFilter, selectedIds, placeholder});
   html += `</div>`;
 
   // Talents (unchanged — still combobox)
@@ -671,33 +721,6 @@ function renderCharPanel(charIdx) {
     html += `<div class="slot"><div class="slot-label">Slot ${i+1}</div><div class="slot-row">${renderTalentSelect(charIdx, i, c.talents[i])}</div></div>`;
   }
   html += `</div></div>`;
-
-  // === Supports: 3 slot chips + shared grid picker ===
-  html += `<div class="card"><h2>Supports (3 slots — click a slot, then pick a unit below)</h2>`;
-  html += `<div class="support-slots">`;
-  for (let i = 0; i < 3; i++) {
-    const srcId = c.supports[i];
-    const src = srcId ? findRole(srcId) : null;
-    const active = c.activeSupport === i ? "active" : "";
-    const bodyHtml = src
-      ? `<img src="${escapeAttr(roleIcon(src.id))}" alt="" onerror="this.style.visibility='hidden'"><div class="sname">${escapeHtml(src.name)}</div>`
-      : `<div class="empty-mark">(empty)</div>`;
-    const clearBtn = src
-      ? `<button class="ss-clear" onclick="event.stopPropagation();clearSupport(${charIdx}, ${i})" title="Clear">×</button>`
-      : "";
-    html += `<div class="support-slot ${active}" onclick="setActiveSupport(${charIdx}, ${i})">
-      <div class="ss-label">${SUPPORT_LABELS[i]}</div>
-      <div class="ss-body">${bodyHtml}</div>
-      ${clearBtn}
-    </div>`;
-  }
-  html += `</div>`;
-  html += renderPickerBlock({
-    kind: "support", charIdx, filter: c.supportFilter,
-    selectedIds: c.supports.filter(x => x),
-    placeholder: `Search source unit for slot ${c.activeSupport + 1} (${SUPPORT_LABELS[c.activeSupport]})…`
-  });
-  html += `</div>`;
 
   // Equip
   html += `<div class="card"><h2>Equip (10 slots, star default 3)</h2><div class="slot-grid slot-10">`;
