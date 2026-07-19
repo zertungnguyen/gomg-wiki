@@ -248,8 +248,8 @@ button.primary:hover{background:#dab466}
 .gs-slots{display:flex;flex-direction:column;gap:8px;margin-bottom:0}
 .gs-stone{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:6px 8px}
 .gs-stone .gs-stone-title{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:4px}
-.gs-stone .gs-affix-row{display:grid;grid-template-columns:1fr;gap:3px}
-.gs-affix-chip{padding:5px 26px 5px 8px;background:var(--card);border:1.5px solid var(--border);border-radius:4px;cursor:pointer;position:relative;transition:border-color .12s;display:flex;align-items:center;gap:6px;min-height:32px}
+.gs-stone .gs-affix-row{display:grid;grid-template-columns:minmax(0,1fr);gap:3px;min-width:0}
+.gs-affix-chip{padding:5px 26px 5px 8px;background:var(--card);border:1.5px solid var(--border);border-radius:4px;cursor:pointer;position:relative;transition:border-color .12s;display:flex;align-items:center;gap:6px;min-height:32px;min-width:0;max-width:100%}
 .gs-affix-chip:hover{border-color:#555}
 .gs-affix-chip.active{border-color:var(--accent);background:#f5b34215}
 .gs-affix-chip .gac-name{font-size:11px;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -332,6 +332,8 @@ button.primary:hover{background:#dab466}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 })();
 </script>
+
+
 
 
 
