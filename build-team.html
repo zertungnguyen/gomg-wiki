@@ -351,6 +351,8 @@ button.primary:hover{background:#dab466}
 
 
 
+
+
 <div class="page">
 <div class="wrap">
 
@@ -400,6 +402,9 @@ button.primary:hover{background:#dab466}
 <script>
 const DATA = window.BUILD_TEAM_DATA;
 const SLOT_TYPES = DATA.slotTypes;
+// Display-only reorder: Main, Off, Amulet, Badge, Ring, Head, Body, Gloves, Belt, Boots.
+// Underlying state indices (equipList[i], runeList[i]) stay the same — only iteration order shifts.
+const SLOT_DISPLAY_ORDER = [0, 1, 7, 9, 8, 2, 3, 4, 5, 6];
 const SUPPORT_LABELS = ["Perk source", "Trait source", "Title source"];
 
 const state = [
@@ -1232,7 +1237,7 @@ function renderCharPanel(charIdx) {
   // === Equip: 10 slot chips LEFT + shared grid picker RIGHT (2-col like Team) ===
   html += `<div class="card"><h2>Equip (click a slot on the left; picker on the right filters by that slot type)</h2>`;
   html += `<div class="team-row"><div class="equip-slots">`;
-  for (let i = 0; i < 10; i++) {
+  for (const i of SLOT_DISPLAY_ORDER) {
     const slotType = SLOT_TYPES[i];
     const e = c.equipList[i];
     const eq = e.IDs ? findEquip(e.IDs) : null;
@@ -1258,7 +1263,7 @@ function renderCharPanel(charIdx) {
   // === Rune: 10 slot chips LEFT + shared grid picker RIGHT (uniqueness enforced) ===
   html += `<div class="card"><h2>Rune (click a slot on the left; unique per character — a rune can't repeat)</h2>`;
   html += `<div class="team-row"><div class="rune-slots">`;
-  for (let i = 0; i < 10; i++) {
+  for (const i of SLOT_DISPLAY_ORDER) {
     const r = c.runeList[i];
     const rn = r.IDs ? findRune(r.IDs) : null;
     const active = c.activeRune === i ? "active" : "";
