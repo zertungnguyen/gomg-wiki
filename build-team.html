@@ -154,7 +154,11 @@ button.primary:hover{background:#dab466}
 .picker-empty{grid-column:1/-1;text-align:center;padding:20px;color:var(--dim);font-size:12px}
 
 /* Team + Talents cards: 2-col layout — chips stacked vertically LEFT, picker RIGHT */
-.team-row{display:grid;grid-template-columns:220px 1fr;gap:12px;align-items:start}
+.team-row{display:grid;grid-template-columns:220px minmax(0,1fr);gap:12px;align-items:start}
+.team-row > *{min-width:0}
+.team-picker{min-width:0}
+.picker{min-width:0}
+.picker-bar{min-width:0}
 @media(max-width:800px){.team-row{grid-template-columns:1fr}}
 .team-row .support-slots,
 .team-row .talent-slots,
@@ -322,6 +326,8 @@ button.primary:hover{background:#dab466}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 })();
 </script>
+
+
 
 
 
@@ -1127,7 +1133,7 @@ function renderEquipGridBody(charIdx) {
   }
   return html;
 }
-function renderEquipPickerBlock(charIdx) {
+function renderEquipPickerBar(charIdx) {
   const c = state[charIdx];
   const filter = c.equipFilter;
   const activeSlotType = SLOT_TYPES[c.activeEquip];
@@ -1136,15 +1142,22 @@ function renderEquipPickerBlock(charIdx) {
   const placeholderText = roleCls
     ? `Search ${activeSlotType} gear for ${roleCls}…`
     : `Search ${activeSlotType} gear (pick a Character to filter by class)…`;
-  let html = `<div class="picker equip-picker"><div class="picker-bar">`;
+  let html = `<div class="picker-bar equip-picker">`;
   html += `<input type="text" class="search" value="${escapeAttr(filter.search || "")}" placeholder="${escapeAttr(placeholderText)}" oninput="onEquipFilterSearch(${charIdx}, this.value)">`;
   html += `<span class="filter-label">Step:</span>`;
   for (const s of steps) {
     const on = filter.steps[s] ? "on" : "";
     html += `<button class="f-pill ${on} s-${s}" onclick="toggleEquipStep(${charIdx}, '${s}')">${s}</button>`;
   }
-  html += `</div><div class="gear-grid" id="equipGrid-${charIdx}">${renderEquipGridBody(charIdx)}</div></div>`;
+  html += `</div>`;
   return html;
+}
+function renderEquipPickerGrid(charIdx) {
+  return `<div class="gear-grid" id="equipGrid-${charIdx}">${renderEquipGridBody(charIdx)}</div>`;
+}
+// Compat wrapper — combines bar + grid into original single-block layout.
+function renderEquipPickerBlock(charIdx) {
+  return `<div class="picker equip-picker">${renderEquipPickerBar(charIdx)}${renderEquipPickerGrid(charIdx)}</div>`;
 }
 
 function renderCharPanel(charIdx) {
