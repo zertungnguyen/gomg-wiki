@@ -377,6 +377,8 @@ button.primary:hover{background:#dab466}
 
 
 
+
+
 <div class="page">
 <div class="wrap">
 
@@ -940,8 +942,9 @@ function onPickRune(c, id) {
   const slot = state[c].activeRune;
   state[c].runeList[slot].IDs = state[c].runeList[slot].IDs === id ? "" : id;
   if (state[c].runeList[slot].IDs) {
-    for (let i = 1; i <= 10; i++) {
-      const next = (slot + i) % 10;
+    const startIdx = SLOT_DISPLAY_ORDER.indexOf(slot);
+    for (let step = 1; step <= SLOT_DISPLAY_ORDER.length; step++) {
+      const next = SLOT_DISPLAY_ORDER[(startIdx + step) % SLOT_DISPLAY_ORDER.length];
       if (!state[c].runeList[next].IDs) { state[c].activeRune = next; break; }
     }
   }
@@ -1119,10 +1122,11 @@ function onPickEquip(c, id) {
   if (!state[c].roleId) return;
   const slot = state[c].activeEquip;
   state[c].equipList[slot].IDs = state[c].equipList[slot].IDs === id ? "" : id;
-  // Advance to next empty equip slot for convenience
+  // Advance to next empty equip slot in DISPLAY order (matches chip layout).
   if (state[c].equipList[slot].IDs) {
-    for (let i = 1; i <= 10; i++) {
-      const next = (slot + i) % 10;
+    const startIdx = SLOT_DISPLAY_ORDER.indexOf(slot);
+    for (let step = 1; step <= SLOT_DISPLAY_ORDER.length; step++) {
+      const next = SLOT_DISPLAY_ORDER[(startIdx + step) % SLOT_DISPLAY_ORDER.length];
       if (!state[c].equipList[next].IDs) { state[c].activeEquip = next; break; }
     }
   }
