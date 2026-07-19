@@ -157,7 +157,9 @@ button.primary:hover{background:#dab466}
 .team-row{display:grid;grid-template-columns:220px 1fr;gap:12px;align-items:start}
 @media(max-width:800px){.team-row{grid-template-columns:1fr}}
 .team-row .support-slots,
-.team-row .talent-slots{grid-template-columns:1fr;margin-bottom:0}
+.team-row .talent-slots,
+.team-row .equip-slots,
+.team-row .rune-slots{grid-template-columns:1fr;margin-bottom:0}
 
 /* Talent slot chips */
 .talent-slots{display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:10px}
@@ -183,6 +185,37 @@ button.primary:hover{background:#dab466}
 .t-card .step.s-A{background:var(--purple);color:#fff}
 .t-card .step.s-B{background:var(--blue);color:#fff}
 .t-card .step.s-C{background:var(--green);color:#1a1a1a}
+
+/* Equip slot chips + gear grid picker (2-col like Team) */
+.equip-slots{display:grid;grid-template-columns:1fr;gap:6px;margin-bottom:10px}
+.equip-slot{padding:6px 30px 6px 8px;background:var(--card2);border:1.5px solid var(--border);border-radius:6px;cursor:pointer;transition:border-color .12s;display:flex;flex-direction:column;gap:2px;position:relative;min-height:52px}
+.equip-slot:hover{border-color:#555}
+.equip-slot.active{border-color:var(--accent);background:#f5b34215}
+.equip-slot .es-label{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.equip-slot.active .es-label{color:var(--accent)}
+.equip-slot .es-body{display:flex;align-items:center;gap:6px;min-width:0}
+.equip-slot .es-body img{width:28px;height:28px;border-radius:3px;object-fit:contain;background:var(--card);flex-shrink:0}
+.equip-slot .es-body .esname{font-size:11px;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.equip-slot .es-body .empty-mark{font-size:11px;color:var(--dim);font-style:italic;flex:1}
+.equip-slot .es-body .es-star{width:34px;padding:2px 4px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:3px;font-size:11px;flex-shrink:0}
+.equip-slot .es-body .es-h{font-size:10px;color:var(--dim);display:inline-flex;align-items:center;gap:2px;white-space:nowrap;flex-shrink:0}
+.equip-slot .es-body .es-h input{width:auto;margin:0}
+.equip-slot .es-clear{position:absolute;top:4px;right:6px;background:var(--card);border:1px solid var(--border);color:var(--dim);font-size:16px;cursor:pointer;padding:0;line-height:1;width:22px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:700}
+.equip-slot .es-clear:hover{color:var(--accent)}
+
+.gear-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;max-height:340px;overflow-y:auto;padding:8px;background:var(--card2);border:1px solid var(--border);border-radius:6px}
+.g-card{position:relative;border-radius:6px;padding:6px 4px;cursor:pointer;text-align:center;background:var(--card);border:1.5px solid var(--border);transition:all .12s;overflow:hidden;display:flex;flex-direction:column;gap:2px;align-items:center;min-height:88px}
+.g-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.g-card.selected{border-color:var(--accent);background:#f5b34215;box-shadow:0 0 8px #f5b34244}
+.g-card img{width:52px;height:52px;object-fit:contain;background:var(--card2);border-radius:4px}
+.g-card .gname{font-size:11px;font-weight:600;line-height:1.15;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px}
+.g-card .garea{font-size:9px;color:var(--dim);width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.g-card .step{position:absolute;top:4px;left:4px;width:16px;height:16px;border-radius:3px;font-weight:700;font-size:9px;display:flex;align-items:center;justify-content:center}
+.g-card .step.s-SS{background:var(--SS);color:#fff}
+.g-card .step.s-S{background:var(--orange);color:#1a1a1a}
+.g-card .step.s-A{background:var(--purple);color:#fff}
+.g-card .step.s-B{background:var(--blue);color:#fff}
+.g-card .step.s-C{background:var(--green);color:#1a1a1a}
 /* Team-slot chips (Character + 3 Supports) */
 .support-slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
 @media(max-width:800px){.support-slots{grid-template-columns:repeat(2,1fr)}}
@@ -239,6 +272,8 @@ button.primary:hover{background:#dab466}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 })();
 </script>
+
+
 
 
 
@@ -325,7 +360,9 @@ function makeEmptyChar() {
     supportFilter: {search: "", steps: {S: true, A: true, B: true, C: true}, classes: {Warrior: true, Archer: true, Mage: true, Priest: true}},
     activeSupport: 0,   // which support slot (0/1/2) the picker click will fill (-1 = Character)
     talentFilter: {search: "", steps: {S: true, A: true, B: false, C: false}},
-    activeTalent: 0     // which talent slot (0..3) the picker click will fill
+    activeTalent: 0,    // which talent slot (0..3) the picker click will fill
+    equipFilter: {search: "", steps: {SS: true, S: true, A: true, B: false, C: false}},
+    activeEquip: 0      // which equip slot (0..9) the picker click will fill; also drives slot-type filter
   };
 }
 function findRole(id) { return DATA.roles.find(r => r.id === id); }
@@ -783,6 +820,80 @@ function renderTalentPickerBlock(charIdx) {
 }
 
 function findTalent(id) { return DATA.talents.find(t => t.id === id); }
+function findEquip(id)  { return DATA.equips.find(e => e.id === id); }
+
+// === Equip picker (2-col; 10 slots LEFT + shared grid RIGHT, grid auto-filters by active slot type) ===
+function setActiveEquip(c, i)  { state[c].activeEquip = i; renderAll(); }
+function clearEquip(c, i)      { state[c].equipList[i].IDs = ""; renderAll(); }
+function onPickEquip(c, id) {
+  const slot = state[c].activeEquip;
+  state[c].equipList[slot].IDs = state[c].equipList[slot].IDs === id ? "" : id;
+  // Advance to next empty equip slot for convenience
+  if (state[c].equipList[slot].IDs) {
+    for (let i = 1; i <= 10; i++) {
+      const next = (slot + i) % 10;
+      if (!state[c].equipList[next].IDs) { state[c].activeEquip = next; break; }
+    }
+  }
+  renderAll();
+}
+function onEquipFilterSearch(c, val) {
+  state[c].equipFilter.search = val;
+  renderAll();
+  setTimeout(() => {
+    const inp = document.querySelector(`.char-panel.active .equip-picker input.search`);
+    if (inp) { inp.focus(); inp.setSelectionRange(val.length, val.length); }
+  }, 0);
+}
+function toggleEquipStep(c, s) {
+  state[c].equipFilter.steps[s] = !state[c].equipFilter.steps[s];
+  renderAll();
+}
+
+function renderEquipPickerBlock(charIdx) {
+  const c = state[charIdx];
+  const filter = c.equipFilter;
+  const activeSlotType = SLOT_TYPES[c.activeEquip];
+  const steps = ["SS","S","A","B","C"];
+  const q = (filter.search || "").toLowerCase().trim();
+  // Selected set = all filled equip IDs
+  const selSet = new Set(c.equipList.map(e => e.IDs).filter(x => x));
+  const list = (EQUIPS_BY_SLOT[activeSlotType] || []).filter(e => {
+    if (!filter.steps[e.step]) return false;
+    if (q) {
+      const hay = `${e.name} ${e.id} ${e.area || ""} ${e.cls || ""}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  }).sort((a, b) => {
+    const sr = {SS:0,S:1,A:2,B:3,C:4};
+    return (sr[a.step] ?? 9) - (sr[b.step] ?? 9) || a.name.localeCompare(b.name);
+  });
+
+  let html = `<div class="picker equip-picker"><div class="picker-bar">`;
+  html += `<input type="text" class="search" value="${escapeAttr(filter.search || "")}" placeholder="Search ${activeSlotType} gear…" oninput="onEquipFilterSearch(${charIdx}, this.value)">`;
+  html += `<span class="filter-label">Step:</span>`;
+  for (const s of steps) {
+    const on = filter.steps[s] ? "on" : "";
+    html += `<button class="f-pill ${on} s-${s}" onclick="toggleEquipStep(${charIdx}, '${s}')">${s}</button>`;
+  }
+  html += `</div><div class="gear-grid">`;
+  if (!list.length) {
+    html += `<div class="picker-empty">No ${activeSlotType} gear matches these filters</div>`;
+  } else {
+    for (const e of list.slice(0, 500)) {
+      const sel = selSet.has(e.id) ? "selected" : "";
+      html += `<div class="g-card ${sel}" onclick="onPickEquip(${charIdx}, '${escapeAttr(e.id)}')" title="${escapeAttr(e.id + ' — ' + e.name + (e.area ? ' · ' + e.area : ''))}">
+        <div class="step s-${e.step}">${e.step}</div>
+        <img src="${escapeAttr(equipIcon(e.id))}" alt="" loading="lazy" onerror="this.style.background='var(--card2)';this.removeAttribute('src')">
+        <div class="gname">${escapeHtml(e.name)}</div>
+        <div class="garea">${escapeHtml(e.area || "")}</div>
+      </div>`;
+    }
+  }
+  html += `</div></div>`;
+  return html;
+}
 
 function renderCharPanel(charIdx) {
   const c = state[charIdx];
@@ -853,21 +964,31 @@ function renderCharPanel(charIdx) {
   html += renderTalentPickerBlock(charIdx);
   html += `</div></div></div>`;
 
-  // Equip
-  html += `<div class="card"><h2>Equip (10 slots, star default 3)</h2><div class="slot-grid slot-10">`;
+  // === Equip: 10 slot chips LEFT + shared grid picker RIGHT (2-col like Team) ===
+  html += `<div class="card"><h2>Equip (click a slot on the left; picker on the right filters by that slot type)</h2>`;
+  html += `<div class="team-row"><div class="equip-slots">`;
   for (let i = 0; i < 10; i++) {
     const slotType = SLOT_TYPES[i];
     const e = c.equipList[i];
-    html += `<div class="slot">
-      <div class="slot-label">${slotType}</div>
-      <div class="slot-row">
-        ${renderEquipSelect(charIdx, i, slotType, e.IDs)}
-        <input class="mini" type="number" min="0" max="3" value="${e.star}" onchange="onEquipStar(${charIdx}, ${i}, this.value)" title="Star (0-3)">
-        <label class="cb"><input type="checkbox" ${e.Heritage ? "checked" : ""} onchange="onEquipHeritage(${charIdx}, ${i}, this.checked)"> Heritage</label>
-      </div>
+    const eq = e.IDs ? findEquip(e.IDs) : null;
+    const active = c.activeEquip === i ? "active" : "";
+    const bodyHtml = eq
+      ? `<img src="${escapeAttr(equipIcon(eq.id))}" alt="" onerror="this.style.visibility='hidden'"><div class="esname">${escapeHtml(eq.name)}</div>`
+      : `<div class="empty-mark">(empty)</div>`;
+    const starInput = `<input class="es-star" type="number" min="0" max="3" value="${e.star}" onclick="event.stopPropagation()" onchange="onEquipStar(${charIdx}, ${i}, this.value)" title="Star (0-3)">`;
+    const heritageCb = `<label class="es-h" onclick="event.stopPropagation()"><input type="checkbox" ${e.Heritage ? "checked" : ""} onchange="onEquipHeritage(${charIdx}, ${i}, this.checked)">Leg</label>`;
+    const clearBtn = eq
+      ? `<button class="es-clear" onclick="event.stopPropagation();clearEquip(${charIdx}, ${i})" title="Clear">×</button>`
+      : "";
+    html += `<div class="equip-slot ${active}" onclick="setActiveEquip(${charIdx}, ${i})">
+      <div class="es-label">${slotType}</div>
+      <div class="es-body">${bodyHtml}${starInput}${heritageCb}</div>
+      ${clearBtn}
     </div>`;
   }
-  html += `</div></div>`;
+  html += `</div><div class="team-picker">`;
+  html += renderEquipPickerBlock(charIdx);
+  html += `</div></div></div>`;
 
   // Rune
   html += `<div class="card"><h2>Rune (10 slots, star default 3)</h2><div class="slot-grid slot-10">`;
