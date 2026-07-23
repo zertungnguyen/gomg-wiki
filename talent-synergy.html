@@ -218,8 +218,8 @@ function renderSuggest(q) {
 }
 
 // ============ Graph render ============
-function edgeMatchesCats(edge) {
-  return edge.cats.some(c => activeCats.has(c));
+function anyCatActive(cats) {
+  return cats.some(c => activeCats.has(c));
 }
 
 function collectNeighborhood(centerId, hopCount) {
@@ -230,7 +230,7 @@ function collectNeighborhood(centerId, hopCount) {
     const next = [];
     frontier.forEach(nid => {
       (ADJ[nid] || []).forEach(edge => {
-        if (!edgeMatchesCats(edge)) return;
+        if (!anyCatActive(edge.cats)) return;
         if (!seen.has(edge.id)) {
           seen.set(edge.id, h);
           next.push(edge.id);
@@ -277,7 +277,7 @@ function renderGraph() {
   let edgeCount = 0;
   EDGES.forEach(e => {
     if (!nodeSet.has(e.source) || !nodeSet.has(e.target)) return;
-    if (!edgeMatchesCats(e)) return;
+    if (!anyCatActive(e.categories)) return;
     const primaryCat = e.categories.find(c => activeCats.has(c)) || e.categories[0];
     els.push({
       data: {
