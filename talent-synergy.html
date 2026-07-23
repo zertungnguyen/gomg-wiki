@@ -54,6 +54,12 @@ h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:va
 .controls .toggle-cat .dot[data-cat="action"]{background:var(--cat-action)}
 .controls .toggle-cat .dot[data-cat="stat"]{background:var(--cat-stat)}
 .controls .toggle-cat .dot[data-cat="restriction"]{background:var(--cat-restriction)}
+.controls .toggle-nt{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:4px;border:1.5px solid var(--border);background:transparent;cursor:pointer;user-select:none;font-size:11px;font-family:'Chakra Petch',sans-serif;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--dim)}
+.controls .toggle-nt .dot{width:8px;height:8px;border-radius:50%}
+.controls .toggle-nt.on{color:#fff;background:var(--card2);border-color:#666}
+.controls .toggle-nt.on[data-nt="talent"]{border-color:#f5b342}
+.controls .toggle-nt.on[data-nt="unit"]{border-color:#2dd4bf}
+.controls .toggle-nt.on[data-nt="bond"]{border-color:#e0854a}
 
 .legend{font-size:11px;color:var(--dim);margin:8px 0;font-family:'Chakra Petch',sans-serif;letter-spacing:.3px}
 
@@ -104,7 +110,7 @@ h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:va
 <div class="wrap">
 
 <h1>Synergy Mind Map</h1>
-<div class="sub">Rule-engine derived synergy graph for <strong>395 talents</strong> + <strong>193 units</strong> (kit-based). Type a talent OR unit name to see it centered with all synergistic neighbors (1 or 2 hop). Talent nodes = circle, colored by step (S/A/B/C). Unit nodes = teal hexagon. Edge color = synergy category.</div>
+<div class="sub">Rule-engine derived synergy graph for <strong>395 talents</strong> + <strong>193 units</strong> + <strong>872 bonds</strong>. Type a talent, unit, or bond name to see it centered with all synergistic neighbors. Talent = colored circle (step S/A/B/C). Unit = teal hexagon. Bond = amber diamond. Unit↔Bond edges are class-gated (only bonds equippable by the unit's class). Edge color = synergy category.</div>
 
 <div class="hint">
   Type in the box to search fuzzy across name, ID, and effect text. Click a suggestion (or press <kbd>Enter</kbd>) to center the graph. Click any node in the graph to re-center on it. Scroll = zoom, drag = pan.
@@ -112,7 +118,7 @@ h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:va
 
 <div class="top-row">
   <div class="searchbox">
-    <input id="searchInput" placeholder="Search talent or unit (e.g. Hypothermia, Frostbound, M53301_001, Chill)..." autocomplete="off">
+    <input id="searchInput" placeholder="Search talent, unit, or bond (e.g. Hypothermia, Frostbound, Sharp, JN00001)..." autocomplete="off">
     <div class="suggest" id="suggest"></div>
   </div>
   <div class="controls">
@@ -132,6 +138,13 @@ h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:va
   <button class="toggle-cat on" data-cat="action" onclick="toggleCat('action')"><span class="dot" data-cat="action"></span>Action</button>
   <button class="toggle-cat on" data-cat="stat" onclick="toggleCat('stat')"><span class="dot" data-cat="stat"></span>Stat</button>
   <button class="toggle-cat on" data-cat="restriction" onclick="toggleCat('restriction')"><span class="dot" data-cat="restriction"></span>Restriction (weak)</button>
+</div>
+
+<div class="controls" style="margin-bottom:10px">
+  <span style="font-size:11px;color:var(--dim);font-family:'Chakra Petch',sans-serif;letter-spacing:.5px">Node types:</span>
+  <button class="toggle-nt on" data-nt="talent" onclick="toggleNodeType('talent')"><span class="dot" style="background:#f5b342"></span>Talent</button>
+  <button class="toggle-nt on" data-nt="unit" onclick="toggleNodeType('unit')"><span class="dot" style="background:#2dd4bf"></span>Unit</button>
+  <button class="toggle-nt on" data-nt="bond" onclick="toggleNodeType('bond')"><span class="dot" style="background:#e0854a"></span>Bond</button>
 </div>
 
 <div class="info-panel" id="infoPanel" style="display:none">
@@ -175,7 +188,9 @@ const CAT_COLOR = {
 };
 const STEP_COLOR = { S: '#f5b342', A: '#c290e8', B: '#4ea1ff', C: '#6cc090' };
 const UNIT_COLOR = '#2dd4bf';  // teal for unit nodes
+const BOND_COLOR = '#e0854a';  // amber for bond nodes
 const activeCats = new Set(['status', 'event', 'action', 'stat', 'restriction']);
+const activeTypes = new Set(['talent', 'unit', 'bond']);
 let hops = 1;
 let currentCenter = null;
 let cy = null;
@@ -198,7 +213,7 @@ function renderSuggest(q) {
   const box = document.getElementById('suggest');
   if (!q || q.length < 2) { box.style.display = 'none'; return; }
   const scored = NODES.map(n => ({node: n, score: fuzzyMatch(n, q)}))
-                       .filter(x => x.score > 0)
+                       .filter(x => x.score > 0 && activeTypes.has(x.node.type || 'talent'))
                        .sort((a, b) => b.score - a.score || a.node.id.localeCompare(b.node.id))
                        .slice(0, 60);
   if (!scored.length) {
@@ -208,19 +223,25 @@ function renderSuggest(q) {
   }
   box.innerHTML = scored.map(x => {
     const n = x.node;
-    const isUnit = n.type === 'unit';
-    const detail = isUnit
-      ? [n.class, n.element, n.race, n.theme].filter(Boolean).join(' · ')
-      : (n.effect || '').slice(0, 70);
-    const trailing = isUnit ? '' : ((n.effect || '').length > 70 ? '…' : '');
-    const badge = isUnit
-      ? `<span class="step" style="background:rgba(45,212,191,.2);color:#2dd4bf">UNIT</span>`
-      : `<span class="step step-${n.step}">${n.step}</span>`;
+    const t = n.type || 'talent';
+    let detail = '';
+    let badge = '';
+    if (t === 'unit') {
+      detail = [n.class, n.element, n.race, n.theme].filter(Boolean).join(' · ');
+      badge = `<span class="step" style="background:rgba(45,212,191,.2);color:#2dd4bf">UNIT</span>`;
+    } else if (t === 'bond') {
+      const classes = (n.classes || []).length ? ` [${n.classes.join('/')}]` : '';
+      detail = (n.effect || '').slice(0, 60) + classes;
+      badge = `<span class="step" style="background:rgba(224,133,74,.2);color:#e0854a">BOND</span>`;
+    } else {
+      detail = (n.effect || '').slice(0, 70) + ((n.effect || '').length > 70 ? '…' : '');
+      badge = `<span class="step step-${n.step}">${n.step}</span>`;
+    }
     return `<div class="suggest-item" onclick="selectTalent('${n.id}')">
       <span class="id">${escapeHtml(n.id)}</span>
       ${badge}
       <span class="name">${escapeHtml(n.name)}${n.theme ? ' [' + escapeHtml(n.theme) + ']' : ''}</span>
-      <span class="effect">${escapeHtml(detail)}${trailing}</span>
+      <span class="effect">${escapeHtml(detail)}</span>
     </div>`;
   }).join('');
   box.style.display = 'block';
@@ -240,6 +261,9 @@ function collectNeighborhood(centerId, hopCount) {
     frontier.forEach(nid => {
       (ADJ[nid] || []).forEach(edge => {
         if (!anyCatActive(edge.cats)) return;
+        const neighbor = NODE_BY_ID[edge.id];
+        if (!neighbor) return;
+        if (!activeTypes.has(neighbor.type || 'talent')) return;
         if (!seen.has(edge.id)) {
           seen.set(edge.id, h);
           next.push(edge.id);
@@ -271,12 +295,16 @@ function renderGraph() {
   nodeIds.forEach(id => {
     const n = NODE_BY_ID[id];
     if (!n) return;
+    const nt = n.type || 'talent';
+    let label = n.name;
+    if (nt === 'unit' && n.theme) label = `${n.name} [${n.theme}]`;
+    else if (nt === 'bond') label = n.name;
     els.push({
       data: {
         id: n.id,
-        label: n.type === 'unit' && n.theme ? `${n.name} [${n.theme}]` : n.name,
+        label: label,
         step: n.step,
-        ntype: n.type || 'talent',
+        ntype: nt,
         isCenter: (id === currentCenter),
       }
     });
@@ -313,8 +341,18 @@ function renderGraph() {
       {
         selector: 'node',
         style: {
-          'background-color': ele => ele.data('ntype') === 'unit' ? UNIT_COLOR : (STEP_COLOR[ele.data('step')] || '#888'),
-          'shape': ele => ele.data('ntype') === 'unit' ? 'hexagon' : 'ellipse',
+          'background-color': ele => {
+            const t = ele.data('ntype');
+            if (t === 'unit') return UNIT_COLOR;
+            if (t === 'bond') return BOND_COLOR;
+            return STEP_COLOR[ele.data('step')] || '#888';
+          },
+          'shape': ele => {
+            const t = ele.data('ntype');
+            if (t === 'unit') return 'hexagon';
+            if (t === 'bond') return 'diamond';
+            return 'ellipse';
+          },
           'label': 'data(label)',
           'color': '#e3e3e3',
           'font-size': 10,
@@ -398,6 +436,16 @@ function renderGraph() {
       center.name + (center.theme ? ` [${center.theme}]` : '');
     document.getElementById('infoEffect').textContent =
       '(unit — synergy computed from NormalAttack + Perk + Trait + Title + Unique kit tokens)';
+  } else if (center.type === 'bond') {
+    const classes = (center.classes || []).length
+      ? (center.classes.includes('*') ? 'All-Class' : center.classes.join(', '))
+      : 'no known equip source';
+    document.getElementById('infoMeta').textContent =
+      `BOND · ${center.id} · Step ${center.step} · ${center.bond_type || ''}` +
+      ` · Equippable by: ${classes}` +
+      (center.tag ? ` · Tag: ${center.tag}` : '');
+    document.getElementById('infoName').textContent = center.name;
+    document.getElementById('infoEffect').textContent = center.effect || '(no effect text)';
   } else {
     document.getElementById('infoMeta').textContent =
       `${center.id} · Step ${center.step}` +
@@ -415,6 +463,12 @@ function renderGraph() {
 function toggleCat(cat) {
   if (activeCats.has(cat)) activeCats.delete(cat); else activeCats.add(cat);
   document.querySelector(`button[data-cat="${cat}"]`).classList.toggle('on');
+  if (currentCenter) renderGraph();
+}
+
+function toggleNodeType(nt) {
+  if (activeTypes.has(nt)) activeTypes.delete(nt); else activeTypes.add(nt);
+  document.querySelector(`button[data-nt="${nt}"]`).classList.toggle('on');
   if (currentCenter) renderGraph();
 }
 
