@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Talent Synergy — Guild of Monster Girls Wiki</title>
+<title>Synergy Mind Map — Guild of Monster Girls Wiki</title>
 <link rel="stylesheet" href="style.css">
 <style>
 :root{
@@ -103,8 +103,8 @@ h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:va
 <main class="content">
 <div class="wrap">
 
-<h1>Talent Synergy</h1>
-<div class="sub">Rule-engine derived synergy graph for <strong>395 talents</strong>. Type a talent name to see it centered with all synergistic neighbors (1 or 2 hop). Node color = step (S/A/B/C). Edge color = synergy category. <strong>8,752 total edges</strong>.</div>
+<h1>Synergy Mind Map</h1>
+<div class="sub">Rule-engine derived synergy graph for <strong>395 talents</strong> + <strong>193 units</strong> (kit-based). Type a talent OR unit name to see it centered with all synergistic neighbors (1 or 2 hop). Talent nodes = circle, colored by step (S/A/B/C). Unit nodes = teal hexagon. Edge color = synergy category.</div>
 
 <div class="hint">
   Type in the box to search fuzzy across name, ID, and effect text. Click a suggestion (or press <kbd>Enter</kbd>) to center the graph. Click any node in the graph to re-center on it. Scroll = zoom, drag = pan.
@@ -112,7 +112,7 @@ h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:va
 
 <div class="top-row">
   <div class="searchbox">
-    <input id="searchInput" placeholder="Search talent (e.g. Hypothermia, Frost Wind, TF01015, Chill)..." autocomplete="off">
+    <input id="searchInput" placeholder="Search talent or unit (e.g. Hypothermia, Frostbound, M53301_001, Chill)..." autocomplete="off">
     <div class="suggest" id="suggest"></div>
   </div>
   <div class="controls">
@@ -174,6 +174,7 @@ const CAT_COLOR = {
   restriction: '#a8a8a8',
 };
 const STEP_COLOR = { S: '#f5b342', A: '#c290e8', B: '#4ea1ff', C: '#6cc090' };
+const UNIT_COLOR = '#2dd4bf';  // teal for unit nodes
 const activeCats = new Set(['status', 'event', 'action', 'stat', 'restriction']);
 let hops = 1;
 let currentCenter = null;
@@ -188,6 +189,7 @@ function fuzzyMatch(node, q) {
   const ql = q.toLowerCase();
   if (node.id.toLowerCase().includes(ql)) return 3;
   if ((node.name || '').toLowerCase().includes(ql)) return 2;
+  if ((node.theme || '').toLowerCase().includes(ql)) return 2;
   if ((node.effect || '').toLowerCase().includes(ql)) return 1;
   return 0;
 }
@@ -206,12 +208,19 @@ function renderSuggest(q) {
   }
   box.innerHTML = scored.map(x => {
     const n = x.node;
-    const eff = (n.effect || '').slice(0, 70);
+    const isUnit = n.type === 'unit';
+    const detail = isUnit
+      ? [n.class, n.element, n.race, n.theme].filter(Boolean).join(' · ')
+      : (n.effect || '').slice(0, 70);
+    const trailing = isUnit ? '' : ((n.effect || '').length > 70 ? '…' : '');
+    const badge = isUnit
+      ? `<span class="step" style="background:rgba(45,212,191,.2);color:#2dd4bf">UNIT</span>`
+      : `<span class="step step-${n.step}">${n.step}</span>`;
     return `<div class="suggest-item" onclick="selectTalent('${n.id}')">
       <span class="id">${escapeHtml(n.id)}</span>
-      <span class="step step-${n.step}">${n.step}</span>
-      <span class="name">${escapeHtml(n.name)}</span>
-      <span class="effect">${escapeHtml(eff)}${(n.effect || '').length > 70 ? '…' : ''}</span>
+      ${badge}
+      <span class="name">${escapeHtml(n.name)}${n.theme ? ' [' + escapeHtml(n.theme) + ']' : ''}</span>
+      <span class="effect">${escapeHtml(detail)}${trailing}</span>
     </div>`;
   }).join('');
   box.style.display = 'block';
@@ -265,8 +274,9 @@ function renderGraph() {
     els.push({
       data: {
         id: n.id,
-        label: n.name,
+        label: n.type === 'unit' && n.theme ? `${n.name} [${n.theme}]` : n.name,
         step: n.step,
+        ntype: n.type || 'talent',
         isCenter: (id === currentCenter),
       }
     });
@@ -303,7 +313,8 @@ function renderGraph() {
       {
         selector: 'node',
         style: {
-          'background-color': ele => STEP_COLOR[ele.data('step')] || '#888',
+          'background-color': ele => ele.data('ntype') === 'unit' ? UNIT_COLOR : (STEP_COLOR[ele.data('step')] || '#888'),
+          'shape': ele => ele.data('ntype') === 'unit' ? 'hexagon' : 'ellipse',
           'label': 'data(label)',
           'color': '#e3e3e3',
           'font-size': 10,
@@ -377,13 +388,25 @@ function renderGraph() {
   // Info panel
   const panel = document.getElementById('infoPanel');
   panel.style.display = 'block';
-  document.getElementById('infoMeta').textContent =
-    `${center.id} · Step ${center.step}` +
-    (center.exclusive ? ` · Exclusive → ${center.exclusive}` :
-      center.race ? ` · Race lock: ${center.race}` :
-      center.class ? ` · Class lock: ${center.class}` : '');
-  document.getElementById('infoName').textContent = center.name;
-  document.getElementById('infoEffect').textContent = center.effect || '(no effect text)';
+  if (center.type === 'unit') {
+    document.getElementById('infoMeta').textContent =
+      `UNIT · ${center.id} · Step ${center.step}` +
+      (center.class ? ` · ${center.class}` : '') +
+      (center.element ? ` · ${center.element}` : '') +
+      (center.race ? ` · ${center.race}` : '');
+    document.getElementById('infoName').textContent =
+      center.name + (center.theme ? ` [${center.theme}]` : '');
+    document.getElementById('infoEffect').textContent =
+      '(unit — synergy computed from NormalAttack + Perk + Trait + Title + Unique kit tokens)';
+  } else {
+    document.getElementById('infoMeta').textContent =
+      `${center.id} · Step ${center.step}` +
+      (center.exclusive ? ` · Exclusive → ${center.exclusive}` :
+        center.race ? ` · Race lock: ${center.race}` :
+        center.class ? ` · Class lock: ${center.class}` : '');
+    document.getElementById('infoName').textContent = center.name;
+    document.getElementById('infoEffect').textContent = center.effect || '(no effect text)';
+  }
   document.getElementById('infoNeighbors').textContent =
     `${seen.size - 1} neighbor(s) shown (${edgeCount} edges) · ${hops} hop(s)`;
 }
