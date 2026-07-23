@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Talent Synergy — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="style.css">
+<style>
+:root{
+  --card:#1d2025; --card2:#0f1114;
+  --text:#e3e3e3; --dim:#a8a8a8;
+  --S:#f5b342; --A:#c290e8; --B:#4ea1ff; --C:#6cc090;
+  --accent:#f5b342;
+  --cat-status:#4ea1ff;
+  --cat-event:#c290e8;
+  --cat-action:#f5b342;
+  --cat-stat:#6cc090;
+  --cat-restriction:#a8a8a8;
+}
+.wrap{max-width:1400px;margin:0 auto;padding:0 0 40px}
+h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:2px}
+.sub{color:var(--dim);font-size:13px;margin-bottom:14px;line-height:1.5}
+
+.top-row{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.searchbox{position:relative;flex:1;max-width:520px;min-width:280px}
+#searchInput{width:100%;padding:9px 14px;background:var(--card2);color:var(--text);border:1px solid var(--border);border-radius:4px;font-size:14px;font-family:'Noto Sans',sans-serif}
+#searchInput:focus{outline:none;border-color:var(--accent)}
+.suggest{position:absolute;top:100%;left:0;right:0;margin-top:2px;max-height:340px;overflow-y:auto;background:var(--card);border:1px solid var(--border);border-radius:4px;box-shadow:0 6px 20px rgba(0,0,0,.5);z-index:100;display:none}
+.suggest-item{padding:8px 12px;cursor:pointer;border-bottom:1px solid #23232f;font-size:13px;display:flex;align-items:center;gap:10px}
+.suggest-item:hover{background:var(--card2)}
+.suggest-item .id{font-family:Consolas,monospace;font-size:11px;color:var(--dim);min-width:75px}
+.suggest-item .step{display:inline-block;padding:1px 7px;border-radius:3px;font-size:10px;font-weight:700;font-family:'Chakra Petch',sans-serif}
+.suggest-item .name{flex:1;font-weight:600}
+.suggest-item .effect{color:var(--dim);font-size:11px;flex:2;text-align:right;text-overflow:ellipsis;overflow:hidden;white-space:nowrap}
+.suggest-empty{padding:14px;color:var(--dim);text-align:center;font-style:italic;font-size:13px}
+.step-S{background:rgba(245,179,66,.2);color:var(--S)}
+.step-A{background:rgba(194,144,232,.2);color:var(--A)}
+.step-B{background:rgba(78,161,255,.2);color:var(--B)}
+.step-C{background:rgba(108,192,144,.2);color:var(--C)}
+
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.controls button, .controls select{padding:7px 12px;background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:4px;cursor:pointer;font-family:'Chakra Petch',sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:1px}
+.controls button:hover, .controls select:hover{border-color:var(--accent)}
+.controls .toggle-cat{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:4px;border:1.5px solid var(--border);background:transparent;cursor:pointer;user-select:none;font-size:11px;font-family:'Chakra Petch',sans-serif;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.controls .toggle-cat .dot{width:8px;height:8px;border-radius:50%}
+.controls .toggle-cat.on{color:#fff;background:var(--card2)}
+.controls .toggle-cat.on[data-cat="status"]{border-color:var(--cat-status);color:var(--cat-status);background:rgba(78,161,255,.12)}
+.controls .toggle-cat.on[data-cat="event"]{border-color:var(--cat-event);color:var(--cat-event);background:rgba(194,144,232,.12)}
+.controls .toggle-cat.on[data-cat="action"]{border-color:var(--cat-action);color:var(--cat-action);background:rgba(245,179,66,.12)}
+.controls .toggle-cat.on[data-cat="stat"]{border-color:var(--cat-stat);color:var(--cat-stat);background:rgba(108,192,144,.12)}
+.controls .toggle-cat.on[data-cat="restriction"]{border-color:var(--cat-restriction);color:var(--cat-restriction);background:rgba(168,168,168,.12)}
+.controls .toggle-cat .dot[data-cat="status"]{background:var(--cat-status)}
+.controls .toggle-cat .dot[data-cat="event"]{background:var(--cat-event)}
+.controls .toggle-cat .dot[data-cat="action"]{background:var(--cat-action)}
+.controls .toggle-cat .dot[data-cat="stat"]{background:var(--cat-stat)}
+.controls .toggle-cat .dot[data-cat="restriction"]{background:var(--cat-restriction)}
+
+.legend{font-size:11px;color:var(--dim);margin:8px 0;font-family:'Chakra Petch',sans-serif;letter-spacing:.3px}
+
+#graphWrap{position:relative;background:var(--card2);border:1px solid var(--border);border-radius:6px;height:70vh;min-height:520px;margin-bottom:14px}
+#cy{width:100%;height:100%}
+#graphEmpty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--dim);font-style:italic;font-size:14px;padding:20px;text-align:center}
+
+.info-panel{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:14px 16px;margin-bottom:12px}
+.info-panel h3{font-family:'Chakra Petch',sans-serif;font-size:13px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin:0 0 8px 0}
+.info-panel .meta{font-family:'Chakra Petch',sans-serif;font-size:11px;color:var(--dim);letter-spacing:.5px;margin-bottom:6px}
+.info-panel .effect{font-size:13px;line-height:1.5;color:var(--text);margin:6px 0}
+.info-panel .neighbor-count{font-size:11px;color:var(--dim);font-family:'Chakra Petch',sans-serif;letter-spacing:.5px}
+
+.hint{background:var(--card2);border-left:3px solid var(--accent);padding:8px 12px;font-size:12px;color:var(--dim);margin-bottom:10px;border-radius:3px}
+.hint kbd{background:var(--card);padding:1px 6px;border-radius:3px;font-family:Consolas,monospace;font-size:11px;color:var(--text);border:1px solid var(--border)}
+</style>
+</head>
+<body>
+<aside class="sidenav">
+  <button class="sn-collapse-btn" onclick="toggleSidenav()" title="Hide menu" aria-label="Hide menu">&#8249;</button>
+  <a class="brand" href="index.html">GMG Wiki</a>
+  <nav>
+    <a href="units/index.html">Units</a>
+    <a href="keywords/index.html">Keywords</a>
+    <a href="gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="talent-simulator.html">Talent Simulator</a>
+    <a href="talent-manage.html">My Talents</a>
+    <a href="build-team.html">Build Team</a>
+    <a href="battle-logs.html">Battle Logs</a>
+    <a href="search-unit.html">Search &middot; Units</a>
+    <a href="search-talent.html">Search &middot; Talents (facet)</a>
+    <a href="search-talent-new.html">Search &middot; Talents (fulltext)</a>
+    <a href="search-gear.html">Search &middot; Gear</a>
+    <a href="search-runes.html">Search &middot; Runes</a>
+    <a href="search-godstone.html">Search &middot; Jewels</a>
+    <a href="search-blessing.html">Search &middot; Blessings</a>
+    <a href="talent-synergy.html" class="current">Talent Synergy</a>
+    <a href="news.html">News</a>
+  </nav>
+</aside>
+<button class="sn-expand-btn" onclick="toggleSidenav()" title="Show menu" aria-label="Show menu">&#9776;</button>
+<script>
+(function(){var K='mgg-sidenav-collapsed';function apply(){document.body.classList.toggle('sn-collapsed',localStorage.getItem(K)==='1');}window.toggleSidenav=function(){var n=document.body.classList.toggle('sn-collapsed');try{localStorage.setItem(K,n?'1':'0');}catch(e){}};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();})();
+</script>
+
+<div class="page">
+<main class="content">
+<div class="wrap">
+
+<h1>Talent Synergy</h1>
+<div class="sub">Rule-engine derived synergy graph for <strong>395 talents</strong>. Type a talent name to see it centered with all synergistic neighbors (1 or 2 hop). Node color = step (S/A/B/C). Edge color = synergy category. <strong>8,752 total edges</strong>.</div>
+
+<div class="hint">
+  Type in the box to search fuzzy across name, ID, and effect text. Click a suggestion (or press <kbd>Enter</kbd>) to center the graph. Click any node in the graph to re-center on it. Scroll = zoom, drag = pan.
+</div>
+
+<div class="top-row">
+  <div class="searchbox">
+    <input id="searchInput" placeholder="Search talent (e.g. Hypothermia, Frost Wind, TF01015, Chill)..." autocomplete="off">
+    <div class="suggest" id="suggest"></div>
+  </div>
+  <div class="controls">
+    <label style="font-size:11px;color:var(--dim);font-family:'Chakra Petch',sans-serif;letter-spacing:.5px">Hops:</label>
+    <select id="hopSel">
+      <option value="1" selected>1 (immediate neighbors)</option>
+      <option value="2">2 (extended neighborhood)</option>
+    </select>
+    <button onclick="clearGraph()">Clear</button>
+  </div>
+</div>
+
+<div class="controls" style="margin-bottom:10px">
+  <span style="font-size:11px;color:var(--dim);font-family:'Chakra Petch',sans-serif;letter-spacing:.5px">Edge categories:</span>
+  <button class="toggle-cat on" data-cat="status" onclick="toggleCat('status')"><span class="dot" data-cat="status"></span>Status</button>
+  <button class="toggle-cat on" data-cat="event" onclick="toggleCat('event')"><span class="dot" data-cat="event"></span>Trigger</button>
+  <button class="toggle-cat on" data-cat="action" onclick="toggleCat('action')"><span class="dot" data-cat="action"></span>Action</button>
+  <button class="toggle-cat on" data-cat="stat" onclick="toggleCat('stat')"><span class="dot" data-cat="stat"></span>Stat</button>
+  <button class="toggle-cat on" data-cat="restriction" onclick="toggleCat('restriction')"><span class="dot" data-cat="restriction"></span>Restriction (weak)</button>
+</div>
+
+<div class="info-panel" id="infoPanel" style="display:none">
+  <div class="meta" id="infoMeta"></div>
+  <h3 id="infoName"></h3>
+  <div class="effect" id="infoEffect"></div>
+  <div class="neighbor-count" id="infoNeighbors"></div>
+</div>
+
+<div id="graphWrap">
+  <div id="cy"></div>
+  <div id="graphEmpty">Pick a talent above to render its synergy ego-network.</div>
+</div>
+
+</div>
+</main>
+</div>
+
+<script src="https://unpkg.com/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
+<script src="talent-synergy-data.js"></script>
+<script>
+const DATA = window.TALENT_SYNERGY || {nodes: [], edges: []};
+const NODES = DATA.nodes;
+const EDGES = DATA.edges;
+const NODE_BY_ID = Object.fromEntries(NODES.map(n => [n.id, n]));
+
+// Fast neighbor lookup: id → [neighborId, [categories]]
+const ADJ = {};
+NODES.forEach(n => { ADJ[n.id] = []; });
+EDGES.forEach(e => {
+  ADJ[e.source].push({id: e.target, cats: e.categories, reason: e.reason});
+  ADJ[e.target].push({id: e.source, cats: e.categories, reason: e.reason});
+});
+
+const CAT_COLOR = {
+  status:      '#4ea1ff',
+  event:       '#c290e8',
+  action:      '#f5b342',
+  stat:        '#6cc090',
+  restriction: '#a8a8a8',
+};
+const STEP_COLOR = { S: '#f5b342', A: '#c290e8', B: '#4ea1ff', C: '#6cc090' };
+const activeCats = new Set(['status', 'event', 'action', 'stat', 'restriction']);
+let hops = 1;
+let currentCenter = null;
+let cy = null;
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+}
+
+// ============ Fuzzy search ============
+function fuzzyMatch(node, q) {
+  const ql = q.toLowerCase();
+  if (node.id.toLowerCase().includes(ql)) return 3;
+  if ((node.name || '').toLowerCase().includes(ql)) return 2;
+  if ((node.effect || '').toLowerCase().includes(ql)) return 1;
+  return 0;
+}
+
+function renderSuggest(q) {
+  const box = document.getElementById('suggest');
+  if (!q || q.length < 2) { box.style.display = 'none'; return; }
+  const scored = NODES.map(n => ({node: n, score: fuzzyMatch(n, q)}))
+                       .filter(x => x.score > 0)
+                       .sort((a, b) => b.score - a.score || a.node.id.localeCompare(b.node.id))
+                       .slice(0, 60);
+  if (!scored.length) {
+    box.innerHTML = '<div class="suggest-empty">No matches.</div>';
+    box.style.display = 'block';
+    return;
+  }
+  box.innerHTML = scored.map(x => {
+    const n = x.node;
+    const eff = (n.effect || '').slice(0, 70);
+    return `<div class="suggest-item" onclick="selectTalent('${n.id}')">
+      <span class="id">${escapeHtml(n.id)}</span>
+      <span class="step step-${n.step}">${n.step}</span>
+      <span class="name">${escapeHtml(n.name)}</span>
+      <span class="effect">${escapeHtml(eff)}${(n.effect || '').length > 70 ? '…' : ''}</span>
+    </div>`;
+  }).join('');
+  box.style.display = 'block';
+}
+
+// ============ Graph render ============
+function edgeMatchesCats(edge) {
+  return edge.cats.some(c => activeCats.has(c));
+}
+
+function collectNeighborhood(centerId, hopCount) {
+  const seen = new Map();  // id → depth
+  seen.set(centerId, 0);
+  let frontier = [centerId];
+  for (let h = 1; h <= hopCount; h++) {
+    const next = [];
+    frontier.forEach(nid => {
+      (ADJ[nid] || []).forEach(edge => {
+        if (!edgeMatchesCats(edge)) return;
+        if (!seen.has(edge.id)) {
+          seen.set(edge.id, h);
+          next.push(edge.id);
+        }
+      });
+    });
+    frontier = next;
+  }
+  return seen;
+}
+
+function selectTalent(nodeId) {
+  const node = NODE_BY_ID[nodeId];
+  if (!node) return;
+  currentCenter = nodeId;
+  document.getElementById('suggest').style.display = 'none';
+  document.getElementById('searchInput').value = `${node.id} · ${node.name}`;
+  renderGraph();
+}
+
+function renderGraph() {
+  if (!currentCenter) return;
+  const center = NODE_BY_ID[currentCenter];
+  const seen = collectNeighborhood(currentCenter, hops);
+
+  // Build cytoscape elements
+  const els = [];
+  const nodeIds = Array.from(seen.keys());
+  nodeIds.forEach(id => {
+    const n = NODE_BY_ID[id];
+    if (!n) return;
+    els.push({
+      data: {
+        id: n.id,
+        label: n.name,
+        step: n.step,
+        isCenter: (id === currentCenter),
+      }
+    });
+  });
+
+  // Edges — only between nodes in the seen set
+  const nodeSet = new Set(nodeIds);
+  let edgeCount = 0;
+  EDGES.forEach(e => {
+    if (!nodeSet.has(e.source) || !nodeSet.has(e.target)) return;
+    if (!edgeMatchesCats(e)) return;
+    const primaryCat = e.categories.find(c => activeCats.has(c)) || e.categories[0];
+    els.push({
+      data: {
+        id: e.source + '_' + e.target,
+        source: e.source,
+        target: e.target,
+        cat: primaryCat,
+        reason: e.reason,
+      }
+    });
+    edgeCount++;
+  });
+
+  document.getElementById('graphEmpty').style.display = els.length ? 'none' : 'flex';
+
+  if (cy) { cy.destroy(); cy = null; }
+  if (!els.length) return;
+
+  cy = cytoscape({
+    container: document.getElementById('cy'),
+    elements: els,
+    style: [
+      {
+        selector: 'node',
+        style: {
+          'background-color': ele => STEP_COLOR[ele.data('step')] || '#888',
+          'label': 'data(label)',
+          'color': '#e3e3e3',
+          'font-size': 10,
+          'font-family': 'Noto Sans, sans-serif',
+          'text-outline-color': '#0e0e12',
+          'text-outline-width': 2,
+          'text-valign': 'bottom',
+          'text-margin-y': 4,
+          'width': 24,
+          'height': 24,
+          'border-width': 1,
+          'border-color': '#1a1a22',
+        }
+      },
+      {
+        selector: 'node[?isCenter]',
+        style: {
+          'width': 44,
+          'height': 44,
+          'font-size': 14,
+          'font-weight': 700,
+          'border-width': 3,
+          'border-color': '#ffffff',
+        }
+      },
+      {
+        selector: 'edge',
+        style: {
+          'width': 1.5,
+          'line-color': ele => CAT_COLOR[ele.data('cat')] || '#666',
+          'curve-style': 'bezier',
+          'opacity': 0.55,
+        }
+      },
+      {
+        selector: 'edge:selected, edge.hovered',
+        style: {
+          'line-color': '#f5b342',
+          'width': 3,
+          'opacity': 1,
+        }
+      },
+      {
+        selector: 'node:selected',
+        style: {
+          'border-color': '#f5b342',
+          'border-width': 4,
+        }
+      },
+    ],
+    layout: {
+      name: 'concentric',
+      concentric: n => (n.data('isCenter') ? 10 : 0),
+      levelWidth: () => 1,
+      minNodeSpacing: 22,
+      animate: false,
+    },
+    minZoom: 0.2,
+    maxZoom: 3,
+    wheelSensitivity: 0.3,
+  });
+
+  cy.on('tap', 'node', evt => {
+    const nid = evt.target.id();
+    if (nid !== currentCenter) selectTalent(nid);
+  });
+
+  cy.on('mouseover', 'edge', evt => { evt.target.addClass('hovered'); });
+  cy.on('mouseout', 'edge', evt => { evt.target.removeClass('hovered'); });
+
+  // Info panel
+  const panel = document.getElementById('infoPanel');
+  panel.style.display = 'block';
+  document.getElementById('infoMeta').textContent =
+    `${center.id} · Step ${center.step}` +
+    (center.exclusive ? ` · Exclusive → ${center.exclusive}` :
+      center.race ? ` · Race lock: ${center.race}` :
+      center.class ? ` · Class lock: ${center.class}` : '');
+  document.getElementById('infoName').textContent = center.name;
+  document.getElementById('infoEffect').textContent = center.effect || '(no effect text)';
+  document.getElementById('infoNeighbors').textContent =
+    `${seen.size - 1} neighbor(s) shown (${edgeCount} edges) · ${hops} hop(s)`;
+}
+
+// ============ Controls ============
+function toggleCat(cat) {
+  if (activeCats.has(cat)) activeCats.delete(cat); else activeCats.add(cat);
+  document.querySelector(`button[data-cat="${cat}"]`).classList.toggle('on');
+  if (currentCenter) renderGraph();
+}
+
+function clearGraph() {
+  currentCenter = null;
+  document.getElementById('searchInput').value = '';
+  document.getElementById('suggest').style.display = 'none';
+  document.getElementById('infoPanel').style.display = 'none';
+  document.getElementById('graphEmpty').style.display = 'flex';
+  if (cy) { cy.destroy(); cy = null; }
+}
+
+// Wire up
+document.getElementById('searchInput').addEventListener('input', e => renderSuggest(e.target.value.trim()));
+document.getElementById('searchInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const first = document.querySelector('.suggest-item');
+    if (first) first.click();
+  } else if (e.key === 'Escape') {
+    document.getElementById('suggest').style.display = 'none';
+  }
+});
+document.getElementById('hopSel').addEventListener('change', e => {
+  hops = parseInt(e.target.value, 10);
+  if (currentCenter) renderGraph();
+});
+document.addEventListener('click', e => {
+  if (!e.target.closest('.searchbox')) {
+    document.getElementById('suggest').style.display = 'none';
+  }
+});
+
+// URL param: ?t=TF01003 auto-select on load
+(function initFromUrl() {
+  const p = new URLSearchParams(window.location.search);
+  const tid = p.get('t');
+  if (tid && NODE_BY_ID[tid]) selectTalent(tid);
+})();
+
+if (!DATA || !NODES.length) {
+  document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#e74c3c">Failed to load talent-synergy-data.js — regenerate via <code>py web-session/tools/build_talent_synergy_data.py</code></div>';
+}
+</script>
+</body>
+</html>
