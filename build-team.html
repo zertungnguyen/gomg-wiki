@@ -33,6 +33,10 @@ button.primary:hover{background:#dab466}
 .tab-btn{padding:10px 18px;background:transparent;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--dim);font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:600;cursor:pointer;text-transform:uppercase;letter-spacing:1px}
 .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
 .tab-btn:hover{color:var(--text)}
+.tab-btn .tab-close{margin-left:6px;padding:0 5px;font-size:13px;color:var(--dim);background:transparent;border:none;cursor:pointer;line-height:1;border-radius:3px}
+.tab-btn .tab-close:hover{color:#e0854a;background:rgba(224,133,74,.15)}
+.tab-btn.add-btn{color:var(--dim);font-weight:700}
+.tab-btn.add-btn:hover{color:var(--accent)}
 
 .char-panel{display:none}
 .char-panel.active{display:block}
@@ -398,11 +402,17 @@ button.primary:hover{background:#dab466}
 
 
 
+
+
+
+
+
+
 <div class="page">
 <div class="wrap">
 
 <h1>Build Team</h1>
-<div class="sub">Set overrides for 3 characters — talents, supports, gear, runes, jewel affixes. Export as JSON for <code>character_overrides.json</code>.</div>
+<div class="sub">Set overrides for your team — talents, supports, gear, runes, jewel affixes. Use <strong>+ Add character</strong> to grow the team or <strong>× Remove</strong> on a tab to drop one. Export as JSON for <code>character_overrides.json</code>.</div>
 
 <div class="top-actions">
   <button onclick="doExport()" class="primary">Export JSON</button>
@@ -413,11 +423,12 @@ button.primary:hover{background:#dab466}
   <span id="status" class="status"></span>
 </div>
 
-<div class="tab-bar">
-  <button class="tab-btn active" data-char="0" onclick="switchTab(0)">Character 1</button>
-  <button class="tab-btn" data-char="1" onclick="switchTab(1)">Character 2</button>
-  <button class="tab-btn" data-char="2" onclick="switchTab(2)">Character 3</button>
+<div class="card" style="margin-bottom:12px">
+  <label for="team-notes" style="display:block;font-family:'Chakra Petch',sans-serif;font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Team notes (exported as top-level <code>_notes</code>, ignored by patcher)</label>
+  <textarea id="team-notes" placeholder="e.g. 'Peak-36 team, alt build with Frost focus, Windstrider support'..." style="width:100%;min-height:44px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:4px;padding:6px 8px;font-family:'Noto Sans',sans-serif;font-size:12px;resize:vertical" oninput="onTeamNotesChange(this.value)"></textarea>
 </div>
+
+<div class="tab-bar" id="tab-bar"></div>
 
 <div id="char-panels"></div>
 
@@ -452,14 +463,18 @@ const SLOT_TYPES = DATA.slotTypes;
 const SLOT_DISPLAY_ORDER = [0, 1, 7, 9, 8, 2, 3, 4, 5, 6];
 const SUPPORT_LABELS = ["Perk source", "Trait source", "Title source"];
 
-const state = [
-  makeEmptyChar(), makeEmptyChar(), makeEmptyChar()
-];
+const MAX_TEAM = 20;   // soft cap — arbitrary but prevents runaway
+const DEFAULT_TEAM = 3;
+const state = Array.from({length: DEFAULT_TEAM}, () => makeEmptyChar());
 let currentTab = 0;
+let teamNotes = "";    // top-level free-form note (exported as `_notes`)
+
+function onTeamNotesChange(v) { teamNotes = v; }
 
 function makeEmptyChar() {
   return {
     roleId: "",
+    comment: "",     // per-character free-form note (exported as `_comment`)
     talents: ["", "", "", ""],
     supports: ["", "", ""],
     equipList: Array.from({length: 10}, () => ({IDs: "", star: 3, Heritage: true})),
@@ -1233,6 +1248,12 @@ function renderEquipPickerBlock(charIdx) {
 function renderCharPanel(charIdx) {
   const c = state[charIdx];
 
+  // Per-character comment (exported as `_comment` inside the unit entry)
+  let html = `<div class="card" style="margin-bottom:12px">
+    <label for="c-note-${charIdx}" style="display:block;font-family:'Chakra Petch',sans-serif;font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Character ${charIdx + 1} note (exported as <code>_comment</code>, ignored by patcher)</label>
+    <textarea id="c-note-${charIdx}" placeholder="e.g. 'Main DPS with Frost Wind sniper build; borrow Astral Echo perk'..." style="width:100%;min-height:38px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:4px;padding:6px 8px;font-family:'Noto Sans',sans-serif;font-size:12px;resize:vertical" oninput="onCharCommentChange(${charIdx}, this.value)">${escapeHtml(c.comment || "")}</textarea>
+  </div>`;
+
   // === Unified Team card: 1 Character slot + 3 Support slots + shared picker ===
   //   activeSupport = -1 → Character; 0/1/2 → Perk/Trait/Title source.
   // Slot definitions: [id, label, filledId, isCharacter]
@@ -1243,7 +1264,7 @@ function renderCharPanel(charIdx) {
     [ 2, SUPPORT_LABELS[2], c.supports[2], false],
   ];
   const activeLabel = slots.find(s => s[0] === c.activeSupport)?.[1] || "";
-  let html = `<div class="card"><h2>Team (click a slot on the left, then pick a unit on the right)</h2>`;
+  html += `<div class="card"><h2>Team (click a slot on the left, then pick a unit on the right)</h2>`;
   html += `<div class="team-row"><div class="support-slots">`;
   for (const [sid, label, filledId, isChar] of slots) {
     const src = filledId ? findRole(filledId) : null;
@@ -1390,25 +1411,69 @@ function renderCharPanel(charIdx) {
   return html;
 }
 
+function renderTabs() {
+  const bar = document.getElementById("tab-bar");
+  const n = state.length;
+  if (currentTab >= n) currentTab = Math.max(0, n - 1);
+  let html = "";
+  for (let i = 0; i < n; i++) {
+    const close = n > 1
+      ? `<button class="tab-close" title="Remove this character" onclick="event.stopPropagation();removeCharacter(${i})">×</button>`
+      : "";
+    html += `<button class="tab-btn ${i === currentTab ? "active" : ""}" data-char="${i}" onclick="switchTab(${i})">Character ${i + 1}${close}</button>`;
+  }
+  if (n < MAX_TEAM) {
+    html += `<button class="tab-btn add-btn" title="Add a character to the team" onclick="addCharacter()">+ Add character</button>`;
+  }
+  bar.innerHTML = html;
+}
+
 function renderAll() {
+  renderTabs();
   const panels = document.getElementById("char-panels");
   // Clear stale combobox registry (old ids are dead once innerHTML is replaced)
   CBX.clear();
   cbxSeq = 0;
   let html = "";
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < state.length; i++) {
     html += `<div class="char-panel ${i === currentTab ? "active" : ""}" data-char="${i}">${renderCharPanel(i)}</div>`;
   }
   panels.innerHTML = html;
 }
 
 function switchTab(idx) {
+  if (idx < 0 || idx >= state.length) return;
   currentTab = idx;
-  document.querySelectorAll(".tab-btn").forEach((b, i) => b.classList.toggle("active", i === idx));
+  document.querySelectorAll(".tab-btn").forEach((b, i) => {
+    const dc = b.getAttribute("data-char");
+    if (dc !== null) b.classList.toggle("active", parseInt(dc) === idx);
+  });
   document.querySelectorAll(".char-panel").forEach((p, i) => p.classList.toggle("active", i === idx));
 }
 
+function addCharacter() {
+  if (state.length >= MAX_TEAM) { setStatus("Max " + MAX_TEAM + " characters", "err"); return; }
+  state.push(makeEmptyChar());
+  currentTab = state.length - 1;
+  renderAll();
+  setStatus("Added Character " + state.length, "ok");
+}
+
+function removeCharacter(idx) {
+  if (state.length <= 1) { setStatus("Must keep at least 1 character", "err"); return; }
+  if (idx < 0 || idx >= state.length) return;
+  const c = state[idx];
+  const filled = c.roleId || (c.talents || []).some(t => t) || (c.supports || []).some(s => s)
+    || (c.equipList || []).some(e => e.IDs) || (c.runeList || []).some(r => r.IDs);
+  if (filled && !confirm("Remove Character " + (idx + 1) + "? This character has data set.")) return;
+  state.splice(idx, 1);
+  if (currentTab >= state.length) currentTab = state.length - 1;
+  renderAll();
+  setStatus("Removed character (team size " + state.length + ")", "ok");
+}
+
 // Change handlers
+function onCharCommentChange(c, v) { state[c].comment = v; }
 function onRoleChange(c, v) { state[c].roleId = v; }
 function onTalentChange(c, i, v) { state[c].talents[i] = v; }
 function onSupportChange(c, i, v) { state[c].supports[i] = v; }
@@ -1436,10 +1501,13 @@ function onAffixTier(c, g, a, which, v) {
 // Build character_overrides.json compatible object
 function buildOverrideJson() {
   const out = {};
-  for (let i = 0; i < 3; i++) {
+  // Top-level free-form team note (comes first for readability; patcher ignores `_`-keys)
+  if (teamNotes && teamNotes.trim()) out._notes = teamNotes;
+  for (let i = 0; i < state.length; i++) {
     const c = state[i];
     if (!c.roleId) continue;
     const entry = {};
+    if (c.comment && c.comment.trim()) entry._comment = c.comment;
     const talents = c.talents.filter(t => t);
     if (talents.length) entry.talents = talents;
     // Supports: preserve order + empty slots ("" for empty)
@@ -1516,13 +1584,20 @@ function applyImport() {
     setStatus("Invalid JSON", "err");
     return;
   }
-  // Reset state, then fill from obj
-  for (let i = 0; i < 3; i++) state[i] = makeEmptyChar();
   const roleIds = Object.keys(obj).filter(k => !k.startsWith("_"));
-  roleIds.slice(0, 3).forEach((roleId, i) => {
+  // Resize state to fit imported units (clamped to MAX_TEAM); always keep at least 1 slot.
+  const n = Math.max(1, Math.min(roleIds.length, MAX_TEAM));
+  state.length = 0;
+  for (let i = 0; i < n; i++) state.push(makeEmptyChar());
+  // Top-level `_notes` → team notes textarea
+  teamNotes = typeof obj._notes === "string" ? obj._notes : "";
+  const tnEl = document.getElementById("team-notes");
+  if (tnEl) tnEl.value = teamNotes;
+  roleIds.slice(0, MAX_TEAM).forEach((roleId, i) => {
     const entry = obj[roleId] || {};
     if (typeof entry !== "object") return;
     state[i].roleId = roleId;
+    if (typeof entry._comment === "string") state[i].comment = entry._comment;
     (entry.talents || []).slice(0, 4).forEach((t, j) => state[i].talents[j] = t);
     (entry.supports || []).slice(0, 3).forEach((s, j) => state[i].supports[j] = s);
     (entry.equipList || []).slice(0, 10).forEach((e, j) => {
@@ -1554,26 +1629,47 @@ function applyImport() {
 }
 
 function doReset() {
-  if (!confirm("Clear all 3 characters?")) return;
-  for (let i = 0; i < 3; i++) state[i] = makeEmptyChar();
+  if (!confirm("Clear all " + state.length + " character(s) and reset to " + DEFAULT_TEAM + " empty slots?")) return;
+  state.length = 0;
+  for (let i = 0; i < DEFAULT_TEAM; i++) state.push(makeEmptyChar());
+  teamNotes = "";
+  const tnEl = document.getElementById("team-notes");
+  if (tnEl) tnEl.value = "";
+  currentTab = 0;
   renderAll();
   setStatus("Reset", "ok");
 }
 
 const STORAGE_KEY = "gmg_build_team_v1";
 function saveLocal() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  // v2 shape: {notes, chars: [...]}; falls back to bare array on load for v1 payloads.
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({notes: teamNotes, chars: state}));
   setStatus("Saved to browser", "ok");
 }
 function loadLocal() {
   const raw = localStorage.getItem(STORAGE_KEY);
   if (!raw) { setStatus("Nothing saved", "err"); return; }
   try {
-    const arr = JSON.parse(raw);
-    if (!Array.isArray(arr) || arr.length !== 3) throw new Error("bad shape");
-    for (let i = 0; i < 3; i++) state[i] = Object.assign(makeEmptyChar(), arr[i]);
+    const parsed = JSON.parse(raw);
+    let arr, notes = "";
+    if (Array.isArray(parsed)) {
+      arr = parsed;
+    } else if (parsed && Array.isArray(parsed.chars)) {
+      arr = parsed.chars;
+      notes = typeof parsed.notes === "string" ? parsed.notes : "";
+    } else {
+      throw new Error("bad shape");
+    }
+    if (!arr.length) throw new Error("empty");
+    const n = Math.min(arr.length, MAX_TEAM);
+    state.length = 0;
+    for (let i = 0; i < n; i++) state.push(Object.assign(makeEmptyChar(), arr[i]));
+    teamNotes = notes;
+    const tnEl = document.getElementById("team-notes");
+    if (tnEl) tnEl.value = teamNotes;
+    if (currentTab >= state.length) currentTab = state.length - 1;
     renderAll();
-    setStatus("Loaded from browser", "ok");
+    setStatus("Loaded " + n + " character(s) from browser", "ok");
   } catch (e) {
     setStatus("Load failed: " + e.message, "err");
   }
