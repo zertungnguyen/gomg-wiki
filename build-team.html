@@ -255,11 +255,11 @@ button.primary:hover{background:#dab466}
 .gs-stone{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:6px 8px}
 .gs-stone .gs-stone-title{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:4px}
 .gs-stone .gs-affix-row{display:grid;grid-template-columns:minmax(0,1fr);gap:3px;min-width:0}
-.gs-affix-chip{padding:5px 26px 5px 8px;background:var(--card);border:1.5px solid var(--border);border-radius:4px;cursor:pointer;position:relative;transition:border-color .12s;display:flex;align-items:center;gap:6px;min-height:32px;min-width:0;max-width:100%}
+.gs-affix-chip{padding:6px 26px 6px 8px;background:var(--card);border:1.5px solid var(--border);border-radius:4px;cursor:pointer;position:relative;transition:border-color .12s;display:flex;align-items:flex-start;gap:6px;min-height:32px;min-width:0;max-width:100%}
 .gs-affix-chip:hover{border-color:#555}
 .gs-affix-chip.active{border-color:var(--accent);background:#f5b34215}
-.gs-affix-chip .gac-name{font-size:11px;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.gs-affix-chip .gac-name.empty{color:var(--dim);font-style:italic;font-size:10px}
+.gs-affix-chip .gac-name{font-size:11px;color:var(--text);flex:1;min-width:0;white-space:normal;overflow-wrap:anywhere;word-break:break-word;line-height:1.35}
+.gs-affix-chip .gac-name.empty{color:var(--dim);font-style:italic;font-size:10px;white-space:nowrap}
 .gs-affix-chip .gac-tier{font-size:9px;color:var(--dim);font-weight:600;padding:1px 4px;border-radius:2px;background:var(--card2);white-space:nowrap;flex-shrink:0}
 .gs-affix-chip .gac-clear{position:absolute;top:50%;right:4px;transform:translateY(-50%);background:transparent;border:none;color:var(--dim);font-size:14px;cursor:pointer;padding:0;line-height:1;width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center}
 .gs-affix-chip .gac-clear:hover{color:var(--accent);background:var(--card2)}
@@ -339,6 +339,10 @@ button.primary:hover{background:#dab466}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 })();
 </script>
+
+
+
+
 
 
 
@@ -1389,7 +1393,7 @@ function renderCharPanel(charIdx) {
       const hasV0 = maxV0 > 0;
       const hasV1 = maxV1 > 0;
       const nameHtml = ad
-        ? `<div class="gac-name">${escapeHtml(ad.location || ad.id)}: ${escapeHtml((ad.effect || "").slice(0, 42))}${(ad.effect || "").length > 42 ? "…" : ""}</div>`
+        ? `<div class="gac-name" title="${escapeAttr((ad.location || ad.id) + ': ' + (ad.effect || ''))}">${escapeHtml(ad.location || ad.id)}: ${escapeHtml(ad.effect || "")}</div>`
         : `<div class="gac-name empty">Affix ${a + 1} (empty)</div>`;
       const tierInputs = ad
         ? `<div class="gac-tier-inputs" onclick="event.stopPropagation()">
