@@ -142,6 +142,10 @@ table.results tbody tr:hover{background:var(--card)}
 
 
 
+
+
+
+
 <div class="page">
 <main class="content">
 <div class="wrap">
@@ -162,8 +166,13 @@ table.results tbody tr:hover{background:var(--card)}
 
 <div class="controls-row">
   <input id="searchInput" placeholder="Search name or effect (e.g. Burn, Shield, Stun immune)…" autocomplete="off">
+  <label style="font-size:11px;color:var(--dim);font-family:'Chakra Petch',sans-serif;letter-spacing:.5px">Map difficulty:</label>
+  <input id="difficultyInput" type="number" min="1" max="300" value="100" style="width:70px;padding:7px 8px;background:var(--card2);color:var(--text);border:1px solid var(--border);border-radius:4px;font-size:13px;font-family:'Consolas',monospace" oninput="onDifficultyChange(this.value)">
   <button class="btn-clear" onclick="clearAll()">Clear all</button>
   <span class="results-meta" id="meta"></span>
+</div>
+<div class="sub" style="margin:-6px 0 12px 0;font-size:11px">
+  In-game values scale with map difficulty (1–300): <code>displayed = ceil(difficulty / ValueN)</code>. Peak Level 36 ≈ difficulty 100. Effect text below updates live with the number above.
 </div>
 
 <div id="resultsWrap">
@@ -195,6 +204,26 @@ const PC_ORDER = [2, 1, 0];
 const selStep = new Set();
 const selPc = new Set();
 let queryStr = '';
+let currentDifficulty = 100;
+
+function computeScaled(divisor, difficulty) {
+  if (!divisor || divisor <= 0) return 0;
+  const q = Math.ceil(difficulty / divisor);
+  return q > 0 ? q : 1;
+}
+function renderEffect(tpl, divisors, difficulty) {
+  let out = tpl || '';
+  for (let i = 0; i < divisors.length; i++) {
+    const d = divisors[i];
+    if (d > 0) out = out.split('{' + i + '}').join(String(computeScaled(d, difficulty)));
+  }
+  return out;
+}
+function onDifficultyChange(v) {
+  const n = parseInt(v, 10);
+  currentDifficulty = (n >= 1 && n <= 300) ? n : 100;
+  render();
+}
 
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
@@ -246,21 +275,26 @@ function render() {
   document.getElementById('resultsWrap').querySelector('table').style.display = '';
   rows.forEach(b => {
     const tr = document.createElement('tr');
-    // Split on either " / " separators OR raw <br> tags baked into the effect string.
-    const effectLines = (b.effect || '')
+    // Live-render the effect at currentDifficulty (falls back to pre-computed `effect` if no template).
+    const rendered = b.effectTpl
+      ? renderEffect(b.effectTpl, b.valueDivisors || [], currentDifficulty)
+      : (b.effect || '');
+    const effectLines = rendered
       .split(/\s*(?:\/|<br\s*\/?>)\s*/i)
       .map(x => x.trim())
       .filter(Boolean);
     const effHtml = effectLines.map(l => '<div class="effect-line">' + escapeHtml(l) + '</div>').join('');
-    const vals = (b.values || []).length
-      ? '<div class="values-row">Values: ' + escapeHtml(b.values.join(' · ')) + '</div>'
+    // Show divisor ladder as reference (e.g. "Divisors: 1 · 2 · 10")
+    const nonzeroDiv = (b.valueDivisors || []).filter(d => d > 0);
+    const divRow = nonzeroDiv.length
+      ? '<div class="values-row">Divisors: ' + escapeHtml(nonzeroDiv.join(' · ')) + '</div>'
       : '';
     tr.innerHTML =
       '<td><span class="badge badge-' + escapeHtml(b.step) + '">' + escapeHtml(b.step) + '</span></td>' +
       '<td><span class="badge badge-pc-' + b.pc + '">PC ' + b.pc + '</span></td>' +
       '<td class="col-id">' + escapeHtml(b.id) + '</td>' +
       '<td class="col-name">' + escapeHtml(b.name) + '</td>' +
-      '<td class="col-effect">' + effHtml + vals + '</td>';
+      '<td class="col-effect">' + effHtml + divRow + '</td>';
     tbody.appendChild(tr);
   });
 }
