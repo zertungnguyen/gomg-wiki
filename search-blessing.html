@@ -138,6 +138,10 @@ table.results tbody tr:hover{background:var(--card)}
 
 
 
+
+
+
+
 <div class="page">
 <main class="content">
 <div class="wrap">
@@ -242,7 +246,11 @@ function render() {
   document.getElementById('resultsWrap').querySelector('table').style.display = '';
   rows.forEach(b => {
     const tr = document.createElement('tr');
-    const effectLines = (b.effect || '').split(/\s*\/\s*/).map(x => x.trim()).filter(Boolean);
+    // Split on either " / " separators OR raw <br> tags baked into the effect string.
+    const effectLines = (b.effect || '')
+      .split(/\s*(?:\/|<br\s*\/?>)\s*/i)
+      .map(x => x.trim())
+      .filter(Boolean);
     const effHtml = effectLines.map(l => '<div class="effect-line">' + escapeHtml(l) + '</div>').join('');
     const vals = (b.values || []).length
       ? '<div class="values-row">Values: ' + escapeHtml(b.values.join(' · ')) + '</div>'
