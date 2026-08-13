@@ -161,6 +161,14 @@
       "element": "Fire"
     },
     {
+      "id": "M13307",
+      "name": "Rose Sovereign",
+      "step": "S",
+      "cls": "Mage",
+      "race": "Florakin",
+      "element": "Earth"
+    },
+    {
       "id": "M24301",
       "name": "Serene Undine",
       "step": "S",
@@ -217,6 +225,22 @@
       "element": "Earth"
     },
     {
+      "id": "M12303",
+      "name": "Troll Sorceress",
+      "step": "S",
+      "cls": "Archer",
+      "race": "Trollish",
+      "element": "Wind"
+    },
+    {
+      "id": "M14215",
+      "name": "Velvet Thorn",
+      "step": "S",
+      "cls": "Priest",
+      "race": "Quillin",
+      "element": "Earth"
+    },
+    {
       "id": "M13304",
       "name": "Wasp Witch",
       "step": "S",
@@ -241,12 +265,28 @@
       "element": "Wind"
     },
     {
+      "id": "M12303_000",
+      "name": "[Alchemy] Troll Sorceress",
+      "step": "S",
+      "cls": "Mage",
+      "race": "Gigantic",
+      "element": "Earth"
+    },
+    {
       "id": "M34301_000",
       "name": "[Astral] Wish Djinn",
       "step": "S",
       "cls": "Priest",
       "race": "Djinn Soul",
       "element": "Light"
+    },
+    {
+      "id": "M11304_001",
+      "name": "[Black Sail] Minotaur Brave",
+      "step": "S",
+      "cls": "Warrior",
+      "race": "Taurian",
+      "element": "Water"
     },
     {
       "id": "M13305_000",
@@ -285,7 +325,7 @@
       "name": "[Dark Star] Crystal Shroom",
       "step": "S",
       "cls": "Mage",
-      "race": "Dark star mushroom",
+      "race": "Dark Shroom",
       "element": "Dark"
     },
     {
@@ -409,6 +449,14 @@
       "element": "Wind"
     },
     {
+      "id": "M13307_000",
+      "name": "[Nightfall] Rose Sovereign",
+      "step": "S",
+      "cls": "Mage",
+      "race": "[CN: 夜族]",
+      "element": "Dark"
+    },
+    {
       "id": "M13302_000",
       "name": "[Nightmare] Earth Herald",
       "step": "S",
@@ -445,7 +493,7 @@
       "name": "[Silver] Serene Undine",
       "step": "S",
       "cls": "Priest",
-      "race": "Silver element",
+      "race": "Silver Core",
       "element": "Light"
     },
     {
@@ -487,6 +535,14 @@
       "cls": "Mage",
       "race": "Vulpine",
       "element": "Fire"
+    },
+    {
+      "id": "M13210",
+      "name": "Alchemy Witch",
+      "step": "A",
+      "cls": "Mage",
+      "race": "Rodent",
+      "element": "Earth"
     },
     {
       "id": "M11207",
@@ -767,6 +823,30 @@
       "cls": "Archer",
       "race": "Sandborne",
       "element": "Earth"
+    },
+    {
+      "id": "M14211",
+      "name": "Red Fox Priestess",
+      "step": "A",
+      "cls": "Priest",
+      "race": "Vulpine",
+      "element": "Earth"
+    },
+    {
+      "id": "M14210",
+      "name": "Silver Fox Oracle",
+      "step": "A",
+      "cls": "Priest",
+      "race": "Vulpine",
+      "element": "Light"
+    },
+    {
+      "id": "M12208",
+      "name": "Silver Ranger",
+      "step": "A",
+      "cls": "Archer",
+      "race": "Vulpine",
+      "element": "Wind"
     },
     {
       "id": "M13207",
@@ -1563,7 +1643,7 @@
     {
       "id": "TF01043",
       "name": "Abyss Gaze",
-      "effect": "目标每1点空余魔力使自身对其造成技能伤害+1。",
+      "effect": "Deal +1 Skill DMG per 1 spare mana on target.",
       "step": "S",
       "type": "Talent"
     },
@@ -1610,6 +1690,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16701_004",
+      "name": "Ancient Blood",
+      "effect": "Gain +100 HP. Take -4 debuff stacks.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF00022",
       "name": "Ancient Treant",
       "effect": "Gain 100 stacks of Growth at battle start.",
@@ -1631,6 +1718,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16305_004",
+      "name": "Ascension",
+      "effect": "Deal +1 total DMG per 20 Max HP.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF00001",
       "name": "Astral Backlash",
       "effect": "Apply 8 stacks of Fear per counter hit.",
@@ -1640,7 +1734,7 @@
     {
       "id": "TF01052",
       "name": "Astral Double",
-      "effect": "普通攻击目标+1],[CN: 每少1名目标使自身造成追击次数+1。",
+      "effect": "Gain +1 Basic Attack targets. For every 1 fewer targets, gain +1 Follow-Up Attacks.",
       "step": "S",
       "type": "Talent"
     },
@@ -1655,6 +1749,13 @@
       "id": "TF10106_004",
       "name": "Aura Pressure",
       "effect": "All enemies deal -4 total DMG.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF00036_002",
+      "name": "Backline Blaze",
+      "effect": "Apply +10 stacks of Burn to back targets.",
       "step": "S",
       "type": "Talent"
     },
@@ -1701,6 +1802,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF14601_004",
+      "name": "Blast Core",
+      "effect": "Apply 6 stacks of Burn to the nearest 3 enemies when defeated.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF00047",
       "name": "Blast Threshold",
       "effect": "Deal +50% total DMG at low HP.",
@@ -1722,6 +1830,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16403_004",
+      "name": "Blood Frenzy",
+      "effect": "Apply +1 stacks of Expose per 50 HP lost.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF12605_004",
       "name": "Blood Hunt",
       "effect": "Deal +2 Follow-Up attacks while having Bloodlust.",
@@ -1732,6 +1847,13 @@
       "id": "TF12604_004",
       "name": "Blood Rush",
       "effect": "Deal +1 total DMG per 40 stacks of Bloodlust.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16401_004",
+      "name": "Blood Siphon",
+      "effect": "Absorb 8 HP from target after casting skill.",
       "step": "S",
       "type": "Talent"
     },
@@ -1760,6 +1882,13 @@
       "id": "TF00053",
       "name": "Bloodlust Trigger",
       "effect": "Skill healing to targets +1 per 15 stacks of Bloodlust the unit owns.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16602_004",
+      "name": "Blossom Guardian",
+      "effect": "Take -1 total DMG per 2 ally count.",
       "step": "S",
       "type": "Talent"
     },
@@ -1795,6 +1924,13 @@
       "id": "TF01044",
       "name": "Born Warrior",
       "effect": "Apply +2 stacks of Bloodlust. Gain +3 ATK after gaining Bloodlust.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16605_004",
+      "name": "Bud Burst",
+      "effect": "If Growth is at max stacks at turn start, deal +100 total DMG and consume all Growth.",
       "step": "S",
       "type": "Talent"
     },
@@ -1855,6 +1991,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF00035_002",
+      "name": "Charged Cannon",
+      "effect": "Gain 1 Mana after any target applies Burn but cannot perform basic attacks or healing.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF00009",
       "name": "Charged Strike",
       "effect": "The next basic attack after casting a skill deals +2 basic DMG, increasing by 4 each time.",
@@ -1865,6 +2008,13 @@
       "id": "TF14101_004",
       "name": "Charm Illusion",
       "effect": "Deal +1 skill DMG per 1 stacks of Taunt on target. Remove all Taunt after casting attack skill.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16405_004",
+      "name": "Child of Night",
+      "effect": "Gain +1 Max HP per 10 HP gained.",
       "step": "S",
       "type": "Talent"
     },
@@ -1890,9 +2040,23 @@
       "type": "Talent"
     },
     {
+      "id": "TF00032_002",
+      "name": "Clean Burn",
+      "effect": "After casting skill, targets lose 1 Action Mana and receive 5 stacks of Burn.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF10002_004",
       "name": "Clear Mind",
       "effect": "+16 SPI. Effect doubles if SPI is at least 100.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16502_004",
+      "name": "Coiled Guard",
+      "effect": "Gain 200 stacks of Thorns at battle start, but cannot act in the first turn.",
       "step": "S",
       "type": "Talent"
     },
@@ -1920,7 +2084,14 @@
     {
       "id": "TF01059",
       "name": "Cool Splash",
-      "effect": "Absorb 6 stacks of Soothe from enemies after casting skill. Effect doubles when target's Weakness is exposed.",
+      "effect": "释放技能后吸收敌方目标6层滋润],[CN: 目标弱点暴露时效果翻倍。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF14602_004",
+      "name": "Cooled Crust",
+      "effect": "Remove 20 stacks of Burn from self at action end. Gain Shield equal to the stacks removed.",
       "step": "S",
       "type": "Talent"
     },
@@ -1935,6 +2106,13 @@
       "id": "TF01030",
       "name": "Counter Storm",
       "effect": "Deal +1 Counter DMG per counter hit.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01063",
+      "name": "Cozy Quilt",
+      "effect": "Other allies gain 1 Mana per 50 stacks of Thorns applied.",
       "step": "S",
       "type": "Talent"
     },
@@ -1995,6 +2173,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16005_004",
+      "name": "Dark Shatter",
+      "effect": "On defeat, the nearest enemy loses HP equal to 200% of their Max Mana.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF11501_004",
       "name": "Dark Shroud",
       "effect": "Apply +2 stacks of Decay. Apply 2 stacks of Decay to all enemies at turn start.",
@@ -2003,15 +2188,8 @@
     },
     {
       "id": "TF16002_004",
-      "name": "Dark star expansion",
-      "effect": "After defeating a target, self deals +2 skill DMG and takes -2 skill DMG.",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16005_004",
-      "name": "Dark star fragmentation",
-      "effect": "After self is defeated, the nearest enemy target loses HP equal to 200% of its Max Mana.",
+      "name": "Dark Surge",
+      "effect": "Deal +2 Skill DMG and take -2 Skill DMG after defeating a target.",
       "step": "S",
       "type": "Talent"
     },
@@ -2072,13 +2250,6 @@
       "type": "Talent"
     },
     {
-      "id": "TF16102_004",
-      "name": "Demon-breaking body",
-      "effect": "For every 25 stacks of Cleanse dealt, self takes -1 skill DMG.",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
       "id": "TF10403_004",
       "name": "Deny Death",
       "effect": "Survive with 1 HP when taking fatal DMG for the first 2 times and take -20 total DMG this turn.",
@@ -2135,9 +2306,37 @@
       "type": "Talent"
     },
     {
+      "id": "TF16205_004",
+      "name": "Dread Roar",
+      "effect": "Before battle starts, all enemies lose HP equal to 50% of the caster's own Max HP.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF00041_000",
+      "name": "Drowned Soul",
+      "effect": "自身战败时使敌方全体目标受到滋润层数上限+5。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF01008",
       "name": "Dual Arms",
       "effect": "+1 Targets for skill healing.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16001_004",
+      "name": "Dying Stars",
+      "effect": "造成泯灭层数+4],[CN: 每名敌方目标目标使效果额外+1。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF14605_004",
+      "name": "Dynamo Forge",
+      "effect": "Deal +2 total DMG after taking Burn.",
       "step": "S",
       "type": "Talent"
     },
@@ -2163,6 +2362,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16705_004",
+      "name": "Elder's Gift",
+      "effect": "Gain +1 HP per 100 Max HP.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF12403_004",
       "name": "Element Control",
       "effect": "Apply +2 stacks of debuffs.",
@@ -2180,6 +2386,20 @@
       "id": "TF00012",
       "name": "Elemental Reaction",
       "effect": "Target loses 1 Mana per 2 debuff type applied after attacking.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16202_004",
+      "name": "Ember Pearl",
+      "effect": "Apply +20 stacks of Burn. Effect decreases by 5 at turn start.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01009_000",
+      "name": "Ember Reap",
+      "effect": "Gain 2 Mana when any Burn triggers.",
       "step": "S",
       "type": "Talent"
     },
@@ -2282,6 +2502,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF01066",
+      "name": "Eternal Sun",
+      "effect": "Deal +1 total DMG per 25 stacks of Burn applied.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF13401_004",
       "name": "Eternal Will",
       "effect": "+15 Toughness. Minimum current Toughness is 1.",
@@ -2347,7 +2574,7 @@
     {
       "id": "TF01056",
       "name": "Fireproof Scales",
-      "effect": "韧性+20],[CN: 每拥有5点当前韧性使自身受到灼烧层数-1。",
+      "effect": "+20 Toughness. Take -1 Burn stacks per 5 current Toughness.",
       "step": "S",
       "type": "Talent"
     },
@@ -2376,6 +2603,13 @@
       "id": "TF10301_004",
       "name": "Fixed Turret",
       "effect": "Deal +2 Follow-Up attacks but cannot take extra actions except after casting skill.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF14603_004",
+      "name": "Flame Aegis",
+      "effect": "After being attacked, immediately trigger 10% of the attacker's Burn stacks.",
       "step": "S",
       "type": "Talent"
     },
@@ -2430,8 +2664,8 @@
     },
     {
       "id": "TF16104_004",
-      "name": "Flawless skin",
-      "effect": "When losing Toughness, per 3 points lost, self gains 1 stacks of Cleanse.",
+      "name": "Flawless Hide",
+      "effect": "Gain 1 stacks of Cleanse per 3 Toughness lost.",
       "step": "S",
       "type": "Talent"
     },
@@ -2516,6 +2750,13 @@
       "id": "TF01033",
       "name": "Frostweb Bind",
       "effect": "All enemies with Chill have -3 Counter range.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16603_004",
+      "name": "Full Bloom",
+      "effect": "Take -50 total DMG from targets with Taunt.",
       "step": "S",
       "type": "Talent"
     },
@@ -2611,9 +2852,9 @@
       "type": "Talent"
     },
     {
-      "id": "TF01063",
+      "id": "TF16501_004",
       "name": "Hardened Spines",
-      "effect": "每拥有15层反伤使自身受到技能伤害-1。",
+      "effect": "Inflict +20 HP loss while having Thorns.",
       "step": "S",
       "type": "Talent"
     },
@@ -2621,6 +2862,13 @@
       "id": "TF13902_004",
       "name": "Harmless Look",
       "effect": "Take -8 total DMG.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16404_004",
+      "name": "Hemomancy",
+      "effect": "Lose HP equal to 10% of own Max HP at action start. Deal additional total DMG equal to HP lost.",
       "step": "S",
       "type": "Talent"
     },
@@ -2709,6 +2957,20 @@
       "type": "Talent"
     },
     {
+      "id": "TF00013_000",
+      "name": "Hydro Lock",
+      "effect": "After casting skill, targets suffer -1 HP loss per 40 stacks of Soothe applied.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16702_004",
+      "name": "Hyper Regen",
+      "effect": "Gain 4 HP at action start. Effect increases by 1 per 50 HP lost.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF13901_004",
       "name": "Hyperactive",
       "effect": "+10 SPD. Take 1 extra actions per turn when SPD is at least 200.",
@@ -2737,6 +2999,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF01022_001",
+      "name": "Incendiary Ammo",
+      "effect": "Apply 1 stacks of Burn to targets per 200 DMG dealt when casting skill.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF13604_004",
       "name": "Indestructible",
       "effect": "-8 Toughness loss.",
@@ -2751,16 +3020,30 @@
       "type": "Talent"
     },
     {
-      "id": "TF16003_004",
-      "name": "Infinite devouring",
-      "effect": "Before turn start, self deals +2 stacks of Decay.",
+      "id": "TF16201_004",
+      "name": "Infernal Being",
+      "effect": "Deal +8 total DMG and apply +8 stacks of Burn at low HP.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16402_004",
+      "name": "Innate Bloodthirst",
+      "effect": "Inflict +1 HP loss per 20 HP gained.",
       "step": "S",
       "type": "Talent"
     },
     {
       "id": "TF01062",
       "name": "Inner Balance",
-      "effect": "Apply +3 stacks of Reversal at turn start.",
+      "effect": "Apply +5 stacks of Reversal at turn start.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16003_004",
+      "name": "Insatiable",
+      "effect": "Apply +2 Decay stacks at turn start.",
       "step": "S",
       "type": "Talent"
     },
@@ -2845,6 +3128,13 @@
       "id": "TF10402_004",
       "name": "Life Abundant",
       "effect": "Gain 15% of overflow HP after healing.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01051",
+      "name": "Life Burn",
+      "effect": "Allied targets apply +1 stacks of Burn per 100 HP overflow after healing.",
       "step": "S",
       "type": "Talent"
     },
@@ -2935,7 +3225,7 @@
     {
       "id": "TF00068",
       "name": "Lucky Aura",
-      "effect": "All allies gain +4 Luck at turn start.",
+      "effect": "All allies gain +5 Luck at turn start.",
       "step": "S",
       "type": "Talent"
     },
@@ -2961,16 +3251,16 @@
       "type": "Talent"
     },
     {
-      "id": "TF16004_004",
-      "name": "Magic absorption",
-      "effect": "After taking damage, absorb 1 Mana from the attacker.",
+      "id": "TF00040",
+      "name": "Malice Counter",
+      "effect": "Deal +2 counters to taunted targets.",
       "step": "S",
       "type": "Talent"
     },
     {
-      "id": "TF00040",
-      "name": "Malice Counter",
-      "effect": "Deal +2 counters to taunted targets.",
+      "id": "TF16004_004",
+      "name": "Mana Absorption",
+      "effect": "Absorb 1 Mana from the attacker after taking DMG.",
       "step": "S",
       "type": "Talent"
     },
@@ -3026,7 +3316,7 @@
     {
       "id": "TF01065",
       "name": "Mana Rampage",
-      "effect": "Deal +1 total DMG per 3 Max Mana.",
+      "effect": "Deal +1 total DMG per 5 Max Mana.",
       "step": "S",
       "type": "Talent"
     },
@@ -3034,6 +3324,13 @@
       "id": "TF10208_004",
       "name": "Mana Resonate",
       "effect": "+1 Basic attack targets this turn after casting a skill.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16704_004",
+      "name": "Mana Surge",
+      "effect": "Gain 1 Mana per 5 Toughness lost.",
       "step": "S",
       "type": "Talent"
     },
@@ -3094,6 +3391,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF00033_002",
+      "name": "Molten Mail",
+      "effect": "Apply 25 stacks of Burn to the attacker after being attacked. The effect decreases by 1 per action in this battle.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF10015_004",
       "name": "Mood Control",
       "effect": "Cannot act on turn 1 but gain +4 Hit Mana on subsequent turns.",
@@ -3143,6 +3447,20 @@
       "type": "Talent"
     },
     {
+      "id": "TF16604_004",
+      "name": "Nectar Offering",
+      "effect": "Grant 5 stacks of Inspire to target after healing.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16504_004",
+      "name": "Needle Sweep",
+      "effect": "After being attacked, all enemies lose 1 HP per 50 stacks of Thorns on self.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF10305_004",
       "name": "Never Miss",
       "effect": "Ignore 40 enemy DEF during basic attacks.",
@@ -3166,7 +3484,7 @@
     {
       "id": "TF01007",
       "name": "Nightmare Realm",
-      "effect": "Targets gain Max Toughness equal to lost Toughness.",
+      "effect": "Enemy targets gain Max Toughness equal to lost Toughness.",
       "step": "S",
       "type": "Talent"
     },
@@ -3206,13 +3524,6 @@
       "type": "Talent"
     },
     {
-      "id": "TF16105_004",
-      "name": "Offensive and defensive switching",
-      "effect": "50%的防御属性会影响攻击点数。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
       "id": "TF14204_004",
       "name": "Only God",
       "effect": "Gain +20 all stats when no other Divine allies exist.",
@@ -3223,6 +3534,13 @@
       "id": "TF10303_004",
       "name": "Opportunist",
       "effect": "Deal +8 total DMG during extra actions.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01005_001",
+      "name": "Overcharge",
+      "effect": "每拥有25层滋润使自身造成全部伤害+1。",
       "step": "S",
       "type": "Talent"
     },
@@ -3283,6 +3601,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF01065_000",
+      "name": "Perfect Alchemy",
+      "effect": "Deal +1 total DMG per 25 stacks of Hinder applied.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF01023",
       "name": "Perfect Show",
       "effect": "Gain +2 multi-hit skill hits next time if both followed up and countered this turn.",
@@ -3293,6 +3618,13 @@
       "id": "TF14104_004",
       "name": "Pitiful",
       "effect": "Apply +2 stacks of Taunt. Take -1 total DMG per 50 stacks of Taunt on target.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16601_004",
+      "name": "Pollen Haze",
+      "effect": "Apply 12 stacks of Taunt to enemies at their action end.",
       "step": "S",
       "type": "Talent"
     },
@@ -3339,6 +3671,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF01064_000",
+      "name": "Primal Blood",
+      "effect": "Inflict HP loss and receive HP Gain by +1 each per 25 stacks of Expose applied.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF13303_004",
       "name": "Primal Body",
       "effect": "+16 HP and -8 HP Loss.",
@@ -3367,16 +3706,16 @@
       "type": "Talent"
     },
     {
-      "id": "TF16103_004",
-      "name": "Purification reflection",
-      "effect": "After being hit by a skill, each hit applies 4 stacks of Cleanse to the target.",
+      "id": "TF11401_004",
+      "name": "Purify Light",
+      "effect": "Apply +2 stacks of Cleanse. Apply +2 stacks of Cleanse to enemies.",
       "step": "S",
       "type": "Talent"
     },
     {
-      "id": "TF11401_004",
-      "name": "Purify Light",
-      "effect": "Apply +2 stacks of Cleanse. Apply +2 stacks of Cleanse to enemies.",
+      "id": "TF16103_004",
+      "name": "Purifying Echo",
+      "effect": "Apply 4 stacks of Cleanse to the attacker per hit after taking Skill DMG.",
       "step": "S",
       "type": "Talent"
     },
@@ -3472,6 +3811,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16505_004",
+      "name": "Rolling Strike",
+      "effect": "Deal +1 total DMG per 100 stacks of Thorns at action end.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF01057",
       "name": "Ruin Descends",
       "effect": "After applying Cleanse, all enemies lose 1 HP per 15 debuff stacks removed.",
@@ -3482,6 +3828,13 @@
       "id": "TF10209_004",
       "name": "Ruin Storm",
       "effect": "Deal +1 multi-hit skill hits and +10 skill DMG to the nearest enemy.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16703_004",
+      "name": "Rune Insight",
+      "effect": "Deal +4 total DMG per 1 equipped Runes of Purple tier or above.",
       "step": "S",
       "type": "Talent"
     },
@@ -3528,9 +3881,16 @@
       "type": "Talent"
     },
     {
+      "id": "TF14604_004",
+      "name": "Scorched Domain",
+      "effect": "All targets on both sides gain -10 stacks of Growth and take +10 stacks of Burn.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF00064",
       "name": "Scorpion Venom",
-      "effect": "敌方目标失去阻碍后使其失去本次移除阻碍层数50%的生命。",
+      "effect": "After enemy loses Hinder, they lose HP equal to 50% of the stacks removed.",
       "step": "S",
       "type": "Talent"
     },
@@ -3545,6 +3905,13 @@
       "id": "TF13603_004",
       "name": "Seamless",
       "effect": "50% of Weakness affects DEF when Weakness is not exposed.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16203_004",
+      "name": "Searing Purgatory",
+      "effect": "Target loses 8 Toughness after applying Burn.",
       "step": "S",
       "type": "Talent"
     },
@@ -3612,6 +3979,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16101_004",
+      "name": "Silver Purge",
+      "effect": "Gain +12 Cleanse stacks from allies.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF13204_004",
       "name": "Siren Voice",
       "effect": "Apply +2 stacks of Taunt. Apply 6 stacks of Taunt to enemies after casting skill.",
@@ -3668,9 +4042,23 @@
       "type": "Talent"
     },
     {
+      "id": "TF16304_004",
+      "name": "Soul Forge",
+      "effect": "Gain +1 Action Mana after defeating a target.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF01055",
       "name": "Soul Purge",
       "effect": "Apply +1 stacks of total DMG per 25 stacks of Cleanse applied.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16302_004",
+      "name": "Soul Release",
+      "effect": "When defeated, all enemies lose HP equal to 4% of their own Max HP.",
       "step": "S",
       "type": "Talent"
     },
@@ -3710,6 +4098,27 @@
       "type": "Talent"
     },
     {
+      "id": "TF16102_004",
+      "name": "Spellbreaker",
+      "effect": "Take -1 Skill DMG per 25 stacks of Cleanse applied.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01030_001",
+      "name": "Spin Cycle",
+      "effect": "Gain +1 Counter Attacks this turn after casting skill.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16503_004",
+      "name": "Spine Wound",
+      "effect": "Attackers suffer +2 HP loss when Thorns triggers.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF01002",
       "name": "Spirit Drain",
       "effect": "Drain 3 SPI from enemies after casting skill. Effect doubles if Weakness is exposed.",
@@ -3717,9 +4126,9 @@
       "type": "Talent"
     },
     {
-      "id": "TF01054",
-      "name": "Splash Party",
-      "effect": "Apply +3 stacks of all statuses while having Soothe.",
+      "id": "TF00043_000",
+      "name": "Splash Reserve",
+      "effect": "Apply +1 stacks of Soothe at action start if not attacked this turn.",
       "step": "S",
       "type": "Talent"
     },
@@ -3734,6 +4143,13 @@
       "id": "TF11203_004",
       "name": "Spotless",
       "effect": "Gain +2 stacks of Cleanse. Gain +4 Action Mana when having no debuffs.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16105_004",
+      "name": "Stance Shift",
+      "effect": "50% of DEF contributes to ATK.",
       "step": "S",
       "type": "Talent"
     },
@@ -3804,6 +4220,13 @@
       "id": "TF00060",
       "name": "Sunshine",
       "effect": "All enemies take +3 stacks of Burn and +1 stacks of Cleanse.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16303_004",
+      "name": "Supremacy",
+      "effect": "Gain +200 HP when no other Immortal allies exist.",
       "step": "S",
       "type": "Talent"
     },
@@ -3908,7 +4331,7 @@
     {
       "id": "TF01064",
       "name": "Thorns Abound",
-      "effect": "All enemies lose 1 HP at action end per 50 stacks of Thorns on all allies.",
+      "effect": "All enemies lose 1 HP at action end per 10 stacks of Thorns on all allies.",
       "step": "S",
       "type": "Talent"
     },
@@ -4039,6 +4462,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16301_004",
+      "name": "Undying",
+      "effect": "Gain +8 Max HP at action end. Gain half that amount as HP.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF00026",
       "name": "Unending",
       "effect": "Deal +1 multi-hit skill hits per 300 SPD.",
@@ -4063,6 +4493,13 @@
       "id": "TF10408_004",
       "name": "Uplifting Song",
       "effect": "All allies deal +4 total DMG.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF00052_000",
+      "name": "Vapor Surge",
+      "effect": "Gain +2 multi-hit skill count at max Soothe stacks.",
       "step": "S",
       "type": "Talent"
     },
@@ -4104,7 +4541,7 @@
     {
       "id": "TF01011_000",
       "name": "Water Clone",
-      "effect": "+4 ally count for each ally with Soothe at turn start.",
+      "effect": "回合开始前友方每名滋润目标使友方数量+4。",
       "step": "S",
       "type": "Talent"
     },
@@ -4165,6 +4602,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16204_004",
+      "name": "Wrath Scale",
+      "effect": "Deal +1 Counter DMG per 10 stacks of Burn applied.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF14001_004",
       "name": "Wreck Master",
       "effect": "Apply +2 stacks of Vulnerable. Apply +1 stacks of Vulnerable per 100 stacks of Vulnerable on target.",
@@ -4172,198 +4616,9 @@
       "type": "Talent"
     },
     {
-      "id": "TF16302_004",
-      "name": "兵解归墟",
-      "effect": "自身战败后使敌方全体目标失去自身生命上限4%的生命。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF14602_004",
-      "name": "冷却岩甲",
-      "effect": "行动结束后移除自身20层灼烧并获得移除层数等量的防护。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF14605_004",
-      "name": "动力熔炉",
-      "effect": "受到灼烧后使自身造成全部伤害+2。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16303_004",
-      "name": "唯吾独尊",
-      "effect": "友方没有其他仙族时使自身生命+200。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16305_004",
-      "name": "天人合一",
-      "effect": "每拥有20点生命上限使自身造成全部伤害+1。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16304_004",
-      "name": "夺魂炼魄",
-      "effect": "击败目标后使自身行动回魔+1。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF01030_001",
-      "name": "威慑反击",
-      "effect": "友方其他目标受到攻击后使自身造成反击伤害+2。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF01065_000",
-      "name": "完美炼金",
-      "effect": "每造成25层阻碍使自身造成全部伤害+1。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF00036_002",
-      "name": "断后烈火",
-      "effect": "对后排目标造成灼烧层数+10。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF01022_001",
-      "name": "易燃弹药",
-      "effect": "释放技能时本次每造成25点伤害对目标造成1层灼烧。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16001_004",
-      "name": "星光泯灭",
-      "effect": "造成泯灭层数+4],[CN: 每名敌方目标目标使效果额外+1。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF01005_001",
-      "name": "极限增压",
-      "effect": "每拥有25层滋润使自身造成全部伤害+1。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF01066",
-      "name": "永恒烈阳",
-      "effect": "每造成25层灼烧使自身造成全部伤害+1。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16201_004",
-      "name": "炼狱生物",
-      "effect": "低生命时使自身造成全部伤害+8],[CN: 造成灼烧层数+8。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF14603_004",
-      "name": "烈火神盾",
-      "effect": "受到攻击后立即触发攻击目标10%层数的灼烧效果。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF01009_000",
-      "name": "烈焰反哺",
-      "effect": "任意灼烧触发时使自身获得2点魔力。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF14604_004",
-      "name": "焦土领域",
-      "effect": "双方全体目标获得成长层数-10],[CN: 受到灼烧层数+10。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF00033_002",
-      "name": "熔岩铠甲",
-      "effect": "受到攻击后对攻击目标造成25层灼烧],[CN: 本场战斗每次行动使效果-1。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF14601_004",
-      "name": "爆炸核心",
-      "effect": "自身战败后对最近的3名敌方目标造成6层灼烧。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF01051",
-      "name": "生命燃烧",
-      "effect": "进行治疗后每溢出100点生命使友方目标造成灼烧层数+1。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16101_004",
-      "name": "白银净化",
-      "effect": "+12 stacks of Cleanse gained from allies.",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16205_004",
-      "name": "破胆咆哮",
-      "effect": "战斗开始前使敌方全体目标失去自身生命上限50%的生命。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF00035_002",
-      "name": "蓄火巨炮",
-      "effect": "任意目标造成灼烧后使自身获得1点魔力],[CN: 但自身不能进行普通攻击与治疗。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16202_004",
-      "name": "蓄火龙珠",
-      "effect": "造成灼烧层数+20],[CN: 回合开始前使效果-5。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16204_004",
-      "name": "逆鳞怒火",
-      "effect": "每造成10层灼烧使自身造成反击伤害+1。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16301_004",
-      "name": "长生不老",
-      "effect": "行动结束后使自身生命上限+8],[CN: 并获得一半的生命。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF00032_002",
-      "name": "高效焚烧",
-      "effect": "释放技能后使敌方目标行动回魔-1],[CN: 并造成5层灼烧。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16203_004",
-      "name": "高温炼狱",
-      "effect": "造成灼烧后使目标失去8点韧性。",
+      "id": "TF01054",
+      "name": "戏水派对",
+      "effect": "拥有滋润时使自身造成全部状态层数+3。",
       "step": "S",
       "type": "Talent"
     },
@@ -4378,6 +4633,13 @@
       "id": "TF13005_003",
       "name": "Adaptive",
       "effect": "Take -1 corresponding DMG next turn after taking DMG.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16701_003",
+      "name": "Ancient Blood",
+      "effect": "Gain +75 HP. Take -3 debuff stacks.",
       "step": "A",
       "type": "Talent"
     },
@@ -4410,9 +4672,23 @@
       "type": "Talent"
     },
     {
+      "id": "TF14601_003",
+      "name": "Blast Core",
+      "effect": "Apply 6 stacks of Burn to the nearest 2 enemies when defeated.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF11102_003",
       "name": "Blood Drain",
       "effect": "Apply +1 Expose stacks on the target and make them suffer +1 HP Loss per 1 stacks of Expose.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16403_003",
+      "name": "Blood Frenzy",
+      "effect": "Apply +1 stacks of Expose per 100 HP lost.",
       "step": "A",
       "type": "Talent"
     },
@@ -4424,9 +4700,23 @@
       "type": "Talent"
     },
     {
+      "id": "TF16401_003",
+      "name": "Blood Siphon",
+      "effect": "Absorb 6 HP from target after casting skill.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF13403_003",
       "name": "Bloodless",
       "effect": "-12 HP Loss.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16602_003",
+      "name": "Blossom Guardian",
+      "effect": "Take -1 total DMG per 4 ally count.",
       "step": "A",
       "type": "Talent"
     },
@@ -4462,6 +4752,20 @@
       "id": "TF10002_003",
       "name": "Clear Mind",
       "effect": "+12 SPI. Effect doubles if SPI is at least 100.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16502_003",
+      "name": "Coiled Guard",
+      "effect": "Gain 100 stacks of Thorns at battle start, but cannot act in the first turn.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF14602_003",
+      "name": "Cooled Crust",
+      "effect": "Remove 10 stacks of Burn from self at action end. Gain Shield equal to the stacks removed.",
       "step": "A",
       "type": "Talent"
     },
@@ -4502,8 +4806,8 @@
     },
     {
       "id": "TF16002_003",
-      "name": "Dark star expansion",
-      "effect": "After defeating a target, self deals +1 skill DMG and takes -1 skill DMG.",
+      "name": "Dark Surge",
+      "effect": "Deal +1 Skill DMG and take -1 Skill DMG after defeating a target.",
       "step": "A",
       "type": "Talent"
     },
@@ -4536,13 +4840,6 @@
       "type": "Talent"
     },
     {
-      "id": "TF16102_003",
-      "name": "Demon-breaking body",
-      "effect": "For every 50 stacks of Cleanse dealt, self takes -1 skill DMG.",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
       "id": "TF12704_003",
       "name": "Desperate Frenzy",
       "effect": "Deal +1 Follow-Up attacks at 1 HP.",
@@ -4571,6 +4868,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16001_003",
+      "name": "Dying Stars",
+      "effect": "造成泯灭层数+3],[CN: 每名敌方目标目标使效果额外+1。",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF12903_003",
       "name": "Eagle Eye",
       "effect": "Gain +1 stacks of Precision. Gain 30 stacks at battle start.",
@@ -4588,6 +4892,13 @@
       "id": "TF12405_003",
       "name": "Element Curse",
       "effect": "Attacker gains -5 Mana when defeated.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16202_003",
+      "name": "Ember Pearl",
+      "effect": "Apply +10 stacks of Burn. Effect decreases by 5 at turn start.",
       "step": "A",
       "type": "Talent"
     },
@@ -4655,6 +4966,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF14603_003",
+      "name": "Flame Aegis",
+      "effect": "After being attacked, immediately trigger 5% of the attacker's Burn stacks.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF11301_003",
       "name": "Flame Body",
       "effect": "Apply +1 stacks of Burn. Apply 3 stacks of Burn to the nearest enemy after taking a hit.",
@@ -4686,6 +5004,13 @@
       "id": "TF10109_003",
       "name": "Focus Defense",
       "effect": "+25 DEF but cannot counter.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16603_003",
+      "name": "Full Bloom",
+      "effect": "Take -25 total DMG from targets with Taunt.",
       "step": "A",
       "type": "Talent"
     },
@@ -4728,6 +5053,13 @@
       "id": "TF10101_003",
       "name": "Guard Master",
       "effect": "All allies take -3 total DMG.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16501_003",
+      "name": "Hardened Spines",
+      "effect": "Inflict +15 HP loss while having Thorns.",
       "step": "A",
       "type": "Talent"
     },
@@ -4788,6 +5120,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16702_003",
+      "name": "Hyper Regen",
+      "effect": "Gain 2 HP at action start. Effect increases by 1 per 100 HP lost.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF13604_003",
       "name": "Indestructible",
       "effect": "-6 Toughness loss.",
@@ -4802,9 +5141,23 @@
       "type": "Talent"
     },
     {
+      "id": "TF16201_003",
+      "name": "Infernal Being",
+      "effect": "Deal +6 total DMG and apply +6 stacks of Burn at low HP.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16402_003",
+      "name": "Innate Bloodthirst",
+      "effect": "Inflict +1 HP loss per 40 HP gained.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF16003_003",
-      "name": "Infinite devouring",
-      "effect": "Before turn start, self deals +1 stacks of Decay.",
+      "name": "Insatiable",
+      "effect": "Apply +1 Decay stacks at turn start.",
       "step": "A",
       "type": "Talent"
     },
@@ -5040,6 +5393,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16601_003",
+      "name": "Pollen Haze",
+      "effect": "Apply 9 stacks of Taunt to enemies at their action end.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF10107_003",
       "name": "Pommel Strike",
       "effect": "Apply 4 stacks of Stun to target after successful counter.",
@@ -5089,16 +5449,16 @@
       "type": "Talent"
     },
     {
-      "id": "TF16103_003",
-      "name": "Purification reflection",
-      "effect": "After being hit by a skill, each hit applies 2 stacks of Cleanse to the target.",
+      "id": "TF11401_003",
+      "name": "Purify Light",
+      "effect": "Apply +1 stacks of Cleanse. Apply +1 stacks of Cleanse to enemies.",
       "step": "A",
       "type": "Talent"
     },
     {
-      "id": "TF11401_003",
-      "name": "Purify Light",
-      "effect": "Apply +1 stacks of Cleanse. Apply +1 stacks of Cleanse to enemies.",
+      "id": "TF16103_003",
+      "name": "Purifying Echo",
+      "effect": "Apply 2 stacks of Cleanse to the attacker per hit after taking Skill DMG.",
       "step": "A",
       "type": "Talent"
     },
@@ -5152,6 +5512,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16703_003",
+      "name": "Rune Insight",
+      "effect": "Deal +2 total DMG per 1 equipped Runes of Purple tier or above.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF15403_003",
       "name": "Sand Prison",
       "effect": "Apply +25 Slow stacks to Stunned targets.",
@@ -5176,6 +5543,13 @@
       "id": "TF10016_003",
       "name": "Scrap Use",
       "effect": "Gain +1 all stats per Bronze Bond.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16203_003",
+      "name": "Searing Purgatory",
+      "effect": "Target loses 4 Toughness after applying Burn.",
       "step": "A",
       "type": "Talent"
     },
@@ -5211,6 +5585,13 @@
       "id": "TF10105_003",
       "name": "Shield Taunt",
       "effect": "Prioritize becoming enemy target. Take -2 total DMG.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16101_003",
+      "name": "Silver Purge",
+      "effect": "Gain +9 Cleanse stacks from allies.",
       "step": "A",
       "type": "Talent"
     },
@@ -5257,6 +5638,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16302_003",
+      "name": "Soul Release",
+      "effect": "When defeated, all enemies lose HP equal to 2% of their own Max HP.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF13501_003",
       "name": "Soulless Puppet",
       "effect": "Take -12 stacks of Fear.",
@@ -5274,6 +5662,20 @@
       "id": "TF13102_003",
       "name": "Spellbreak Scale",
       "effect": "Take -2 skill DMG and -2 stacks of debuffs.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16102_003",
+      "name": "Spellbreaker",
+      "effect": "Take -1 Skill DMG per 50 stacks of Cleanse applied.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16503_003",
+      "name": "Spine Wound",
+      "effect": "Attackers suffer +1 HP loss when Thorns triggers.",
       "step": "A",
       "type": "Talent"
     },
@@ -5302,6 +5704,13 @@
       "id": "TF10005_003",
       "name": "Strong Will",
       "effect": "+12 Toughness. Effect doubles if Toughness is at least 100.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16303_003",
+      "name": "Supremacy",
+      "effect": "Gain +100 HP when no other Immortal allies exist.",
       "step": "A",
       "type": "Talent"
     },
@@ -5411,6 +5820,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16301_003",
+      "name": "Undying",
+      "effect": "Gain +6 Max HP at action end. Gain half that amount as HP.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF14102_003",
       "name": "Unified Mind",
       "effect": "+5 SPI. 5% of SPI affects DEF.",
@@ -5474,80 +5890,10 @@
       "type": "Talent"
     },
     {
-      "id": "TF16302_003",
-      "name": "兵解归墟",
-      "effect": "自身战败后使敌方全体目标失去自身生命上限2%的生命。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF14602_003",
-      "name": "冷却岩甲",
-      "effect": "行动结束后移除自身10层灼烧并获得移除层数等量的防护。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16303_003",
-      "name": "唯吾独尊",
-      "effect": "友方没有其他仙族时使自身生命+100。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16001_003",
-      "name": "星光泯灭",
-      "effect": "造成泯灭层数+3],[CN: 每名敌方目标目标使效果额外+1。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16201_003",
-      "name": "炼狱生物",
-      "effect": "低生命时使自身造成全部伤害+6],[CN: 造成灼烧层数+6。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF14603_003",
-      "name": "烈火神盾",
-      "effect": "受到攻击后立即触发攻击目标5%层数的灼烧效果。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF14601_003",
-      "name": "爆炸核心",
-      "effect": "自身战败后对最近的2名敌方目标造成6层灼烧。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16101_003",
-      "name": "白银净化",
-      "effect": "+9 stacks of Cleanse gained from allies.",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16202_003",
-      "name": "蓄火龙珠",
-      "effect": "造成灼烧层数+10],[CN: 回合开始前使效果-5。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16301_003",
-      "name": "长生不老",
-      "effect": "行动结束后使自身生命上限+6],[CN: 并获得一半的生命。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16203_003",
-      "name": "高温炼狱",
-      "effect": "造成灼烧后使目标失去4点韧性。",
-      "step": "A",
+      "id": "TF16701_002",
+      "name": "Ancient Blood",
+      "effect": "Gain +50 HP. Take -2 debuff stacks.",
+      "step": "B",
       "type": "Talent"
     },
     {
@@ -5561,6 +5907,20 @@
       "id": "TF10007_002",
       "name": "Battle Ready",
       "effect": "Take -6 total DMG when in front position.",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
+      "id": "TF14601_002",
+      "name": "Blast Core",
+      "effect": "Apply 6 stacks of Burn to the nearest 1 enemies when defeated.",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16401_002",
+      "name": "Blood Siphon",
+      "effect": "Absorb 4 HP from target after casting skill.",
       "step": "B",
       "type": "Talent"
     },
@@ -5607,6 +5967,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16001_002",
+      "name": "Dying Stars",
+      "effect": "造成泯灭层数+2],[CN: 每名敌方目标目标使效果额外+1。",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
       "id": "TF12402_002",
       "name": "Energy Chaos",
       "effect": "All enemies lose 200% of Max Mana as HP when an enemy is defeated.",
@@ -5649,6 +6016,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16501_002",
+      "name": "Hardened Spines",
+      "effect": "Inflict +10 HP loss while having Thorns.",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
       "id": "TF13902_002",
       "name": "Harmless Look",
       "effect": "Take -4 total DMG.",
@@ -5666,6 +6040,13 @@
       "id": "TF13604_002",
       "name": "Indestructible",
       "effect": "-4 Toughness loss.",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16201_002",
+      "name": "Infernal Being",
+      "effect": "Deal +4 total DMG and apply +4 stacks of Burn at low HP.",
       "step": "B",
       "type": "Talent"
     },
@@ -5761,6 +6142,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16601_002",
+      "name": "Pollen Haze",
+      "effect": "Apply 6 stacks of Taunt to enemies at their action end.",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
       "id": "TF13303_002",
       "name": "Primal Body",
       "effect": "+8 HP and -4 HP Loss.",
@@ -5799,6 +6187,13 @@
       "id": "TF13203_002",
       "name": "School Control",
       "effect": "+1 Ally count per 150 stacks of Soothe.",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16101_002",
+      "name": "Silver Purge",
+      "effect": "Gain +6 Cleanse stacks from allies.",
       "step": "B",
       "type": "Talent"
     },
@@ -5880,6 +6275,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16301_002",
+      "name": "Undying",
+      "effect": "Gain +4 Max HP at action end. Gain half that amount as HP.",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
       "id": "TF10408_002",
       "name": "Uplifting Song",
       "effect": "All allies deal +2 total DMG.",
@@ -5894,38 +6296,10 @@
       "type": "Talent"
     },
     {
-      "id": "TF16001_002",
-      "name": "星光泯灭",
-      "effect": "造成泯灭层数+2],[CN: 每名敌方目标目标使效果额外+1。",
-      "step": "B",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16201_002",
-      "name": "炼狱生物",
-      "effect": "低生命时使自身造成全部伤害+4],[CN: 造成灼烧层数+4。",
-      "step": "B",
-      "type": "Talent"
-    },
-    {
-      "id": "TF14601_002",
-      "name": "爆炸核心",
-      "effect": "自身战败后对最近的1名敌方目标造成6层灼烧。",
-      "step": "B",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16101_002",
-      "name": "白银净化",
-      "effect": "+6 stacks of Cleanse gained from allies.",
-      "step": "B",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16301_002",
-      "name": "长生不老",
-      "effect": "行动结束后使自身生命上限+4],[CN: 并获得一半的生命。",
-      "step": "B",
+      "id": "TF16701_001",
+      "name": "Ancient Blood",
+      "effect": "Gain +25 HP. Take -1 debuff stacks.",
+      "step": "C",
       "type": "Talent"
     },
     {
@@ -5939,6 +6313,20 @@
       "id": "TF10007_001",
       "name": "Battle Ready",
       "effect": "Take -3 total DMG when in front position.",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
+      "id": "TF14601_001",
+      "name": "Blast Core",
+      "effect": "Apply 3 stacks of Burn to the nearest 1 enemies when defeated.",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16401_001",
+      "name": "Blood Siphon",
+      "effect": "Absorb 2 HP from target after casting skill.",
       "step": "C",
       "type": "Talent"
     },
@@ -5985,6 +6373,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16001_001",
+      "name": "Dying Stars",
+      "effect": "造成泯灭层数+1],[CN: 每名敌方目标目标使效果额外+1。",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
       "id": "TF12402_001",
       "name": "Energy Chaos",
       "effect": "All enemies lose 100% of Max Mana as HP when an enemy is defeated.",
@@ -6027,6 +6422,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16501_001",
+      "name": "Hardened Spines",
+      "effect": "Inflict +5 HP loss while having Thorns.",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
       "id": "TF13902_001",
       "name": "Harmless Look",
       "effect": "Take -2 total DMG.",
@@ -6044,6 +6446,13 @@
       "id": "TF13604_001",
       "name": "Indestructible",
       "effect": "-2 Toughness loss.",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16201_001",
+      "name": "Infernal Being",
+      "effect": "Deal +2 total DMG and apply +2 stacks of Burn at low HP.",
       "step": "C",
       "type": "Talent"
     },
@@ -6139,6 +6548,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16601_001",
+      "name": "Pollen Haze",
+      "effect": "Apply 3 stacks of Taunt to enemies at their action end.",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
       "id": "TF13303_001",
       "name": "Primal Body",
       "effect": "+4 HP and -2 HP Loss.",
@@ -6177,6 +6593,13 @@
       "id": "TF13203_001",
       "name": "School Control",
       "effect": "+1 Ally count per 200 stacks of Soothe.",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16101_001",
+      "name": "Silver Purge",
+      "effect": "Gain +3 Cleanse stacks from allies.",
       "step": "C",
       "type": "Talent"
     },
@@ -6258,6 +6681,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16301_001",
+      "name": "Undying",
+      "effect": "Gain +2 Max HP at action end. Gain half that amount as HP.",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
       "id": "TF10408_001",
       "name": "Uplifting Song",
       "effect": "All allies deal +1 total DMG.",
@@ -6270,44 +6700,17 @@
       "effect": "All enemies lose 2 DEF at turn start.",
       "step": "C",
       "type": "Talent"
-    },
-    {
-      "id": "TF16001_001",
-      "name": "星光泯灭",
-      "effect": "造成泯灭层数+1],[CN: 每名敌方目标目标使效果额外+1。",
-      "step": "C",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16201_001",
-      "name": "炼狱生物",
-      "effect": "低生命时使自身造成全部伤害+2],[CN: 造成灼烧层数+2。",
-      "step": "C",
-      "type": "Talent"
-    },
-    {
-      "id": "TF14601_001",
-      "name": "爆炸核心",
-      "effect": "自身战败后对最近的1名敌方目标造成3层灼烧。",
-      "step": "C",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16101_001",
-      "name": "白银净化",
-      "effect": "+3 stacks of Cleanse gained from allies.",
-      "step": "C",
-      "type": "Talent"
-    },
-    {
-      "id": "TF16301_001",
-      "name": "长生不老",
-      "effect": "行动结束后使自身生命上限+2],[CN: 并获得一半的生命。",
-      "step": "C",
-      "type": "Talent"
     }
   ],
   "equips": [
+    {
+      "id": "Z07001_401",
+      "name": "Axe of Blood",
+      "step": "SS",
+      "type": "Main Hand",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
     {
       "id": "Z00102_401",
       "name": "Godslayer",
@@ -6411,6 +6814,14 @@
       "type": "Main Hand",
       "area": "The Sunken Sea",
       "cls": "Warrior"
+    },
+    {
+      "id": "Z07001_354",
+      "name": "Charged Staff",
+      "step": "S",
+      "type": "Main Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
     },
     {
       "id": "Z10015_121",
@@ -6701,6 +7112,14 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z07001_343",
+      "name": "Rose Whip",
+      "step": "S",
+      "type": "Main Hand",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z06001_331",
       "name": "Sandstorm Staff",
       "step": "S",
@@ -6723,6 +7142,14 @@
       "type": "Main Hand",
       "area": "Dawnstep Plains",
       "cls": "Archer"
+    },
+    {
+      "id": "Z07001_331",
+      "name": "Spellbreak Blade",
+      "step": "S",
+      "type": "Main Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Warrior,Archer"
     },
     {
       "id": "Z10010_332",
@@ -6795,6 +7222,14 @@
       "type": "Main Hand",
       "area": "Dawnstep Plains",
       "cls": "Archer"
+    },
+    {
+      "id": "Z07001_301",
+      "name": "Withered Wand",
+      "step": "S",
+      "type": "Main Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
     },
     {
       "id": "Z20003_331",
@@ -6933,6 +7368,14 @@
       "cls": "Mage"
     },
     {
+      "id": "Z07001_261",
+      "name": "Clover Rod",
+      "step": "A",
+      "type": "Main Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Priest"
+    },
+    {
       "id": "Z00102_201",
       "name": "Crimson Bow",
       "step": "A",
@@ -6955,6 +7398,22 @@
       "type": "Main Hand",
       "area": "The Sunken Sea",
       "cls": "Mage,Archer"
+    },
+    {
+      "id": "Z07001_274",
+      "name": "Dissolve Badge",
+      "step": "A",
+      "type": "Main Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
+    },
+    {
+      "id": "Z07001_271",
+      "name": "Dissolve Wand",
+      "step": "A",
+      "type": "Main Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
     },
     {
       "id": "Z00102_251",
@@ -7189,6 +7648,14 @@
       "cls": "Archer"
     },
     {
+      "id": "Z07001_221",
+      "name": "Parched Staff",
+      "step": "A",
+      "type": "Main Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
+    },
+    {
       "id": "Z05001_274",
       "name": "Petrify Bow",
       "step": "A",
@@ -7211,6 +7678,14 @@
       "type": "Main Hand",
       "area": "The Sunken Sea",
       "cls": "Warrior"
+    },
+    {
+      "id": "Z07001_254",
+      "name": "Pure Rod",
+      "step": "A",
+      "type": "Main Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Priest"
     },
     {
       "id": "Z05001_244",
@@ -7269,12 +7744,28 @@
       "cls": "Mage"
     },
     {
+      "id": "Z07001_241",
+      "name": "Sharpwilled Rod",
+      "step": "A",
+      "type": "Main Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Priest"
+    },
+    {
       "id": "Z05001_251",
       "name": "Solar Wand",
       "step": "A",
       "type": "Main Hand",
       "area": "Ashland Wastes",
       "cls": "Mage"
+    },
+    {
+      "id": "Z07001_211",
+      "name": "Solid Sword",
+      "step": "A",
+      "type": "Main Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Warrior"
     },
     {
       "id": "Z03001_273",
@@ -7445,6 +7936,14 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z01003_141",
+      "name": "Armored Hammer",
+      "step": "B",
+      "type": "Main Hand",
+      "area": "Crimson Highlands",
+      "cls": "Warrior"
+    },
+    {
       "id": "Z00001_112",
       "name": "Black Iron Hammer",
       "step": "B",
@@ -7570,14 +8069,6 @@
       "step": "B",
       "type": "Main Hand",
       "area": "Frostbound Tundra",
-      "cls": "Warrior"
-    },
-    {
-      "id": "Z01003_141",
-      "name": "Heavy Hammer",
-      "step": "B",
-      "type": "Main Hand",
-      "area": "Crimson Highlands",
       "cls": "Warrior"
     },
     {
@@ -7750,7 +8241,7 @@
     },
     {
       "id": "Z10017_321",
-      "name": "Withered Wand",
+      "name": "Withered Staff",
       "step": "B",
       "type": "Main Hand",
       "area": "The Deep Hollows",
@@ -7771,6 +8262,14 @@
       "type": "Main Hand",
       "area": "Any",
       "cls": "Archer"
+    },
+    {
+      "id": "Z07001_021",
+      "name": "Flawed Staff",
+      "step": "C",
+      "type": "Main Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
     },
     {
       "id": "Z30001_401",
@@ -7939,6 +8438,14 @@
       "type": "Off Hand",
       "area": "Forsaken Mines",
       "cls": "Warrior,Archer"
+    },
+    {
+      "id": "Z07001_355",
+      "name": "Charged Orb",
+      "step": "S",
+      "type": "Off Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
     },
     {
       "id": "Z10015_131",
@@ -8141,6 +8648,14 @@
       "cls": "Archer"
     },
     {
+      "id": "Z07001_332",
+      "name": "Spellbreak Shield",
+      "step": "S",
+      "type": "Off Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Warrior,Archer"
+    },
+    {
       "id": "Z03001_333",
       "name": "Tactical Shield",
       "step": "S",
@@ -8195,6 +8710,14 @@
       "type": "Off Hand",
       "area": "Endless Desert",
       "cls": "Priest"
+    },
+    {
+      "id": "Z07001_304",
+      "name": "Withered Orb",
+      "step": "S",
+      "type": "Off Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
     },
     {
       "id": "Z20003_332",
@@ -8307,6 +8830,22 @@
       "type": "Off Hand",
       "area": "The Sunken Sea",
       "cls": "Mage,Archer"
+    },
+    {
+      "id": "Z07001_275",
+      "name": "Dissolve Necklace",
+      "step": "A",
+      "type": "Off Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
+    },
+    {
+      "id": "Z07001_272",
+      "name": "Dissolve Orb",
+      "step": "A",
+      "type": "Off Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
     },
     {
       "id": "Z06001_212",
@@ -8467,6 +9006,22 @@
       "type": "Off Hand",
       "area": "Boundless Steppe",
       "cls": "Mage"
+    },
+    {
+      "id": "Z07001_243",
+      "name": "Sharpwilled Talisman",
+      "step": "A",
+      "type": "Off Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Priest"
+    },
+    {
+      "id": "Z07001_212",
+      "name": "Solid Shield",
+      "step": "A",
+      "type": "Off Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Warrior"
     },
     {
       "id": "Z10001_121",
@@ -8859,6 +9414,14 @@
       "type": "Off Hand",
       "area": "Ashland Wastes",
       "cls": "Warrior,Archer"
+    },
+    {
+      "id": "Z07001_022",
+      "name": "Flawed Orb",
+      "step": "C",
+      "type": "Off Hand",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
     },
     {
       "id": "Z30001_402",
@@ -9333,6 +9896,14 @@
       "cls": "Warrior,Archer"
     },
     {
+      "id": "Z07001_344",
+      "name": "Rose Crown",
+      "step": "S",
+      "type": "Head",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z06001_332",
       "name": "Sandstorm Hood",
       "step": "S",
@@ -9365,6 +9936,14 @@
       "cls": "Warrior,Mage"
     },
     {
+      "id": "Z07001_334",
+      "name": "Spellbreak Helm",
+      "step": "S",
+      "type": "Head",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z03001_331",
       "name": "Tactical Visor",
       "step": "S",
@@ -9394,6 +9973,14 @@
       "step": "S",
       "type": "Head",
       "area": "The Deep Hollows",
+      "cls": "Warrior,Mage"
+    },
+    {
+      "id": "Z07001_311",
+      "name": "Undying Mask",
+      "step": "S",
+      "type": "Head",
+      "area": "Deadwood Jungle",
       "cls": "Warrior,Mage"
     },
     {
@@ -9514,6 +10101,14 @@
       "step": "A",
       "type": "Head",
       "area": "Any",
+      "cls": "Priest"
+    },
+    {
+      "id": "Z07001_264",
+      "name": "Clover Crown",
+      "step": "A",
+      "type": "Head",
+      "area": "Deadwood Jungle",
       "cls": "Priest"
     },
     {
@@ -9781,6 +10376,14 @@
       "cls": "Mage,Priest"
     },
     {
+      "id": "Z07001_251",
+      "name": "Pure Crown",
+      "step": "A",
+      "type": "Head",
+      "area": "Deadwood Jungle",
+      "cls": "Priest"
+    },
+    {
       "id": "Z20027_521",
       "name": "Purple Thunder Hat",
       "step": "A",
@@ -9803,6 +10406,14 @@
       "type": "Head",
       "area": "Dawnstep Plains",
       "cls": "Archer"
+    },
+    {
+      "id": "Z07001_284",
+      "name": "Rewind Helm",
+      "step": "A",
+      "type": "Head",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
     },
     {
       "id": "Z10005_021",
@@ -9843,6 +10454,14 @@
       "type": "Head",
       "area": "Ashland Wastes",
       "cls": "Mage"
+    },
+    {
+      "id": "Z07001_213",
+      "name": "Solid Helm",
+      "step": "A",
+      "type": "Head",
+      "area": "Deadwood Jungle",
+      "cls": "Warrior"
     },
     {
       "id": "Z10001_521",
@@ -10173,6 +10792,14 @@
       "cls": "All-Class"
     },
     {
+      "id": "Z07001_131",
+      "name": "Warded Helm",
+      "step": "B",
+      "type": "Head",
+      "area": "Deadwood Jungle",
+      "cls": "Warrior"
+    },
+    {
       "id": "Z06001_135",
       "name": "Weathered Helm",
       "step": "B",
@@ -10387,6 +11014,14 @@
       "type": "Body",
       "area": "The Sunken Sea",
       "cls": "Warrior"
+    },
+    {
+      "id": "Z07001_351",
+      "name": "Charged Device",
+      "step": "S",
+      "type": "Body",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
     },
     {
       "id": "Z10015_132",
@@ -10653,6 +11288,14 @@
       "cls": "Warrior,Archer"
     },
     {
+      "id": "Z07001_341",
+      "name": "Rose Robe",
+      "step": "S",
+      "type": "Body",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z00201_462",
       "name": "Sea Queen Armor",
       "step": "S",
@@ -10675,6 +11318,14 @@
       "type": "Body",
       "area": "Any",
       "cls": "Warrior,Mage"
+    },
+    {
+      "id": "Z07001_335",
+      "name": "Spellbreak Armor",
+      "step": "S",
+      "type": "Body",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
     },
     {
       "id": "Z50003_631",
@@ -10714,6 +11365,14 @@
       "step": "S",
       "type": "Body",
       "area": "Breezy Shores",
+      "cls": "Warrior,Mage"
+    },
+    {
+      "id": "Z07001_314",
+      "name": "Undying Robe",
+      "step": "S",
+      "type": "Body",
+      "area": "Deadwood Jungle",
       "cls": "Warrior,Mage"
     },
     {
@@ -10810,6 +11469,14 @@
       "step": "A",
       "type": "Body",
       "area": "Any",
+      "cls": "Priest"
+    },
+    {
+      "id": "Z07001_265",
+      "name": "Clover Robe",
+      "step": "A",
+      "type": "Body",
+      "area": "Deadwood Jungle",
       "cls": "Priest"
     },
     {
@@ -11037,15 +11704,15 @@
       "cls": "Warrior,Mage"
     },
     {
-      "id": "Z20008_621",
-      "name": "Packwolf Cloak",
+      "id": "Z10002_621",
+      "name": "Packwolf Cape",
       "step": "A",
       "type": "Body",
       "area": "Boundless Steppe",
       "cls": "Archer"
     },
     {
-      "id": "Z10002_621",
+      "id": "Z20008_621",
       "name": "Packwolf Cloak",
       "step": "A",
       "type": "Body",
@@ -11067,6 +11734,14 @@
       "type": "Body",
       "area": "Endless Desert",
       "cls": "Mage,Priest"
+    },
+    {
+      "id": "Z07001_252",
+      "name": "Pure Robe",
+      "step": "A",
+      "type": "Body",
+      "area": "Deadwood Jungle",
+      "cls": "Priest"
     },
     {
       "id": "Z20027_621",
@@ -11093,6 +11768,14 @@
       "cls": "Archer"
     },
     {
+      "id": "Z07001_285",
+      "name": "Rewind Armor",
+      "step": "A",
+      "type": "Body",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z10005_022",
       "name": "Ritual Robe",
       "step": "A",
@@ -11117,12 +11800,28 @@
       "cls": "Warrior,Priest"
     },
     {
+      "id": "Z07001_244",
+      "name": "Sharpwilled Cape",
+      "step": "A",
+      "type": "Body",
+      "area": "Deadwood Jungle",
+      "cls": "Priest"
+    },
+    {
       "id": "Z05001_252",
       "name": "Solar Robe",
       "step": "A",
       "type": "Body",
       "area": "Ashland Wastes",
       "cls": "Mage"
+    },
+    {
+      "id": "Z07001_214",
+      "name": "Solid Armor",
+      "step": "A",
+      "type": "Body",
+      "area": "Deadwood Jungle",
+      "cls": "Warrior"
     },
     {
       "id": "Z10001_621",
@@ -11413,6 +12112,14 @@
       "cls": "Priest"
     },
     {
+      "id": "Z07001_103",
+      "name": "Reserve Armor",
+      "step": "B",
+      "type": "Body",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z00013_611",
       "name": "Resolve Garb",
       "step": "B",
@@ -11483,6 +12190,14 @@
       "type": "Body",
       "area": "Dawnstep Plains",
       "cls": "All-Class"
+    },
+    {
+      "id": "Z07001_132",
+      "name": "Warded Armor",
+      "step": "B",
+      "type": "Body",
+      "area": "Deadwood Jungle",
+      "cls": "Warrior"
     },
     {
       "id": "Z05001_151",
@@ -11901,6 +12616,14 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z07001_321",
+      "name": "Miracle Gloves",
+      "step": "S",
+      "type": "Gloves",
+      "area": "Deadwood Jungle",
+      "cls": "Priest"
+    },
+    {
       "id": "Z30018_732",
       "name": "Navy Gloves",
       "step": "S",
@@ -11981,6 +12704,14 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z07001_333",
+      "name": "Spellbreak Gauntlets",
+      "step": "S",
+      "type": "Gloves",
+      "area": "Deadwood Jungle",
+      "cls": "Warrior,Archer"
+    },
+    {
       "id": "Z05001_351",
       "name": "Titan Bracers",
       "step": "S",
@@ -12002,6 +12733,14 @@
       "step": "S",
       "type": "Gloves",
       "area": "The Deep Hollows",
+      "cls": "Warrior,Mage"
+    },
+    {
+      "id": "Z07001_315",
+      "name": "Undying Gloves",
+      "step": "S",
+      "type": "Gloves",
+      "area": "Deadwood Jungle",
       "cls": "Warrior,Mage"
     },
     {
@@ -12043,6 +12782,14 @@
       "type": "Gloves",
       "area": "Endless Desert",
       "cls": "Priest"
+    },
+    {
+      "id": "Z07001_302",
+      "name": "Withered Gloves",
+      "step": "S",
+      "type": "Gloves",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
     },
     {
       "id": "Z10016_721",
@@ -12203,6 +12950,22 @@
       "type": "Gloves",
       "area": "The Sunken Sea",
       "cls": "All-Class"
+    },
+    {
+      "id": "Z07001_273",
+      "name": "Dissolve Gloves",
+      "step": "A",
+      "type": "Gloves",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
+    },
+    {
+      "id": "Z07001_276",
+      "name": "Dissolve Ring",
+      "step": "A",
+      "type": "Gloves",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
     },
     {
       "id": "Z00102_252",
@@ -12381,6 +13144,14 @@
       "cls": "Archer"
     },
     {
+      "id": "Z07001_222",
+      "name": "Parched Gauntlets",
+      "step": "A",
+      "type": "Gloves",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
+    },
+    {
       "id": "Z05001_276",
       "name": "Petrify Bracers",
       "step": "A",
@@ -12397,6 +13168,14 @@
       "cls": "Warrior,Archer"
     },
     {
+      "id": "Z07001_255",
+      "name": "Pure Gloves",
+      "step": "A",
+      "type": "Gloves",
+      "area": "Deadwood Jungle",
+      "cls": "Priest"
+    },
+    {
       "id": "Z10024_711",
       "name": "Rending Gloves",
       "step": "A",
@@ -12405,12 +13184,28 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z07001_281",
+      "name": "Rewind Gauntlets",
+      "step": "A",
+      "type": "Gloves",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z06001_261",
       "name": "Solar Gloves",
       "step": "A",
       "type": "Gloves",
       "area": "Ashland Wastes",
       "cls": "Mage"
+    },
+    {
+      "id": "Z07001_232",
+      "name": "Solid Gauntlets",
+      "step": "A",
+      "type": "Gloves",
+      "area": "Deadwood Jungle",
+      "cls": "Warrior"
     },
     {
       "id": "Z03001_203",
@@ -12637,6 +13432,14 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z07001_124",
+      "name": "Mutant Gloves",
+      "step": "B",
+      "type": "Gloves",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z30001_701",
       "name": "Pure Gloves",
       "step": "B",
@@ -12659,6 +13462,14 @@
       "type": "Gloves",
       "area": "Crimson Highlands",
       "cls": "Archer"
+    },
+    {
+      "id": "Z07001_101",
+      "name": "Reserve Gauntlets",
+      "step": "B",
+      "type": "Gloves",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
     },
     {
       "id": "Z00013_711",
@@ -12747,6 +13558,14 @@
       "type": "Gloves",
       "area": "Any",
       "cls": "Archer"
+    },
+    {
+      "id": "Z07001_001",
+      "name": "Charred Gauntlets",
+      "step": "C",
+      "type": "Gloves",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
     },
     {
       "id": "Z05001_012",
@@ -12915,6 +13734,14 @@
       "type": "Belt",
       "area": "The Sunken Sea",
       "cls": "Warrior"
+    },
+    {
+      "id": "Z07001_353",
+      "name": "Charged Core",
+      "step": "S",
+      "type": "Belt",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
     },
     {
       "id": "Z10015_721",
@@ -13133,6 +13960,14 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z07001_312",
+      "name": "Undying Belt",
+      "step": "S",
+      "type": "Belt",
+      "area": "Deadwood Jungle",
+      "cls": "Warrior,Mage"
+    },
+    {
       "id": "Z05001_373",
       "name": "Wish Sash",
       "step": "S",
@@ -13211,6 +14046,14 @@
       "type": "Belt",
       "area": "The Deep Hollows",
       "cls": "Mage"
+    },
+    {
+      "id": "Z07001_266",
+      "name": "Clover Belt",
+      "step": "A",
+      "type": "Belt",
+      "area": "Deadwood Jungle",
+      "cls": "Priest"
     },
     {
       "id": "Z00201_363",
@@ -13293,14 +14136,6 @@
       "cls": "Priest"
     },
     {
-      "id": "Z06001_226",
-      "name": "Heavy Belt",
-      "step": "A",
-      "type": "Belt",
-      "area": "Endless Desert",
-      "cls": "Warrior"
-    },
-    {
       "id": "Z00201_314",
       "name": "Icecrystal Sash",
       "step": "A",
@@ -13381,6 +14216,22 @@
       "cls": "Archer"
     },
     {
+      "id": "Z07001_223",
+      "name": "Parched Belt",
+      "step": "A",
+      "type": "Belt",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
+    },
+    {
+      "id": "Z07001_253",
+      "name": "Pure Sash",
+      "step": "A",
+      "type": "Belt",
+      "area": "Deadwood Jungle",
+      "cls": "Priest"
+    },
+    {
       "id": "Z20027_722",
       "name": "Purple Thunder Sash",
       "step": "A",
@@ -13395,6 +14246,14 @@
       "type": "Belt",
       "area": "Breezy Shores",
       "cls": "Priest"
+    },
+    {
+      "id": "Z07001_283",
+      "name": "Rewind Belt",
+      "step": "A",
+      "type": "Belt",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
     },
     {
       "id": "Z06001_262",
@@ -13461,6 +14320,14 @@
       "cls": "All-Class"
     },
     {
+      "id": "Z06001_226",
+      "name": "Weighted Belt",
+      "step": "A",
+      "type": "Belt",
+      "area": "Endless Desert",
+      "cls": "Warrior"
+    },
+    {
       "id": "Z20004_713",
       "name": "Windwalker Belt",
       "step": "A",
@@ -13515,6 +14382,14 @@
       "type": "Belt",
       "area": "Shadowveil Grove",
       "cls": "Mage"
+    },
+    {
+      "id": "Z01003_142",
+      "name": "Armored Belt",
+      "step": "B",
+      "type": "Belt",
+      "area": "Crimson Highlands",
+      "cls": "Warrior"
     },
     {
       "id": "Z00001_114",
@@ -13589,14 +14464,6 @@
       "cls": "All-Class"
     },
     {
-      "id": "Z01003_142",
-      "name": "Heavy Belt",
-      "step": "B",
-      "type": "Belt",
-      "area": "Crimson Highlands",
-      "cls": "Warrior"
-    },
-    {
       "id": "Z00013_712",
       "name": "Hotblooded Belt",
       "step": "B",
@@ -13621,6 +14488,14 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z07001_125",
+      "name": "Mutant Belt",
+      "step": "B",
+      "type": "Belt",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z00005_712",
       "name": "Pirate Sash",
       "step": "B",
@@ -13634,6 +14509,14 @@
       "step": "B",
       "type": "Belt",
       "area": "Forsaken Mines",
+      "cls": "All-Class"
+    },
+    {
+      "id": "Z07001_102",
+      "name": "Reserve Belt",
+      "step": "B",
+      "type": "Belt",
+      "area": "Deadwood Jungle",
       "cls": "All-Class"
     },
     {
@@ -13739,6 +14622,22 @@
       "type": "Belt",
       "area": "The Sunken Sea",
       "cls": "All-Class"
+    },
+    {
+      "id": "Z07001_002",
+      "name": "Charred Belt",
+      "step": "C",
+      "type": "Belt",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
+      "id": "Z07001_023",
+      "name": "Flawed Belt",
+      "step": "C",
+      "type": "Belt",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
     },
     {
       "id": "Z30001_705",
@@ -13965,6 +14864,14 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z07001_322",
+      "name": "Miracle Boots",
+      "step": "S",
+      "type": "Boots",
+      "area": "Deadwood Jungle",
+      "cls": "Priest"
+    },
+    {
       "id": "Z30018_731",
       "name": "Navy Boots",
       "step": "S",
@@ -14011,6 +14918,22 @@
       "type": "Boots",
       "area": "Boundless Steppe",
       "cls": "Archer"
+    },
+    {
+      "id": "Z07001_336",
+      "name": "Spellbreak Boots",
+      "step": "S",
+      "type": "Boots",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
+      "id": "Z07001_313",
+      "name": "Undying Boots",
+      "step": "S",
+      "type": "Boots",
+      "area": "Deadwood Jungle",
+      "cls": "Warrior,Mage"
     },
     {
       "id": "Z30000_732",
@@ -14189,14 +15112,6 @@
       "cls": "Warrior"
     },
     {
-      "id": "Z06001_223",
-      "name": "Heavy Boots",
-      "step": "A",
-      "type": "Boots",
-      "area": "Endless Desert",
-      "cls": "Warrior"
-    },
-    {
       "id": "Z02001_254",
       "name": "Jester Shoes",
       "step": "A",
@@ -14269,6 +15184,14 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z07001_282",
+      "name": "Rewind Boots",
+      "step": "A",
+      "type": "Boots",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z06001_263",
       "name": "Solar Boots",
       "step": "A",
@@ -14315,6 +15238,14 @@
       "type": "Boots",
       "area": "Frostbound Tundra",
       "cls": "All-Class"
+    },
+    {
+      "id": "Z06001_223",
+      "name": "Weighted Boots",
+      "step": "A",
+      "type": "Boots",
+      "area": "Endless Desert",
+      "cls": "Warrior"
     },
     {
       "id": "Z06001_243",
@@ -14370,6 +15301,14 @@
       "step": "B",
       "type": "Boots",
       "area": "Breezy Shores",
+      "cls": "Warrior"
+    },
+    {
+      "id": "Z01003_143",
+      "name": "Armored Boots",
+      "step": "B",
+      "type": "Boots",
+      "area": "Crimson Highlands",
       "cls": "Warrior"
     },
     {
@@ -14429,14 +15368,6 @@
       "cls": "All-Class"
     },
     {
-      "id": "Z01003_143",
-      "name": "Heavy Boots",
-      "step": "B",
-      "type": "Boots",
-      "area": "Crimson Highlands",
-      "cls": "Warrior"
-    },
-    {
       "id": "Z03001_165",
       "name": "Hollow Shoes",
       "step": "B",
@@ -14459,6 +15390,14 @@
       "type": "Boots",
       "area": "Crimson Highlands",
       "cls": "Warrior"
+    },
+    {
+      "id": "Z07001_126",
+      "name": "Mutant Boots",
+      "step": "B",
+      "type": "Boots",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
     },
     {
       "id": "Z30001_711",
@@ -14578,6 +15517,14 @@
       "step": "C",
       "type": "Boots",
       "area": "The Sunken Sea",
+      "cls": "All-Class"
+    },
+    {
+      "id": "Z07001_003",
+      "name": "Charred Shoes",
+      "step": "C",
+      "type": "Boots",
+      "area": "Deadwood Jungle",
       "cls": "All-Class"
     },
     {
@@ -14739,6 +15686,14 @@
       "type": "Amulet",
       "area": "Any",
       "cls": "Warrior,Mage"
+    },
+    {
+      "id": "Z07001_352",
+      "name": "Charged Cell",
+      "step": "S",
+      "type": "Amulet",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
     },
     {
       "id": "Z03001_343",
@@ -14941,6 +15896,14 @@
       "cls": "Warrior,Mage"
     },
     {
+      "id": "Z07001_323",
+      "name": "Miracle Heart",
+      "step": "S",
+      "type": "Amulet",
+      "area": "Deadwood Jungle",
+      "cls": "Priest"
+    },
+    {
       "id": "Z06001_351",
       "name": "Oasis Heart",
       "step": "S",
@@ -14954,6 +15917,14 @@
       "step": "S",
       "type": "Amulet",
       "area": "Magma Passage",
+      "cls": "All-Class"
+    },
+    {
+      "id": "Z07001_345",
+      "name": "Rose Necklace",
+      "step": "S",
+      "type": "Amulet",
+      "area": "Deadwood Jungle",
       "cls": "All-Class"
     },
     {
@@ -15045,6 +16016,14 @@
       "cls": "Priest"
     },
     {
+      "id": "Z07001_305",
+      "name": "Withered Heart",
+      "step": "S",
+      "type": "Amulet",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
+    },
+    {
       "id": "Z00003_522",
       "name": "Archmage Necklace",
       "step": "A",
@@ -15115,6 +16094,14 @@
       "type": "Amulet",
       "area": "Any",
       "cls": "Priest"
+    },
+    {
+      "id": "Z07001_263",
+      "name": "Clover Necklace",
+      "step": "A",
+      "type": "Amulet",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
     },
     {
       "id": "Z00014_821",
@@ -15357,6 +16344,14 @@
       "cls": "Archer"
     },
     {
+      "id": "Z07001_201",
+      "name": "Parched Necklace",
+      "step": "A",
+      "type": "Amulet",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z05001_273",
       "name": "Petrify Necklace",
       "step": "A",
@@ -15413,12 +16408,28 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z07001_286",
+      "name": "Rewind Necklace",
+      "step": "A",
+      "type": "Amulet",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z00102_214",
       "name": "Scorching Necklace",
       "step": "A",
       "type": "Amulet",
       "area": "Magma Passage",
       "cls": "Warrior,Priest"
+    },
+    {
+      "id": "Z07001_242",
+      "name": "Sharpwilled Amulet",
+      "step": "A",
+      "type": "Amulet",
+      "area": "Deadwood Jungle",
+      "cls": "Priest"
     },
     {
       "id": "Z05001_255",
@@ -15515,6 +16526,14 @@
       "type": "Amulet",
       "area": "Dawnstep Plains",
       "cls": "Warrior,Mage"
+    },
+    {
+      "id": "Z07001_111",
+      "name": "Alert Necklace",
+      "step": "B",
+      "type": "Amulet",
+      "area": "Deadwood Jungle",
+      "cls": "Archer,Mage"
     },
     {
       "id": "Z10015_821",
@@ -15645,6 +16664,14 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z07001_121",
+      "name": "Mutant Necklace",
+      "step": "B",
+      "type": "Amulet",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z30005_821",
       "name": "Pearl Necklace",
       "step": "B",
@@ -15707,6 +16734,14 @@
       "type": "Amulet",
       "area": "Forsaken Mines",
       "cls": "All-Class"
+    },
+    {
+      "id": "Z07001_133",
+      "name": "Warded Necklace",
+      "step": "B",
+      "type": "Amulet",
+      "area": "Deadwood Jungle",
+      "cls": "Warrior"
     },
     {
       "id": "Z05001_162",
@@ -15779,6 +16814,14 @@
       "type": "Amulet",
       "area": "Wandering Woods",
       "cls": "Warrior,Mage"
+    },
+    {
+      "id": "Z07001_012",
+      "name": "Spiked Necklace",
+      "step": "C",
+      "type": "Amulet",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
     },
     {
       "id": "Z03001_111",
@@ -15957,6 +17000,14 @@
       "cls": "Priest"
     },
     {
+      "id": "Z07001_346",
+      "name": "Rose Ring",
+      "step": "S",
+      "type": "Ring",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z06001_303",
       "name": "Scorching Ring",
       "step": "S",
@@ -16013,6 +17064,14 @@
       "cls": "Mage"
     },
     {
+      "id": "Z07001_316",
+      "name": "Undying Ring",
+      "step": "S",
+      "type": "Ring",
+      "area": "Deadwood Jungle",
+      "cls": "Warrior,Mage"
+    },
+    {
       "id": "Z10028_921",
       "name": "Wasp Ring",
       "step": "S",
@@ -16035,6 +17094,14 @@
       "type": "Ring",
       "area": "Endless Desert",
       "cls": "Priest"
+    },
+    {
+      "id": "Z07001_306",
+      "name": "Withered Eye",
+      "step": "S",
+      "type": "Ring",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
     },
     {
       "id": "Z10016_921",
@@ -16365,6 +17432,14 @@
       "cls": "Archer"
     },
     {
+      "id": "Z07001_202",
+      "name": "Parched Ring",
+      "step": "A",
+      "type": "Ring",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z06001_256",
       "name": "Pharaoh Ring",
       "step": "A",
@@ -16429,12 +17504,28 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z07001_246",
+      "name": "Sharpwilled Ring",
+      "step": "A",
+      "type": "Ring",
+      "area": "Deadwood Jungle",
+      "cls": "Priest"
+    },
+    {
       "id": "Z05001_256",
       "name": "Solar Ring",
       "step": "A",
       "type": "Ring",
       "area": "Ashland Wastes",
       "cls": "Mage"
+    },
+    {
+      "id": "Z07001_231",
+      "name": "Solid Ring",
+      "step": "A",
+      "type": "Ring",
+      "area": "Deadwood Jungle",
+      "cls": "Warrior"
     },
     {
       "id": "Z10001_921",
@@ -16539,6 +17630,14 @@
       "type": "Ring",
       "area": "Dawnstep Plains",
       "cls": "Warrior,Mage"
+    },
+    {
+      "id": "Z07001_112",
+      "name": "Alert Ring",
+      "step": "B",
+      "type": "Ring",
+      "area": "Deadwood Jungle",
+      "cls": "Archer,Mage"
     },
     {
       "id": "Z03001_133",
@@ -16701,6 +17800,14 @@
       "cls": "All-Class"
     },
     {
+      "id": "Z07001_123",
+      "name": "Mutant Ring",
+      "step": "B",
+      "type": "Ring",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z10008_112",
       "name": "Plunder Ring",
       "step": "B",
@@ -16845,6 +17952,14 @@
       "cls": "Warrior,Mage"
     },
     {
+      "id": "Z07001_011",
+      "name": "Spiked Ring",
+      "step": "C",
+      "type": "Ring",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z03001_112",
       "name": "Spore Ring",
       "step": "C",
@@ -16907,6 +18022,14 @@
       "type": "Badge",
       "area": "Crimson Highlands",
       "cls": "Warrior"
+    },
+    {
+      "id": "Z07001_356",
+      "name": "Charged Badge",
+      "step": "S",
+      "type": "Badge",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
     },
     {
       "id": "Z01003_342",
@@ -17069,6 +18192,14 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z07001_342",
+      "name": "Rose Badge",
+      "step": "S",
+      "type": "Badge",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z06001_302",
       "name": "Scorching Badge",
       "step": "S",
@@ -17139,6 +18270,14 @@
       "type": "Badge",
       "area": "Dawnstep Plains",
       "cls": "Archer"
+    },
+    {
+      "id": "Z07001_303",
+      "name": "Withered Badge",
+      "step": "S",
+      "type": "Badge",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
     },
     {
       "id": "Z20003_333",
@@ -17235,6 +18374,14 @@
       "type": "Badge",
       "area": "Any",
       "cls": "Priest"
+    },
+    {
+      "id": "Z07001_262",
+      "name": "Clover Badge",
+      "step": "A",
+      "type": "Badge",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
     },
     {
       "id": "Z00014_022",
@@ -17413,12 +18560,28 @@
       "cls": "Priest"
     },
     {
+      "id": "Z07001_203",
+      "name": "Parched Badge",
+      "step": "A",
+      "type": "Badge",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z06001_254",
       "name": "Pharaoh Badge",
       "step": "A",
       "type": "Badge",
       "area": "Endless Desert",
       "cls": "Mage"
+    },
+    {
+      "id": "Z07001_256",
+      "name": "Pure Badge",
+      "step": "A",
+      "type": "Badge",
+      "area": "Deadwood Jungle",
+      "cls": "Priest"
     },
     {
       "id": "Z20027_021",
@@ -17451,6 +18614,14 @@
       "type": "Badge",
       "area": "Magma Passage",
       "cls": "Warrior,Priest"
+    },
+    {
+      "id": "Z07001_245",
+      "name": "Sharpwilled Badge",
+      "step": "A",
+      "type": "Badge",
+      "area": "Deadwood Jungle",
+      "cls": "Priest"
     },
     {
       "id": "Z05001_254",
@@ -17523,6 +18694,14 @@
       "type": "Badge",
       "area": "Dawnstep Plains",
       "cls": "Warrior,Mage"
+    },
+    {
+      "id": "Z07001_113",
+      "name": "Alert Badge",
+      "step": "B",
+      "type": "Badge",
+      "area": "Deadwood Jungle",
+      "cls": "Archer,Mage"
     },
     {
       "id": "Z10015_021",
@@ -17661,6 +18840,14 @@
       "cls": "Mage"
     },
     {
+      "id": "Z07001_122",
+      "name": "Mutant Badge",
+      "step": "B",
+      "type": "Badge",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z00102_163",
       "name": "Ruby Badge",
       "step": "B",
@@ -17755,6 +18942,14 @@
       "type": "Badge",
       "area": "Wandering Woods",
       "cls": "Warrior,Mage"
+    },
+    {
+      "id": "Z07001_013",
+      "name": "Spiked Badge",
+      "step": "C",
+      "type": "Badge",
+      "area": "Deadwood Jungle",
+      "cls": "All-Class"
     },
     {
       "id": "Z03001_113",
@@ -17885,6 +19080,12 @@
       "material": "Lava"
     },
     {
+      "id": "F40002_015",
+      "name": "Eternal Rune",
+      "step": "S",
+      "material": "Deadwood"
+    },
+    {
       "id": "F30003_011",
       "name": "Heroic Rune",
       "step": "S",
@@ -17975,6 +19176,12 @@
       "material": "Lava"
     },
     {
+      "id": "F20003_015",
+      "name": "Luck Rune",
+      "step": "S",
+      "material": "Deadwood"
+    },
+    {
       "id": "F40003_001",
       "name": "Nature Rune",
       "step": "S",
@@ -18057,6 +19264,12 @@
       "name": "Nature Rune",
       "step": "S",
       "material": "Lava"
+    },
+    {
+      "id": "F40003_015",
+      "name": "Nature Rune",
+      "step": "S",
+      "material": "Deadwood"
     },
     {
       "id": "F40001_001",
@@ -18143,6 +19356,12 @@
       "material": "Lava"
     },
     {
+      "id": "F40001_015",
+      "name": "Ruin Rune",
+      "step": "S",
+      "material": "Deadwood"
+    },
+    {
       "id": "F30001_001",
       "name": "Mana Rune",
       "step": "A",
@@ -18225,6 +19444,12 @@
       "name": "Mana Rune",
       "step": "A",
       "material": "Lava"
+    },
+    {
+      "id": "F30001_015",
+      "name": "Mana Rune",
+      "step": "A",
+      "material": "Deadwood"
     },
     {
       "id": "F30002_001",
@@ -18311,6 +19536,12 @@
       "material": "Lava"
     },
     {
+      "id": "F30002_015",
+      "name": "Resilience Rune",
+      "step": "A",
+      "material": "Deadwood"
+    },
+    {
       "id": "F20002_001",
       "name": "HP Rune",
       "step": "B",
@@ -18393,6 +19624,12 @@
       "name": "HP Rune",
       "step": "B",
       "material": "Lava"
+    },
+    {
+      "id": "F20002_015",
+      "name": "HP Rune",
+      "step": "B",
+      "material": "Deadwood"
     },
     {
       "id": "F20001_001",
@@ -18479,6 +19716,12 @@
       "material": "Lava"
     },
     {
+      "id": "F20001_015",
+      "name": "SPD Rune",
+      "step": "B",
+      "material": "Deadwood"
+    },
+    {
       "id": "F10001_001",
       "name": "ATK Rune",
       "step": "C",
@@ -18563,6 +19806,12 @@
       "material": "Lava"
     },
     {
+      "id": "F10001_015",
+      "name": "ATK Rune",
+      "step": "C",
+      "material": "Deadwood"
+    },
+    {
       "id": "F10002_001",
       "name": "DEF Rune",
       "step": "C",
@@ -18645,6 +19894,12 @@
       "name": "DEF Rune",
       "step": "C",
       "material": "Lava"
+    },
+    {
+      "id": "F10002_015",
+      "name": "DEF Rune",
+      "step": "C",
+      "material": "Deadwood"
     }
   ],
   "godStoneAffixes": [
@@ -18672,6 +19927,15 @@
       "step": "S",
       "location": "Prefix",
       "type": "Healer",
+      "value0Count": 4,
+      "value1Count": 0
+    },
+    {
+      "id": "BS20042",
+      "effect": "Apply +2 Cleanse stacks.",
+      "step": "S",
+      "location": "Prefix",
+      "type": "Buff",
       "value0Count": 4,
       "value1Count": 0
     },
@@ -18870,15 +20134,6 @@
       "step": "S",
       "location": "Prefix",
       "type": "Debuff",
-      "value0Count": 4,
-      "value1Count": 0
-    },
-    {
-      "id": "BS20042",
-      "effect": "Causes purification layer number + 2.",
-      "step": "S",
-      "location": "Prefix",
-      "type": "Buff",
       "value0Count": 4,
       "value1Count": 0
     },

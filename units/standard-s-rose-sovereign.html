@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rose Sovereign — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<aside class="sidenav">
+  <button class="sn-collapse-btn" onclick="toggleSidenav()" title="Hide menu" aria-label="Hide menu">&#8249;</button>
+  <a class="brand" href="../index.html">GMG Wiki</a>
+  <nav>
+    <a href="../units/index.html">Units</a>
+    <a href="../keywords/index.html">Keywords</a>
+    <a href="../gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="../talent-simulator.html">Talent Simulator</a>
+    <a href="../talent-manage.html">My Talents</a>
+    <a href="../build-team.html">Build Team</a>
+    <a href="../battle-logs.html">Battle Logs</a>
+    <a href="../search-unit.html">Search &middot; Units</a>
+    <a href="../search-talent.html">Search &middot; Talents (facet)</a>
+    <a href="../search-talent-new.html">Search &middot; Talents (fulltext)</a>
+    <a href="../search-gear.html">Search &middot; Gear</a>
+    <a href="../search-runes.html">Search &middot; Runes</a>
+    <a href="../search-godstone.html">Search &middot; Jewels</a>
+    <a href="../search-blessing.html">Search &middot; Blessings</a>
+    <a href="../talent-synergy.html">Synergy Mind Map</a>
+    <a href="../news.html">News</a>
+  </nav>
+</aside>
+<button class="sn-expand-btn" onclick="toggleSidenav()" title="Show menu" aria-label="Show menu">&#9776;</button>
+<script>
+(function(){
+  var KEY='mgg-sidenav-collapsed';
+  function apply(){
+    var c=localStorage.getItem(KEY)==='1';
+    document.body.classList.toggle('sn-collapsed',c);
+  }
+  window.toggleSidenav=function(){
+    var now=document.body.classList.toggle('sn-collapsed');
+    try{localStorage.setItem(KEY,now?'1':'0');}catch(e){}
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+})();
+</script>
+<div class="page">
+<main class="content">
+<h1>Rose Sovereign</h1>
+<p><strong>ID:</strong> <code>M13307</code> · <strong>Alters:</strong> <a href="../units/alter-s-nightfall-rose-sovereign.html">Nightfall</a> · <strong>Step:</strong> S · <strong>Weight:</strong> 10 · <strong>CharacterRole:</strong> Tank,DPS</p>
+<p><strong>Archetypes:</strong> Skill DMG, <a href="../keywords/buff-thorns.html">Thorns</a>, <a href="../keywords/buff-growth.html">Growth</a></p>
+<h2>Attributes (Class · Type · Element · Terrain)</h2>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Type</th>
+<th>Element</th>
+<th>Terrain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><a href="../keywords/class-mage.html">Mage</a></strong></td>
+<td><strong><a href="../keywords/race-spirit.html">Spirit</a></strong></td>
+<td><strong><a href="../keywords/element-earth.html">Earth</a></strong></td>
+<td><strong><a href="../keywords/terrain-forest.html">Forest</a></strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Race name</strong> (used for talent filter): <code>Florakin</code> (race name ≠ Type race-family <code>Spirit</code>).</p>
+</blockquote>
+<h2>Codex (Insight)</h2>
+<p><strong>Garden Tending</strong> (<code>XD14001_060</code>)</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Step</td>
+<td><strong>S</strong></td>
+</tr>
+<tr>
+<td>Type</td>
+<td>Unique</td>
+</tr>
+<tr>
+<td>Race lock</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Element/Class lock</td>
+<td>Any</td>
+</tr>
+<tr>
+<td>MaxLevel</td>
+<td><strong>3</strong></td>
+</tr>
+<tr>
+<td>Effect (L1 base)</td>
+<td>Gain 1 more <a href="../keywords/mechanic-stacks.html">stack</a> of <a href="../keywords/buff-growth.html">Growth</a>.</td>
+</tr>
+<tr>
+<td>SpecifyRoleIDs</td>
+<td><code>M13307</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tier ladder</strong> <em>(verified formula: digit × (level + 1) per <code>decompiled_relic.cs:240-258 RelicsDataItem.GetDescription</code>)</em></p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Multiplier</th>
+<th>Filled effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L0 (☆)</td>
+<td>×1</td>
+<td>Gain 1 more <a href="../keywords/mechanic-stacks.html">stack</a> of <a href="../keywords/buff-growth.html">Growth</a>.</td>
+</tr>
+<tr>
+<td>L1 (★)</td>
+<td>×2</td>
+<td>Gain 2 more <a href="../keywords/mechanic-stacks.html">stack</a> of <a href="../keywords/buff-growth.html">Growth</a>.</td>
+</tr>
+<tr>
+<td>L2 (★★)</td>
+<td>×3</td>
+<td>Gain 3 more <a href="../keywords/mechanic-stacks.html">stack</a> of <a href="../keywords/buff-growth.html">Growth</a>.</td>
+</tr>
+<tr>
+<td>L3 (★★★)</td>
+<td>×4</td>
+<td>Gain 4 more <a href="../keywords/mechanic-stacks.html">stack</a> of <a href="../keywords/buff-growth.html">Growth</a>.</td>
+</tr>
+</tbody>
+</table>
+<h2>Stats</h2>
+<h3>Base Stats (L1, no modifiers)</h3>
+<table>
+<thead>
+<tr>
+<th>Stat</th>
+<th>Mage</th>
+<th>Earth</th>
+<th>Spirit</th>
+<th>Forest</th>
+<th>S</th>
+<th><strong>Base L1</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HP</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>8</td>
+<td><strong>11</strong></td>
+</tr>
+<tr>
+<td><strong>STR</strong></td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>2</strong></td>
+</tr>
+<tr>
+<td><strong>SPI</strong></td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td><strong>4</strong></td>
+</tr>
+<tr>
+<td><strong>AGI</strong></td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td><strong>2</strong></td>
+</tr>
+<tr>
+<td><strong><a href="../keywords/stat-spd.html">SPD</a></strong></td>
+<td>4</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>8</td>
+<td><strong>14</strong></td>
+</tr>
+<tr>
+<td><strong><a href="../keywords/stat-toughness.html">Toughness</a></strong></td>
+<td>10</td>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>8</td>
+<td><strong>22</strong></td>
+</tr>
+<tr>
+<td><strong><a href="../keywords/stat-luck.html">LUK</a></strong></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>0</strong> <em>(only from gear / Lucky-Streak talent)</em></td>
+</tr>
+<tr>
+<td><strong><a href="../keywords/mechanic-starting-mana.html">Starting Mana</a></strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td><strong>10</strong> <em>(game default)</em></td>
+</tr>
+<tr>
+<td><strong><a href="../keywords/mechanic-max-mana.html">Max Mana</a></strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td><strong>30</strong> <em>(game default)</em></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Sum of 5 axes from <code>BasicAttrDataTable</code> filtered by <code>Type_EN ∈ {Class, Elements, Race, Terrain, Tier}</code>. HP/STR/SPI/AGI don't have keyword pages so labels stay plain.</p>
+</blockquote>
+<p><strong>Combat-stat mapping (<a href="../keywords/class-mage.html">Mage</a> class):</strong> <a href="../keywords/stat-atk.html">ATK</a> pool ← SPI · <a href="../keywords/stat-def.html">DEF</a> pool ← AGI · <a href="../keywords/stat-weakness.html">Weakness</a> ← STR. The <code>initialAttack/Defence/Weak</code> from BasicAttr per-axis adds to the mapped raw stat (not separate combat stats).</p>
+<table>
+<thead>
+<tr>
+<th>Pool</th>
+<th>Mage</th>
+<th>Earth</th>
+<th>Spirit</th>
+<th>Forest</th>
+<th>S</th>
+<th>Sum</th>
+<th>→ Adds to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>initialAttack</td>
+<td>15</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>8</td>
+<td>25</td>
+<td><strong>SPI</strong></td>
+</tr>
+<tr>
+<td>initialDefence</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>4</td>
+<td><strong>AGI</strong></td>
+</tr>
+<tr>
+<td>initialWeak</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><strong>STR</strong></td>
+</tr>
+</tbody>
+</table>
+<p>→ <strong>L1 displayed stats</strong> (raw + class combat-mapping):
+- HP 11 · STR 2 · <strong>SPI 4 + 25 = 29</strong> · <strong>AGI 2 + 4 = 6</strong> · SPD 14 · Toughness 22 · LUK 0 · Mana 10/30</p>
+<blockquote>
+<p>Higher-level stats = base + level growth + Insight + passive/talent modifiers + gear. Growth formula per <code>BasicAttrDataTable.GrowthType1..10</code> (cycle of 10) — exact application rule TBD pending in-game datapoint verification.</p>
+</blockquote>
+<h2>Activities</h2>
+<p><em>(No active skill data for <code>M13307</code> in <code>activities.json</code>.)</em></p>
+<h2>Attack (Normal Attack)</h2>
+<p><strong>Normal Attack</strong> (<code>BD30001</code>) — UnlockStar 1</p>
+<blockquote>
+<p>Targets the front enemy first. Deals <strong>1</strong> DMG.</p>
+<p><em>(Value0=1.)</em></p>
+</blockquote>
+<h2>Race</h2>
+<p><strong>Florakin</strong> (<code>BD20006_000</code>) — UnlockStar 2</p>
+<blockquote>
+<p>Gain <strong>2</strong> Mana when getting HP Gain effects.</p>
+<p><em>(Value0=2.)</em></p>
+</blockquote>
+<h2>Trait</h2>
+<p><strong>Lofty</strong> (<code>BD10561</code>) — UnlockStar 3</p>
+<blockquote>
+<p>[Buff] Gain <strong>50</strong> <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/buff-thorns.html">Thorns</a> at battle start.</p>
+<p><em>(Value0=50.)</em></p>
+</blockquote>
+<h2>Title</h2>
+<p><strong>Benevolent</strong> (<code>BD50402</code>) — UnlockStar 4</p>
+<blockquote>
+<p>[Buff] Apply +<strong>1</strong> <a href="../keywords/mechanic-stacks.html">stacks</a> of buffs.</p>
+<p><em>(Value0=1.)</em></p>
+</blockquote>
+<h2>Perk</h2>
+<p><strong>Bloodthorn</strong> (<code>BD40992</code>) — UnlockStar 5</p>
+<blockquote>
+<p>[Gain] Gain <strong>4</strong> HP when any ally triggers <a href="../keywords/buff-thorns.html">Thorns</a>.</p>
+<p><em>(Value0=4.)</em></p>
+</blockquote>
+<h2>Level-up Materials</h2>
+<table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Material</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Mana Crystal</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Darkback</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Sea Beast Meat</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Glowfish</td>
+</tr>
+</tbody>
+</table>
+<h2>Talents</h2>
+<p>Talents unlock at <strong>5★</strong>, rolled / rerolled with <strong>Talent Fruit</strong>. Eligible pool for this unit = <strong>100</strong> total = 1 exclusive + 10 race + 21 class + 10 element + 58 generic.</p>
+<blockquote>
+<p><strong>Format:</strong> Effect column = canonical <code>TalentDataTable.Effect_EN</code> with <strong>highest-tier values filled</strong> (bold). <code>Tiers</code> column lists which tiers the talent has (e.g. <code>CBAS</code>, <code>AS</code>, <code>S</code>). Per-tier values in italic at end as <code>Value0[/Value1[/Value2]]</code>. Talent names are canonical from <code>Name_EN</code> — do NOT paraphrase.</p>
+</blockquote>
+<h3>Exclusive (1)</h3>
+<p><strong>TF01064 — Thorns Abound</strong> (tiers: S)
+- <em>All enemies lose 1 HP at action end per 10 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/buff-thorns.html">Thorns</a> on all allies.</em></p>
+<blockquote>
+<p><em>(per-tier values: S: 10/1)</em></p>
+</blockquote>
+<h3>Race-restricted: Florakin (10 talents across 5 base IDs)</h3>
+<table>
+<thead>
+<tr>
+<th>Base ID</th>
+<th>Name</th>
+<th>Tiers</th>
+<th>Effect (highest-tier filled) &amp; per-tier values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TF16601</td>
+<td><strong>Pollen Haze</strong></td>
+<td>CBAS</td>
+<td><strong>Apply 12 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-taunt.html">Taunt</a> to enemies at their action end.</strong> <em>(C: 3 · B: 6 · A: 9 · S: 12)</em></td>
+</tr>
+<tr>
+<td>TF16602</td>
+<td><strong>Blossom Guardian</strong></td>
+<td>AS</td>
+<td><strong>Take -1 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> per 2 ally count.</strong> <em>(A: 4/1 · S: 2/1)</em></td>
+</tr>
+<tr>
+<td>TF16603</td>
+<td><strong>Full Bloom</strong></td>
+<td>AS</td>
+<td><strong>Take -50 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> from targets with <a href="../keywords/debuff-taunt.html">Taunt</a>.</strong> <em>(A: 25 · S: 50)</em></td>
+</tr>
+<tr>
+<td>TF16604</td>
+<td><strong>Nectar Offering</strong></td>
+<td>S</td>
+<td><strong>Grant 5 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/instant-inspire.html">Inspire</a> to target after healing.</strong> <em>(S: 5)</em></td>
+</tr>
+<tr>
+<td>TF16605</td>
+<td><strong>Bud Burst</strong></td>
+<td>S</td>
+<td><strong>If <a href="../keywords/buff-growth.html">Growth</a> is at max <a href="../keywords/mechanic-stacks.html">stacks</a> at turn start, deal +100 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> and consume all <a href="../keywords/buff-growth.html">Growth</a>.</strong> <em>(S: 100)</em></td>
+</tr>
+</tbody>
+</table>
+<h3>Class-restricted: Mage (21 talents across 10 base IDs)</h3>
+<table>
+<thead>
+<tr>
+<th>Base ID</th>
+<th>Name</th>
+<th>Tiers</th>
+<th>Effect (highest-tier filled) &amp; per-tier values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TF10201</td>
+<td><strong>Gifted</strong></td>
+<td>AS</td>
+<td><strong>+20 <a href="../keywords/mechanic-max-mana.html">Max Mana</a>. Gain 20% of <a href="../keywords/mechanic-max-mana.html">Max Mana</a> as <a href="../keywords/mechanic-action-mana.html">Action Mana</a>.</strong> <em>(A: 10/10 · S: 20/20)</em></td>
+</tr>
+<tr>
+<td>TF10202</td>
+<td><strong>Spell Demo</strong></td>
+<td>S</td>
+<td><strong>After casting a skill, grant other allies +1 skill DMG.</strong> <em>(S: 1)</em></td>
+</tr>
+<tr>
+<td>TF10203</td>
+<td><strong>Mage Guild</strong></td>
+<td>AS</td>
+<td><strong>+2 <a href="../keywords/mechanic-action-mana.html">Action Mana</a>. Gain +1 <a href="../keywords/mechanic-action-mana.html">Action Mana</a> per <a href="../keywords/class-mage.html">Mage</a> ally.</strong> <em>(A: 1/1 · S: 2/1)</em></td>
+</tr>
+<tr>
+<td>TF10204</td>
+<td><strong>Spell Pierce</strong></td>
+<td>CBAS</td>
+<td><strong>Ignore 40 <a href="../keywords/stat-def.html">DEF</a> when casting skill.</strong> <em>(C: 10 · B: 20 · A: 30 · S: 40)</em></td>
+</tr>
+<tr>
+<td>TF10205</td>
+<td><strong>Multicast</strong></td>
+<td>AS</td>
+<td><strong>+2 Multi-hit skill hits but deal -50% skill DMG.</strong> <em>(A: 1/50 · S: 2/50)</em></td>
+</tr>
+<tr>
+<td>TF10206</td>
+<td><strong>Curse Focus</strong></td>
+<td>CBAS</td>
+<td><strong>Apply +4 <a href="../keywords/mechanic-stacks.html">stacks</a> of debuffs but apply -2 <a href="../keywords/mechanic-stacks.html">stacks</a> of buffs.</strong> <em>(C: 1/2 · B: 2/2 · A: 3/2 · S: 4/2)</em></td>
+</tr>
+<tr>
+<td>TF10207</td>
+<td><strong>Tool Master</strong></td>
+<td>AS</td>
+<td><strong>Gain +4 <a href="../keywords/stat-all-stats.html">all stats</a> from Off Hand gear. Off Hand gear's Basic Bond level +2.</strong> <em>(A: 2/1 · S: 4/2)</em></td>
+</tr>
+<tr>
+<td>TF10208</td>
+<td><strong>Mana Resonate</strong></td>
+<td>S</td>
+<td><strong>+1 Basic attack targets this turn after casting a skill.</strong> <em>(S: 1)</em></td>
+</tr>
+<tr>
+<td>TF10209</td>
+<td><strong>Ruin Storm</strong></td>
+<td>S</td>
+<td><strong>Deal +1 multi-hit skill hits and +10 skill DMG to the nearest enemy.</strong> <em>(S: 1/10)</em></td>
+</tr>
+<tr>
+<td>TF10210</td>
+<td><strong>Mana Lock</strong></td>
+<td>AS</td>
+<td><strong>All enemies lose 4 <a href="../keywords/mechanic-action-mana.html">Action Mana</a>.</strong> <em>(A: 2 · S: 4)</em></td>
+</tr>
+</tbody>
+</table>
+<h3>Element-restricted: Earth (10 talents across 6 base IDs)</h3>
+<table>
+<thead>
+<tr>
+<th>Base ID</th>
+<th>Name</th>
+<th>Tiers</th>
+<th>Effect (highest-tier filled) &amp; per-tier values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TF11001</td>
+<td><strong>Land Herald</strong></td>
+<td>AS</td>
+<td><strong>Gain +2 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/buff-shield.html">Shield</a>. All allies gain 4 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/buff-shield.html">Shield</a> at turn start.</strong> <em>(A: 1/2 · S: 2/4)</em></td>
+</tr>
+<tr>
+<td>TF11002</td>
+<td><strong>Defense Break</strong></td>
+<td>AS</td>
+<td><strong>Apply +2 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-vulnerable.html">Vulnerable</a>. Ignore 1 <a href="../keywords/stat-def.html">DEF</a> per 15 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-vulnerable.html">Vulnerable</a> when attacking.</strong> <em>(A: 1/30/1 · S: 2/15/1)</em></td>
+</tr>
+<tr>
+<td>TF11003</td>
+<td><strong>Tangle Bind</strong></td>
+<td>AS</td>
+<td><strong>Apply +2 <a href="../keywords/debuff-slow.html">Slow</a> <a href="../keywords/mechanic-stacks.html">stacks</a>. Enemies deal -1 Follow-Up DMG per 25 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-slow.html">Slow</a>.</strong> <em>(A: 1/50/1 · S: 2/25/1)</em></td>
+</tr>
+<tr>
+<td>TF11004</td>
+<td><strong>Sharp Thorns</strong></td>
+<td>AS</td>
+<td><strong>Gain +2 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/buff-thorns.html">Thorns</a>. Inflict +1 HP Loss per 30 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/buff-thorns.html">Thorns</a> gained.</strong> <em>(A: 1/60/1 · S: 2/30/1)</em></td>
+</tr>
+<tr>
+<td>TF11005</td>
+<td><strong>Immovable</strong></td>
+<td>S</td>
+<td><strong>Take -15 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> but cannot basic attack or basic heal.</strong> <em>(S: 15)</em></td>
+</tr>
+<tr>
+<td>TF11006</td>
+<td><strong>Aftershock</strong></td>
+<td>S</td>
+<td><strong>Apply 10 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-stun.html">Stun</a> after casting a skill on an enemy target. After each cast, <a href="../keywords/debuff-stun.html">Stun</a> <a href="../keywords/mechanic-stacks.html">stacks</a> inflicted are reduce by 2.</strong> <em>(S: 10/2)</em></td>
+</tr>
+</tbody>
+</table>
+<h3>Generic (no restriction) (58 talents across 19 base IDs)</h3>
+<table>
+<thead>
+<tr>
+<th>Base ID</th>
+<th>Name</th>
+<th>Tiers</th>
+<th>Effect (highest-tier filled) &amp; per-tier values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TF10001</td>
+<td><strong>Strong</strong></td>
+<td>CBAS</td>
+<td><strong>+16 STR. Effect doubles if STR is at least 100.</strong> <em>(C: 4/100 · B: 8/100 · A: 12/100 · S: 16/100)</em></td>
+</tr>
+<tr>
+<td>TF10002</td>
+<td><strong>Clear Mind</strong></td>
+<td>CBAS</td>
+<td><strong>+16 SPI. Effect doubles if SPI is at least 100.</strong> <em>(C: 4/100 · B: 8/100 · A: 12/100 · S: 16/100)</em></td>
+</tr>
+<tr>
+<td>TF10003</td>
+<td><strong>Quick Reflexes</strong></td>
+<td>CBAS</td>
+<td><strong>+16 AGI. Effect doubles if AGI is at least 100.</strong> <em>(C: 4/100 · B: 8/100 · A: 12/100 · S: 16/100)</em></td>
+</tr>
+<tr>
+<td>TF10004</td>
+<td><strong>Fit Body</strong></td>
+<td>CBAS</td>
+<td><strong>+16 HP. Effect doubles if HP is at least 100.</strong> <em>(C: 4/100 · B: 8/100 · A: 12/100 · S: 16/100)</em></td>
+</tr>
+<tr>
+<td>TF10005</td>
+<td><strong>Strong Will</strong></td>
+<td>CBAS</td>
+<td><strong>+16 <a href="../keywords/stat-toughness.html">Toughness</a>. Effect doubles if <a href="../keywords/stat-toughness.html">Toughness</a> is at least 100.</strong> <em>(C: 4/100 · B: 8/100 · A: 12/100 · S: 16/100)</em></td>
+</tr>
+<tr>
+<td>TF10006</td>
+<td><strong>Nimble Limbs</strong></td>
+<td>CBAS</td>
+<td><strong>+16 <a href="../keywords/stat-spd.html">SPD</a>. Effect doubles if <a href="../keywords/stat-spd.html">SPD</a> is at least 100.</strong> <em>(C: 4/100 · B: 8/100 · A: 12/100 · S: 16/100)</em></td>
+</tr>
+<tr>
+<td>TF10007</td>
+<td><strong>Battle Ready</strong></td>
+<td>CBAS</td>
+<td><strong>Take -12 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> when in front position.</strong> <em>(C: 3 · B: 6 · A: 9 · S: 12)</em></td>
+</tr>
+<tr>
+<td>TF10008</td>
+<td><strong>Lucky Streak</strong></td>
+<td>CBAS</td>
+<td><strong>+8 <a href="../keywords/stat-luck.html">Luck</a>. Effect doubles if <a href="../keywords/stat-luck.html">Luck</a> is at least 50.</strong> <em>(C: 2/50 · B: 4/50 · A: 6/50 · S: 8/50)</em></td>
+</tr>
+<tr>
+<td>TF10009</td>
+<td><strong>Core Position</strong></td>
+<td>CBAS</td>
+<td><strong>Deal +8 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> when in mid position.</strong> <em>(C: 2 · B: 4 · A: 6 · S: 8)</em></td>
+</tr>
+<tr>
+<td>TF10010</td>
+<td><strong>Glass Cannon</strong></td>
+<td>CBAS</td>
+<td><strong>Deal +12 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> but take +5 <a href="../keywords/mechanic-total-dmg.html">total DMG</a> when in back position.</strong> <em>(C: 3/5 · B: 6/5 · A: 9/5 · S: 12/5)</em></td>
+</tr>
+<tr>
+<td>TF10011</td>
+<td><strong>Mana Surge</strong></td>
+<td>CB</td>
+<td><strong>Gain 30 Mana at turn 2 start.</strong> <em>(C: 4/30 · B: 2/30)</em></td>
+</tr>
+<tr>
+<td>TF10012</td>
+<td><strong>Life Rebuild</strong></td>
+<td>CB</td>
+<td><strong>Gain 100 HP at turn 2 start.</strong> <em>(C: 4/100 · B: 2/100)</em></td>
+</tr>
+<tr>
+<td>TF10013</td>
+<td><strong>Mind Reshape</strong></td>
+<td>CB</td>
+<td><strong>Gain 100 <a href="../keywords/stat-toughness.html">Toughness</a> at turn 2 start.</strong> <em>(C: 4/100 · B: 2/100)</em></td>
+</tr>
+<tr>
+<td>TF10014</td>
+<td><strong>Think First</strong></td>
+<td>AS</td>
+<td><strong>Cannot act on turn 1 but gain +8 <a href="../keywords/mechanic-action-mana.html">Action Mana</a> on subsequent turns.</strong> <em>(A: 4 · S: 8)</em></td>
+</tr>
+<tr>
+<td>TF10015</td>
+<td><strong>Mood Control</strong></td>
+<td>AS</td>
+<td><strong>Cannot act on turn 1 but gain +4 <a href="../keywords/mechanic-hit-mana.html">Hit Mana</a> on subsequent turns.</strong> <em>(A: 2 · S: 4)</em></td>
+</tr>
+<tr>
+<td>TF10016</td>
+<td><strong>Scrap Use</strong></td>
+<td>AS</td>
+<td><strong>Gain +2 <a href="../keywords/stat-all-stats.html">all stats</a> per Bronze Bond.</strong> <em>(A: 1 · S: 2)</em></td>
+</tr>
+<tr>
+<td>TF10017</td>
+<td><strong>Patchwork</strong></td>
+<td>AS</td>
+<td><strong>Gain +2 <a href="../keywords/stat-all-stats.html">all stats</a> per Silver Bond.</strong> <em>(A: 1 · S: 2)</em></td>
+</tr>
+<tr>
+<td>TF10018</td>
+<td><strong>Bond Master</strong></td>
+<td>AS</td>
+<td><strong>Gain +2 <a href="../keywords/stat-all-stats.html">all stats</a> per Gold Bond.</strong> <em>(A: 1 · S: 2)</em></td>
+</tr>
+<tr>
+<td>TF10019</td>
+<td><strong>Gear Expert</strong></td>
+<td>AS</td>
+<td><strong>Gain +2 <a href="../keywords/stat-all-stats.html">all stats</a> from each Orange+ gear.</strong> <em>(A: 1 · S: 2)</em></td>
+</tr>
+</tbody>
+</table>
+<h2>Cross-references</h2>
+<ul>
+<li><strong>Active skill localization:</strong> <code>Activeskills_Name_M13307</code> / <code>Activeskills_Des_M13307</code></li>
+<li><strong>In recruit pool:</strong> <code>SummonDataTable.M13307</code></li>
+<li><strong>Other relics targeting this unit:</strong> <code>XD14001_060</code></li>
+</ul>
+<!-- SYNERGY-START -->
+
+<h2>Synergistic Talents · 144 talent(s) (kit-based, auto-generated)</h2>
+<h3>Status chain · 22</h3>
+<ul>
+<li><span class="broken-link" title="missing: TF00005-food-coma">TF00005 · Food Coma</span> — Shared status: Growth</li>
+<li><span class="broken-link" title="missing: TF00022-ancient-treant">TF00022 · Ancient Treant</span> — Shared status: Growth; Shared trigger: battle start</li>
+<li><span class="broken-link" title="missing: TF00023-thorn-vines">TF00023 · Thorn Vines</span> — Shared status: Thorns</li>
+<li><span class="broken-link" title="missing: TF00025-thorn-guard">TF00025 · Thorn Guard</span> — Shared status: Thorns</li>
+<li><span class="broken-link" title="missing: TF00054-sharp-mutant">TF00054 · Sharp Mutant</span> — Shared status: Thorns</li>
+<li><span class="broken-link" title="missing: TF00065-regen-thorns">TF00065 · Regen Thorns</span> — Shared status: Thorns; Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF01053-jade-essence">TF01053 · Jade Essence</span> — Shared status: Growth; Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF01061-deadly-trap">TF01061 · Deadly Trap</span> — Shared status: Thorns</li>
+<li><span class="broken-link" title="missing: TF01063-cozy-quilt">TF01063 · Cozy Quilt</span> — Shared status: Thorns</li>
+<li><span class="broken-link" title="missing: TF01064-thorns-abound">TF01064 · Thorns Abound</span> — Shared status: Thorns; Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF11004-sharp-thorns">TF11004 · Sharp Thorns</span> — Shared status: Thorns; Shared stat: HP; Same element lock: Earth</li>
+<li><span class="broken-link" title="missing: TF12105-endless-multiply">TF12105 · Endless Multiply</span> — Shared status: Growth</li>
+<li><span class="broken-link" title="missing: TF12801-wild-growth">TF12801 · Wild Growth</span> — Shared status: Growth; Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF14604-scorched-domain">TF14604 · Scorched Domain</span> — Shared status: Growth</li>
+<li><span class="broken-link" title="missing: TF15902-patient-counter">TF15902 · Patient Counter</span> — Shared status: Thorns</li>
+<li><span class="broken-link" title="missing: TF15903-tremor-body">TF15903 · Tremor Body</span> — Shared status: Thorns; Shared stat: HP; Shared trigger: battle start</li>
+<li><span class="broken-link" title="missing: TF16501-hardened-spines">TF16501 · Hardened Spines</span> — Shared status: Thorns; Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16502-coiled-guard">TF16502 · Coiled Guard</span> — Shared status: Thorns; Shared trigger: battle start</li>
+<li><span class="broken-link" title="missing: TF16503-spine-wound">TF16503 · Spine Wound</span> — Shared status: Thorns; Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16504-needle-sweep">TF16504 · Needle Sweep</span> — Shared status: Thorns; Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16505-rolling-strike">TF16505 · Rolling Strike</span> — Shared status: Thorns</li>
+<li><span class="broken-link" title="missing: TF16605-bud-burst">TF16605 · Bud Burst</span> — Shared status: Growth; Same race lock: Florakin</li>
+</ul>
+<h3>Trigger chain · 9</h3>
+<ul>
+<li><span class="broken-link" title="missing: TF00006-fully-armed">TF00006 · Fully Armed</span> — Shared trigger: battle start</li>
+<li><span class="broken-link" title="missing: TF00062-quicksand-trap">TF00062 · Quicksand Trap</span> — Shared trigger: battle start</li>
+<li><span class="broken-link" title="missing: TF01026-lucky-strike">TF01026 · Lucky Strike</span> — Shared trigger: battle start</li>
+<li><span class="broken-link" title="missing: TF01037-nightmare-eater">TF01037 · Nightmare Eater</span> — Shared trigger: battle start</li>
+<li><span class="broken-link" title="missing: TF12505-burst-speed">TF12505 · Burst Speed</span> — Shared trigger: battle start</li>
+<li><span class="broken-link" title="missing: TF12603-moon-rage">TF12603 · Moon Rage</span> — Shared trigger: battle start</li>
+<li><span class="broken-link" title="missing: TF12903-eagle-eye">TF12903 · Eagle Eye</span> — Shared trigger: battle start</li>
+<li><span class="broken-link" title="missing: TF13105-grand-entrance">TF13105 · Grand Entrance</span> — Shared trigger: battle start</li>
+<li><span class="broken-link" title="missing: TF14303-nameless">TF14303 · Nameless</span> — Shared trigger: battle start</li>
+</ul>
+<h3>Stat chain · 94</h3>
+<ul>
+<li><span class="broken-link" title="missing: TF00003-execute">TF00003 · Execute</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF00011-critical-moment">TF00011 · Critical Moment</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF00014-fear-siphon">TF00014 · Fear Siphon</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF00016-absorb-aura">TF00016 · Absorb Aura</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF00020-chain-lightning">TF00020 · Chain Lightning</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF00021-colossus">TF00021 · Colossus</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF00034-flame-burst">TF00034 · Flame Burst</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF00045-careful-nurture">TF00045 · Careful Nurture</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF00047-blast-threshold">TF00047 · Blast Threshold</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF00064-scorpion-venom">TF00064 · Scorpion Venom</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF01011-blade-echo">TF01011 · Blade Echo</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF01013-create-life">TF01013 · Create Life</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF01019-dazzling">TF01019 · Dazzling</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF01021-life-water">TF01021 · Life Water</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF01022-reaper-blade">TF01022 · Reaper Blade</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF01041-titanic-form">TF01041 · Titanic Form</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF01051-life-burn">TF01051 · Life Burn</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF01057-ruin-descends">TF01057 · Ruin Descends</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF10004-fit-body">TF10004 · Fit Body</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF10012-life-rebuild">TF10012 · Life Rebuild</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF10104-war-trample">TF10104 · War Trample</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF10110-stand-firm">TF10110 · Stand Firm</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF10401-inspiration">TF10401 · Inspiration</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF10402-life-abundant">TF10402 · Life Abundant</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF10403-deny-death">TF10403 · Deny Death</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF10404-holy-shock">TF10404 · Holy Shock</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF10406-selfless">TF10406 · Selfless</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF10407-share-pain">TF10407 · Share Pain</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF10410-holy-nova">TF10410 · Holy Nova</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF11102-blood-drain">TF11102 · Blood Drain</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF11106-storm-eye">TF11106 · Storm Eye</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF11202-deep-freeze">TF11202 · Deep Freeze</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF11204-life-rain">TF11204 · Life Rain</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF11205-water-mirror">TF11205 · Water Mirror</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF11303-fierce-fire">TF11303 · Fierce Fire</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF11403-indomitable">TF11403 · Indomitable</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF11504-potion-craft">TF11504 · Potion Craft</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF12102-life-merge">TF12102 · Life Merge</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF12202-mutant-growth">TF12202 · Mutant Growth</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF12204-bandit-nature">TF12204 · Bandit Nature</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF12205-dark-ambush">TF12205 · Dark Ambush</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF12303-fungal-carpet">TF12303 · Fungal Carpet</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF12304-explode-spore">TF12304 · Explode Spore</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF12305-energy-absorb">TF12305 · Energy Absorb</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF12401-mana-collapse">TF12401 · Mana Collapse</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF12402-energy-chaos">TF12402 · Energy Chaos</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF12504-nine-lives">TF12504 · Nine Lives</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF12701-livings-bane">TF12701 · Living's Bane</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF12702-soul-curse">TF12702 · Soul Curse</span> — Shared stat: HP; Shared trigger: battle start</li>
+<li><span class="broken-link" title="missing: TF12703-soul-drain">TF12703 · Soul Drain</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF12704-desperate-frenzy">TF12704 · Desperate Frenzy</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF12705-terror-ritual">TF12705 · Terror Ritual</span> — Shared stat: HP; Shared trigger: battle start</li>
+<li><span class="broken-link" title="missing: TF12803-giant-tree">TF12803 · Giant Tree</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF12804-endless-life">TF12804 · Endless Life</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF12805-sweet-scent">TF12805 · Sweet Scent</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF13001-hive-mind">TF13001 · Hive Mind</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF13002-swarm-control">TF13002 · Swarm Control</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF13003-venom-fang">TF13003 · Venom Fang</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF13004-molt-escape">TF13004 · Molt Escape</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF13104-legend-creature">TF13104 · Legend Creature</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF13201-deep-sea-beast">TF13201 · Deep Sea Beast</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF13301-limb-regrow">TF13301 · Limb Regrow</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF13303-primal-body">TF13303 · Primal Body</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF13304-rapid-regen">TF13304 · Rapid Regen</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF13305-totem-worship">TF13305 · Totem Worship</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF13402-gear-mastery">TF13402 · Gear Mastery</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF13403-bloodless">TF13403 · Bloodless</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF13505-delayed-start">TF13505 · Delayed Start</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF13602-energy-reflect">TF13602 · Energy Reflect</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF13801-strong-frame">TF13801 · Strong Frame</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF13802-berserk-rage">TF13802 · Berserk Rage</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF14201-eternal-life">TF14201 · Eternal Life</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF14202-emotion-drain">TF14202 · Emotion Drain</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF14301-life-siphon">TF14301 · Life Siphon</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF14305-abyss-call">TF14305 · Abyss Call</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF14401-ground-slam">TF14401 · Ground Slam</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF14403-size-scare">TF14403 · Size Scare</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF14404-earth-tap">TF14404 · Earth Tap</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF14405-thunder-body">TF14405 · Thunder Body</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16005-dark-shatter">TF16005 · Dark Shatter</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16201-infernal-being">TF16201 · Infernal Being</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16205-dread-roar">TF16205 · Dread Roar</span> — Shared stat: HP; Shared trigger: battle start</li>
+<li><span class="broken-link" title="missing: TF16301-undying">TF16301 · Undying</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16302-soul-release">TF16302 · Soul Release</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16303-supremacy">TF16303 · Supremacy</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16305-ascension">TF16305 · Ascension</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16401-blood-siphon">TF16401 · Blood Siphon</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16402-innate-bloodthirst">TF16402 · Innate Bloodthirst</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16403-blood-frenzy">TF16403 · Blood Frenzy</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16404-hemomancy">TF16404 · Hemomancy</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16405-child-of-night">TF16405 · Child of Night</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16701-ancient-blood">TF16701 · Ancient Blood</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16702-hyper-regen">TF16702 · Hyper Regen</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16705-elders-gift">TF16705 · Elder's Gift</span> — Shared stat: HP</li>
+</ul>
+<h3>Same restriction pool (weak) · 19</h3>
+<ul>
+<li><span class="broken-link" title="missing: TF10201-gifted">TF10201 · Gifted</span> — Same class lock: Mage</li>
+<li><span class="broken-link" title="missing: TF10202-spell-demo">TF10202 · Spell Demo</span> — Same class lock: Mage</li>
+<li><span class="broken-link" title="missing: TF10203-mage-guild">TF10203 · Mage Guild</span> — Same class lock: Mage</li>
+<li><span class="broken-link" title="missing: TF10204-spell-pierce">TF10204 · Spell Pierce</span> — Same class lock: Mage</li>
+<li><span class="broken-link" title="missing: TF10205-multicast">TF10205 · Multicast</span> — Same class lock: Mage</li>
+<li><span class="broken-link" title="missing: TF10206-curse-focus">TF10206 · Curse Focus</span> — Same class lock: Mage</li>
+<li><span class="broken-link" title="missing: TF10207-tool-master">TF10207 · Tool Master</span> — Same class lock: Mage</li>
+<li><span class="broken-link" title="missing: TF10208-mana-resonate">TF10208 · Mana Resonate</span> — Same class lock: Mage</li>
+<li><span class="broken-link" title="missing: TF10209-ruin-storm">TF10209 · Ruin Storm</span> — Same class lock: Mage</li>
+<li><span class="broken-link" title="missing: TF10210-mana-lock">TF10210 · Mana Lock</span> — Same class lock: Mage</li>
+<li><span class="broken-link" title="missing: TF11001-land-herald">TF11001 · Land Herald</span> — Same element lock: Earth</li>
+<li><span class="broken-link" title="missing: TF11002-defense-break">TF11002 · Defense Break</span> — Same element lock: Earth</li>
+<li><span class="broken-link" title="missing: TF11003-tangle-bind">TF11003 · Tangle Bind</span> — Same element lock: Earth</li>
+<li><span class="broken-link" title="missing: TF11005-immovable">TF11005 · Immovable</span> — Same element lock: Earth</li>
+<li><span class="broken-link" title="missing: TF11006-aftershock">TF11006 · Aftershock</span> — Same element lock: Earth</li>
+<li><span class="broken-link" title="missing: TF16601-pollen-haze">TF16601 · Pollen Haze</span> — Same race lock: Florakin</li>
+<li><span class="broken-link" title="missing: TF16602-blossom-guardian">TF16602 · Blossom Guardian</span> — Same race lock: Florakin</li>
+<li><span class="broken-link" title="missing: TF16603-full-bloom">TF16603 · Full Bloom</span> — Same race lock: Florakin</li>
+<li><span class="broken-link" title="missing: TF16604-nectar-offering">TF16604 · Nectar Offering</span> — Same race lock: Florakin</li>
+</ul>
+<!-- SYNERGY-END -->
+</main>
+<footer>
+  <p>Static export from Obsidian vault · datamine version 1.1.1.0 · standard-s-rose-sovereign.md</p>
+</footer>
+</div>
+<style>.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{position:fixed!important;bottom:18px!important;right:18px!important;left:auto!important;top:auto!important;z-index:9999!important;transform-origin:bottom right;}@media(max-width:720px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.62)!important;bottom:8px!important;right:8px!important;}}@media(max-width:480px){.bmc-host,#bmc-wbtn,[id^="bmc-"],iframe[src*="buymeacoffee"]{transform:scale(.5)!important;}}</style>
+<div class="bmc-host">
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="zergpt" data-color="#FF5F5F" data-emoji="" data-font="Poppins" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00"></script>
+</div>
+</body>
+</html>

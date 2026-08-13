@@ -91,7 +91,7 @@
         50,
         0
       ],
-      "areaLimit": "Plains,Volcano",
+      "areaLimit": "Plains,Forest,Mounts",
       "classLimit": "Warrior,Archer,Mage",
       "element": "All"
     },
@@ -138,7 +138,7 @@
       "name": "Infected",
       "step": "S",
       "pc": 1,
-      "weight": 10000,
+      "weight": 5000,
       "effect": "Apply 2 stacks of Hinder to all targets at action start.<br>[CN: 进行反击后对目标造成自身等量层数的阻碍。]<br>[CN: 行动结束后使敌方全体目标失去其拥有阻碍层数25%的生命。]<br>[CN: 造成阻碍层数+10。]",
       "effectTpl": "Apply {0} stacks of Hinder to all targets at action start.<br>[CN: 进行反击后对目标造成自身等量层数的阻碍。]<br>[CN: 行动结束后使敌方全体目标失去其拥有阻碍层数25%的生命。]<br>[CN: 造成阻碍层数+{1}。]",
       "valueDivisors": [
@@ -410,7 +410,7 @@
       "valueDivisors": [
         3,
         3,
-        100,
+        500,
         200,
         0
       ],
@@ -647,6 +647,25 @@
       "element": "Fire"
     },
     {
+      "id": "JH40041",
+      "name": "Ruinous",
+      "step": "S",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Basic Attack applies 50 stacks of Hinder to target.<br>[CN: 普通攻击对目标造成50层剥离。]<br>[CN: 普通攻击对目标造成20层泯灭。]<br>[CN: 普通攻击目标+2。]",
+      "effectTpl": "Basic Attack applies {0} stacks of Hinder to target.<br>[CN: 普通攻击对目标造成{1}层剥离。]<br>[CN: 普通攻击对目标造成{2}层泯灭。]<br>[CN: 普通攻击目标+{3}。]",
+      "valueDivisors": [
+        2,
+        2,
+        5,
+        50,
+        0
+      ],
+      "areaLimit": "Forest,Mounts,Desert",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
       "id": "JH40013",
       "name": "Silent",
       "step": "S",
@@ -765,7 +784,7 @@
       "name": "Infected",
       "step": "A",
       "pc": 1,
-      "weight": 10000,
+      "weight": 5000,
       "effect": "Apply 2 stacks of Hinder to all targets at action start.<br>[CN: 进行反击后对目标造成自身等量层数的阻碍。]<br>[CN: 行动结束后使敌方全体目标失去其拥有阻碍层数25%的生命。]",
       "effectTpl": "Apply {0} stacks of Hinder to all targets at action start.<br>[CN: 进行反击后对目标造成自身等量层数的阻碍。]<br>[CN: 行动结束后使敌方全体目标失去其拥有阻碍层数25%的生命。]",
       "valueDivisors": [
@@ -1037,7 +1056,7 @@
       "valueDivisors": [
         3,
         3,
-        100,
+        500,
         0,
         0
       ],
@@ -1274,6 +1293,25 @@
       "element": "Fire"
     },
     {
+      "id": "JH30041",
+      "name": "Ruinous",
+      "step": "A",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Basic Attack applies 50 stacks of Hinder to target.<br>[CN: 普通攻击对目标造成50层剥离。]<br>[CN: 普通攻击对目标造成20层泯灭。]",
+      "effectTpl": "Basic Attack applies {0} stacks of Hinder to target.<br>[CN: 普通攻击对目标造成{1}层剥离。]<br>[CN: 普通攻击对目标造成{2}层泯灭。]",
+      "valueDivisors": [
+        2,
+        2,
+        5,
+        0,
+        0
+      ],
+      "areaLimit": "Forest,Mounts,Desert",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
       "id": "JH30011",
       "name": "Mirrored",
       "step": "A",
@@ -1459,7 +1497,7 @@
         0,
         0
       ],
-      "areaLimit": "Plains,Volcano",
+      "areaLimit": "Plains,Forest,Mounts",
       "classLimit": "Warrior,Archer,Mage",
       "element": "All"
     },
@@ -1487,7 +1525,7 @@
       "name": "Infected",
       "step": "B",
       "pc": 1,
-      "weight": 10000,
+      "weight": 5000,
       "effect": "Apply 2 stacks of Hinder to all targets at action start.<br>[CN: 进行反击后对目标造成自身等量层数的阻碍。]",
       "effectTpl": "Apply {0} stacks of Hinder to all targets at action start.<br>[CN: 进行反击后对目标造成自身等量层数的阻碍。]",
       "valueDivisors": [
@@ -1996,6 +2034,25 @@
       "element": "Fire"
     },
     {
+      "id": "JH20041",
+      "name": "Ruinous",
+      "step": "B",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Basic Attack applies 50 stacks of Hinder to target.<br>[CN: 普通攻击对目标造成50层剥离。]",
+      "effectTpl": "Basic Attack applies {0} stacks of Hinder to target.<br>[CN: 普通攻击对目标造成{1}层剥离。]",
+      "valueDivisors": [
+        2,
+        2,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "Forest,Mounts,Desert",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
       "id": "JH20013",
       "name": "Silent",
       "step": "B",
@@ -2143,7 +2200,7 @@
         0,
         0
       ],
-      "areaLimit": "Plains,Volcano",
+      "areaLimit": "Plains,Forest,Mounts",
       "classLimit": "Warrior,Archer,Mage",
       "element": "All"
     },
@@ -2171,7 +2228,7 @@
       "name": "Infected",
       "step": "C",
       "pc": 1,
-      "weight": 10000,
+      "weight": 5000,
       "effect": "Apply 2 stacks of Hinder to all targets at action start.",
       "effectTpl": "Apply {0} stacks of Hinder to all targets at action start.",
       "valueDivisors": [
@@ -2680,6 +2737,25 @@
       "element": "Fire"
     },
     {
+      "id": "JH10041",
+      "name": "Ruinous",
+      "step": "C",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Basic Attack applies 50 stacks of Hinder to target.",
+      "effectTpl": "Basic Attack applies {0} stacks of Hinder to target.",
+      "valueDivisors": [
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "Forest,Mounts,Desert",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
       "id": "JH10015",
       "name": "Blind",
       "step": "C",
@@ -2789,7 +2865,7 @@
         0,
         0
       ],
-      "areaLimit": "Plains,Volcano",
+      "areaLimit": "Plains,Forest,Mounts",
       "classLimit": "Warrior,Archer,Mage",
       "element": "All"
     }
