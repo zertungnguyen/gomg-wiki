@@ -269,7 +269,7 @@
       "name": "[Alchemy] Troll Sorceress",
       "step": "S",
       "cls": "Mage",
-      "race": "Gigantic",
+      "race": "High Troll",
       "element": "Earth"
     },
     {
@@ -453,7 +453,7 @@
       "name": "[Nightfall] Rose Sovereign",
       "step": "S",
       "cls": "Mage",
-      "race": "[CN: 夜族]",
+      "race": "Vampiric",
       "element": "Dark"
     },
     {
@@ -1648,6 +1648,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16805_004",
+      "name": "Abyssal Blessing",
+      "effect": "获得滋润层数上限+500],[CN: 拥有滋润层数超过500层时视为拥有满层滋润。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF12503_004",
       "name": "Act Cute",
       "effect": "Take -10 Counter DMG and never prioritize becoming enemy target.",
@@ -2084,7 +2091,7 @@
     {
       "id": "TF01059",
       "name": "Cool Splash",
-      "effect": "释放技能后吸收敌方目标6层滋润],[CN: 目标弱点暴露时效果翻倍。",
+      "effect": "After applying Soothe to an enemy, increase their Soothe stack cap by the same amount.",
       "step": "S",
       "type": "Talent"
     },
@@ -2159,6 +2166,20 @@
       "type": "Talent"
     },
     {
+      "id": "TF17103_004",
+      "name": "Cycle Strike",
+      "effect": "Gain 4 Mana after attacking, but deal -4% total DMG.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17101_004",
+      "name": "Damp Scales",
+      "effect": "After taking DMG, consume up to 12 stacks of Soothe and gain equal HP.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF01038",
       "name": "Dance Rhythm",
       "effect": "Gain +1 Inspire stacks at action start if not attacked this turn.",
@@ -2215,6 +2236,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16801_004",
+      "name": "Deep Command",
+      "effect": "Apply +1 stacks of Soothe per 3 ally count when casting skill.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF11202_004",
       "name": "Deep Freeze",
       "effect": "Apply +2 stacks of Chill. Enemies lose 1 HP per 10 stacks of Chill applied.",
@@ -2225,6 +2253,13 @@
       "id": "TF13201_004",
       "name": "Deep Sea Beast",
       "effect": "HP +25. Effect doubles on Ocean maps.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01067",
+      "name": "Deep Sea Sneak",
+      "effect": "Immune to effects that reduce own Mana Gain.",
       "step": "S",
       "type": "Talent"
     },
@@ -2315,7 +2350,7 @@
     {
       "id": "TF00041_000",
       "name": "Drowned Soul",
-      "effect": "自身战败时使敌方全体目标受到滋润层数上限+5。",
+      "effect": "All enemies receive +4 Soothe stacks when an enemy is defeated.",
       "step": "S",
       "type": "Talent"
     },
@@ -2509,6 +2544,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16901_004",
+      "name": "Eternal Tide",
+      "effect": "All targets on both sides gain +20 Soothe stack cap per 5 levels.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF13401_004",
       "name": "Eternal Will",
       "effect": "+15 Toughness. Minimum current Toughness is 1.",
@@ -2554,6 +2596,13 @@
       "id": "TF00014",
       "name": "Fear Siphon",
       "effect": "Drain 1 HP per 3 stacks of Fear applied after casting skill.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17001_004",
+      "name": "Fearless Mind",
+      "effect": "Gain 4 Toughness and max Toughness after applying Cleanse.",
       "step": "S",
       "type": "Talent"
     },
@@ -2684,9 +2733,23 @@
       "type": "Talent"
     },
     {
+      "id": "TF16902_004",
+      "name": "Flow Mastery",
+      "effect": "Apply +16 stacks of Soothe at max Soothe stacks.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF00038",
       "name": "Flowing Mind",
       "effect": "Deal +2 counters when having no debuffs.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16802_004",
+      "name": "Foam Shield",
+      "effect": "Consume at least 10 stacks of Soothe when attacked to take -30 total DMG.",
       "step": "S",
       "type": "Talent"
     },
@@ -2915,6 +2978,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17005_004",
+      "name": "Holy Descent",
+      "effect": "Gain +30% max Toughness and equal Toughness at battle start.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF10410_004",
       "name": "Holy Nova",
       "effect": "All allies gain 2 HP after casting skill. Effect increases by 1 per 50 SPI.",
@@ -3029,7 +3099,7 @@
     {
       "id": "TF16402_004",
       "name": "Innate Bloodthirst",
-      "effect": "Inflict +1 HP loss per 20 HP gained.",
+      "effect": "释放技能时每获得10点生命使自身造成失去生命额外+1。",
       "step": "S",
       "type": "Talent"
     },
@@ -3419,6 +3489,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17104_004",
+      "name": "Multi-Arm Sync",
+      "effect": "Cannot be countered after casting skill.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF10205_004",
       "name": "Multicast",
       "effect": "+2 Multi-hit skill hits but deal -50% skill DMG.",
@@ -3524,6 +3601,20 @@
       "type": "Talent"
     },
     {
+      "id": "TF16903_004",
+      "name": "Ocean Force",
+      "effect": "Enemy targets lose 2 Mana and allies gain 2 Mana after applying Soothe.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16804_004",
+      "name": "Ocean's Blessing",
+      "effect": "Survive lethal DMG with 1 HP at max Soothe stacks, but lose all Soothe.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF14204_004",
       "name": "Only God",
       "effect": "Gain +20 all stats when no other Divine allies exist.",
@@ -3540,7 +3631,7 @@
     {
       "id": "TF01005_001",
       "name": "Overcharge",
-      "effect": "每拥有25层滋润使自身造成全部伤害+1。",
+      "effect": "Gain Soothe equal to 50% of own Soothe stack cap before the first turn, but lose all Soothe at action end.",
       "step": "S",
       "type": "Talent"
     },
@@ -3685,6 +3776,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17004_004",
+      "name": "Pristine Wings",
+      "effect": "Apply +2 stacks of Cleanse. Gain 4 stacks of Cleanse at action end.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF10405_004",
       "name": "Pure Barrier",
       "effect": "All allies take -4 stacks of debuffs.",
@@ -3702,6 +3800,13 @@
       "id": "TF01045",
       "name": "Pure Silver",
       "effect": "Apply +2 stacks of Cleanse. Allies gain 10% of Cleanse stacks as Mana after applying Cleanse.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17003_004",
+      "name": "Purging Light",
+      "effect": "Apply +2 stacks of Cleanse. Effect increases by 2 against targets with debuffs.",
       "step": "S",
       "type": "Talent"
     },
@@ -3898,6 +4003,20 @@
       "id": "TF10016_004",
       "name": "Scrap Use",
       "effect": "Gain +2 all stats per Bronze Bond.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16904_004",
+      "name": "Sea Conjure",
+      "effect": "Gain 3 stacks of Soothe per 2 Toughness lost by either side.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16905_004",
+      "name": "Seagod Decree",
+      "effect": "In the first turn, no targets on either side can apply non-instant statuses other than Soothe.",
       "step": "S",
       "type": "Talent"
     },
@@ -4343,9 +4462,30 @@
       "type": "Talent"
     },
     {
+      "id": "TF16803_004",
+      "name": "Tidal Bond",
+      "effect": "Gain +12 Action Mana at max Soothe stacks.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17105_004",
+      "name": "Tidal Foresight",
+      "effect": "Gain +1 Action Mana per target at max Soothe at turn start.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF13205_004",
       "name": "Tidal Shift",
       "effect": "Gain +2 Action Mana at turn start.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17102_004",
+      "name": "Tidal Sovereign",
+      "effect": "Suffer -1 HP Loss per 15 stacks of Soothe.",
       "step": "S",
       "type": "Talent"
     },
@@ -4497,6 +4637,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17002_004",
+      "name": "Valor Song",
+      "effect": "Deal +1 total DMG per 5 current Toughness.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF00052_000",
       "name": "Vapor Surge",
       "effect": "Gain +2 multi-hit skill count at max Soothe stacks.",
@@ -4539,9 +4686,9 @@
       "type": "Talent"
     },
     {
-      "id": "TF01011_000",
-      "name": "Water Clone",
-      "effect": "回合开始前友方每名滋润目标使友方数量+4。",
+      "id": "TF01054",
+      "name": "Water Infuse",
+      "effect": "Transfer 10% of own Soothe stacks to the ally with least Soothe at action end.",
       "step": "S",
       "type": "Talent"
     },
@@ -4616,9 +4763,16 @@
       "type": "Talent"
     },
     {
-      "id": "TF01054",
-      "name": "戏水派对",
-      "effect": "拥有滋润时使自身造成全部状态层数+3。",
+      "id": "TF01036_000",
+      "name": "Youthful Vigor",
+      "effect": "Gain +10 Starting Mana. Gain +2 multi-hit Skill Healings in the first turn.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01011_000",
+      "name": "浪潮翻涌",
+      "effect": "Deal +50% single-hit Skill DMG per 450 stacks of Soothe.",
       "step": "S",
       "type": "Talent"
     },
@@ -4791,6 +4945,20 @@
       "type": "Talent"
     },
     {
+      "id": "TF17103_003",
+      "name": "Cycle Strike",
+      "effect": "Gain 2 Mana after attacking, but deal -2% total DMG.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17101_003",
+      "name": "Damp Scales",
+      "effect": "After taking DMG, consume up to 9 stacks of Soothe and gain equal HP.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF12205_003",
       "name": "Dark Ambush",
       "effect": "Deal +2 total DMG to low HP targets. Effect increases by 2 if target is in back.",
@@ -4815,6 +4983,13 @@
       "id": "TF15802_003",
       "name": "Dazzling Light",
       "effect": "All enemies lose 5 ATK after casting a healing skill.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16801_003",
+      "name": "Deep Command",
+      "effect": "Apply +1 stacks of Soothe per 6 ally count when casting skill.",
       "step": "A",
       "type": "Talent"
     },
@@ -4931,6 +5106,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16901_003",
+      "name": "Eternal Tide",
+      "effect": "All targets on both sides gain +20 Soothe stack cap per 10 levels.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF14304_003",
       "name": "Evil Decay",
       "effect": "Apply +1 stacks of Decay. Effect increases by 2 to targets with Weakness exposed.",
@@ -4941,6 +5123,13 @@
       "id": "TF15803_003",
       "name": "Fading Spark",
       "effect": "All allies take -25 Decay stacks. This effect decreases by 25 before each turn starts.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17001_003",
+      "name": "Fearless Mind",
+      "effect": "Gain 3 Toughness and max Toughness after applying Cleanse.",
       "step": "A",
       "type": "Talent"
     },
@@ -4997,6 +5186,20 @@
       "id": "TF12301_003",
       "name": "Flexible Body",
       "effect": "Take -4 basic DMG and -4 Follow-Up DMG.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16902_003",
+      "name": "Flow Mastery",
+      "effect": "Apply +8 stacks of Soothe at max Soothe stacks.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16802_003",
+      "name": "Foam Shield",
+      "effect": "Consume at least 10 stacks of Soothe when attacked to take -15 total DMG.",
       "step": "A",
       "type": "Talent"
     },
@@ -5150,7 +5353,7 @@
     {
       "id": "TF16402_003",
       "name": "Innate Bloodthirst",
-      "effect": "Inflict +1 HP loss per 40 HP gained.",
+      "effect": "释放技能时每获得20点生命使自身造成失去生命额外+1。",
       "step": "A",
       "type": "Talent"
     },
@@ -5351,6 +5554,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF16903_003",
+      "name": "Ocean Force",
+      "effect": "Enemy targets lose 1 Mana and allies gain 1 Mana after applying Soothe.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF14204_003",
       "name": "Only God",
       "effect": "Gain +10 all stats when no other Divine allies exist.",
@@ -5445,6 +5655,13 @@
       "id": "TF14503_003",
       "name": "Pure Flawless",
       "effect": "Take -9 debuff stacks coming from next attacks when having no current debuffs.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17003_003",
+      "name": "Purging Light",
+      "effect": "Apply +1 stacks of Cleanse. Effect increases by 1 against targets with debuffs.",
       "step": "A",
       "type": "Talent"
     },
@@ -5764,6 +5981,20 @@
       "type": "Talent"
     },
     {
+      "id": "TF16803_003",
+      "name": "Tidal Bond",
+      "effect": "Gain +6 Action Mana at max Soothe stacks.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17102_003",
+      "name": "Tidal Sovereign",
+      "effect": "Suffer -1 HP Loss per 30 stacks of Soothe.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF10207_003",
       "name": "Tool Master",
       "effect": "Gain +2 all stats from Off Hand gear. Off Hand gear's Basic Bond level +1.",
@@ -5844,6 +6075,13 @@
       "id": "TF10408_003",
       "name": "Uplifting Song",
       "effect": "All allies deal +3 total DMG.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17002_003",
+      "name": "Valor Song",
+      "effect": "Deal +1 total DMG per 10 current Toughness.",
       "step": "A",
       "type": "Talent"
     },
@@ -5960,6 +6198,20 @@
       "type": "Talent"
     },
     {
+      "id": "TF17101_002",
+      "name": "Damp Scales",
+      "effect": "After taking DMG, consume up to 6 stacks of Soothe and gain equal HP.",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16801_002",
+      "name": "Deep Command",
+      "effect": "Apply +1 stacks of Soothe per 9 ally count when casting skill.",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
       "id": "TF13703_002",
       "name": "Divine Strength",
       "effect": "STR +10. Deal +1 basic attack DMG per 75 STR.",
@@ -5984,6 +6236,20 @@
       "id": "TF14201_002",
       "name": "Eternal Life",
       "effect": "+10 HP. Gain +1 HP per 15 levels.",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16901_002",
+      "name": "Eternal Tide",
+      "effect": "All targets on both sides gain +20 Soothe stack cap per 15 levels.",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17001_002",
+      "name": "Fearless Mind",
+      "effect": "Gain 2 Toughness and max Toughness after applying Cleanse.",
       "step": "B",
       "type": "Talent"
     },
@@ -6366,6 +6632,20 @@
       "type": "Talent"
     },
     {
+      "id": "TF17101_001",
+      "name": "Damp Scales",
+      "effect": "After taking DMG, consume up to 3 stacks of Soothe and gain equal HP.",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16801_001",
+      "name": "Deep Command",
+      "effect": "Apply +1 stacks of Soothe per 12 ally count when casting skill.",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
       "id": "TF13703_001",
       "name": "Divine Strength",
       "effect": "STR +5. Deal +1 basic attack DMG per 100 STR.",
@@ -6390,6 +6670,20 @@
       "id": "TF14201_001",
       "name": "Eternal Life",
       "effect": "+5 HP. Gain +1 HP per 20 levels.",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
+      "id": "TF16901_001",
+      "name": "Eternal Tide",
+      "effect": "All targets on both sides gain +20 Soothe stack cap per 20 levels.",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17001_001",
+      "name": "Fearless Mind",
+      "effect": "Gain 1 Toughness and max Toughness after applying Cleanse.",
       "step": "C",
       "type": "Talent"
     },
@@ -6709,7 +7003,7 @@
       "step": "SS",
       "type": "Main Hand",
       "area": "Deadwood Jungle",
-      "cls": "All-Class"
+      "cls": "Warrior"
     },
     {
       "id": "Z00102_401",
@@ -7149,7 +7443,7 @@
       "step": "S",
       "type": "Main Hand",
       "area": "Deadwood Jungle",
-      "cls": "Warrior,Archer"
+      "cls": "Warrior"
     },
     {
       "id": "Z10010_332",
@@ -7373,7 +7667,7 @@
       "step": "A",
       "type": "Main Hand",
       "area": "Deadwood Jungle",
-      "cls": "Priest"
+      "cls": "All-Class"
     },
     {
       "id": "Z00102_201",
@@ -7398,14 +7692,6 @@
       "type": "Main Hand",
       "area": "The Sunken Sea",
       "cls": "Mage,Archer"
-    },
-    {
-      "id": "Z07001_274",
-      "name": "Dissolve Badge",
-      "step": "A",
-      "type": "Main Hand",
-      "area": "Deadwood Jungle",
-      "cls": "Mage"
     },
     {
       "id": "Z07001_271",
@@ -8653,7 +8939,7 @@
       "step": "S",
       "type": "Off Hand",
       "area": "Deadwood Jungle",
-      "cls": "Warrior,Archer"
+      "cls": "Warrior"
     },
     {
       "id": "Z03001_333",
@@ -8830,14 +9116,6 @@
       "type": "Off Hand",
       "area": "The Sunken Sea",
       "cls": "Mage,Archer"
-    },
-    {
-      "id": "Z07001_275",
-      "name": "Dissolve Necklace",
-      "step": "A",
-      "type": "Off Hand",
-      "area": "Deadwood Jungle",
-      "cls": "Mage"
     },
     {
       "id": "Z07001_272",
@@ -10109,7 +10387,7 @@
       "step": "A",
       "type": "Head",
       "area": "Deadwood Jungle",
-      "cls": "Priest"
+      "cls": "All-Class"
     },
     {
       "id": "Z00201_341",
@@ -11477,7 +11755,7 @@
       "step": "A",
       "type": "Body",
       "area": "Deadwood Jungle",
-      "cls": "Priest"
+      "cls": "All-Class"
     },
     {
       "id": "Z00201_342",
@@ -12709,7 +12987,7 @@
       "step": "S",
       "type": "Gloves",
       "area": "Deadwood Jungle",
-      "cls": "Warrior,Archer"
+      "cls": "Warrior"
     },
     {
       "id": "Z05001_351",
@@ -12954,14 +13232,6 @@
     {
       "id": "Z07001_273",
       "name": "Dissolve Gloves",
-      "step": "A",
-      "type": "Gloves",
-      "area": "Deadwood Jungle",
-      "cls": "Mage"
-    },
-    {
-      "id": "Z07001_276",
-      "name": "Dissolve Ring",
       "step": "A",
       "type": "Gloves",
       "area": "Deadwood Jungle",
@@ -14053,7 +14323,7 @@
       "step": "A",
       "type": "Belt",
       "area": "Deadwood Jungle",
-      "cls": "Priest"
+      "cls": "All-Class"
     },
     {
       "id": "Z00201_363",
@@ -16152,6 +16422,14 @@
       "cls": "Mage,Archer"
     },
     {
+      "id": "Z07001_275",
+      "name": "Dissolve Necklace",
+      "step": "A",
+      "type": "Amulet",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
+    },
+    {
       "id": "Z20025_821",
       "name": "Elven Necklace",
       "step": "A",
@@ -17246,6 +17524,14 @@
       "type": "Ring",
       "area": "The Sunken Sea",
       "cls": "Mage,Archer"
+    },
+    {
+      "id": "Z07001_276",
+      "name": "Dissolve Ring",
+      "step": "A",
+      "type": "Ring",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
     },
     {
       "id": "Z00102_253",
@@ -18398,6 +18684,14 @@
       "type": "Badge",
       "area": "The Sunken Sea",
       "cls": "Mage,Archer"
+    },
+    {
+      "id": "Z07001_274",
+      "name": "Dissolve Badge",
+      "step": "A",
+      "type": "Badge",
+      "area": "Deadwood Jungle",
+      "cls": "Mage"
     },
     {
       "id": "Z20025_021",
