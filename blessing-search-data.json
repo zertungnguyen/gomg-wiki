@@ -6,8 +6,8 @@
       "step": "S",
       "pc": 2,
       "weight": 500,
-      "effect": "Cannot basic attack but always Counter when taking a hit.<br>[CN: 受到敌方造成的状态后对目标造成相同状态。]<br>[CN: 受到伤害后使目标失去数值一半的生命。]<br>[CN: 自身战败后使敌方相同位置目标失去全部生命。]",
-      "effectTpl": "Cannot basic attack but always Counter when taking a hit.<br>[CN: 受到敌方造成的状态后对目标造成相同状态。]<br>[CN: 受到伤害后使目标失去数值一半的生命。]<br>[CN: 自身战败后使敌方相同位置目标失去全部生命。]",
+      "effect": "Cannot basic attack but always Counter when taking a hit.<br>Apply same status to target after receiving status from enemies.<br>Retaliate against attackers by reducing their HP equal to half the DMG taken.<br>Enemy in same position loses all HP when defeated.",
+      "effectTpl": "Cannot basic attack but always Counter when taking a hit.<br>Apply same status to target after receiving status from enemies.<br>Retaliate against attackers by reducing their HP equal to half the DMG taken.<br>Enemy in same position loses all HP when defeated.",
       "valueDivisors": [
         0,
         0,
@@ -25,8 +25,8 @@
       "step": "S",
       "pc": 2,
       "weight": 2500,
-      "effect": "Take 34 less Skill DMG.<br>[CN: 造成伤害后使目标失去2点魔力。]<br>[CN: 敌方目标释放技能后失去魔力上限一半的韧性。]<br>[CN: 敌方目标释放技能后失去魔力上限一半的生命。]",
-      "effectTpl": "Take {0} less Skill DMG.<br>[CN: 造成伤害后使目标失去{1}点魔力。]<br>[CN: 敌方目标释放技能后失去魔力上限一半的韧性。]<br>[CN: 敌方目标释放技能后失去魔力上限一半的生命。]",
+      "effect": "Take 34 less Skill DMG.<br>Target loses 2 Mana after dealing DMG.<br>Enemies lose Toughness equal to half their Max Mana after casting skill.<br>Enemies lose HP equal to half their Max Mana after casting skill.",
+      "effectTpl": "Take {0} less Skill DMG.<br>Target loses {1} Mana after dealing DMG.<br>Enemies lose Toughness equal to half their Max Mana after casting skill.<br>Enemies lose HP equal to half their Max Mana after casting skill.",
       "valueDivisors": [
         3,
         50,
@@ -44,8 +44,8 @@
       "step": "S",
       "pc": 2,
       "weight": 1250,
-      "effect": "Not considered a priority target by enemies.<br>[CN: 敌方目标行动结束后失去5点生命。]<br>[CN: 敌方目标行动开始前失去5点生命。]<br>[CN: 仅剩自身时敌方全体目标失去生命+20。]",
-      "effectTpl": "Not considered a priority target by enemies.<br>[CN: 敌方目标行动结束后失去{0}点生命。]<br>[CN: 敌方目标行动开始前失去{1}点生命。]<br>[CN: 仅剩自身时敌方全体目标失去生命+{2}。]",
+      "effect": "Not considered a priority target by enemies.<br>Enemies lose 5 HP at action end.<br>Enemies lose 5 HP at action start.<br>All enemies lose 20 more HP when only self remains.",
+      "effectTpl": "Not considered a priority target by enemies.<br>Enemies lose {0} HP at action end.<br>Enemies lose {1} HP at action start.<br>All enemies lose {2} more HP when only self remains.",
       "valueDivisors": [
         20,
         20,
@@ -82,8 +82,8 @@
       "step": "S",
       "pc": 2,
       "weight": 1250,
-      "effect": "Gain 1 Extra Actions each turn, but deal 50% less total DMG.<br>[CN: 造成追击次数+2。]<br>[CN: 造成反击次数+2。]<br>[CN: 多段技能次数+2。]",
-      "effectTpl": "Gain {0} Extra Actions each turn, but deal 50% less total DMG.<br>[CN: 造成追击次数+{1}。]<br>[CN: 造成反击次数+{2}。]<br>[CN: 多段技能次数+{3}。]",
+      "effect": "Gain 1 Extra Actions each turn, but deal 50% less total DMG.<br>Follow-Up count +2.<br>Counter count +2.<br>Multi-hit skill count +2.",
+      "effectTpl": "Gain {0} Extra Actions each turn, but deal 50% less total DMG.<br>Follow-Up count +{1}.<br>Counter count +{2}.<br>Multi-hit skill count +{3}.",
       "valueDivisors": [
         200,
         50,
@@ -101,8 +101,8 @@
       "step": "S",
       "pc": 2,
       "weight": 0,
-      "effect": "HP +10000.<br>-10 Toughness loss.<br>[CN: 失去魔力-5。]<br>[CN: 当前韧性最低为1。]",
-      "effectTpl": "HP +10000.<br>-{0} Toughness loss.<br>[CN: 失去魔力-{1}。]<br>[CN: 当前韧性最低为1。]",
+      "effect": "HP +10000.<br>Toughness lost -10.<br>Mana Loss -5<br>Current Toughness cannot drop below 1.",
+      "effectTpl": "HP +10000.<br>Toughness lost -{0}.<br>Mana Loss -{1}<br>Current Toughness cannot drop below 1.",
       "valueDivisors": [
         10,
         20,
@@ -120,8 +120,8 @@
       "step": "S",
       "pc": 1,
       "weight": 5000,
-      "effect": "Immune to Stun.<br>HP +100,[CN: 速度-50。]<br>[CN: 造成全部伤害+10。]<br>[CN: 行动开始前使自身获得34点生命。]",
-      "effectTpl": "Immune to Stun.<br>HP +{0},[CN: 速度-{1}。]<br>[CN: 造成全部伤害+{2}。]<br>[CN: 行动开始前使自身获得{3}点生命。]",
+      "effect": "Immune to Stun.<br>Gain 100 HP but lose 50 SPD.<br>Deal 10 more total DMG.<br>Gain 34 HP at action start.",
+      "effectTpl": "Immune to Stun.<br>Gain {0} HP but lose {1} SPD.<br>Deal {2} more total DMG.<br>Gain {3} HP at action start.",
       "valueDivisors": [
         1,
         2,
@@ -139,8 +139,8 @@
       "step": "S",
       "pc": 1,
       "weight": 5000,
-      "effect": "Apply 2 stacks of Hinder to all targets at action start.<br>[CN: 进行反击后对目标造成自身等量层数的阻碍。]<br>[CN: 行动结束后使敌方全体目标失去其拥有阻碍层数25%的生命。]<br>[CN: 造成阻碍层数+10。]",
-      "effectTpl": "Apply {0} stacks of Hinder to all targets at action start.<br>[CN: 进行反击后对目标造成自身等量层数的阻碍。]<br>[CN: 行动结束后使敌方全体目标失去其拥有阻碍层数25%的生命。]<br>[CN: 造成阻碍层数+{1}。]",
+      "effect": "Apply 2 stacks of Hinder to all targets at action start.<br>Apply Hinder equal to own stacks to target after countering.<br>All enemies lose HP equal to their Hinder stacks at action end.<br>Apply 10 more stacks of Hinder.",
+      "effectTpl": "Apply {0} stacks of Hinder to all targets at action start.<br>Apply Hinder equal to own stacks to target after countering.<br>All enemies lose HP equal to their Hinder stacks at action end.<br>Apply {1} more stacks of Hinder.",
       "valueDivisors": [
         50,
         10,
@@ -158,8 +158,8 @@
       "step": "S",
       "pc": 1,
       "weight": 10000,
-      "effect": "Apply 10 stacks of Chill to target after attacking.<br>[CN: 行动开始前对敌方全体目标造成10层冰冷。]<br>[CN: 释放技能后使敌方目标失去冰冷层数25%的生命。]<br>[CN: 造成冰冷层数+10。]",
-      "effectTpl": "Apply {0} stacks of Chill to target after attacking.<br>[CN: 行动开始前对敌方全体目标造成{1}层冰冷。]<br>[CN: 释放技能后使敌方目标失去冰冷层数25%的生命。]<br>[CN: 造成冰冷层数+{2}。]",
+      "effect": "Apply 10 stacks of Chill after attacking.<br>Apply 10 stacks of Chill to all enemies at action start.<br>On skill cast, the enemy target loses HP equal to 25% of their Chill stacks.<br>Apply +10 Chill stacks.",
+      "effectTpl": "Apply {0} stacks of Chill after attacking.<br>Apply {1} stacks of Chill to all enemies at action start.<br>On skill cast, the enemy target loses HP equal to 25% of their Chill stacks.<br>Apply +{2} Chill stacks.",
       "valueDivisors": [
         10,
         10,
@@ -177,8 +177,8 @@
       "step": "S",
       "pc": 1,
       "weight": 10000,
-      "effect": "Apply 10 stacks of Burn to target after taking DMG.<br>[CN: 进行反击后对目标造成20层灼烧。]<br>[CN: 行动结束后使敌方全体目标拥有的灼烧层数+10。]<br>[CN: 造成灼烧层数+10。]",
-      "effectTpl": "Apply {0} stacks of Burn to target after taking DMG.<br>[CN: 进行反击后对目标造成{1}层灼烧。]<br>[CN: 行动结束后使敌方全体目标拥有的灼烧层数+{2}。]<br>[CN: 造成灼烧层数+{3}。]",
+      "effect": "Apply 10 stacks of Burn to target after taking DMG.<br>Apply 20 stacks of Burn to target after countering.<br>All enemies gain 10 more stacks of Burn at action end.<br>Apply 10 more stacks of Burn.",
+      "effectTpl": "Apply {0} stacks of Burn to target after taking DMG.<br>Apply {1} stacks of Burn to target after countering.<br>All enemies gain {2} more stacks of Burn at action end.<br>Apply {3} more stacks of Burn.",
       "valueDivisors": [
         10,
         5,
@@ -196,8 +196,8 @@
       "step": "S",
       "pc": 1,
       "weight": 10000,
-      "effect": "Apply 50 stacks of Expose to target after a basic attack.<br>[CN: 进行追击后对目标造成50层剥离。]<br>[CN: 行动结束后使敌方全体目标拥有的剥离层数+10。]<br>[CN: 造成剥离层数+10。]",
-      "effectTpl": "Apply {0} stacks of Expose to target after a basic attack.<br>[CN: 进行追击后对目标造成{1}层剥离。]<br>[CN: 行动结束后使敌方全体目标拥有的剥离层数+{2}。]<br>[CN: 造成剥离层数+{3}。]",
+      "effect": "Apply 50 stacks of Expose to target after a basic attack.<br>Apply 50 stacks of Expose to target after following up.<br>All enemies gain 10 more stacks of Expose at action end.<br>Apply 10 more stacks of Expose.",
+      "effectTpl": "Apply {0} stacks of Expose to target after a basic attack.<br>Apply {1} stacks of Expose to target after following up.<br>All enemies gain {2} more stacks of Expose at action end.<br>Apply {3} more stacks of Expose.",
       "valueDivisors": [
         2,
         2,
@@ -215,8 +215,8 @@
       "step": "S",
       "pc": 1,
       "weight": 5000,
-      "effect": "Gain 20 Starting Mana.<br>[CN: 行动回魔+10。]<br>[CN: 造成技能伤害+20],[CN: 造成技能恢复+20。]<br>[CN: 释放技能后使自身获得10点魔力。]",
-      "effectTpl": "Gain {0} Starting Mana.<br>[CN: 行动回魔+{1}。]<br>[CN: 造成技能伤害+{2}],[CN: 造成技能恢复+{3}。]<br>[CN: 释放技能后使自身获得{4}点魔力。]",
+      "effect": "Gain 20 Starting Mana.<br>Gain 10 Action Mana.<br>Gain 20 skill DMG and 20 skill healing.<br>Gain 10 Mana after casting skill.",
+      "effectTpl": "Gain {0} Starting Mana.<br>Gain {1} Action Mana.<br>Gain {2} skill DMG and {3} skill healing.<br>Gain {4} Mana after casting skill.",
       "valueDivisors": [
         5,
         10,
@@ -234,8 +234,8 @@
       "step": "S",
       "pc": 1,
       "weight": 5000,
-      "effect": "Gain 10 stacks of Cleanse at action end.<br>[CN: 没有负面状态时自身造成全部伤害+20],[CN: 造成全部恢复+20。]<br>[CN: 没有负面状态时自身受到全部伤害-20。]<br>[CN: 获得净化层数+10。]",
-      "effectTpl": "Gain {0} stacks of Cleanse at action end.<br>[CN: 没有负面状态时自身造成全部伤害+{1}],[CN: 造成全部恢复+{2}。]<br>[CN: 没有负面状态时自身受到全部伤害-{3}。]<br>[CN: 获得净化层数+{4}。]",
+      "effect": "Gain 10 stacks of Cleanse at action end.<br>When having no debuffs, deal 20 more total DMG and restore 20 more total HP to targets.<br>When having no debuffs, take 20 less total DMG.<br>Gain 10 more stacks of Cleanse.",
+      "effectTpl": "Gain {0} stacks of Cleanse at action end.<br>When having no debuffs, deal {1} more total DMG and restore {2} more total HP to targets.<br>When having no debuffs, take {3} less total DMG.<br>Gain {4} more stacks of Cleanse.",
       "valueDivisors": [
         10,
         5,
@@ -253,8 +253,8 @@
       "step": "S",
       "pc": 1,
       "weight": 5000,
-      "effect": "Not considered a priority target by enemies.<br>Deal +20 total DMG to low HP targets.<br>[CN: 击败目标后使自身造成全部伤害+20。]<br>[CN: 击败目标后使自身立刻进行1次额外行动。]",
-      "effectTpl": "Not considered a priority target by enemies.<br>Deal +{0} total DMG to low HP targets.<br>[CN: 击败目标后使自身造成全部伤害+{1}。]<br>[CN: 击败目标后使自身立刻进行1次额外行动。]",
+      "effect": "Not considered a priority target by enemies.<br>Deal 20 more total DMG to low HP targets.<br>Deal 20 more total DMG after defeating a target.<br>Take 1 extra action immediately after defeating a target.",
+      "effectTpl": "Not considered a priority target by enemies.<br>Deal {0} more total DMG to low HP targets.<br>Deal {1} more total DMG after defeating a target.<br>Take 1 extra action immediately after defeating a target.",
       "valueDivisors": [
         5,
         5,
@@ -272,8 +272,8 @@
       "step": "S",
       "pc": 1,
       "weight": 5000,
-      "effect": "Gain 50 HP after attacking at low HP.<br>[CN: 低生命时自身造成全部伤害+20。]<br>[CN: 低生命时自身受到全部伤害-20。]<br>[CN: 低生命时自身普通攻击目标+2。]",
-      "effectTpl": "Gain {0} HP after attacking at low HP.<br>[CN: 低生命时自身造成全部伤害+{1}。]<br>[CN: 低生命时自身受到全部伤害-{2}。]<br>[CN: 低生命时自身普通攻击目标+{3}。]",
+      "effect": "Gain 50 HP after attacking at low HP.<br>Deal 20 more total DMG at low HP.<br>Take 20 less total DMG at low HP.<br>Gain 2 basic attack targets at low HP.",
+      "effectTpl": "Gain {0} HP after attacking at low HP.<br>Deal {1} more total DMG at low HP.<br>Take {2} less total DMG at low HP.<br>Gain {3} basic attack targets at low HP.",
       "valueDivisors": [
         2,
         5,
@@ -291,8 +291,8 @@
       "step": "S",
       "pc": 1,
       "weight": 5000,
-      "effect": "Gain 50 HP after defeating a target.<br>[CN: 击败目标后使自身造成全部伤害+20。]<br>[CN: 击败目标后使自身受到全部伤害-20。]<br>[CN: 击败目标后使自身获得20点魔力。]",
-      "effectTpl": "Gain {0} HP after defeating a target.<br>[CN: 击败目标后使自身造成全部伤害+{1}。]<br>[CN: 击败目标后使自身受到全部伤害-{2}。]<br>[CN: 击败目标后使自身获得{3}点魔力。]",
+      "effect": "Gain 50 HP after defeating a target.<br>Deal 20 more total DMG after defeating a target.<br>Take 20 less total DMG after defeating a target.<br>Gain 20 Mana after defeating a target.",
+      "effectTpl": "Gain {0} HP after defeating a target.<br>Deal {1} more total DMG after defeating a target.<br>Take {2} less total DMG after defeating a target.<br>Gain {3} Mana after defeating a target.",
       "valueDivisors": [
         2,
         5,
@@ -310,8 +310,8 @@
       "step": "S",
       "pc": 1,
       "weight": 10000,
-      "effect": "Gain 100 stacks of Haste at battle start.<br>[CN: 行动结束后获得20层加速。]<br>[CN: 每拥有100点速度使自身造成追击次数+1。]<br>[CN: 获得加速层数+10。]",
-      "effectTpl": "Gain {0} stacks of Haste at battle start.<br>[CN: 行动结束后获得{1}层加速。]<br>[CN: 每拥有100点速度使自身造成追击次数+1。]<br>[CN: 获得加速层数+{2}。]",
+      "effect": "Gain 100 stacks of Haste at battle start.<br>Gain 20 stacks of Haste at action end.<br>Deal 1 more Follow-Up attack per 100 SPD.<br>Gain 10 more stacks of Haste.",
+      "effectTpl": "Gain {0} stacks of Haste at battle start.<br>Gain {1} stacks of Haste at action end.<br>Deal 1 more Follow-Up attack per 100 SPD.<br>Gain {2} more stacks of Haste.",
       "valueDivisors": [
         1,
         5,
@@ -329,8 +329,8 @@
       "step": "S",
       "pc": 1,
       "weight": 5000,
-      "effect": "Deal 25 more total DMG to targets with Weakness exposed.<br>[CN: 战斗开始前使敌方全体目标失去50点韧性。]<br>[CN: 敌方战败后使敌方其他目标失去50点韧性。]<br>[CN: 任意目标失去韧性时使自身获得1点魔力。]",
-      "effectTpl": "Deal {0} more total DMG to targets with Weakness exposed.<br>[CN: 战斗开始前使敌方全体目标失去{1}点韧性。]<br>[CN: 敌方战败后使敌方其他目标失去{2}点韧性。]<br>[CN: 任意目标失去韧性时使自身获得{3}点魔力。]",
+      "effect": "Deal 25 more total DMG to targets with Weakness Exposed.<br>All enemies lose 50 Toughness at battle start.<br>Other enemies lose 50 Toughness when an enemy is defeated.<br>Gain 1 Mana when any target loses Toughness.",
+      "effectTpl": "Deal {0} more total DMG to targets with Weakness Exposed.<br>All enemies lose {1} Toughness at battle start.<br>Other enemies lose {2} Toughness when an enemy is defeated.<br>Gain {3} Mana when any target loses Toughness.",
       "valueDivisors": [
         4,
         2,
@@ -348,8 +348,8 @@
       "step": "S",
       "pc": 1,
       "weight": 500,
-      "effect": "自身战败后使敌方前排目标失去自身200%魔力上限的生命。]<br>[CN: 自身战败后使敌方中排目标失去自身50%魔力上限的生命。]<br>[CN: 自身战败后使敌方后排目标失去自身50%魔力上限的生命。]<br>[CN: 自身魔力上限+100。",
-      "effectTpl": "自身战败后使敌方前排目标失去自身200%魔力上限的生命。]<br>[CN: 自身战败后使敌方中排目标失去自身50%魔力上限的生命。]<br>[CN: 自身战败后使敌方后排目标失去自身50%魔力上限的生命。]<br>[CN: 自身魔力上限+{0}。",
+      "effect": "The front enemy loses HP equal to 200% of Max Mana when defeated.<br>The mid enemy loses HP equal to 50% of Max Mana when defeated.<br>The back enemy loses HP equal to 50% of Max Mana when defeated.<br>Gain 100 Max Mana.",
+      "effectTpl": "The front enemy loses HP equal to 200% of Max Mana when defeated.<br>The mid enemy loses HP equal to 50% of Max Mana when defeated.<br>The back enemy loses HP equal to 50% of Max Mana when defeated.<br>Gain {0} Max Mana.",
       "valueDivisors": [
         1,
         0,
@@ -367,8 +367,8 @@
       "step": "S",
       "pc": 1,
       "weight": 10000,
-      "effect": "Gain 100 stacks of Soothe at battle start.<br>[CN: 释放技能后使友方全体目标获得10层滋润。]<br>[CN: 拥有滋润时使自身受到全部伤害-20。]<br>[CN: 获得滋润层数+10。]",
-      "effectTpl": "Gain {0} stacks of Soothe at battle start.<br>[CN: 释放技能后使友方全体目标获得{1}层滋润。]<br>[CN: 拥有滋润时使自身受到全部伤害-{2}。]<br>[CN: 获得滋润层数+{3}。]",
+      "effect": "Gain 100 stacks of Soothe at battle start.<br>All allies gain 10 stacks of Soothe after casting skill.<br>Take 20 less total DMG while having Soothe.<br>Gain 10 more stacks of Soothe.",
+      "effectTpl": "Gain {0} stacks of Soothe at battle start.<br>All allies gain {1} stacks of Soothe after casting skill.<br>Take {2} less total DMG while having Soothe.<br>Gain {3} more stacks of Soothe.",
       "valueDivisors": [
         1,
         10,
@@ -386,8 +386,8 @@
       "step": "S",
       "pc": 1,
       "weight": 5000,
-      "effect": "Gain 100 HP and Max HP after an ally is defeated.<br>[CN: 友方战败后使自身造成全部伤害和全部恢复+10。]<br>[CN: 友方战败后使自身受到全部伤害-10。]<br>[CN: 友方战败后使自身立即进行1次额外行动。]",
-      "effectTpl": "Gain {0} HP and Max HP after an ally is defeated.<br>[CN: 友方战败后使自身造成全部伤害和全部恢复+{1}。]<br>[CN: 友方战败后使自身受到全部伤害-{2}。]<br>[CN: 友方战败后使自身立即进行1次额外行动。]",
+      "effect": "Gain 100 HP and max HP after an ally is defeated.<br>+10 Total DMG dealt and total HP restored to targets after an ally is defeated.<br>Take -10 total DMG after an ally is defeated.<br>Take 1 extra action immediately after an ally is defeated.",
+      "effectTpl": "Gain {0} HP and max HP after an ally is defeated.<br>+{1} Total DMG dealt and total HP restored to targets after an ally is defeated.<br>Take -{2} total DMG after an ally is defeated.<br>Take 1 extra action immediately after an ally is defeated.",
       "valueDivisors": [
         1,
         10,
@@ -405,8 +405,8 @@
       "step": "S",
       "pc": 1,
       "weight": 10000,
-      "effect": "Gain 34 stacks of Growth at action end.<br>[CN: 释放技能后使自身获得34层成长。]<br>[CN: 每拥有10层成长使自身造成全部伤害和全部恢复+1。]<br>[CN: 每拥有10层成长使自身受到全部伤害-1。]",
-      "effectTpl": "Gain {0} stacks of Growth at action end.<br>[CN: 释放技能后使自身获得{1}层成长。]<br>[CN: 每拥有10层成长使自身造成全部伤害和全部恢复+{2}。]<br>[CN: 每拥有10层成长使自身受到全部伤害-{3}。]",
+      "effect": "Gain 34 stacks of Growth at action end.<br>Gain 34 stacks of Growth after casting skill.<br>+1 Total DMG dealt and total HP restored to targets per 10 stacks of Growth the unit owns.<br>Take -1 less total DMG per 10 stacks of Growth.",
+      "effectTpl": "Gain {0} stacks of Growth at action end.<br>Gain {1} stacks of Growth after casting skill.<br>+{2} Total DMG dealt and total HP restored to targets per 10 stacks of Growth the unit owns.<br>Take -{3} less total DMG per 10 stacks of Growth.",
       "valueDivisors": [
         3,
         3,
@@ -424,8 +424,8 @@
       "step": "S",
       "pc": 1,
       "weight": 10000,
-      "effect": "Apply 50 stacks of Slow to all enemies at battle start.<br>[CN: 行动开始前对敌方全体目标造成10层减速。]<br>[CN: 释放技能后移除敌方目标全部减速造成等量眩晕。]<br>[CN: 造成减速层数+10。]",
-      "effectTpl": "Apply {0} stacks of Slow to all enemies at battle start.<br>[CN: 行动开始前对敌方全体目标造成{1}层减速。]<br>[CN: 释放技能后移除敌方目标全部减速造成等量眩晕。]<br>[CN: 造成减速层数+{2}。]",
+      "effect": "Apply 50 stacks of Slow to all enemies at battle start.<br>Apply 10 stacks of Slow to all enemies at action start.<br>Remove all Slow from enemies and apply equal Stun after casting skill.<br>Apply 10 more stacks of Slow.",
+      "effectTpl": "Apply {0} stacks of Slow to all enemies at battle start.<br>Apply {1} stacks of Slow to all enemies at action start.<br>Remove all Slow from enemies and apply equal Stun after casting skill.<br>Apply {2} more stacks of Slow.",
       "valueDivisors": [
         2,
         10,
@@ -443,8 +443,8 @@
       "step": "S",
       "pc": 1,
       "weight": 2500,
-      "effect": "Gain 100 stacks of Thorns at battle start.<br>[CN: 释放技能后使自身获得34层反伤。]<br>[CN: 反伤生效后使自身获得层数一半的生命。]<br>[CN: 获得反伤层数+10。]",
-      "effectTpl": "Gain {0} stacks of Thorns at battle start.<br>[CN: 释放技能后使自身获得{1}层反伤。]<br>[CN: 反伤生效后使自身获得层数一半的生命。]<br>[CN: 获得反伤层数+{2}。]",
+      "effect": "Gain 100 stacks of Thorns at battle start.<br>Gain 34 stacks of Thorns after casting skill.<br>Gain HP equal to half the stacks after Thorns takes effect.<br>Gain 10 more stacks of Thorns.",
+      "effectTpl": "Gain {0} stacks of Thorns at battle start.<br>Gain {1} stacks of Thorns after casting skill.<br>Gain HP equal to half the stacks after Thorns takes effect.<br>Gain {2} more stacks of Thorns.",
       "valueDivisors": [
         1,
         3,
@@ -453,7 +453,7 @@
         0
       ],
       "areaLimit": "All",
-      "classLimit": "Warrior,Priest",
+      "classLimit": "All-Class",
       "element": "All"
     },
     {
@@ -462,8 +462,8 @@
       "step": "S",
       "pc": 1,
       "weight": 2500,
-      "effect": "Apply 10 stacks of Shock to target after taking DMG.<br>[CN: 造成感电后使自身获得5点魔力。]<br>[CN: 释放技能后使敌方目标失去感电层数25%的生命。]<br>[CN: 造成感电层数+10。]",
-      "effectTpl": "Apply {0} stacks of Shock to target after taking DMG.<br>[CN: 造成感电后使自身获得{1}点魔力。]<br>[CN: 释放技能后使敌方目标失去感电层数25%的生命。]<br>[CN: 造成感电层数+{2}。]",
+      "effect": "Apply 10 stacks of Shock after taking DMG.<br>Gain 5 Mana after applying Shock.<br>On skill cast, the enemy target loses HP equal to 25% of their Shock stacks.<br>Apply +10 Shock stacks.",
+      "effectTpl": "Apply {0} stacks of Shock after taking DMG.<br>Gain {1} Mana after applying Shock.<br>On skill cast, the enemy target loses HP equal to 25% of their Shock stacks.<br>Apply +{2} Shock stacks.",
       "valueDivisors": [
         10,
         20,
@@ -481,8 +481,8 @@
       "step": "S",
       "pc": 1,
       "weight": 5000,
-      "effect": "Deal 20 more total DMG to targets with Weakness exposed.<br>[CN: 对速度低于自身的目标造成全部伤害+20。]<br>[CN: 对生命上限低于自身的目标造成全部伤害+20。]<br>[CN: 对等级低于自身的目标造成全部伤害+20。]",
-      "effectTpl": "Deal {0} more total DMG to targets with Weakness exposed.<br>[CN: 对速度低于自身的目标造成全部伤害+{1}。]<br>[CN: 对生命上限低于自身的目标造成全部伤害+{2}。]<br>[CN: 对等级低于自身的目标造成全部伤害+{3}。]",
+      "effect": "Deal 20 more total DMG to targets with Weakness Exposed.<br>Deal 20 more total DMG to targets with lower SPD.<br>Deal 20 more total DMG to targets with lower Max HP.<br>Deal 20 more total DMG to targets with lower level.",
+      "effectTpl": "Deal {0} more total DMG to targets with Weakness Exposed.<br>Deal {1} more total DMG to targets with lower SPD.<br>Deal {2} more total DMG to targets with lower Max HP.<br>Deal {3} more total DMG to targets with lower level.",
       "valueDivisors": [
         5,
         5,
@@ -500,8 +500,8 @@
       "step": "S",
       "pc": 1,
       "weight": 2500,
-      "effect": "Gain 10 stacks of Regen after taking DMG.<br>[CN: 获得再生后使自身生命上限+50。]<br>[CN: 首次受到致命伤害时保留1点生命。]<br>[CN: 获得再生层数+10。]",
-      "effectTpl": "Gain {0} stacks of Regen after taking DMG.<br>[CN: 获得再生后使自身生命上限+{1}。]<br>[CN: 首次受到致命伤害时保留1点生命。]<br>[CN: 获得再生层数+{2}。]",
+      "effect": "Gain 10 stacks of Regen after taking DMG.<br>Gain 50 Max HP after gaining Regen.<br>Survive with 1 HP when taking fatal DMG for the first time.<br>Gain 10 more stacks of Regen.",
+      "effectTpl": "Gain {0} stacks of Regen after taking DMG.<br>Gain {1} Max HP after gaining Regen.<br>Survive with 1 HP when taking fatal DMG for the first time.<br>Gain {2} more stacks of Regen.",
       "valueDivisors": [
         10,
         2,
@@ -519,8 +519,8 @@
       "step": "S",
       "pc": 1,
       "weight": 2500,
-      "effect": "Apply 10 stacks of Cleanse to all enemies at action start.<br>[CN: 释放技能后对敌方目标造成20层净化。]<br>[CN: 移除状态后使敌方目标失去移除层数50%的生命。]<br>[CN: 造成净化层数+10。]",
-      "effectTpl": "Apply {0} stacks of Cleanse to all enemies at action start.<br>[CN: 释放技能后对敌方目标造成{1}层净化。]<br>[CN: 移除状态后使敌方目标失去移除层数50%的生命。]<br>[CN: 造成净化层数+{2}。]",
+      "effect": "Apply 10 stacks of Cleanse to all enemies at action start.<br>Apply 20 stacks of Cleanse to enemies after casting skill.<br>Enemies lose HP equal to 50% of stacks removed.<br>Apply 10 more stacks of Cleanse.",
+      "effectTpl": "Apply {0} stacks of Cleanse to all enemies at action start.<br>Apply {1} stacks of Cleanse to enemies after casting skill.<br>Enemies lose HP equal to 50% of stacks removed.<br>Apply {2} more stacks of Cleanse.",
       "valueDivisors": [
         10,
         5,
@@ -538,8 +538,8 @@
       "step": "S",
       "pc": 1,
       "weight": 5000,
-      "effect": "Enemy in same position loses 100 HP when defeated.<br>[CN: 对同位置敌方目标造成全部伤害+20。]<br>[CN: 受到负面状态后使同位置敌方目标受到相同状态。]<br>[CN: 战斗开始前使同位置敌方目标和自身失去100点韧性。]",
-      "effectTpl": "Enemy in same position loses {0} HP when defeated.<br>[CN: 对同位置敌方目标造成全部伤害+{1}。]<br>[CN: 受到负面状态后使同位置敌方目标受到相同状态。]<br>[CN: 战斗开始前使同位置敌方目标和自身失去{2}点韧性。]",
+      "effect": "Enemy in same position loses 100 HP when defeated.<br>Deal 20 more total DMG to enemy in same position.<br>Enemy in same position receives same status after receiving debuffs.<br>Enemy in same position and self lose 100 Toughness at battle start.",
+      "effectTpl": "Enemy in same position loses {0} HP when defeated.<br>Deal {1} more total DMG to enemy in same position.<br>Enemy in same position receives same status after receiving debuffs.<br>Enemy in same position and self lose {2} Toughness at battle start.",
       "valueDivisors": [
         1,
         5,
@@ -557,8 +557,8 @@
       "step": "S",
       "pc": 1,
       "weight": 5000,
-      "effect": "All enemies gain 4 fewer stacks of Inspire.<br>[CN: 回合开始前对敌方全体目标造成10层泯灭。]<br>[CN: 受到攻击后对目标造成5层泯灭。]<br>[CN: 造成泯灭层数+5。]",
-      "effectTpl": "All enemies gain {0} fewer stacks of Inspire.<br>[CN: 回合开始前对敌方全体目标造成{1}层泯灭。]<br>[CN: 受到攻击后对目标造成{2}层泯灭。]<br>[CN: 造成泯灭层数+{3}。]",
+      "effect": "All enemies gain 4 fewer stacks of Inspire.<br>Apply 10 stacks of Decay to all enemies at turn start.<br>Apply 5 stacks of Decay to target after taking a hit.<br>Apply 5 more stacks of Decay.",
+      "effectTpl": "All enemies gain {0} fewer stacks of Inspire.<br>Apply {1} stacks of Decay to all enemies at turn start.<br>Apply {2} stacks of Decay to target after taking a hit.<br>Apply {3} more stacks of Decay.",
       "valueDivisors": [
         25,
         10,
@@ -576,8 +576,8 @@
       "step": "S",
       "pc": 1,
       "weight": 10000,
-      "effect": "Gain 34 stacks of Shield at action end.<br>[CN: 释放技能后使友方全体目标获得10层防护。]<br>[CN: 消耗防护后使自身获得消耗层数一半的生命。]<br>[CN: 造成防护层数+10。]",
-      "effectTpl": "Gain {0} stacks of Shield at action end.<br>[CN: 释放技能后使友方全体目标获得{1}层防护。]<br>[CN: 消耗防护后使自身获得消耗层数一半的生命。]<br>[CN: 造成防护层数+{2}。]",
+      "effect": "Gain 34 stacks of Shield at action end.<br>All allies gain 10 stacks of Shield after casting skill.<br>Gain HP equal to half the stacks after consuming Shield.<br>Apply 10 more stacks of Shield.",
+      "effectTpl": "Gain {0} stacks of Shield at action end.<br>All allies gain {1} stacks of Shield after casting skill.<br>Gain HP equal to half the stacks after consuming Shield.<br>Apply {2} more stacks of Shield.",
       "valueDivisors": [
         3,
         10,
@@ -595,8 +595,8 @@
       "step": "S",
       "pc": 1,
       "weight": 10000,
-      "effect": "Gain 50 DEF. Do not lose Toughness on successful defense.<br>[CN: 行动开始前使友方全体目标获得10点韧性。]<br>[CN: 自身战败后使友方其他目标获得50点韧性。]<br>[CN: 弱点暴露后使自身立即进行1次额外行动。]",
-      "effectTpl": "Gain {0} DEF. Do not lose Toughness on successful defense.<br>[CN: 行动开始前使友方全体目标获得{1}点韧性。]<br>[CN: 自身战败后使友方其他目标获得{2}点韧性。]<br>[CN: 弱点暴露后使自身立即进行1次额外行动。]",
+      "effect": "Gain 50 DEF. Do not lose Toughness on successful defense.<br>All allies gain 10 Toughness at action start.<br>Other allies gain 50 Toughness when defeated.<br>Take 1 extra action immediately when Weakness is exposed.",
+      "effectTpl": "Gain {0} DEF. Do not lose Toughness on successful defense.<br>All allies gain {1} Toughness at action start.<br>Other allies gain {2} Toughness when defeated.<br>Take 1 extra action immediately when Weakness is exposed.",
       "valueDivisors": [
         2,
         10,
@@ -605,8 +605,8 @@
         0
       ],
       "areaLimit": "All",
-      "classLimit": "Warrior,Archer,Mage",
-      "element": "Earth"
+      "classLimit": "All-Class",
+      "element": "All"
     },
     {
       "id": "JH40036",
@@ -614,8 +614,8 @@
       "step": "S",
       "pc": 1,
       "weight": 1250,
-      "effect": "All enemies lose 10 HP at action end.<br>[CN: 行动结束后使敌方全体目标失去10点韧性。]<br>[CN: 行动结束后使敌方全体目标失去2点魔力。]<br>[CN: 敌方战败效果触发次数-2。]",
-      "effectTpl": "All enemies lose {0} HP at action end.<br>[CN: 行动结束后使敌方全体目标失去{1}点韧性。]<br>[CN: 行动结束后使敌方全体目标失去{2}点魔力。]<br>[CN: 敌方战败效果触发次数-{3}。]",
+      "effect": "All enemies lose 10 HP at action end.<br>All enemies lose 10 Toughness at action end.<br>All enemies lose 2 Mana at action end.<br>Enemy on-defeat effects trigger 2 fewer times.",
+      "effectTpl": "All enemies lose {0} HP at action end.<br>All enemies lose {1} Toughness at action end.<br>All enemies lose {2} Mana at action end.<br>Enemy on-defeat effects trigger {3} fewer times.",
       "valueDivisors": [
         10,
         10,
@@ -633,8 +633,8 @@
       "step": "S",
       "pc": 1,
       "weight": 10000,
-      "effect": "Apply 10 stacks of Burn to all enemies at action start.<br>[CN: 敌方目标触发灼烧效果后使自身获得50点生命。]<br>[CN: 敌方目标触发灼烧效果后使自身获得5点魔力。]<br>[CN: 目标每拥有25层灼烧使自身对其造成全部伤害+1。]",
-      "effectTpl": "Apply {0} stacks of Burn to all enemies at action start.<br>[CN: 敌方目标触发灼烧效果后使自身获得{1}点生命。]<br>[CN: 敌方目标触发灼烧效果后使自身获得{2}点魔力。]<br>[CN: 目标每拥有25层灼烧使自身对其造成全部伤害+{3}。]",
+      "effect": "Apply 10 stacks of Burn to all enemies at action start.<br>Gain 50 HP when enemies trigger Burn.<br>Gain 5 Mana when enemies trigger Burn.<br>Deal +1 total DMG per 25 stacks of Burn on target.",
+      "effectTpl": "Apply {0} stacks of Burn to all enemies at action start.<br>Gain {1} HP when enemies trigger Burn.<br>Gain {2} Mana when enemies trigger Burn.<br>Deal +{3} total DMG per 25 stacks of Burn on target.",
       "valueDivisors": [
         10,
         2,
@@ -651,19 +651,228 @@
       "name": "Ruinous",
       "step": "S",
       "pc": 1,
-      "weight": 10000,
-      "effect": "Basic Attack applies 50 stacks of Hinder to target.<br>[CN: 普通攻击对目标造成50层剥离。]<br>[CN: 普通攻击对目标造成20层泯灭。]<br>[CN: 普通攻击目标+2。]",
-      "effectTpl": "Basic Attack applies {0} stacks of Hinder to target.<br>[CN: 普通攻击对目标造成{1}层剥离。]<br>[CN: 普通攻击对目标造成{2}层泯灭。]<br>[CN: 普通攻击目标+{3}。]",
+      "weight": 1250,
+      "effect": "Basic Attack applies 4 stacks of Hinder to target.<br>Basic Attack applies 4 stacks of Expose to target.<br>Basic Attack applies 4 stacks of Decay to target.<br>Gain +1 Basic Attack targets.",
+      "effectTpl": "Basic Attack applies {0} stacks of Hinder to target.<br>Basic Attack applies {1} stacks of Expose to target.<br>Basic Attack applies {2} stacks of Decay to target.<br>Gain +{3} Basic Attack targets.",
       "valueDivisors": [
-        2,
-        2,
-        5,
-        50,
+        25,
+        25,
+        25,
+        1000,
         0
       ],
       "areaLimit": "Forest,Mounts,Desert",
+      "classLimit": "Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH40042",
+      "name": "Undefeated",
+      "step": "S",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Gain +10 Hit Mana, but cannot perform Basic Attack.<br>Gain +1 multi-hit skill count.<br>Gain +1 single-target skill attack targets.<br>Enemy on-defeat effects trigger 2 fewer times.",
+      "effectTpl": "Gain +{0} Hit Mana, but cannot perform Basic Attack.<br>Gain +{1} multi-hit skill count.<br>Gain +{2} single-target skill attack targets.<br>Enemy on-defeat effects trigger {3} fewer times.",
+      "valueDivisors": [
+        10,
+        200,
+        200,
+        50,
+        0
+      ],
+      "areaLimit": "All",
       "classLimit": "Warrior,Archer,Mage",
       "element": "All"
+    },
+    {
+      "id": "JH40045",
+      "name": "Breezy",
+      "step": "S",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 10 stacks of Soothe after attacking.<br>Gain 10 stacks of Soothe after being attacked.<br>Take -1 HP Loss per 20 stacks of Soothe.<br>Soothe stack cap +999.",
+      "effectTpl": "Gain {0} stacks of Soothe after attacking.<br>Gain {1} stacks of Soothe after being attacked.<br>Take -1 HP Loss per 20 stacks of Soothe.<br>Soothe stack cap +999.",
+      "valueDivisors": [
+        10,
+        10,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "Beach",
+      "classLimit": "All",
+      "element": "All"
+    },
+    {
+      "id": "JH40046",
+      "name": "Slothful",
+      "step": "S",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "After taking DMG, take -10 Total DMG this turn.<br>After taking DMG, receive +4 HP Gain this turn.<br>After taking DMG, targets of both sides gain 10 stacks of Reversal.<br>After taking DMG, apply +1 stacks of Reversal this turn.",
+      "effectTpl": "After taking DMG, take -{0} Total DMG this turn.<br>After taking DMG, receive +{1} HP Gain this turn.<br>After taking DMG, targets of both sides gain {2} stacks of Reversal.<br>After taking DMG, apply +{3} stacks of Reversal this turn.",
+      "valueDivisors": [
+        10,
+        25,
+        10,
+        100,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior",
+      "element": "Earth"
+    },
+    {
+      "id": "JH40047",
+      "name": "Woodbound",
+      "step": "S",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "After taking Skill DMG, targets of both sides gain 10 stacks of Growth.<br>After taking Skill DMG, targets of both sides gain +2 stacks of Growth.<br>After taking Skill DMG, the attacker gains +2 Max Mana.<br>Enemies have -1 Extra Action per 200 stacks of Growth.",
+      "effectTpl": "After taking Skill DMG, targets of both sides gain {0} stacks of Growth.<br>After taking Skill DMG, targets of both sides gain +{1} stacks of Growth.<br>After taking Skill DMG, the attacker gains +{2} Max Mana.<br>Enemies have -1 Extra Action per 200 stacks of Growth.",
+      "valueDivisors": [
+        10,
+        50,
+        50,
+        0,
+        0
+      ],
+      "areaLimit": "Forest",
+      "classLimit": "All",
+      "element": "Earth"
+    },
+    {
+      "id": "JH40048",
+      "name": "Greedy",
+      "step": "S",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Take 1 Extra Action each turn, but deal -50% total DMG.<br>Gain 4 stacks of Soothe after dealing DMG.<br>Gain 4 stacks of Fortitude after dealing DMG.<br>Gain 4 stacks of Shield after dealing DMG.",
+      "effectTpl": "Take 1 Extra Action each turn, but deal -50% total DMG.<br>Gain {0} stacks of Soothe after dealing DMG.<br>Gain {1} stacks of Fortitude after dealing DMG.<br>Gain {2} stacks of Shield after dealing DMG.",
+      "valueDivisors": [
+        25,
+        25,
+        25,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH40049",
+      "name": "Wrathful",
+      "step": "S",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "+4 Counter Attacks.<br>Deal +2 Counter DMG per counter hit.<br>Restores 50 HP per counter hit.<br>+4 Counter Range. This bonus decreases by 1 each time attacked this turn.",
+      "effectTpl": "+4 Counter Attacks.<br>Deal +{0} Counter DMG per counter hit.<br>Restores {1} HP per counter hit.<br>+{2} Counter Range. This bonus decreases by 1 each time attacked this turn.",
+      "valueDivisors": [
+        50,
+        2,
+        25,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior",
+      "element": "Fire,Dark"
+    },
+    {
+      "id": "JH40050",
+      "name": "Envious",
+      "step": "S",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Deal +100% total DMG to the enemy in the same position.<br>Gain 10 HP when the enemy in the same position receives HP Gain.<br>Gain 4 Toughness when the enemy in the same position gains Toughness.<br>Gain 2 Mana when the enemy in the same position receives Mana Gain.",
+      "effectTpl": "Deal +100% total DMG to the enemy in the same position.<br>Gain {0} HP when the enemy in the same position receives HP Gain.<br>Gain {1} Toughness when the enemy in the same position gains Toughness.<br>Gain {2} Mana when the enemy in the same position receives Mana Gain.",
+      "valueDivisors": [
+        10,
+        25,
+        50,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Dark"
+    },
+    {
+      "id": "JH40051",
+      "name": "Gluttonous",
+      "step": "S",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "HP +100%.<br>Absorb 20 HP from the target after Basic Attack.<br>Absorb 10 max HP from the target after Basic Attack.<br>Absorb 10 buff stacks from the target after Basic Attack.",
+      "effectTpl": "HP +100%.<br>Absorb {0} HP from the target after Basic Attack.<br>Absorb {1} max HP from the target after Basic Attack.<br>Absorb {2} buff stacks from the target after Basic Attack.",
+      "valueDivisors": [
+        5,
+        10,
+        10,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior",
+      "element": "Earth"
+    },
+    {
+      "id": "JH40052",
+      "name": "Haughty",
+      "step": "S",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Cannot act in the first turn. Always acts first in subsequent turns.<br>Deal +5 Total DMG at turn start.<br>Deal +5 HP Loss at turn start.<br>Apply +5 stacks of all statuses at turn start.",
+      "effectTpl": "Cannot act in the first turn. Always acts first in subsequent turns.<br>Deal +{0} Total DMG at turn start.<br>Deal +{1} HP Loss at turn start.<br>Apply +{2} stacks of all statuses at turn start.",
+      "valueDivisors": [
+        20,
+        20,
+        20,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Fire,Light"
+    },
+    {
+      "id": "JH40053",
+      "name": "Alluring",
+      "step": "S",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Not considered a priority target by enemies.<br>Apply 10 stacks of Taunt to enemies at their action end.<br>Enemies deal -1 total DMG per 10 stacks of Taunt.<br>Enemies take -1 Extra Action per 200 stacks of Taunt.",
+      "effectTpl": "Not considered a priority target by enemies.<br>Apply {0} stacks of Taunt to enemies at their action end.<br>Enemies deal -1 total DMG per 10 stacks of Taunt.<br>Enemies take -1 Extra Action per 200 stacks of Taunt.",
+      "valueDivisors": [
+        10,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Archer,Mage",
+      "element": "Dark,Water"
+    },
+    {
+      "id": "JH40054",
+      "name": "Echoing",
+      "step": "S",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Total DMG +100%, but when attacking, for every 50 Max HP the target has, Total DMG to it -1.<br>Follow-Up count +1, and Follow-Ups are guaranteed.<br>Counter count +1, and Counters are guaranteed.<br>Skill cast count +1, and Mana is not lost for non-skill actions.",
+      "effectTpl": "Total DMG +100%, but when attacking, for every 50 Max HP the target has, Total DMG to it -1.<br>Follow-Up count +1, and Follow-Ups are guaranteed.<br>Counter count +1, and Counters are guaranteed.<br>Skill cast count +1, and Mana is not lost for non-skill actions.",
+      "valueDivisors": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Wind,Light"
     },
     {
       "id": "JH40013",
@@ -671,8 +880,8 @@
       "step": "S",
       "pc": 0,
       "weight": 10000,
-      "effect": "魔力上限+100],[CN: 无法释放技能。]<br>[CN: 每拥有20点魔力使自身造成全部伤害+5。]<br>[CN: 每拥有40点魔力使自身普通攻击目标+1。]<br>[CN: 初始魔力+20。",
-      "effectTpl": "魔力上限+{0}],[CN: 无法释放技能。]<br>[CN: 每拥有20点魔力使自身造成全部伤害+{1}。]<br>[CN: 每拥有40点魔力使自身普通攻击目标+1。]<br>[CN: 初始魔力+{2}。",
+      "effect": "Gain 100 max Mana, but cannot cast skills.<br>Deal 5 more total DMG per 20 Mana.<br>Gain 1 basic attack target per 40 Mana.<br>Gain 20 Starting Mana.",
+      "effectTpl": "Gain {0} max Mana, but cannot cast skills.<br>Deal {1} more total DMG per 20 Mana.<br>Gain 1 basic attack target per 40 Mana.<br>Gain {2} Starting Mana.",
       "valueDivisors": [
         1,
         20,
@@ -690,8 +899,8 @@
       "step": "S",
       "pc": 0,
       "weight": 5000,
-      "effect": "Gain 2 Counter range, but cannot perform basic attacks.<br>[CN: 受到伤害后使自身下次造成反击伤害+5。]<br>[CN: 进行反击后使自身获得5点魔力。]<br>[CN: 低生命时自身造成反击次数+5。]",
-      "effectTpl": "Gain {0} Counter range, but cannot perform basic attacks.<br>[CN: 受到伤害后使自身下次造成反击伤害+{1}。]<br>[CN: 进行反击后使自身获得{2}点魔力。]<br>[CN: 低生命时自身造成反击次数+{3}。]",
+      "effect": "Gain 2 Counter range, but cannot perform basic attacks.<br>Deal 5 more Counter DMG next time after taking DMG.<br>Gain 5 Mana after Countering.<br>Deal 5 more Counters at low HP.",
+      "effectTpl": "Gain {0} Counter range, but cannot perform basic attacks.<br>Deal {1} more Counter DMG next time after taking DMG.<br>Gain {2} Mana after Countering.<br>Deal {3} more Counters at low HP.",
       "valueDivisors": [
         50,
         20,
@@ -709,8 +918,8 @@
       "step": "S",
       "pc": 0,
       "weight": 2500,
-      "effect": "生命上限固定为25],[CN: 并免疫全部状态。]<br>[CN: 每次受到伤害至多为1],[CN: 受到恢复至多为1。]<br>[CN: 每次失去生命至多为1],[CN: 获得生命至多为1。]<br>[CN: 行动结束后使自身获得1点生命。",
-      "effectTpl": "生命上限固定为{0}],[CN: 并免疫全部状态。]<br>[CN: 每次受到伤害至多为1],[CN: 受到恢复至多为1。]<br>[CN: 每次失去生命至多为1],[CN: 获得生命至多为1。]<br>[CN: 行动结束后使自身获得1点生命。",
+      "effect": "Max HP fixed at 25, and immune to all statuses.<br>DMG taken and HP restored capped at 1 per instance.<br>HP Loss and HP Gain capped at 1 per instance.<br>Gain 1 HP at action end.",
+      "effectTpl": "Max HP fixed at {0}, and immune to all statuses.<br>DMG taken and HP restored capped at 1 per instance.<br>HP Loss and HP Gain capped at 1 per instance.<br>Gain 1 HP at action end.",
       "valueDivisors": [
         4,
         0,
@@ -728,8 +937,8 @@
       "step": "S",
       "pc": 0,
       "weight": 250,
-      "effect": "素材掉落数量+1000%。]<br>[CN: 必定掉落四叶草],[CN: 且四叶草掉落数量+2。]<br>[CN: 装备掉落数量+4。]<br>[CN: 符文掉落数量+2。",
-      "effectTpl": "素材掉落数量+1000%。]<br>[CN: 必定掉落四叶草],[CN: 且四叶草掉落数量+2。]<br>[CN: 装备掉落数量+4。]<br>[CN: 符文掉落数量+2。",
+      "effect": "Material drop increased by 1000%.<br>Always drop Clover. Clover drop increased by 2.<br>Gear drop increased by 4.<br>Rune drop increased by 2.",
+      "effectTpl": "Material drop increased by 1000%.<br>Always drop Clover. Clover drop increased by 2.<br>Gear drop increased by 4.<br>Rune drop increased by 2.",
       "valueDivisors": [
         0,
         0,
@@ -747,8 +956,8 @@
       "step": "S",
       "pc": 0,
       "weight": 1250,
-      "effect": "+2 Counter Range.<br>[CN: 敌方全体目标造成追击次数-5。]<br>[CN: 敌方目标行动结束后对其造成5层诱导。]<br>[CN: 造成诱导层数+10。]",
-      "effectTpl": "+{0} Counter Range.<br>[CN: 敌方全体目标造成追击次数-{1}。]<br>[CN: 敌方目标行动结束后对其造成{2}层诱导。]<br>[CN: 造成诱导层数+{3}。]",
+      "effect": "+2 Counter range.<br>All enemies' Follow-Up attacks -5.<br>Apply 5 stacks of Taunt to enemies at action end.<br>Apply +10 Taunt stacks.",
+      "effectTpl": "+{0} Counter range.<br>All enemies' Follow-Up attacks -{1}.<br>Apply {2} stacks of Taunt to enemies at action end.<br>Apply +{3} Taunt stacks.",
       "valueDivisors": [
         50,
         20,
@@ -761,13 +970,51 @@
       "element": "Earth"
     },
     {
+      "id": "JH40043",
+      "name": "Chosen",
+      "step": "S",
+      "pc": 0,
+      "weight": 0,
+      "effect": "mmune to Stun.<br>When first receiving fatal damage, retain 1 HP and restore HP equal to 100% of max HP.<br>When first receiving fatal damage, remove all negative statuses from self.<br>While an allied target is alive, final damage taken and HP loss suffered by self are reduced by 50%.",
+      "effectTpl": "mmune to Stun.<br>When first receiving fatal damage, retain 1 HP and restore HP equal to 100% of max HP.<br>When first receiving fatal damage, remove all negative statuses from self.<br>While an allied target is alive, final damage taken and HP loss suffered by self are reduced by 50%.",
+      "valueDivisors": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "All",
+      "element": "All"
+    },
+    {
+      "id": "JH40044",
+      "name": "Nightmare",
+      "step": "S",
+      "pc": 0,
+      "weight": 0,
+      "effect": "HP +10000.<br>Take -10 total DMG.<br>[CN: 受到失去生命-10。]<br>[CN: 受到负面状态层数-10。]",
+      "effectTpl": "HP +10000.<br>Take -{0} total DMG.<br>[CN: 受到失去生命-{1}。]<br>[CN: 受到负面状态层数-{2}。]",
+      "valueDivisors": [
+        10,
+        10,
+        10,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "All",
+      "element": "All"
+    },
+    {
       "id": "JH30001",
       "name": "Ancient",
       "step": "A",
       "pc": 1,
       "weight": 5000,
-      "effect": "Immune to Stun.<br>HP +100,[CN: 速度-50。]<br>[CN: 造成全部伤害+10。]",
-      "effectTpl": "Immune to Stun.<br>HP +{0},[CN: 速度-{1}。]<br>[CN: 造成全部伤害+{2}。]",
+      "effect": "Immune to Stun.<br>Gain 100 HP but lose 50 SPD.<br>Deal 10 more total DMG.",
+      "effectTpl": "Immune to Stun.<br>Gain {0} HP but lose {1} SPD.<br>Deal {2} more total DMG.",
       "valueDivisors": [
         1,
         2,
@@ -785,8 +1032,8 @@
       "step": "A",
       "pc": 1,
       "weight": 5000,
-      "effect": "Apply 2 stacks of Hinder to all targets at action start.<br>[CN: 进行反击后对目标造成自身等量层数的阻碍。]<br>[CN: 行动结束后使敌方全体目标失去其拥有阻碍层数25%的生命。]",
-      "effectTpl": "Apply {0} stacks of Hinder to all targets at action start.<br>[CN: 进行反击后对目标造成自身等量层数的阻碍。]<br>[CN: 行动结束后使敌方全体目标失去其拥有阻碍层数25%的生命。]",
+      "effect": "Apply 2 stacks of Hinder to all targets at action start.<br>Apply Hinder equal to own stacks to target after countering.<br>All enemies lose HP equal to their Hinder stacks at action end.",
+      "effectTpl": "Apply {0} stacks of Hinder to all targets at action start.<br>Apply Hinder equal to own stacks to target after countering.<br>All enemies lose HP equal to their Hinder stacks at action end.",
       "valueDivisors": [
         50,
         0,
@@ -804,8 +1051,8 @@
       "step": "A",
       "pc": 1,
       "weight": 10000,
-      "effect": "Apply 10 stacks of Chill to target after attacking.<br>[CN: 行动开始前对敌方全体目标造成10层冰冷。]<br>[CN: 释放技能后使敌方目标失去冰冷层数25%的生命。]",
-      "effectTpl": "Apply {0} stacks of Chill to target after attacking.<br>[CN: 行动开始前对敌方全体目标造成{1}层冰冷。]<br>[CN: 释放技能后使敌方目标失去冰冷层数25%的生命。]",
+      "effect": "Apply 10 stacks of Chill after attacking.<br>Apply 10 stacks of Chill to all enemies at action start.<br>On skill cast, the enemy target loses HP equal to 25% of their Chill stacks.",
+      "effectTpl": "Apply {0} stacks of Chill after attacking.<br>Apply {1} stacks of Chill to all enemies at action start.<br>On skill cast, the enemy target loses HP equal to 25% of their Chill stacks.",
       "valueDivisors": [
         10,
         10,
@@ -823,8 +1070,8 @@
       "step": "A",
       "pc": 1,
       "weight": 10000,
-      "effect": "Apply 10 stacks of Burn to target after taking DMG.<br>[CN: 进行反击后对目标造成20层灼烧。]<br>[CN: 行动结束后使敌方全体目标拥有的灼烧层数+10。]",
-      "effectTpl": "Apply {0} stacks of Burn to target after taking DMG.<br>[CN: 进行反击后对目标造成{1}层灼烧。]<br>[CN: 行动结束后使敌方全体目标拥有的灼烧层数+{2}。]",
+      "effect": "Apply 10 stacks of Burn to target after taking DMG.<br>Apply 20 stacks of Burn to target after countering.<br>All enemies gain 10 more stacks of Burn at action end.",
+      "effectTpl": "Apply {0} stacks of Burn to target after taking DMG.<br>Apply {1} stacks of Burn to target after countering.<br>All enemies gain {2} more stacks of Burn at action end.",
       "valueDivisors": [
         10,
         5,
@@ -842,8 +1089,8 @@
       "step": "A",
       "pc": 1,
       "weight": 10000,
-      "effect": "Apply 50 stacks of Expose to target after a basic attack.<br>[CN: 进行追击后对目标造成50层剥离。]<br>[CN: 行动结束后使敌方全体目标拥有的剥离层数+10。]",
-      "effectTpl": "Apply {0} stacks of Expose to target after a basic attack.<br>[CN: 进行追击后对目标造成{1}层剥离。]<br>[CN: 行动结束后使敌方全体目标拥有的剥离层数+{2}。]",
+      "effect": "Apply 50 stacks of Expose to target after a basic attack.<br>Apply 50 stacks of Expose to target after following up.<br>All enemies gain 10 more stacks of Expose at action end.",
+      "effectTpl": "Apply {0} stacks of Expose to target after a basic attack.<br>Apply {1} stacks of Expose to target after following up.<br>All enemies gain {2} more stacks of Expose at action end.",
       "valueDivisors": [
         2,
         2,
@@ -861,8 +1108,8 @@
       "step": "A",
       "pc": 1,
       "weight": 5000,
-      "effect": "Gain 20 Starting Mana.<br>[CN: 行动回魔+10。]<br>[CN: 造成技能伤害+20],[CN: 造成技能恢复+20。]",
-      "effectTpl": "Gain {0} Starting Mana.<br>[CN: 行动回魔+{1}。]<br>[CN: 造成技能伤害+{2}],[CN: 造成技能恢复+{3}。]",
+      "effect": "Gain 20 Starting Mana.<br>Gain 10 Action Mana.<br>Gain 20 skill DMG and 20 skill healing.",
+      "effectTpl": "Gain {0} Starting Mana.<br>Gain {1} Action Mana.<br>Gain {2} skill DMG and {3} skill healing.",
       "valueDivisors": [
         5,
         10,
@@ -880,8 +1127,8 @@
       "step": "A",
       "pc": 1,
       "weight": 5000,
-      "effect": "Gain 10 stacks of Cleanse at action end.<br>[CN: 没有负面状态时自身造成全部伤害+20],[CN: 造成全部恢复+20。]<br>[CN: 没有负面状态时自身受到全部伤害-20。]",
-      "effectTpl": "Gain {0} stacks of Cleanse at action end.<br>[CN: 没有负面状态时自身造成全部伤害+{1}],[CN: 造成全部恢复+{2}。]<br>[CN: 没有负面状态时自身受到全部伤害-{3}。]",
+      "effect": "Gain 10 stacks of Cleanse at action end.<br>When having no debuffs, deal 20 more total DMG and restore 20 more total HP to targets.<br>When having no debuffs, take 20 less total DMG.",
+      "effectTpl": "Gain {0} stacks of Cleanse at action end.<br>When having no debuffs, deal {1} more total DMG and restore {2} more total HP to targets.<br>When having no debuffs, take {3} less total DMG.",
       "valueDivisors": [
         10,
         5,
@@ -899,8 +1146,8 @@
       "step": "A",
       "pc": 1,
       "weight": 5000,
-      "effect": "Not considered a priority target by enemies.<br>Deal +20 total DMG to low HP targets.<br>[CN: 击败目标后使自身造成全部伤害+20。]",
-      "effectTpl": "Not considered a priority target by enemies.<br>Deal +{0} total DMG to low HP targets.<br>[CN: 击败目标后使自身造成全部伤害+{1}。]",
+      "effect": "Not considered a priority target by enemies.<br>Deal 20 more total DMG to low HP targets.<br>Deal 20 more total DMG after defeating a target.",
+      "effectTpl": "Not considered a priority target by enemies.<br>Deal {0} more total DMG to low HP targets.<br>Deal {1} more total DMG after defeating a target.",
       "valueDivisors": [
         5,
         5,
@@ -918,8 +1165,8 @@
       "step": "A",
       "pc": 1,
       "weight": 5000,
-      "effect": "低生命时进行攻击后使自身获得+50点生命。]<br>[CN: 低生命时自身造成全部伤害+20。]<br>[CN: 低生命时自身受到全部伤害-20。",
-      "effectTpl": "低生命时进行攻击后使自身获得+{0}点生命。]<br>[CN: 低生命时自身造成全部伤害+{1}。]<br>[CN: 低生命时自身受到全部伤害-{2}。",
+      "effect": "Gain 50 HP after attacking at low HP.<br>Deal 20 more total DMG at low HP.<br>Take 20 less total DMG at low HP.",
+      "effectTpl": "Gain {0} HP after attacking at low HP.<br>Deal {1} more total DMG at low HP.<br>Take {2} less total DMG at low HP.",
       "valueDivisors": [
         2,
         5,
@@ -937,8 +1184,8 @@
       "step": "A",
       "pc": 1,
       "weight": 5000,
-      "effect": "Gain 50 HP after defeating a target.<br>[CN: 击败目标后使自身造成全部伤害+20。]<br>[CN: 击败目标后使自身受到全部伤害-20。]",
-      "effectTpl": "Gain {0} HP after defeating a target.<br>[CN: 击败目标后使自身造成全部伤害+{1}。]<br>[CN: 击败目标后使自身受到全部伤害-{2}。]",
+      "effect": "Gain 50 HP after defeating a target.<br>Deal 20 more total DMG after defeating a target.<br>Take 20 less total DMG after defeating a target.",
+      "effectTpl": "Gain {0} HP after defeating a target.<br>Deal {1} more total DMG after defeating a target.<br>Take {2} less total DMG after defeating a target.",
       "valueDivisors": [
         2,
         5,
@@ -956,8 +1203,8 @@
       "step": "A",
       "pc": 1,
       "weight": 10000,
-      "effect": "Gain 100 stacks of Haste at battle start.<br>[CN: 行动结束后获得20层加速。]<br>[CN: 每拥有100点速度使自身造成追击次数+1。]",
-      "effectTpl": "Gain {0} stacks of Haste at battle start.<br>[CN: 行动结束后获得{1}层加速。]<br>[CN: 每拥有100点速度使自身造成追击次数+1。]",
+      "effect": "Gain 100 stacks of Haste at battle start.<br>Gain 20 stacks of Haste at action end.<br>Deal 1 more Follow-Up attack per 100 SPD.",
+      "effectTpl": "Gain {0} stacks of Haste at battle start.<br>Gain {1} stacks of Haste at action end.<br>Deal 1 more Follow-Up attack per 100 SPD.",
       "valueDivisors": [
         1,
         5,
@@ -975,8 +1222,8 @@
       "step": "A",
       "pc": 1,
       "weight": 5000,
-      "effect": "Deal 25 more total DMG to targets with Weakness exposed.<br>[CN: 战斗开始前使敌方全体目标失去50点韧性。]<br>[CN: 敌方战败后使敌方其他目标失去50点韧性。]",
-      "effectTpl": "Deal {0} more total DMG to targets with Weakness exposed.<br>[CN: 战斗开始前使敌方全体目标失去{1}点韧性。]<br>[CN: 敌方战败后使敌方其他目标失去{2}点韧性。]",
+      "effect": "Deal 25 more total DMG to targets with Weakness Exposed.<br>All enemies lose 50 Toughness at battle start.<br>Other enemies lose 50 Toughness when an enemy is defeated.",
+      "effectTpl": "Deal {0} more total DMG to targets with Weakness Exposed.<br>All enemies lose {1} Toughness at battle start.<br>Other enemies lose {2} Toughness when an enemy is defeated.",
       "valueDivisors": [
         4,
         2,
@@ -994,8 +1241,8 @@
       "step": "A",
       "pc": 1,
       "weight": 500,
-      "effect": "自身战败后使敌方前排目标失去自身150%魔力上限的生命。]<br>[CN: 自身战败后使敌方中排目标失去自身50%魔力上限的生命。]<br>[CN: 自身战败后使敌方后排目标失去自身50%魔力上限的生命。",
-      "effectTpl": "自身战败后使敌方前排目标失去自身150%魔力上限的生命。]<br>[CN: 自身战败后使敌方中排目标失去自身50%魔力上限的生命。]<br>[CN: 自身战败后使敌方后排目标失去自身50%魔力上限的生命。",
+      "effect": "The front enemy loses HP equal to 150% of Max Mana when defeated.<br>The mid enemy loses HP equal to 50% of Max Mana when defeated.<br>The back enemy loses HP equal to 50% of Max Mana when defeated.",
+      "effectTpl": "The front enemy loses HP equal to 150% of Max Mana when defeated.<br>The mid enemy loses HP equal to 50% of Max Mana when defeated.<br>The back enemy loses HP equal to 50% of Max Mana when defeated.",
       "valueDivisors": [
         0,
         0,
@@ -1013,8 +1260,8 @@
       "step": "A",
       "pc": 1,
       "weight": 10000,
-      "effect": "Gain 100 stacks of Soothe at battle start.<br>[CN: 释放技能后使友方全体目标获得10层滋润。]<br>[CN: 拥有滋润时使自身受到全部伤害-20。]",
-      "effectTpl": "Gain {0} stacks of Soothe at battle start.<br>[CN: 释放技能后使友方全体目标获得{1}层滋润。]<br>[CN: 拥有滋润时使自身受到全部伤害-{2}。]",
+      "effect": "Gain 100 stacks of Soothe at battle start.<br>All allies gain 10 stacks of Soothe after casting skill.<br>Take 20 less total DMG while having Soothe.",
+      "effectTpl": "Gain {0} stacks of Soothe at battle start.<br>All allies gain {1} stacks of Soothe after casting skill.<br>Take {2} less total DMG while having Soothe.",
       "valueDivisors": [
         1,
         10,
@@ -1032,8 +1279,8 @@
       "step": "A",
       "pc": 1,
       "weight": 5000,
-      "effect": "Gain 100 HP and Max HP after an ally is defeated.<br>[CN: 友方战败后使自身造成全部伤害和全部恢复+10。]<br>[CN: 友方战败后使自身受到全部伤害-10。]",
-      "effectTpl": "Gain {0} HP and Max HP after an ally is defeated.<br>[CN: 友方战败后使自身造成全部伤害和全部恢复+{1}。]<br>[CN: 友方战败后使自身受到全部伤害-{2}。]",
+      "effect": "Gain 100 HP and max HP after an ally is defeated.<br>+10 Total DMG dealt and total HP restored to targets after an ally is defeated.<br>Take -10 total DMG after an ally is defeated.",
+      "effectTpl": "Gain {0} HP and max HP after an ally is defeated.<br>+{1} Total DMG dealt and total HP restored to targets after an ally is defeated.<br>Take -{2} total DMG after an ally is defeated.",
       "valueDivisors": [
         1,
         10,
@@ -1051,8 +1298,8 @@
       "step": "A",
       "pc": 1,
       "weight": 10000,
-      "effect": "Gain 34 stacks of Growth at action end.<br>[CN: 释放技能后使自身获得34层成长。]<br>[CN: 每拥有10层成长使自身造成全部伤害和全部恢复+1。]",
-      "effectTpl": "Gain {0} stacks of Growth at action end.<br>[CN: 释放技能后使自身获得{1}层成长。]<br>[CN: 每拥有10层成长使自身造成全部伤害和全部恢复+{2}。]",
+      "effect": "Gain 34 stacks of Growth at action end.<br>Gain 34 stacks of Growth after casting skill.<br>+1 Total DMG dealt and total HP restored to targets per 10 stacks of Growth the unit owns.",
+      "effectTpl": "Gain {0} stacks of Growth at action end.<br>Gain {1} stacks of Growth after casting skill.<br>+{2} Total DMG dealt and total HP restored to targets per 10 stacks of Growth the unit owns.",
       "valueDivisors": [
         3,
         3,
@@ -1070,8 +1317,8 @@
       "step": "A",
       "pc": 1,
       "weight": 10000,
-      "effect": "Apply 50 stacks of Slow to all enemies at battle start.<br>[CN: 行动开始前对敌方全体目标造成10层减速。]<br>[CN: 释放技能后移除敌方目标全部减速造成等量眩晕。]",
-      "effectTpl": "Apply {0} stacks of Slow to all enemies at battle start.<br>[CN: 行动开始前对敌方全体目标造成{1}层减速。]<br>[CN: 释放技能后移除敌方目标全部减速造成等量眩晕。]",
+      "effect": "Apply 50 stacks of Slow to all enemies at battle start.<br>Apply 10 stacks of Slow to all enemies at action start.<br>Remove all Slow from enemies and apply equal Stun after casting skill.",
+      "effectTpl": "Apply {0} stacks of Slow to all enemies at battle start.<br>Apply {1} stacks of Slow to all enemies at action start.<br>Remove all Slow from enemies and apply equal Stun after casting skill.",
       "valueDivisors": [
         2,
         10,
@@ -1089,8 +1336,8 @@
       "step": "A",
       "pc": 1,
       "weight": 2500,
-      "effect": "Gain 100 stacks of Thorns at battle start.<br>[CN: 释放技能后使自身获得34层反伤。]<br>[CN: 反伤生效后使自身获得层数一半的生命。]",
-      "effectTpl": "Gain {0} stacks of Thorns at battle start.<br>[CN: 释放技能后使自身获得{1}层反伤。]<br>[CN: 反伤生效后使自身获得层数一半的生命。]",
+      "effect": "Gain 100 stacks of Thorns at battle start.<br>Gain 34 stacks of Thorns after casting skill.<br>Gain HP equal to half the stacks after Thorns takes effect.",
+      "effectTpl": "Gain {0} stacks of Thorns at battle start.<br>Gain {1} stacks of Thorns after casting skill.<br>Gain HP equal to half the stacks after Thorns takes effect.",
       "valueDivisors": [
         1,
         3,
@@ -1099,7 +1346,7 @@
         0
       ],
       "areaLimit": "All",
-      "classLimit": "Warrior,Priest",
+      "classLimit": "All-Class",
       "element": "All"
     },
     {
@@ -1108,8 +1355,8 @@
       "step": "A",
       "pc": 1,
       "weight": 2500,
-      "effect": "Apply 10 stacks of Shock to target after taking DMG.<br>[CN: 造成感电后使自身获得5点魔力。]<br>[CN: 释放技能后使敌方目标失去感电层数25%的生命。]",
-      "effectTpl": "Apply {0} stacks of Shock to target after taking DMG.<br>[CN: 造成感电后使自身获得{1}点魔力。]<br>[CN: 释放技能后使敌方目标失去感电层数25%的生命。]",
+      "effect": "Apply 10 stacks of Shock after taking DMG.<br>Gain 5 Mana after applying Shock.<br>On skill cast, the enemy target loses HP equal to 25% of their Shock stacks.",
+      "effectTpl": "Apply {0} stacks of Shock after taking DMG.<br>Gain {1} Mana after applying Shock.<br>On skill cast, the enemy target loses HP equal to 25% of their Shock stacks.",
       "valueDivisors": [
         10,
         20,
@@ -1127,8 +1374,8 @@
       "step": "A",
       "pc": 1,
       "weight": 5000,
-      "effect": "Deal 20 more total DMG to targets with Weakness exposed.<br>[CN: 对速度低于自身的目标造成全部伤害+20。]<br>[CN: 对生命上限低于自身的目标造成全部伤害+20。]",
-      "effectTpl": "Deal {0} more total DMG to targets with Weakness exposed.<br>[CN: 对速度低于自身的目标造成全部伤害+{1}。]<br>[CN: 对生命上限低于自身的目标造成全部伤害+{2}。]",
+      "effect": "Deal 20 more total DMG to targets with Weakness Exposed.<br>Deal 20 more total DMG to targets with lower SPD.<br>Deal 20 more total DMG to targets with lower Max HP.",
+      "effectTpl": "Deal {0} more total DMG to targets with Weakness Exposed.<br>Deal {1} more total DMG to targets with lower SPD.<br>Deal {2} more total DMG to targets with lower Max HP.",
       "valueDivisors": [
         5,
         5,
@@ -1146,8 +1393,8 @@
       "step": "A",
       "pc": 1,
       "weight": 2500,
-      "effect": "Gain 10 stacks of Regen after taking DMG.<br>[CN: 获得再生后使自身生命上限+50。]<br>[CN: 首次受到致命伤害时保留1点生命。]",
-      "effectTpl": "Gain {0} stacks of Regen after taking DMG.<br>[CN: 获得再生后使自身生命上限+{1}。]<br>[CN: 首次受到致命伤害时保留1点生命。]",
+      "effect": "Gain 10 stacks of Regen after taking DMG.<br>Gain 50 Max HP after gaining Regen.<br>Survive with 1 HP when taking fatal DMG for the first time.",
+      "effectTpl": "Gain {0} stacks of Regen after taking DMG.<br>Gain {1} Max HP after gaining Regen.<br>Survive with 1 HP when taking fatal DMG for the first time.",
       "valueDivisors": [
         10,
         2,
@@ -1165,8 +1412,8 @@
       "step": "A",
       "pc": 1,
       "weight": 2500,
-      "effect": "Apply 10 stacks of Cleanse to all enemies at action start.<br>[CN: 释放技能后对敌方目标造成20层净化。]<br>[CN: 移除状态后使敌方目标失去移除层数50%的生命。]",
-      "effectTpl": "Apply {0} stacks of Cleanse to all enemies at action start.<br>[CN: 释放技能后对敌方目标造成{1}层净化。]<br>[CN: 移除状态后使敌方目标失去移除层数50%的生命。]",
+      "effect": "Apply 10 stacks of Cleanse to all enemies at action start.<br>Apply 20 stacks of Cleanse to enemies after casting skill.<br>Enemies lose HP equal to 50% of stacks removed.",
+      "effectTpl": "Apply {0} stacks of Cleanse to all enemies at action start.<br>Apply {1} stacks of Cleanse to enemies after casting skill.<br>Enemies lose HP equal to 50% of stacks removed.",
       "valueDivisors": [
         10,
         5,
@@ -1184,8 +1431,8 @@
       "step": "A",
       "pc": 1,
       "weight": 5000,
-      "effect": "Enemy in same position loses 100 HP when defeated.<br>[CN: 对同位置敌方目标造成全部伤害+20。]<br>[CN: 受到负面状态后使同位置敌方目标受到相同状态。]",
-      "effectTpl": "Enemy in same position loses {0} HP when defeated.<br>[CN: 对同位置敌方目标造成全部伤害+{1}。]<br>[CN: 受到负面状态后使同位置敌方目标受到相同状态。]",
+      "effect": "Enemy in same position loses 100 HP when defeated.<br>Deal 20 more total DMG to enemy in same position.<br>Enemy in same position receives same status after receiving debuffs.",
+      "effectTpl": "Enemy in same position loses {0} HP when defeated.<br>Deal {1} more total DMG to enemy in same position.<br>Enemy in same position receives same status after receiving debuffs.",
       "valueDivisors": [
         1,
         5,
@@ -1203,8 +1450,8 @@
       "step": "A",
       "pc": 1,
       "weight": 5000,
-      "effect": "All enemies gain 4 fewer stacks of Inspire.<br>[CN: 回合开始前对敌方全体目标造成10层泯灭。]<br>[CN: 受到攻击后对目标造成5层泯灭。]",
-      "effectTpl": "All enemies gain {0} fewer stacks of Inspire.<br>[CN: 回合开始前对敌方全体目标造成{1}层泯灭。]<br>[CN: 受到攻击后对目标造成{2}层泯灭。]",
+      "effect": "All enemies gain 4 fewer stacks of Inspire.<br>Apply 10 stacks of Decay to all enemies at turn start.<br>Apply 5 stacks of Decay to target after taking a hit.",
+      "effectTpl": "All enemies gain {0} fewer stacks of Inspire.<br>Apply {1} stacks of Decay to all enemies at turn start.<br>Apply {2} stacks of Decay to target after taking a hit.",
       "valueDivisors": [
         25,
         10,
@@ -1222,8 +1469,8 @@
       "step": "A",
       "pc": 1,
       "weight": 10000,
-      "effect": "Gain 34 stacks of Shield at action end.<br>[CN: 释放技能后使友方全体目标获得10层防护。]<br>[CN: 消耗防护后使自身获得消耗层数一半的生命。]",
-      "effectTpl": "Gain {0} stacks of Shield at action end.<br>[CN: 释放技能后使友方全体目标获得{1}层防护。]<br>[CN: 消耗防护后使自身获得消耗层数一半的生命。]",
+      "effect": "Gain 34 stacks of Shield at action end.<br>All allies gain 10 stacks of Shield after casting skill.<br>Gain HP equal to half the stacks after consuming Shield.",
+      "effectTpl": "Gain {0} stacks of Shield at action end.<br>All allies gain {1} stacks of Shield after casting skill.<br>Gain HP equal to half the stacks after consuming Shield.",
       "valueDivisors": [
         3,
         10,
@@ -1241,8 +1488,8 @@
       "step": "A",
       "pc": 1,
       "weight": 10000,
-      "effect": "Gain 50 DEF. Do not lose Toughness on successful defense.<br>[CN: 行动开始前使友方全体目标获得10点韧性。]<br>[CN: 自身战败后使友方其他目标获得50点韧性。]",
-      "effectTpl": "Gain {0} DEF. Do not lose Toughness on successful defense.<br>[CN: 行动开始前使友方全体目标获得{1}点韧性。]<br>[CN: 自身战败后使友方其他目标获得{2}点韧性。]",
+      "effect": "Gain 50 DEF. Do not lose Toughness on successful defense.<br>All allies gain 10 Toughness at action start.<br>Other allies gain 50 Toughness when defeated.",
+      "effectTpl": "Gain {0} DEF. Do not lose Toughness on successful defense.<br>All allies gain {1} Toughness at action start.<br>Other allies gain {2} Toughness when defeated.",
       "valueDivisors": [
         2,
         10,
@@ -1251,8 +1498,8 @@
         0
       ],
       "areaLimit": "All",
-      "classLimit": "Warrior,Archer,Mage",
-      "element": "Earth"
+      "classLimit": "All-Class",
+      "element": "All"
     },
     {
       "id": "JH30036",
@@ -1260,8 +1507,8 @@
       "step": "A",
       "pc": 1,
       "weight": 1250,
-      "effect": "All enemies lose 10 HP at action end.<br>[CN: 行动结束后使敌方全体目标失去10点韧性。]<br>[CN: 行动结束后使敌方全体目标失去2点魔力。]",
-      "effectTpl": "All enemies lose {0} HP at action end.<br>[CN: 行动结束后使敌方全体目标失去{1}点韧性。]<br>[CN: 行动结束后使敌方全体目标失去{2}点魔力。]",
+      "effect": "All enemies lose 10 HP at action end.<br>All enemies lose 10 Toughness at action end.<br>All enemies lose 2 Mana at action end.",
+      "effectTpl": "All enemies lose {0} HP at action end.<br>All enemies lose {1} Toughness at action end.<br>All enemies lose {2} Mana at action end.",
       "valueDivisors": [
         10,
         10,
@@ -1279,8 +1526,8 @@
       "step": "A",
       "pc": 1,
       "weight": 10000,
-      "effect": "Apply 10 stacks of Burn to all enemies at action start.<br>[CN: 敌方目标触发灼烧效果后使自身获得50点生命。]<br>[CN: 敌方目标触发灼烧效果后使自身获得5点魔力。]",
-      "effectTpl": "Apply {0} stacks of Burn to all enemies at action start.<br>[CN: 敌方目标触发灼烧效果后使自身获得{1}点生命。]<br>[CN: 敌方目标触发灼烧效果后使自身获得{2}点魔力。]",
+      "effect": "Apply 10 stacks of Burn to all enemies at action start.<br>Gain 50 HP when enemies trigger Burn.<br>Gain 5 Mana when enemies trigger Burn.",
+      "effectTpl": "Apply {0} stacks of Burn to all enemies at action start.<br>Gain {1} HP when enemies trigger Burn.<br>Gain {2} Mana when enemies trigger Burn.",
       "valueDivisors": [
         10,
         2,
@@ -1297,19 +1544,228 @@
       "name": "Ruinous",
       "step": "A",
       "pc": 1,
-      "weight": 10000,
-      "effect": "Basic Attack applies 50 stacks of Hinder to target.<br>[CN: 普通攻击对目标造成50层剥离。]<br>[CN: 普通攻击对目标造成20层泯灭。]",
-      "effectTpl": "Basic Attack applies {0} stacks of Hinder to target.<br>[CN: 普通攻击对目标造成{1}层剥离。]<br>[CN: 普通攻击对目标造成{2}层泯灭。]",
+      "weight": 1250,
+      "effect": "Basic Attack applies 4 stacks of Hinder to target.<br>Basic Attack applies 4 stacks of Expose to target.<br>Basic Attack applies 4 stacks of Decay to target.",
+      "effectTpl": "Basic Attack applies {0} stacks of Hinder to target.<br>Basic Attack applies {1} stacks of Expose to target.<br>Basic Attack applies {2} stacks of Decay to target.",
       "valueDivisors": [
-        2,
-        2,
-        5,
+        25,
+        25,
+        25,
         0,
         0
       ],
       "areaLimit": "Forest,Mounts,Desert",
+      "classLimit": "Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH30042",
+      "name": "Undefeated",
+      "step": "A",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Gain +10 Hit Mana, but cannot perform Basic Attack.<br>Gain +1 multi-hit skill count.<br>Gain +1 single-target skill attack targets.",
+      "effectTpl": "Gain +{0} Hit Mana, but cannot perform Basic Attack.<br>Gain +{1} multi-hit skill count.<br>Gain +{2} single-target skill attack targets.",
+      "valueDivisors": [
+        10,
+        200,
+        200,
+        0,
+        0
+      ],
+      "areaLimit": "All",
       "classLimit": "Warrior,Archer,Mage",
       "element": "All"
+    },
+    {
+      "id": "JH30045",
+      "name": "Breezy",
+      "step": "A",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 10 stacks of Soothe after attacking.<br>Gain 10 stacks of Soothe after being attacked.<br>Take -1 HP Loss per 20 stacks of Soothe.",
+      "effectTpl": "Gain {0} stacks of Soothe after attacking.<br>Gain {1} stacks of Soothe after being attacked.<br>Take -1 HP Loss per 20 stacks of Soothe.",
+      "valueDivisors": [
+        10,
+        10,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "Beach",
+      "classLimit": "All",
+      "element": "All"
+    },
+    {
+      "id": "JH30046",
+      "name": "Slothful",
+      "step": "A",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "After taking DMG, take -10 Total DMG this turn.<br>After taking DMG, receive +4 HP Gain this turn.<br>After taking DMG, targets of both sides gain 10 stacks of Reversal.",
+      "effectTpl": "After taking DMG, take -{0} Total DMG this turn.<br>After taking DMG, receive +{1} HP Gain this turn.<br>After taking DMG, targets of both sides gain {2} stacks of Reversal.",
+      "valueDivisors": [
+        10,
+        25,
+        10,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior",
+      "element": "Earth"
+    },
+    {
+      "id": "JH30047",
+      "name": "Woodbound",
+      "step": "A",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "After taking Skill DMG, targets of both sides gain 10 stacks of Growth.<br>After taking Skill DMG, targets of both sides gain +2 stacks of Growth.<br>After taking Skill DMG, the attacker gains +2 Max Mana.",
+      "effectTpl": "After taking Skill DMG, targets of both sides gain {0} stacks of Growth.<br>After taking Skill DMG, targets of both sides gain +{1} stacks of Growth.<br>After taking Skill DMG, the attacker gains +{2} Max Mana.",
+      "valueDivisors": [
+        10,
+        50,
+        50,
+        0,
+        0
+      ],
+      "areaLimit": "Forest",
+      "classLimit": "All",
+      "element": "Earth"
+    },
+    {
+      "id": "JH30048",
+      "name": "Greedy",
+      "step": "A",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Take 1 Extra Action each turn, but deal -50% total DMG.<br>Gain 4 stacks of Soothe after dealing DMG.<br>Gain 4 stacks of Fortitude after dealing DMG.",
+      "effectTpl": "Take 1 Extra Action each turn, but deal -50% total DMG.<br>Gain {0} stacks of Soothe after dealing DMG.<br>Gain {1} stacks of Fortitude after dealing DMG.",
+      "valueDivisors": [
+        25,
+        25,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH30049",
+      "name": "Wrathful",
+      "step": "A",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "+4 Counter Attacks.<br>Deal +2 Counter DMG per counter hit.<br>Restores 50 HP per counter hit.",
+      "effectTpl": "+4 Counter Attacks.<br>Deal +{0} Counter DMG per counter hit.<br>Restores {1} HP per counter hit.",
+      "valueDivisors": [
+        50,
+        2,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior",
+      "element": "Fire,Dark"
+    },
+    {
+      "id": "JH30050",
+      "name": "Envious",
+      "step": "A",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Deal +100% total DMG to the enemy in the same position.<br>Gain 10 HP when the enemy in the same position receives HP Gain.<br>Gain 4 Toughness when the enemy in the same position gains Toughness.",
+      "effectTpl": "Deal +100% total DMG to the enemy in the same position.<br>Gain {0} HP when the enemy in the same position receives HP Gain.<br>Gain {1} Toughness when the enemy in the same position gains Toughness.",
+      "valueDivisors": [
+        10,
+        25,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Dark"
+    },
+    {
+      "id": "JH30051",
+      "name": "Gluttonous",
+      "step": "A",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "HP +100%.<br>Absorb 20 HP from the target after Basic Attack.<br>Absorb 10 max HP from the target after Basic Attack.",
+      "effectTpl": "HP +100%.<br>Absorb {0} HP from the target after Basic Attack.<br>Absorb {1} max HP from the target after Basic Attack.",
+      "valueDivisors": [
+        5,
+        10,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior",
+      "element": "Earth"
+    },
+    {
+      "id": "JH30052",
+      "name": "Haughty",
+      "step": "A",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Cannot act in the first turn. Always acts first in subsequent turns.<br>Deal +5 Total DMG at turn start.<br>Deal +5 HP Loss at turn start.",
+      "effectTpl": "Cannot act in the first turn. Always acts first in subsequent turns.<br>Deal +{0} Total DMG at turn start.<br>Deal +{1} HP Loss at turn start.",
+      "valueDivisors": [
+        20,
+        20,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Fire,Light"
+    },
+    {
+      "id": "JH30053",
+      "name": "Alluring",
+      "step": "A",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Not considered a priority target by enemies.<br>Apply 10 stacks of Taunt to enemies at their action end.<br>Enemies deal -1 total DMG per 10 stacks of Taunt.",
+      "effectTpl": "Not considered a priority target by enemies.<br>Apply {0} stacks of Taunt to enemies at their action end.<br>Enemies deal -1 total DMG per 10 stacks of Taunt.",
+      "valueDivisors": [
+        10,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Archer,Mage",
+      "element": "Dark,Water"
+    },
+    {
+      "id": "JH30054",
+      "name": "Echoing",
+      "step": "A",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Total DMG +100%, but when attacking, for every 50 Max HP the target has, Total DMG to it -1.<br>Follow-Up count +1, and Follow-Ups are guaranteed.<br>Counter count +1, and Counters are guaranteed.",
+      "effectTpl": "Total DMG +100%, but when attacking, for every 50 Max HP the target has, Total DMG to it -1.<br>Follow-Up count +1, and Follow-Ups are guaranteed.<br>Counter count +1, and Counters are guaranteed.",
+      "valueDivisors": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Wind,Light"
     },
     {
       "id": "JH30011",
@@ -1317,8 +1773,8 @@
       "step": "A",
       "pc": 0,
       "weight": 500,
-      "effect": "Cannot basic attack but always Counter when taking a hit.<br>[CN: 受到敌方造成的状态后对目标造成相同状态。]<br>[CN: 受到伤害后使目标失去数值一半的生命。]",
-      "effectTpl": "Cannot basic attack but always Counter when taking a hit.<br>[CN: 受到敌方造成的状态后对目标造成相同状态。]<br>[CN: 受到伤害后使目标失去数值一半的生命。]",
+      "effect": "Cannot basic attack but always Counter when taking a hit.<br>Apply same status to target after receiving status from enemies.<br>Retaliate against attackers by reducing their HP equal to half the DMG taken.",
+      "effectTpl": "Cannot basic attack but always Counter when taking a hit.<br>Apply same status to target after receiving status from enemies.<br>Retaliate against attackers by reducing their HP equal to half the DMG taken.",
       "valueDivisors": [
         0,
         0,
@@ -1336,8 +1792,8 @@
       "step": "A",
       "pc": 0,
       "weight": 10000,
-      "effect": "魔力上限+100],[CN: 无法释放技能。]<br>[CN: 每拥有20点魔力使自身造成全部伤害+5。]<br>[CN: 每拥有40点魔力使自身普通攻击目标+1。",
-      "effectTpl": "魔力上限+{0}],[CN: 无法释放技能。]<br>[CN: 每拥有20点魔力使自身造成全部伤害+{1}。]<br>[CN: 每拥有40点魔力使自身普通攻击目标+1。",
+      "effect": "Gain 100 max Mana, but cannot cast skills.<br>Deal 5 more total DMG per 20 Mana.<br>Gain 1 basic attack target per 40 Mana.",
+      "effectTpl": "Gain {0} max Mana, but cannot cast skills.<br>Deal {1} more total DMG per 20 Mana.<br>Gain 1 basic attack target per 40 Mana.",
       "valueDivisors": [
         1,
         20,
@@ -1355,8 +1811,8 @@
       "step": "A",
       "pc": 0,
       "weight": 5000,
-      "effect": "Gain 2 Counter range, but cannot perform basic attacks.<br>[CN: 受到伤害后使自身下次造成反击伤害+5。]<br>[CN: 进行反击后使自身获得5点魔力。]",
-      "effectTpl": "Gain {0} Counter range, but cannot perform basic attacks.<br>[CN: 受到伤害后使自身下次造成反击伤害+{1}。]<br>[CN: 进行反击后使自身获得{2}点魔力。]",
+      "effect": "Gain 2 Counter range, but cannot perform basic attacks.<br>Deal 5 more Counter DMG next time after taking DMG.<br>Gain 5 Mana after Countering.",
+      "effectTpl": "Gain {0} Counter range, but cannot perform basic attacks.<br>Deal {1} more Counter DMG next time after taking DMG.<br>Gain {2} Mana after Countering.",
       "valueDivisors": [
         50,
         20,
@@ -1374,8 +1830,8 @@
       "step": "A",
       "pc": 0,
       "weight": 2500,
-      "effect": "Take 34 less Skill DMG.<br>[CN: 造成伤害后使目标失去2点魔力。]<br>[CN: 敌方目标释放技能后失去魔力上限一半的韧性。]",
-      "effectTpl": "Take {0} less Skill DMG.<br>[CN: 造成伤害后使目标失去{1}点魔力。]<br>[CN: 敌方目标释放技能后失去魔力上限一半的韧性。]",
+      "effect": "Take 34 less Skill DMG.<br>Target loses 2 Mana after dealing DMG.<br>Enemies lose Toughness equal to half their Max Mana after casting skill.",
+      "effectTpl": "Take {0} less Skill DMG.<br>Target loses {1} Mana after dealing DMG.<br>Enemies lose Toughness equal to half their Max Mana after casting skill.",
       "valueDivisors": [
         3,
         50,
@@ -1393,8 +1849,8 @@
       "step": "A",
       "pc": 0,
       "weight": 2500,
-      "effect": "生命上限固定为25],[CN: 并免疫全部状态。]<br>[CN: 每次受到伤害至多为1],[CN: 受到恢复至多为1。]<br>[CN: 每次失去生命至多为1],[CN: 获得生命至多为1。",
-      "effectTpl": "生命上限固定为{0}],[CN: 并免疫全部状态。]<br>[CN: 每次受到伤害至多为1],[CN: 受到恢复至多为1。]<br>[CN: 每次失去生命至多为1],[CN: 获得生命至多为1。",
+      "effect": "Max HP fixed at 25, and immune to all statuses.<br>DMG taken and HP restored capped at 1 per instance.<br>HP Loss and HP Gain capped at 1 per instance.",
+      "effectTpl": "Max HP fixed at {0}, and immune to all statuses.<br>DMG taken and HP restored capped at 1 per instance.<br>HP Loss and HP Gain capped at 1 per instance.",
       "valueDivisors": [
         4,
         0,
@@ -1412,8 +1868,8 @@
       "step": "A",
       "pc": 0,
       "weight": 1250,
-      "effect": "Not considered a priority target by enemies.<br>[CN: 敌方目标行动结束后失去5点生命。]<br>[CN: 敌方目标行动开始前失去5点生命。]",
-      "effectTpl": "Not considered a priority target by enemies.<br>[CN: 敌方目标行动结束后失去{0}点生命。]<br>[CN: 敌方目标行动开始前失去{1}点生命。]",
+      "effect": "Not considered a priority target by enemies.<br>Enemies lose 5 HP at action end.<br>Enemies lose 5 HP at action start.",
+      "effectTpl": "Not considered a priority target by enemies.<br>Enemies lose {0} HP at action end.<br>Enemies lose {1} HP at action start.",
       "valueDivisors": [
         20,
         20,
@@ -1431,8 +1887,8 @@
       "step": "A",
       "pc": 0,
       "weight": 250,
-      "effect": "素材掉落数量+500%。]<br>[CN: 必定掉落四叶草],[CN: 且四叶草掉落数量+1。]<br>[CN: 装备掉落数量+2。",
-      "effectTpl": "素材掉落数量+500%。]<br>[CN: 必定掉落四叶草],[CN: 且四叶草掉落数量+1。]<br>[CN: 装备掉落数量+2。",
+      "effect": "Material drop increased by 500%.<br>Always drop Clover. Clover drop increased by 1.<br>Gear drop increased by 2.",
+      "effectTpl": "Material drop increased by 500%.<br>Always drop Clover. Clover drop increased by 1.<br>Gear drop increased by 2.",
       "valueDivisors": [
         0,
         0,
@@ -1450,8 +1906,8 @@
       "step": "A",
       "pc": 0,
       "weight": 1250,
-      "effect": "+2 Counter Range.<br>[CN: 敌方全体目标造成追击次数-5。]<br>[CN: 敌方目标行动结束后对其造成5层诱导。]",
-      "effectTpl": "+{0} Counter Range.<br>[CN: 敌方全体目标造成追击次数-{1}。]<br>[CN: 敌方目标行动结束后对其造成{2}层诱导。]",
+      "effect": "+2 Counter range.<br>All enemies' Follow-Up attacks -5.<br>Apply 5 stacks of Taunt to enemies at action end.",
+      "effectTpl": "+{0} Counter range.<br>All enemies' Follow-Up attacks -{1}.<br>Apply {2} stacks of Taunt to enemies at action end.",
       "valueDivisors": [
         50,
         20,
@@ -1488,8 +1944,8 @@
       "step": "A",
       "pc": 0,
       "weight": 1250,
-      "effect": "Gain 1 Extra Actions each turn, but deal 50% less total DMG.<br>[CN: 造成追击次数+2。]<br>[CN: 造成反击次数+2。]",
-      "effectTpl": "Gain {0} Extra Actions each turn, but deal 50% less total DMG.<br>[CN: 造成追击次数+{1}。]<br>[CN: 造成反击次数+{2}。]",
+      "effect": "Gain 1 Extra Actions each turn, but deal 50% less total DMG.<br>Follow-Up count +2.<br>Counter count +2.",
+      "effectTpl": "Gain {0} Extra Actions each turn, but deal 50% less total DMG.<br>Follow-Up count +{1}.<br>Counter count +{2}.",
       "valueDivisors": [
         200,
         50,
@@ -1507,8 +1963,8 @@
       "step": "B",
       "pc": 1,
       "weight": 5000,
-      "effect": "Immune to Stun.<br>HP +100,[CN: 速度-50。]",
-      "effectTpl": "Immune to Stun.<br>HP +{0},[CN: 速度-{1}。]",
+      "effect": "Immune to Stun.<br>Gain 100 HP but lose 50 SPD.",
+      "effectTpl": "Immune to Stun.<br>Gain {0} HP but lose {1} SPD.",
       "valueDivisors": [
         1,
         2,
@@ -1526,8 +1982,8 @@
       "step": "B",
       "pc": 1,
       "weight": 5000,
-      "effect": "Apply 2 stacks of Hinder to all targets at action start.<br>[CN: 进行反击后对目标造成自身等量层数的阻碍。]",
-      "effectTpl": "Apply {0} stacks of Hinder to all targets at action start.<br>[CN: 进行反击后对目标造成自身等量层数的阻碍。]",
+      "effect": "Apply 2 stacks of Hinder to all targets at action start.<br>Apply Hinder equal to own stacks to target after countering.",
+      "effectTpl": "Apply {0} stacks of Hinder to all targets at action start.<br>Apply Hinder equal to own stacks to target after countering.",
       "valueDivisors": [
         50,
         0,
@@ -1545,8 +2001,8 @@
       "step": "B",
       "pc": 1,
       "weight": 10000,
-      "effect": "Apply 10 stacks of Chill to target after attacking.<br>[CN: 行动开始前对敌方全体目标造成10层冰冷。]",
-      "effectTpl": "Apply {0} stacks of Chill to target after attacking.<br>[CN: 行动开始前对敌方全体目标造成{1}层冰冷。]",
+      "effect": "Apply 10 stacks of Chill to target after attacking.<br>Apply 10 stacks of Chill to all enemies at action start.",
+      "effectTpl": "Apply {0} stacks of Chill to target after attacking.<br>Apply {1} stacks of Chill to all enemies at action start.",
       "valueDivisors": [
         10,
         10,
@@ -1564,8 +2020,8 @@
       "step": "B",
       "pc": 1,
       "weight": 10000,
-      "effect": "Apply 10 stacks of Burn to target after taking DMG.<br>[CN: 进行反击后对目标造成20层灼烧。]",
-      "effectTpl": "Apply {0} stacks of Burn to target after taking DMG.<br>[CN: 进行反击后对目标造成{1}层灼烧。]",
+      "effect": "Apply 10 stacks of Burn to target after taking DMG.<br>Apply 20 stacks of Burn to target after countering.",
+      "effectTpl": "Apply {0} stacks of Burn to target after taking DMG.<br>Apply {1} stacks of Burn to target after countering.",
       "valueDivisors": [
         10,
         5,
@@ -1583,8 +2039,8 @@
       "step": "B",
       "pc": 1,
       "weight": 10000,
-      "effect": "Apply 50 stacks of Expose to target after a basic attack.<br>[CN: 进行追击后对目标造成50层剥离。]",
-      "effectTpl": "Apply {0} stacks of Expose to target after a basic attack.<br>[CN: 进行追击后对目标造成{1}层剥离。]",
+      "effect": "Apply 50 stacks of Expose to target after a basic attack.<br>Apply 50 stacks of Expose to target after following up.",
+      "effectTpl": "Apply {0} stacks of Expose to target after a basic attack.<br>Apply {1} stacks of Expose to target after following up.",
       "valueDivisors": [
         2,
         2,
@@ -1602,8 +2058,8 @@
       "step": "B",
       "pc": 1,
       "weight": 5000,
-      "effect": "Gain 20 Starting Mana.<br>[CN: 行动回魔+10。]",
-      "effectTpl": "Gain {0} Starting Mana.<br>[CN: 行动回魔+{1}。]",
+      "effect": "Gain 20 Starting Mana.<br>Gain 10 Action Mana.",
+      "effectTpl": "Gain {0} Starting Mana.<br>Gain {1} Action Mana.",
       "valueDivisors": [
         5,
         10,
@@ -1621,8 +2077,8 @@
       "step": "B",
       "pc": 1,
       "weight": 5000,
-      "effect": "Gain 10 stacks of Cleanse at action end.<br>[CN: 没有负面状态时自身造成全部伤害+20],[CN: 造成全部恢复+20。]",
-      "effectTpl": "Gain {0} stacks of Cleanse at action end.<br>[CN: 没有负面状态时自身造成全部伤害+{1}],[CN: 造成全部恢复+{2}。]",
+      "effect": "Gain 10 stacks of Cleanse at action end.<br>When having no debuffs, deal 20 more total DMG and restore 20 more total HP to targets.",
+      "effectTpl": "Gain {0} stacks of Cleanse at action end.<br>When having no debuffs, deal {1} more total DMG and restore {2} more total HP to targets.",
       "valueDivisors": [
         10,
         5,
@@ -1640,8 +2096,8 @@
       "step": "B",
       "pc": 1,
       "weight": 5000,
-      "effect": "Not considered a priority target by enemies.<br>Deal +20 total DMG to low HP targets.",
-      "effectTpl": "Not considered a priority target by enemies.<br>Deal +{0} total DMG to low HP targets.",
+      "effect": "Not considered a priority target by enemies.<br>Deal 20 more total DMG to low HP targets.",
+      "effectTpl": "Not considered a priority target by enemies.<br>Deal {0} more total DMG to low HP targets.",
       "valueDivisors": [
         5,
         0,
@@ -1659,8 +2115,8 @@
       "step": "B",
       "pc": 1,
       "weight": 5000,
-      "effect": "Gain 50 HP after attacking at low HP.<br>[CN: 低生命时自身造成全部伤害+20。]",
-      "effectTpl": "Gain {0} HP after attacking at low HP.<br>[CN: 低生命时自身造成全部伤害+{1}。]",
+      "effect": "Gain 50 HP after attacking at low HP.<br>Deal 20 more total DMG at low HP.",
+      "effectTpl": "Gain {0} HP after attacking at low HP.<br>Deal {1} more total DMG at low HP.",
       "valueDivisors": [
         2,
         5,
@@ -1678,8 +2134,8 @@
       "step": "B",
       "pc": 1,
       "weight": 5000,
-      "effect": "Gain 50 HP after defeating a target.<br>[CN: 击败目标后使自身造成全部伤害+20。]",
-      "effectTpl": "Gain {0} HP after defeating a target.<br>[CN: 击败目标后使自身造成全部伤害+{1}。]",
+      "effect": "Gain 50 HP after defeating a target.<br>Deal 20 more total DMG after defeating a target.",
+      "effectTpl": "Gain {0} HP after defeating a target.<br>Deal {1} more total DMG after defeating a target.",
       "valueDivisors": [
         2,
         5,
@@ -1697,8 +2153,8 @@
       "step": "B",
       "pc": 1,
       "weight": 10000,
-      "effect": "Gain 100 stacks of Haste at battle start.<br>[CN: 行动结束后获得20层加速。]",
-      "effectTpl": "Gain {0} stacks of Haste at battle start.<br>[CN: 行动结束后获得{1}层加速。]",
+      "effect": "Gain 100 stacks of Haste at battle start.<br>Gain 20 stacks of Haste at action end.",
+      "effectTpl": "Gain {0} stacks of Haste at battle start.<br>Gain {1} stacks of Haste at action end.",
       "valueDivisors": [
         1,
         5,
@@ -1716,8 +2172,8 @@
       "step": "B",
       "pc": 1,
       "weight": 5000,
-      "effect": "Deal 25 more total DMG to targets with Weakness exposed.<br>[CN: 战斗开始前使敌方全体目标失去50点韧性。]",
-      "effectTpl": "Deal {0} more total DMG to targets with Weakness exposed.<br>[CN: 战斗开始前使敌方全体目标失去{1}点韧性。]",
+      "effect": "Deal 25 more total DMG to targets with Weakness Exposed.<br>All enemies lose 50 Toughness at battle start.",
+      "effectTpl": "Deal {0} more total DMG to targets with Weakness Exposed.<br>All enemies lose {1} Toughness at battle start.",
       "valueDivisors": [
         4,
         2,
@@ -1735,8 +2191,8 @@
       "step": "B",
       "pc": 1,
       "weight": 500,
-      "effect": "自身战败后使敌方前排目标失去自身100%魔力上限的生命。]<br>[CN: 自身战败后使敌方中排目标失去自身50%魔力上限的生命。",
-      "effectTpl": "自身战败后使敌方前排目标失去自身100%魔力上限的生命。]<br>[CN: 自身战败后使敌方中排目标失去自身50%魔力上限的生命。",
+      "effect": "The front enemy loses HP equal to 100% of Max Mana when defeated.<br>The mid enemy loses HP equal to 50% of Max Mana when defeated.",
+      "effectTpl": "The front enemy loses HP equal to 100% of Max Mana when defeated.<br>The mid enemy loses HP equal to 50% of Max Mana when defeated.",
       "valueDivisors": [
         0,
         0,
@@ -1754,8 +2210,8 @@
       "step": "B",
       "pc": 1,
       "weight": 10000,
-      "effect": "Gain 100 stacks of Soothe at battle start.<br>[CN: 释放技能后使友方全体目标获得10层滋润。]",
-      "effectTpl": "Gain {0} stacks of Soothe at battle start.<br>[CN: 释放技能后使友方全体目标获得{1}层滋润。]",
+      "effect": "Gain 100 stacks of Soothe at battle start.<br>All allies gain 10 stacks of Soothe after casting skill.",
+      "effectTpl": "Gain {0} stacks of Soothe at battle start.<br>All allies gain {1} stacks of Soothe after casting skill.",
       "valueDivisors": [
         1,
         10,
@@ -1773,8 +2229,8 @@
       "step": "B",
       "pc": 1,
       "weight": 5000,
-      "effect": "Gain 100 HP and Max HP after an ally is defeated.<br>[CN: 友方战败后使自身造成全部伤害和全部恢复+10。]",
-      "effectTpl": "Gain {0} HP and Max HP after an ally is defeated.<br>[CN: 友方战败后使自身造成全部伤害和全部恢复+{1}。]",
+      "effect": "Gain 100 HP and max HP after an ally is defeated.<br>+10 Total DMG dealt and total HP restored to targets after an ally is defeated.",
+      "effectTpl": "Gain {0} HP and max HP after an ally is defeated.<br>+{1} Total DMG dealt and total HP restored to targets after an ally is defeated.",
       "valueDivisors": [
         1,
         10,
@@ -1792,8 +2248,8 @@
       "step": "B",
       "pc": 1,
       "weight": 10000,
-      "effect": "Gain 34 stacks of Growth at action end.<br>[CN: 释放技能后使自身获得34层成长。]",
-      "effectTpl": "Gain {0} stacks of Growth at action end.<br>[CN: 释放技能后使自身获得{1}层成长。]",
+      "effect": "Gain 34 stacks of Growth at action end.<br>Gain 34 stacks of Growth after casting skill.",
+      "effectTpl": "Gain {0} stacks of Growth at action end.<br>Gain {1} stacks of Growth after casting skill.",
       "valueDivisors": [
         3,
         3,
@@ -1811,8 +2267,8 @@
       "step": "B",
       "pc": 1,
       "weight": 10000,
-      "effect": "Apply 50 stacks of Slow to all enemies at battle start.<br>[CN: 行动开始前对敌方全体目标造成10层减速。]",
-      "effectTpl": "Apply {0} stacks of Slow to all enemies at battle start.<br>[CN: 行动开始前对敌方全体目标造成{1}层减速。]",
+      "effect": "Apply 50 stacks of Slow to all enemies at battle start.<br>Apply 10 stacks of Slow to all enemies at action start.",
+      "effectTpl": "Apply {0} stacks of Slow to all enemies at battle start.<br>Apply {1} stacks of Slow to all enemies at action start.",
       "valueDivisors": [
         2,
         10,
@@ -1830,8 +2286,8 @@
       "step": "B",
       "pc": 1,
       "weight": 2500,
-      "effect": "Gain 100 stacks of Thorns at battle start.<br>[CN: 释放技能后使自身获得34层反伤。]",
-      "effectTpl": "Gain {0} stacks of Thorns at battle start.<br>[CN: 释放技能后使自身获得{1}层反伤。]",
+      "effect": "Gain 100 stacks of Thorns at battle start.<br>Gain 34 stacks of Thorns after casting skill.",
+      "effectTpl": "Gain {0} stacks of Thorns at battle start.<br>Gain {1} stacks of Thorns after casting skill.",
       "valueDivisors": [
         1,
         3,
@@ -1840,7 +2296,7 @@
         0
       ],
       "areaLimit": "All",
-      "classLimit": "Warrior,Priest",
+      "classLimit": "All-Class",
       "element": "All"
     },
     {
@@ -1849,8 +2305,8 @@
       "step": "B",
       "pc": 1,
       "weight": 2500,
-      "effect": "Apply 10 stacks of Shock to target after taking DMG.<br>[CN: 造成感电后使自身获得5点魔力。]",
-      "effectTpl": "Apply {0} stacks of Shock to target after taking DMG.<br>[CN: 造成感电后使自身获得{1}点魔力。]",
+      "effect": "Apply 10 stacks of Shock to target after taking DMG.<br>Gain 5 Mana after applying Shock.",
+      "effectTpl": "Apply {0} stacks of Shock to target after taking DMG.<br>Gain {1} Mana after applying Shock.",
       "valueDivisors": [
         10,
         20,
@@ -1868,8 +2324,8 @@
       "step": "B",
       "pc": 1,
       "weight": 5000,
-      "effect": "Deal 20 more total DMG to targets with Weakness exposed.<br>[CN: 对速度低于自身的目标造成全部伤害+20。]",
-      "effectTpl": "Deal {0} more total DMG to targets with Weakness exposed.<br>[CN: 对速度低于自身的目标造成全部伤害+{1}。]",
+      "effect": "Deal 20 more total DMG to targets with Weakness Exposed.<br>Deal 20 more total DMG to targets with lower SPD.",
+      "effectTpl": "Deal {0} more total DMG to targets with Weakness Exposed.<br>Deal {1} more total DMG to targets with lower SPD.",
       "valueDivisors": [
         5,
         5,
@@ -1887,8 +2343,8 @@
       "step": "B",
       "pc": 1,
       "weight": 2500,
-      "effect": "Gain 10 stacks of Regen after taking DMG.<br>[CN: 获得再生后使自身生命上限+50。]",
-      "effectTpl": "Gain {0} stacks of Regen after taking DMG.<br>[CN: 获得再生后使自身生命上限+{1}。]",
+      "effect": "Gain 10 stacks of Regen after taking DMG.<br>Gain 50 Max HP after gaining Regen.",
+      "effectTpl": "Gain {0} stacks of Regen after taking DMG.<br>Gain {1} Max HP after gaining Regen.",
       "valueDivisors": [
         10,
         2,
@@ -1906,8 +2362,8 @@
       "step": "B",
       "pc": 1,
       "weight": 2500,
-      "effect": "Apply 10 stacks of Cleanse to all enemies at action start.<br>[CN: 释放技能后对敌方目标造成20层净化。]",
-      "effectTpl": "Apply {0} stacks of Cleanse to all enemies at action start.<br>[CN: 释放技能后对敌方目标造成{1}层净化。]",
+      "effect": "Apply 10 stacks of Cleanse to all enemies at action start.<br>Apply 20 stacks of Cleanse to enemies after casting skill.",
+      "effectTpl": "Apply {0} stacks of Cleanse to all enemies at action start.<br>Apply {1} stacks of Cleanse to enemies after casting skill.",
       "valueDivisors": [
         10,
         5,
@@ -1925,8 +2381,8 @@
       "step": "B",
       "pc": 1,
       "weight": 5000,
-      "effect": "Enemy in same position loses 100 HP when defeated.<br>[CN: 对同位置敌方目标造成全部伤害+20。]",
-      "effectTpl": "Enemy in same position loses {0} HP when defeated.<br>[CN: 对同位置敌方目标造成全部伤害+{1}。]",
+      "effect": "Enemy in same position loses 100 HP when defeated.<br>Deal 20 more total DMG to enemy in same position.",
+      "effectTpl": "Enemy in same position loses {0} HP when defeated.<br>Deal {1} more total DMG to enemy in same position.",
       "valueDivisors": [
         1,
         5,
@@ -1944,8 +2400,8 @@
       "step": "B",
       "pc": 1,
       "weight": 5000,
-      "effect": "All enemies gain 4 fewer stacks of Inspire.<br>[CN: 回合开始前对敌方全体目标造成10层泯灭。]",
-      "effectTpl": "All enemies gain {0} fewer stacks of Inspire.<br>[CN: 回合开始前对敌方全体目标造成{1}层泯灭。]",
+      "effect": "All enemies gain 4 fewer stacks of Inspire.<br>Apply 10 stacks of Decay to all enemies at turn start.",
+      "effectTpl": "All enemies gain {0} fewer stacks of Inspire.<br>Apply {1} stacks of Decay to all enemies at turn start.",
       "valueDivisors": [
         25,
         10,
@@ -1963,8 +2419,8 @@
       "step": "B",
       "pc": 1,
       "weight": 10000,
-      "effect": "Gain 34 stacks of Shield at action end.<br>[CN: 释放技能后使友方全体目标获得10层防护。]",
-      "effectTpl": "Gain {0} stacks of Shield at action end.<br>[CN: 释放技能后使友方全体目标获得{1}层防护。]",
+      "effect": "Gain 34 stacks of Shield at action end.<br>All allies gain 10 stacks of Shield after casting skill.",
+      "effectTpl": "Gain {0} stacks of Shield at action end.<br>All allies gain {1} stacks of Shield after casting skill.",
       "valueDivisors": [
         3,
         10,
@@ -1982,8 +2438,8 @@
       "step": "B",
       "pc": 1,
       "weight": 10000,
-      "effect": "Gain 50 DEF. Do not lose Toughness on successful defense.<br>[CN: 行动开始前使友方全体目标获得10点韧性。]",
-      "effectTpl": "Gain {0} DEF. Do not lose Toughness on successful defense.<br>[CN: 行动开始前使友方全体目标获得{1}点韧性。]",
+      "effect": "Gain 50 DEF. Do not lose Toughness on successful defense.<br>All allies gain 10 Toughness at action start.",
+      "effectTpl": "Gain {0} DEF. Do not lose Toughness on successful defense.<br>All allies gain {1} Toughness at action start.",
       "valueDivisors": [
         2,
         10,
@@ -1992,8 +2448,8 @@
         0
       ],
       "areaLimit": "All",
-      "classLimit": "Warrior,Archer,Mage",
-      "element": "Earth"
+      "classLimit": "All-Class",
+      "element": "All"
     },
     {
       "id": "JH20036",
@@ -2001,8 +2457,8 @@
       "step": "B",
       "pc": 1,
       "weight": 1250,
-      "effect": "All enemies lose 10 HP at action end.<br>[CN: 行动结束后使敌方全体目标失去10点韧性。]",
-      "effectTpl": "All enemies lose {0} HP at action end.<br>[CN: 行动结束后使敌方全体目标失去{1}点韧性。]",
+      "effect": "All enemies lose 10 HP at action end.<br>All enemies lose 10 Toughness at action end.",
+      "effectTpl": "All enemies lose {0} HP at action end.<br>All enemies lose {1} Toughness at action end.",
       "valueDivisors": [
         10,
         10,
@@ -2020,8 +2476,8 @@
       "step": "B",
       "pc": 1,
       "weight": 10000,
-      "effect": "Apply 10 stacks of Burn to all enemies at action start.<br>[CN: 敌方目标触发灼烧效果后使自身获得50点生命。]",
-      "effectTpl": "Apply {0} stacks of Burn to all enemies at action start.<br>[CN: 敌方目标触发灼烧效果后使自身获得{1}点生命。]",
+      "effect": "Apply 10 stacks of Burn to all enemies at action start.<br>Gain 50 HP when enemies trigger Burn.",
+      "effectTpl": "Apply {0} stacks of Burn to all enemies at action start.<br>Gain {1} HP when enemies trigger Burn.",
       "valueDivisors": [
         10,
         2,
@@ -2038,19 +2494,228 @@
       "name": "Ruinous",
       "step": "B",
       "pc": 1,
-      "weight": 10000,
-      "effect": "Basic Attack applies 50 stacks of Hinder to target.<br>[CN: 普通攻击对目标造成50层剥离。]",
-      "effectTpl": "Basic Attack applies {0} stacks of Hinder to target.<br>[CN: 普通攻击对目标造成{1}层剥离。]",
+      "weight": 1250,
+      "effect": "Basic Attack applies 4 stacks of Hinder to target.<br>Basic Attack applies 4 stacks of Expose to target.",
+      "effectTpl": "Basic Attack applies {0} stacks of Hinder to target.<br>Basic Attack applies {1} stacks of Expose to target.",
       "valueDivisors": [
-        2,
-        2,
+        25,
+        25,
         0,
         0,
         0
       ],
       "areaLimit": "Forest,Mounts,Desert",
+      "classLimit": "Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH20042",
+      "name": "Undefeated",
+      "step": "B",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Gain +10 Hit Mana, but cannot perform Basic Attack.<br>Gain +1 multi-hit skill count.",
+      "effectTpl": "Gain +{0} Hit Mana, but cannot perform Basic Attack.<br>Gain +{1} multi-hit skill count.",
+      "valueDivisors": [
+        10,
+        200,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
       "classLimit": "Warrior,Archer,Mage",
       "element": "All"
+    },
+    {
+      "id": "JH20045",
+      "name": "Breezy",
+      "step": "B",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 10 stacks of Soothe after attacking.<br>Gain 10 stacks of Soothe after being attacked.",
+      "effectTpl": "Gain {0} stacks of Soothe after attacking.<br>Gain {1} stacks of Soothe after being attacked.",
+      "valueDivisors": [
+        10,
+        10,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "Beach",
+      "classLimit": "All",
+      "element": "All"
+    },
+    {
+      "id": "JH20046",
+      "name": "Slothful",
+      "step": "B",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "After taking DMG, take -10 Total DMG this turn.<br>After taking DMG, receive +4 HP Gain this turn.",
+      "effectTpl": "After taking DMG, take -{0} Total DMG this turn.<br>After taking DMG, receive +{1} HP Gain this turn.",
+      "valueDivisors": [
+        10,
+        25,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior",
+      "element": "Earth"
+    },
+    {
+      "id": "JH20047",
+      "name": "Woodbound",
+      "step": "B",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "After taking Skill DMG, targets of both sides gain 10 stacks of Growth.<br>After taking Skill DMG, targets of both sides gain +2 stacks of Growth.",
+      "effectTpl": "After taking Skill DMG, targets of both sides gain {0} stacks of Growth.<br>After taking Skill DMG, targets of both sides gain +{1} stacks of Growth.",
+      "valueDivisors": [
+        10,
+        50,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "Forest",
+      "classLimit": "All",
+      "element": "Earth"
+    },
+    {
+      "id": "JH20048",
+      "name": "Greedy",
+      "step": "B",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Take 1 Extra Action each turn, but deal -50% total DMG.<br>Gain 4 stacks of Soothe after dealing DMG.",
+      "effectTpl": "Take 1 Extra Action each turn, but deal -50% total DMG.<br>Gain {0} stacks of Soothe after dealing DMG.",
+      "valueDivisors": [
+        25,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH20049",
+      "name": "Wrathful",
+      "step": "B",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "+4 Counter Attacks.<br>Deal +2 Counter DMG per counter hit.",
+      "effectTpl": "+4 Counter Attacks.<br>Deal +{0} Counter DMG per counter hit.",
+      "valueDivisors": [
+        50,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior",
+      "element": "Fire,Dark"
+    },
+    {
+      "id": "JH20050",
+      "name": "Envious",
+      "step": "B",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Deal +100% total DMG to the enemy in the same position.<br>Gain 10 HP when the enemy in the same position receives HP Gain.",
+      "effectTpl": "Deal +100% total DMG to the enemy in the same position.<br>Gain {0} HP when the enemy in the same position receives HP Gain.",
+      "valueDivisors": [
+        10,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Dark"
+    },
+    {
+      "id": "JH20051",
+      "name": "Gluttonous",
+      "step": "B",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "HP +100%.<br>Absorb 20 HP from the target after Basic Attack.",
+      "effectTpl": "HP +100%.<br>Absorb {0} HP from the target after Basic Attack.",
+      "valueDivisors": [
+        5,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior",
+      "element": "Earth"
+    },
+    {
+      "id": "JH20052",
+      "name": "Haughty",
+      "step": "B",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Cannot act in the first turn. Always acts first in subsequent turns.<br>Deal +5 Total DMG at turn start.",
+      "effectTpl": "Cannot act in the first turn. Always acts first in subsequent turns.<br>Deal +{0} Total DMG at turn start.",
+      "valueDivisors": [
+        20,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Fire,Light"
+    },
+    {
+      "id": "JH20053",
+      "name": "Alluring",
+      "step": "B",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Not considered a priority target by enemies.<br>Apply 10 stacks of Taunt to enemies at their action end.",
+      "effectTpl": "Not considered a priority target by enemies.<br>Apply {0} stacks of Taunt to enemies at their action end.",
+      "valueDivisors": [
+        10,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Archer,Mage",
+      "element": "Dark,Water"
+    },
+    {
+      "id": "JH20054",
+      "name": "Echoing",
+      "step": "B",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Total DMG +100%, but when attacking, for every 50 Max HP the target has, Total DMG to it -1.<br>Follow-Up count +1, and Follow-Ups are guaranteed.",
+      "effectTpl": "Total DMG +100%, but when attacking, for every 50 Max HP the target has, Total DMG to it -1.<br>Follow-Up count +1, and Follow-Ups are guaranteed.",
+      "valueDivisors": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Wind,Light"
     },
     {
       "id": "JH20013",
@@ -2058,8 +2723,8 @@
       "step": "B",
       "pc": 0,
       "weight": 10000,
-      "effect": "魔力上限+100],[CN: 无法释放技能。]<br>[CN: 每拥有20点魔力使自身造成全部伤害+5。",
-      "effectTpl": "魔力上限+{0}],[CN: 无法释放技能。]<br>[CN: 每拥有20点魔力使自身造成全部伤害+{1}。",
+      "effect": "Gain 100 Max Mana. Cannot cast skills.<br>Deal 5 more total DMG per 20 Mana.",
+      "effectTpl": "Gain {0} Max Mana. Cannot cast skills.<br>Deal {1} more total DMG per 20 Mana.",
       "valueDivisors": [
         1,
         20,
@@ -2077,8 +2742,8 @@
       "step": "B",
       "pc": 0,
       "weight": 5000,
-      "effect": "Gain 2 Counter range, but cannot perform basic attacks.<br>[CN: 受到伤害后使自身下次造成反击伤害+5。]",
-      "effectTpl": "Gain {0} Counter range, but cannot perform basic attacks.<br>[CN: 受到伤害后使自身下次造成反击伤害+{1}。]",
+      "effect": "Gain 2 Counter range, but cannot perform basic attacks.<br>Deal 5 more Counter DMG next time after taking DMG.",
+      "effectTpl": "Gain {0} Counter range, but cannot perform basic attacks.<br>Deal {1} more Counter DMG next time after taking DMG.",
       "valueDivisors": [
         50,
         20,
@@ -2096,8 +2761,8 @@
       "step": "B",
       "pc": 0,
       "weight": 2500,
-      "effect": "Take 34 less Skill DMG.<br>[CN: 造成伤害后使目标失去2点魔力。]",
-      "effectTpl": "Take {0} less Skill DMG.<br>[CN: 造成伤害后使目标失去{1}点魔力。]",
+      "effect": "Take 34 less Skill DMG.<br>Target loses 2 Mana after dealing DMG.",
+      "effectTpl": "Take {0} less Skill DMG.<br>Target loses {1} Mana after dealing DMG.",
       "valueDivisors": [
         3,
         50,
@@ -2115,8 +2780,8 @@
       "step": "B",
       "pc": 0,
       "weight": 2500,
-      "effect": "生命上限固定为25],[CN: 并免疫全部状态。]<br>[CN: 每次受到伤害至多为1],[CN: 受到恢复至多为1。",
-      "effectTpl": "生命上限固定为{0}],[CN: 并免疫全部状态。]<br>[CN: 每次受到伤害至多为1],[CN: 受到恢复至多为1。",
+      "effect": "Max HP fixed at 25, and immune to all statuses.<br>DMG taken and HP restored capped at 1 per instance.",
+      "effectTpl": "Max HP fixed at {0}, and immune to all statuses.<br>DMG taken and HP restored capped at 1 per instance.",
       "valueDivisors": [
         4,
         0,
@@ -2134,8 +2799,8 @@
       "step": "B",
       "pc": 0,
       "weight": 1250,
-      "effect": "Not considered a priority target by enemies.<br>[CN: 敌方目标行动结束后失去5点生命。]",
-      "effectTpl": "Not considered a priority target by enemies.<br>[CN: 敌方目标行动结束后失去{0}点生命。]",
+      "effect": "Not considered a priority target by enemies.<br>Enemies lose 5 HP at action end.",
+      "effectTpl": "Not considered a priority target by enemies.<br>Enemies lose {0} HP at action end.",
       "valueDivisors": [
         20,
         0,
@@ -2153,8 +2818,8 @@
       "step": "B",
       "pc": 0,
       "weight": 1250,
-      "effect": "+2 Counter Range.<br>[CN: 敌方全体目标造成追击次数-5。]",
-      "effectTpl": "+{0} Counter Range.<br>[CN: 敌方全体目标造成追击次数-{1}。]",
+      "effect": "+2 Counter range.<br>All enemies' Follow-Up attacks -5.",
+      "effectTpl": "+{0} Counter range.<br>All enemies' Follow-Up attacks -{1}.",
       "valueDivisors": [
         50,
         20,
@@ -2191,8 +2856,8 @@
       "step": "B",
       "pc": 0,
       "weight": 1250,
-      "effect": "Gain 1 Extra Actions each turn, but deal 50% less total DMG.<br>[CN: 造成追击次数+2。]",
-      "effectTpl": "Gain {0} Extra Actions each turn, but deal 50% less total DMG.<br>[CN: 造成追击次数+{1}。]",
+      "effect": "Gain 1 Extra Actions each turn, but deal 50% less total DMG.<br>Follow-Up count +2.",
+      "effectTpl": "Gain {0} Extra Actions each turn, but deal 50% less total DMG.<br>Follow-Up count +{1}.",
       "valueDivisors": [
         200,
         50,
@@ -2543,7 +3208,7 @@
         0
       ],
       "areaLimit": "All",
-      "classLimit": "Warrior,Priest",
+      "classLimit": "All-Class",
       "element": "All"
     },
     {
@@ -2695,8 +3360,8 @@
         0
       ],
       "areaLimit": "All",
-      "classLimit": "Warrior,Archer,Mage",
-      "element": "Earth"
+      "classLimit": "All-Class",
+      "element": "All"
     },
     {
       "id": "JH10036",
@@ -2741,19 +3406,228 @@
       "name": "Ruinous",
       "step": "C",
       "pc": 1,
-      "weight": 10000,
-      "effect": "Basic Attack applies 50 stacks of Hinder to target.",
+      "weight": 1250,
+      "effect": "Basic Attack applies 4 stacks of Hinder to target.",
       "effectTpl": "Basic Attack applies {0} stacks of Hinder to target.",
       "valueDivisors": [
-        2,
+        25,
         0,
         0,
         0,
         0
       ],
       "areaLimit": "Forest,Mounts,Desert",
+      "classLimit": "Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH10042",
+      "name": "Undefeated",
+      "step": "C",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Gain +10 Hit Mana, but cannot perform Basic Attack.",
+      "effectTpl": "Gain +{0} Hit Mana, but cannot perform Basic Attack.",
+      "valueDivisors": [
+        10,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
       "classLimit": "Warrior,Archer,Mage",
       "element": "All"
+    },
+    {
+      "id": "JH10045",
+      "name": "Breezy",
+      "step": "C",
+      "pc": 1,
+      "weight": 10000,
+      "effect": "Gain 10 stacks of Soothe after attacking.",
+      "effectTpl": "Gain {0} stacks of Soothe after attacking.",
+      "valueDivisors": [
+        10,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "Beach",
+      "classLimit": "All",
+      "element": "All"
+    },
+    {
+      "id": "JH10046",
+      "name": "Slothful",
+      "step": "C",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "After taking DMG, take -10 Total DMG this turn.",
+      "effectTpl": "After taking DMG, take -{0} Total DMG this turn.",
+      "valueDivisors": [
+        10,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior",
+      "element": "Earth"
+    },
+    {
+      "id": "JH10047",
+      "name": "Woodbound",
+      "step": "C",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "After taking Skill DMG, targets of both sides gain 10 stacks of Growth.",
+      "effectTpl": "After taking Skill DMG, targets of both sides gain {0} stacks of Growth.",
+      "valueDivisors": [
+        10,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "Forest",
+      "classLimit": "All",
+      "element": "Earth"
+    },
+    {
+      "id": "JH10048",
+      "name": "Greedy",
+      "step": "C",
+      "pc": 1,
+      "weight": 5000,
+      "effect": "Take 1 Extra Action each turn, but deal -50% total DMG.",
+      "effectTpl": "Take 1 Extra Action each turn, but deal -50% total DMG.",
+      "valueDivisors": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "All"
+    },
+    {
+      "id": "JH10049",
+      "name": "Wrathful",
+      "step": "C",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "+4 Counter Attacks.",
+      "effectTpl": "+4 Counter Attacks.",
+      "valueDivisors": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior",
+      "element": "Fire,Dark"
+    },
+    {
+      "id": "JH10050",
+      "name": "Envious",
+      "step": "C",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Deal +100% total DMG to the enemy in the same position.",
+      "effectTpl": "Deal +100% total DMG to the enemy in the same position.",
+      "valueDivisors": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Dark"
+    },
+    {
+      "id": "JH10051",
+      "name": "Gluttonous",
+      "step": "C",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "HP +100%.",
+      "effectTpl": "HP +100%.",
+      "valueDivisors": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior",
+      "element": "Earth"
+    },
+    {
+      "id": "JH10052",
+      "name": "Haughty",
+      "step": "C",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Cannot act in the first turn. Always acts first in subsequent turns.",
+      "effectTpl": "Cannot act in the first turn. Always acts first in subsequent turns.",
+      "valueDivisors": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Fire,Light"
+    },
+    {
+      "id": "JH10053",
+      "name": "Alluring",
+      "step": "C",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Not considered a priority target by enemies.",
+      "effectTpl": "Not considered a priority target by enemies.",
+      "valueDivisors": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Archer,Mage",
+      "element": "Dark,Water"
+    },
+    {
+      "id": "JH10054",
+      "name": "Echoing",
+      "step": "C",
+      "pc": 1,
+      "weight": 1250,
+      "effect": "Total DMG +100%, but when attacking, for every 50 Max HP the target has, Total DMG to it -1.",
+      "effectTpl": "Total DMG +100%, but when attacking, for every 50 Max HP the target has, Total DMG to it -1.",
+      "valueDivisors": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "areaLimit": "All",
+      "classLimit": "Warrior,Archer,Mage",
+      "element": "Wind,Light"
     },
     {
       "id": "JH10015",
