@@ -110,7 +110,7 @@ Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 
      | 首回合释放技能 | 施法
 </code></pre>
 <h2>Counts</h2>
-<p>Total talents: <strong>680</strong></p>
+<p>Total talents: <strong>816</strong></p>
 <table>
 <thead>
 <tr>
@@ -122,38 +122,38 @@ Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 
 <tbody>
 <tr>
 <td><code>singleTarget</code></td>
-<td>54</td>
-<td>7.9%</td>
+<td>68</td>
+<td>8.3%</td>
 </tr>
 <tr>
 <td><code>multiTarget</code></td>
-<td>53</td>
-<td>7.8%</td>
+<td>68</td>
+<td>8.3%</td>
 </tr>
 <tr>
 <td><code>singleHit</code></td>
-<td>53</td>
-<td>7.8%</td>
+<td>71</td>
+<td>8.7%</td>
 </tr>
 <tr>
 <td><code>multiHit</code></td>
-<td>61</td>
-<td>9.0%</td>
+<td>78</td>
+<td>9.6%</td>
 </tr>
 <tr>
 <td>All 4 true (generic skill)</td>
-<td>51</td>
-<td>7.5%</td>
+<td>65</td>
+<td>8.0%</td>
 </tr>
 <tr>
 <td>Specific type only</td>
-<td>16</td>
-<td>2.4%</td>
+<td>24</td>
+<td>2.9%</td>
 </tr>
 <tr>
 <td>All false (no skill mention)</td>
-<td>613</td>
-<td>90.1%</td>
+<td>727</td>
+<td>89.1%</td>
 </tr>
 </tbody>
 </table>
@@ -186,6 +186,16 @@ Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 
 <tr>
 <td>TF00013</td>
 <td>Spell Boost</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF00013_000</td>
+<td>Hydro Lock</td>
 <td>Y</td>
 <td>Y</td>
 <td>Y</td>
@@ -364,6 +374,16 @@ Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 
 <td>释放技能</td>
 </tr>
 <tr>
+<td>TF01030_001</td>
+<td>Spin Cycle</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
 <td>TF01036</td>
 <td>Energized</td>
 <td>Y</td>
@@ -394,14 +414,14 @@ Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 
 <td>技能伤害, 造成技能</td>
 </tr>
 <tr>
-<td>TF01059</td>
-<td>Cool Splash</td>
+<td>TF01073</td>
+<td>[CN: 施虐打击]</td>
 <td>Y</td>
 <td>Y</td>
 <td>Y</td>
 <td>Y</td>
 <td>sT+mT+sH+mH</td>
-<td>释放技能</td>
+<td>释放技能, 首次释放技能</td>
 </tr>
 <tr>
 <td>TF10202_004</td>
@@ -684,6 +704,126 @@ Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 
 <td>[excluded-incoming]受到技能伤害, 技能伤害, 造成技能</td>
 </tr>
 <tr>
+<td>TF16401_001</td>
+<td>Blood Siphon</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF16401_002</td>
+<td>Blood Siphon</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF16401_003</td>
+<td>Blood Siphon</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF16401_004</td>
+<td>Blood Siphon</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF16402_003</td>
+<td>Innate Bloodthirst</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF16402_004</td>
+<td>Innate Bloodthirst</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF16801_001</td>
+<td>Deep Command</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF16801_002</td>
+<td>Deep Command</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF16801_003</td>
+<td>Deep Command</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF16801_004</td>
+<td>Deep Command</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF17104_004</td>
+<td>Multi-Arm Sync</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
+<td>TF17405_004</td>
+<td>[CN: 死亡翻滚]</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>sT+mT+sH+mH</td>
+<td>释放技能</td>
+</tr>
+<tr>
 <td>TF00019</td>
 <td>Hurricane Split</td>
 <td>-</td>
@@ -724,6 +864,16 @@ Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 
 <td>多段技能</td>
 </tr>
 <tr>
+<td>TF00052_000</td>
+<td>Vapor Surge</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>Y</td>
+<td>mH</td>
+<td>多段技能</td>
+</tr>
+<tr>
 <td>TF00056</td>
 <td>Midline Killer</td>
 <td>-</td>
@@ -736,6 +886,26 @@ Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 
 <tr>
 <td>TF01023</td>
 <td>Perfect Show</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>Y</td>
+<td>mH</td>
+<td>多段技能</td>
+</tr>
+<tr>
+<td>TF01036_000</td>
+<td>Youthful Vigor</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>Y</td>
+<td>mH</td>
+<td>多段技能</td>
+</tr>
+<tr>
+<td>TF01072_000</td>
+<td>[CN: 猎魔仪式]</td>
 <td>-</td>
 <td>-</td>
 <td>-</td>
@@ -814,6 +984,16 @@ Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 
 <td>群体技能</td>
 </tr>
 <tr>
+<td>TF17204_004</td>
+<td>[CN: 变色鳞甲]</td>
+<td>-</td>
+<td>Y</td>
+<td>-</td>
+<td>-</td>
+<td>mT</td>
+<td>群体技能</td>
+</tr>
+<tr>
 <td>TF00055</td>
 <td>Lance Charge</td>
 <td>-</td>
@@ -824,8 +1004,48 @@ Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 
 <td>单段技能</td>
 </tr>
 <tr>
+<td>TF01011_000</td>
+<td>[CN: 浪潮翻涌]</td>
+<td>-</td>
+<td>-</td>
+<td>Y</td>
+<td>-</td>
+<td>sH</td>
+<td>单段技能</td>
+</tr>
+<tr>
+<td>TF01033_000</td>
+<td>[CN: 致命毒素]</td>
+<td>-</td>
+<td>-</td>
+<td>Y</td>
+<td>-</td>
+<td>sH</td>
+<td>单段技能</td>
+</tr>
+<tr>
+<td>TF01072</td>
+<td>[CN: 奇形吹管]</td>
+<td>-</td>
+<td>-</td>
+<td>Y</td>
+<td>-</td>
+<td>sH</td>
+<td>单段技能</td>
+</tr>
+<tr>
 <td>TF14504_004</td>
 <td>Charge Crystal</td>
+<td>-</td>
+<td>-</td>
+<td>Y</td>
+<td>-</td>
+<td>sH</td>
+<td>单段技能</td>
+</tr>
+<tr>
+<td>TF17505_004</td>
+<td>[CN: 超载运行]</td>
 <td>-</td>
 <td>-</td>
 <td>Y</td>
@@ -1174,8 +1394,28 @@ Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 
 <td></td>
 </tr>
 <tr>
+<td>TF00041_000</td>
+<td>Drowned Soul</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
 <td>TF00043</td>
 <td>Chain Taunt</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF00043_000</td>
+<td>Splash Reserve</td>
 <td>-</td>
 <td>-</td>
 <td>-</td>
@@ -1454,16 +1694,6 @@ Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 
 <td></td>
 </tr>
 <tr>
-<td>TF01011_000</td>
-<td>Water Clone</td>
-<td>-</td>
-<td>-</td>
-<td>-</td>
-<td>-</td>
-<td>none</td>
-<td></td>
-</tr>
-<tr>
 <td>TF01012</td>
 <td>Frost Echo</td>
 <td>-</td>
@@ -1616,16 +1846,6 @@ Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 
 <tr>
 <td>TF01030</td>
 <td>Counter Storm</td>
-<td>-</td>
-<td>-</td>
-<td>-</td>
-<td>-</td>
-<td>none</td>
-<td></td>
-</tr>
-<tr>
-<td>TF01030_001</td>
-<td>[CN: 威慑反击]</td>
 <td>-</td>
 <td>-</td>
 <td>-</td>
@@ -1835,7 +2055,7 @@ Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 
 </tr>
 <tr>
 <td>TF01054</td>
-<td>[CN: 戏水派对]</td>
+<td>Water Infuse</td>
 <td>-</td>
 <td>-</td>
 <td>-</td>
@@ -1866,6 +2086,16 @@ Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 
 <tr>
 <td>TF01057</td>
 <td>Ruin Descends</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01059</td>
+<td>Cool Splash</td>
 <td>-</td>
 <td>-</td>
 <td>-</td>
@@ -1905,17 +2135,27 @@ Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 
 </tr>
 <tr>
 <td>TF01063</td>
-<td>Hardened Spines</td>
+<td>Cozy Quilt</td>
 <td>-</td>
 <td>-</td>
 <td>-</td>
 <td>-</td>
 <td>none</td>
-<td>[excluded-incoming]受到技能伤害</td>
+<td></td>
 </tr>
 <tr>
 <td>TF01064</td>
 <td>Thorns Abound</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01064_000</td>
+<td>Primal Blood</td>
 <td>-</td>
 <td>-</td>
 <td>-</td>
@@ -1946,6 +2186,66 @@ Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 
 <tr>
 <td>TF01066</td>
 <td>Eternal Sun</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01067</td>
+<td>Deep Sea Sneak</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01068</td>
+<td>[CN: 伤害加深]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01069</td>
+<td>[CN: 默默潜水]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01070</td>
+<td>Rally</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01071</td>
+<td>[CN: 疯狂生长]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF01073_000</td>
+<td>[CN: 难以清洗]</td>
 <td>-</td>
 <td>-</td>
 <td>-</td>
@@ -6966,6 +7266,1066 @@ Terms: 释放技能 | 技能伤害 | 技能次数 | 技能治疗 | 技能目标 
 <tr>
 <td>TF16305_004</td>
 <td>Ascension</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16403_003</td>
+<td>Blood Frenzy</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16403_004</td>
+<td>Blood Frenzy</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16404_004</td>
+<td>Hemomancy</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16405_004</td>
+<td>Child of Night</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16501_001</td>
+<td>Hardened Spines</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16501_002</td>
+<td>Hardened Spines</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16501_003</td>
+<td>Hardened Spines</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16501_004</td>
+<td>Hardened Spines</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16502_003</td>
+<td>Coiled Guard</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16502_004</td>
+<td>Coiled Guard</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16503_003</td>
+<td>Spine Wound</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16503_004</td>
+<td>Spine Wound</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16504_004</td>
+<td>Needle Sweep</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16505_004</td>
+<td>Rolling Strike</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16601_001</td>
+<td>Pollen Haze</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16601_002</td>
+<td>Pollen Haze</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16601_003</td>
+<td>Pollen Haze</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16601_004</td>
+<td>Pollen Haze</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16602_003</td>
+<td>Blossom Guardian</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16602_004</td>
+<td>Blossom Guardian</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16603_003</td>
+<td>Full Bloom</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16603_004</td>
+<td>Full Bloom</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16604_004</td>
+<td>Nectar Offering</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16605_004</td>
+<td>Bud Burst</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16701_001</td>
+<td>Ancient Blood</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16701_002</td>
+<td>Ancient Blood</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16701_003</td>
+<td>Ancient Blood</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16701_004</td>
+<td>Ancient Blood</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16702_003</td>
+<td>Hyper Regen</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16702_004</td>
+<td>Hyper Regen</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16703_003</td>
+<td>Rune Insight</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16703_004</td>
+<td>Rune Insight</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16704_004</td>
+<td>Mana Surge</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16705_004</td>
+<td>Elder's Gift</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16802_003</td>
+<td>Foam Shield</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16802_004</td>
+<td>Foam Shield</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16803_003</td>
+<td>Tidal Bond</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16803_004</td>
+<td>Tidal Bond</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16804_004</td>
+<td>Ocean's Blessing</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16805_004</td>
+<td>Abyssal Blessing</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16901_001</td>
+<td>Eternal Tide</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16901_002</td>
+<td>Eternal Tide</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16901_003</td>
+<td>Eternal Tide</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16901_004</td>
+<td>Eternal Tide</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16902_003</td>
+<td>Flow Mastery</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16902_004</td>
+<td>Flow Mastery</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16903_003</td>
+<td>Ocean Force</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16903_004</td>
+<td>Ocean Force</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16904_004</td>
+<td>Sea Conjure</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF16905_004</td>
+<td>Seagod Decree</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17001_001</td>
+<td>Fearless Mind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17001_002</td>
+<td>Fearless Mind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17001_003</td>
+<td>Fearless Mind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17001_004</td>
+<td>Fearless Mind</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17002_003</td>
+<td>Valor Song</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17002_004</td>
+<td>Valor Song</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17003_003</td>
+<td>Purging Light</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17003_004</td>
+<td>Purging Light</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17004_004</td>
+<td>Pristine Wings</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17005_004</td>
+<td>Holy Descent</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17101_001</td>
+<td>Damp Scales</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17101_002</td>
+<td>Damp Scales</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17101_003</td>
+<td>Damp Scales</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17101_004</td>
+<td>Damp Scales</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17102_003</td>
+<td>Tidal Sovereign</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17102_004</td>
+<td>Tidal Sovereign</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17103_003</td>
+<td>Cycle Strike</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17103_004</td>
+<td>Cycle Strike</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17105_004</td>
+<td>Tidal Foresight</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17201_001</td>
+<td>[CN: 断尾求生]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17201_002</td>
+<td>[CN: 断尾求生]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17201_003</td>
+<td>[CN: 断尾求生]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17201_004</td>
+<td>[CN: 断尾求生]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17202_003</td>
+<td>[CN: 剧毒唾液]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17202_004</td>
+<td>[CN: 剧毒唾液]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17203_003</td>
+<td>[CN: 耐心潜伏]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17203_004</td>
+<td>[CN: 耐心潜伏]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17205_004</td>
+<td>[CN: 变温爆发]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17301_001</td>
+<td>[CN: 强力后肢]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17301_002</td>
+<td>[CN: 强力后肢]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17301_003</td>
+<td>[CN: 强力后肢]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17301_004</td>
+<td>[CN: 强力后肢]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17302_003</td>
+<td>[CN: 动态视觉]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17302_004</td>
+<td>[CN: 动态视觉]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17303_003</td>
+<td>[CN: 吸水皮肤]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17303_004</td>
+<td>[CN: 吸水皮肤]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17304_004</td>
+<td>[CN: 清脆蛙鸣]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17305_004</td>
+<td>[CN: 冬眠蛰伏]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17401_001</td>
+<td>[CN: 巨颚撕咬]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17401_002</td>
+<td>[CN: 巨颚撕咬]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17401_003</td>
+<td>[CN: 巨颚撕咬]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17401_004</td>
+<td>[CN: 巨颚撕咬]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17402_003</td>
+<td>[CN: 厚实鳞甲]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17402_004</td>
+<td>[CN: 厚实鳞甲]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17403_003</td>
+<td>[CN: 沼泽霸主]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17403_004</td>
+<td>[CN: 沼泽霸主]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17404_004</td>
+<td>[CN: 远古意志]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17501_001</td>
+<td>[CN: 能源自毁]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17501_002</td>
+<td>[CN: 能源自毁]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17501_003</td>
+<td>[CN: 能源自毁]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17501_004</td>
+<td>[CN: 能源自毁]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17502_003</td>
+<td>[CN: 自我诊断]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17502_004</td>
+<td>[CN: 自我诊断]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17503_004</td>
+<td>[CN: 既定程序]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17504_003</td>
+<td>[CN: 动能转化]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>none</td>
+<td></td>
+</tr>
+<tr>
+<td>TF17504_004</td>
+<td>[CN: 动能转化]</td>
 <td>-</td>
 <td>-</td>
 <td>-</td>

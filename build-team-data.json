@@ -161,6 +161,14 @@
       "element": "Fire"
     },
     {
+      "id": "M11307",
+      "name": "Naga General",
+      "step": "S",
+      "cls": "Warrior",
+      "race": "Naga",
+      "element": "Water"
+    },
+    {
       "id": "M13307",
       "name": "Rose Sovereign",
       "step": "S",
@@ -505,11 +513,51 @@
       "element": "Light"
     },
     {
+      "id": "M53301_000",
+      "name": "[Swimsuit] Astral Fiend",
+      "step": "S",
+      "cls": "Mage",
+      "race": "Aqua Divine",
+      "element": "Water"
+    },
+    {
       "id": "M51302_001",
       "name": "[Swimsuit] Dawn Dragoness",
       "step": "S",
       "cls": "Warrior",
       "race": "Aquatic",
+      "element": "Water"
+    },
+    {
+      "id": "M14301_001",
+      "name": "[Swimsuit] Flawless Sage",
+      "step": "S",
+      "cls": "Priest",
+      "race": "Sea Sprite",
+      "element": "Water"
+    },
+    {
+      "id": "M31301_000",
+      "name": "[Swimsuit] Holy Blade",
+      "step": "S",
+      "cls": "Warrior",
+      "race": "Relic Soul",
+      "element": "Water"
+    },
+    {
+      "id": "M51303_001",
+      "name": "[Swimsuit] Imp",
+      "step": "S",
+      "cls": "Archer",
+      "race": "Angelic",
+      "element": "Water"
+    },
+    {
+      "id": "M12205_001",
+      "name": "[Swimsuit] Windstrider",
+      "step": "S",
+      "cls": "Archer",
+      "race": "Leporine",
       "element": "Water"
     },
     {
@@ -1097,6 +1145,38 @@
       "element": "Dark"
     },
     {
+      "id": "M14202_001",
+      "name": "[Swimsuit] Goblin Priest",
+      "step": "A",
+      "cls": "Priest",
+      "race": "Sea Sprite",
+      "element": "Water"
+    },
+    {
+      "id": "M13204_000",
+      "name": "[Swimsuit] Magic Attendant",
+      "step": "A",
+      "cls": "Archer",
+      "race": "Leporine",
+      "element": "Water"
+    },
+    {
+      "id": "M11209_000",
+      "name": "[Swimsuit] Minotaur Blade",
+      "step": "A",
+      "cls": "Warrior",
+      "race": "Taurian",
+      "element": "Water"
+    },
+    {
+      "id": "M13202_000",
+      "name": "[Swimsuit] Soul Mage",
+      "step": "A",
+      "cls": "Mage",
+      "race": "Feline",
+      "element": "Water"
+    },
+    {
       "id": "M21202_000",
       "name": "[Thunder] Gale Warrior",
       "step": "A",
@@ -1650,7 +1730,7 @@
     {
       "id": "TF16805_004",
       "name": "Abyssal Blessing",
-      "effect": "获得滋润层数上限+500],[CN: 拥有滋润层数超过500层时视为拥有满层滋润。",
+      "effect": "Soothe stack cap +500. Having over 500 stacks counts as max Soothe.",
       "step": "S",
       "type": "Talent"
     },
@@ -2168,7 +2248,7 @@
     {
       "id": "TF17103_004",
       "name": "Cycle Strike",
-      "effect": "Gain 4 Mana after attacking, but deal -4% total DMG.",
+      "effect": "进行攻击后使自身获得4点魔力],[CN: 但造成全部伤害-25%。",
       "step": "S",
       "type": "Talent"
     },
@@ -2259,7 +2339,7 @@
     {
       "id": "TF01067",
       "name": "Deep Sea Sneak",
-      "effect": "Immune to effects that reduce own Mana Gain.",
+      "effect": "When gaining Mana, immune to effects that reduce own Mana Gain.",
       "step": "S",
       "type": "Talent"
     },
@@ -2350,7 +2430,7 @@
     {
       "id": "TF00041_000",
       "name": "Drowned Soul",
-      "effect": "All enemies receive +4 Soothe stacks when an enemy is defeated.",
+      "effect": "All enemies receive +2 Soothe stacks when an enemy is defeated.",
       "step": "S",
       "type": "Talent"
     },
@@ -3860,6 +3940,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF01070",
+      "name": "Rally",
+      "effect": "其他友方目标弱点暴露后使自身获得2点魔力。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF12904_004",
       "name": "Rapid Ascent",
       "effect": "Deal +6 total DMG next action after casting skill.",
@@ -3904,7 +3991,7 @@
     {
       "id": "TF00065",
       "name": "Regen Thorns",
-      "effect": "Gain 10 stacks of Thorns when gaining the HP Gain effect.",
+      "effect": "获得生命效果会同时使自身获得10层反伤。",
       "step": "S",
       "type": "Talent"
     },
@@ -4009,7 +4096,7 @@
     {
       "id": "TF16904_004",
       "name": "Sea Conjure",
-      "effect": "Gain 3 stacks of Soothe per 2 Toughness lost by either side.",
+      "effect": "Gain 10 stacks of Soothe per 10 Toughness lost by either side.",
       "step": "S",
       "type": "Talent"
     },
@@ -4142,7 +4229,7 @@
     {
       "id": "TF12702_004",
       "name": "Soul Curse",
-      "effect": "Trigger defeat effects 2 times at battle start but lose 20% Max HP.",
+      "effect": "战斗开始前触发2次自身战败效果],[CN: 但使自身失去20%生命上限的生命。",
       "step": "S",
       "type": "Talent"
     },
@@ -4646,7 +4733,7 @@
     {
       "id": "TF00052_000",
       "name": "Vapor Surge",
-      "effect": "Gain +2 multi-hit skill count at max Soothe stacks.",
+      "effect": "拥有满层滋润时自身造成多段技能攻击次数+2。",
       "step": "S",
       "type": "Talent"
     },
@@ -4770,9 +4857,205 @@
       "type": "Talent"
     },
     {
+      "id": "TF01068",
+      "name": "伤害加深",
+      "effect": "目标每拥有20层阻碍使自身对其造成追击伤害+1。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17305_004",
+      "name": "冬眠蛰伏",
+      "effect": "低生命时自身失去韧性-15],[CN: 高生命时自身获得韧性+0。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17202_004",
+      "name": "剧毒唾液",
+      "effect": "造成伤害后使目标受到阻碍层数+2。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17302_004",
+      "name": "动态视觉",
+      "effect": "每拥有5层精准使自身速度+1。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17504_004",
+      "name": "动能转化",
+      "effect": "每30点速度使自身造成全部伤害+1。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17402_004",
+      "name": "厚实鳞甲",
+      "effect": "非弱点暴露时自身受到全部伤害-20。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17205_004",
+      "name": "变温爆发",
+      "effect": "获得热血后使自身造成全部伤害+1。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17204_004",
+      "name": "变色鳞甲",
+      "effect": "不会优先成为敌方目标],[CN: 并且受到群体技能伤害-40。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17303_004",
+      "name": "吸水皮肤",
+      "effect": "弱点暴露后消耗最多20层滋润使自身获得等量层数的坚韧。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01072",
+      "name": "奇形吹管",
+      "effect": "敌方全体目标拥有满层阻碍时自身单段技能攻击目标+2。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17401_004",
+      "name": "巨颚撕咬",
+      "effect": "目标每拥有15层眩晕使自身对其造成剥离层数+15。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17301_004",
+      "name": "强力后肢",
+      "effect": "行动回魔+4],[CN: 每200点力量使自身行动回魔额外+1。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17201_004",
+      "name": "断尾求生",
+      "effect": "每回合前4次弱点暴露后使自身获得10层坚韧。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01073",
+      "name": "施虐打击",
+      "effect": "每回合首次释放技能时无视满层剥离目标全部防御点数。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17503_004",
+      "name": "既定程序",
+      "effect": "友方其他目标每进行5次行动使自身立即进行1次额外行动。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17405_004",
+      "name": "死亡翻滚",
+      "effect": "释放技能后使敌方目标受到剥离层数+4],[CN: 并且本回合优先以自身为目标。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17403_004",
+      "name": "沼泽霸主",
+      "effect": "友方没有其他巨鳄族时使自身造成全部伤害+30],[CN: 位于沼泽地图时效果翻倍。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF01011_000",
       "name": "浪潮翻涌",
       "effect": "Deal +50% single-hit Skill DMG per 450 stacks of Soothe.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17304_004",
+      "name": "清脆蛙鸣",
+      "effect": "行动开始前使友方其他高韧性目标获得4层鼓舞。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01072_000",
+      "name": "猎魔仪式",
+      "effect": "释放技能时每造成100层泯灭使自身造成多段技能攻击次数+1。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01071",
+      "name": "疯狂生长",
+      "effect": "获得生命效果会同时使自身获得10层成长。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17203_004",
+      "name": "耐心潜伏",
+      "effect": "首次进行攻击时如果本场战斗没有受到攻击则使本次造成全部伤害+80。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17501_004",
+      "name": "能源自毁",
+      "effect": "自身战败后对最近的3名敌方目标造成6层感电。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17502_004",
+      "name": "自我诊断",
+      "effect": "行动结束后使自身获得8层净化],[CN: 并使自身获得本次未生效净化层数等量的生命。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01033_000",
+      "name": "致命毒素",
+      "effect": "目标每拥有1层阻碍使自身对其造成单段技能伤害+1],[CN: 并在释放攻击技能后移除目标全部阻碍。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17505_004",
+      "name": "超载运行",
+      "effect": "造成单段技能攻击次数+1],[CN: 但自身偶数回合无法释放技能。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17404_004",
+      "name": "远古意志",
+      "effect": "免疫眩晕],[CN: 但速度-20。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01073_000",
+      "name": "难以清洗",
+      "effect": "对目标每造成25层阻碍使其受到阻碍层数+1],[CN: 但受到其他负面状态层数-1。",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01069",
+      "name": "默默潜水",
+      "effect": "如果本回合没受到攻击则使自身本回合造成泯灭层数+10。",
       "step": "S",
       "type": "Talent"
     },
@@ -4947,7 +5230,7 @@
     {
       "id": "TF17103_003",
       "name": "Cycle Strike",
-      "effect": "Gain 2 Mana after attacking, but deal -2% total DMG.",
+      "effect": "进行攻击后使自身获得2点魔力],[CN: 但造成全部伤害-25%。",
       "step": "A",
       "type": "Talent"
     },
@@ -6128,6 +6411,90 @@
       "type": "Talent"
     },
     {
+      "id": "TF17202_003",
+      "name": "剧毒唾液",
+      "effect": "造成伤害后使目标受到阻碍层数+1。",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17302_003",
+      "name": "动态视觉",
+      "effect": "每拥有10层精准使自身速度+1。",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17504_003",
+      "name": "动能转化",
+      "effect": "每60点速度使自身造成全部伤害+1。",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17402_003",
+      "name": "厚实鳞甲",
+      "effect": "非弱点暴露时自身受到全部伤害-10。",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17303_003",
+      "name": "吸水皮肤",
+      "effect": "弱点暴露后消耗最多10层滋润使自身获得等量层数的坚韧。",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17401_003",
+      "name": "巨颚撕咬",
+      "effect": "目标每拥有20层眩晕使自身对其造成剥离层数+20。",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17301_003",
+      "name": "强力后肢",
+      "effect": "行动回魔+3],[CN: 每300点力量使自身行动回魔额外+1。",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17201_003",
+      "name": "断尾求生",
+      "effect": "每回合前3次弱点暴露后使自身获得10层坚韧。",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17403_003",
+      "name": "沼泽霸主",
+      "effect": "友方没有其他巨鳄族时使自身造成全部伤害+15],[CN: 位于沼泽地图时效果翻倍。",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17203_003",
+      "name": "耐心潜伏",
+      "effect": "首次进行攻击时如果本场战斗没有受到攻击则使本次造成全部伤害+40。",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17501_003",
+      "name": "能源自毁",
+      "effect": "自身战败后对最近的2名敌方目标造成6层感电。",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17502_003",
+      "name": "自我诊断",
+      "effect": "行动结束后使自身获得4层净化],[CN: 并使自身获得本次未生效净化层数等量的生命。",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF16701_002",
       "name": "Ancient Blood",
       "effect": "Gain +50 HP. Take -2 debuff stacks.",
@@ -6558,6 +6925,34 @@
       "id": "TF15401_002",
       "name": "Weathering Erosion",
       "effect": "All enemies lose 4 DEF at turn start.",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17401_002",
+      "name": "巨颚撕咬",
+      "effect": "目标每拥有25层眩晕使自身对其造成剥离层数+25。",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17301_002",
+      "name": "强力后肢",
+      "effect": "行动回魔+2],[CN: 每400点力量使自身行动回魔额外+1。",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17201_002",
+      "name": "断尾求生",
+      "effect": "每回合前2次弱点暴露后使自身获得10层坚韧。",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17501_002",
+      "name": "能源自毁",
+      "effect": "自身战败后对最近的1名敌方目标造成6层感电。",
       "step": "B",
       "type": "Talent"
     },
@@ -6994,6 +7389,34 @@
       "effect": "All enemies lose 2 DEF at turn start.",
       "step": "C",
       "type": "Talent"
+    },
+    {
+      "id": "TF17401_001",
+      "name": "巨颚撕咬",
+      "effect": "目标每拥有30层眩晕使自身对其造成剥离层数+30。",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17301_001",
+      "name": "强力后肢",
+      "effect": "行动回魔+1],[CN: 每500点力量使自身行动回魔额外+1。",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17201_001",
+      "name": "断尾求生",
+      "effect": "每回合前1次弱点暴露后使自身获得10层坚韧。",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17501_001",
+      "name": "能源自毁",
+      "effect": "自身战败后对最近的1名敌方目标造成3层感电。",
+      "step": "C",
+      "type": "Talent"
     }
   ],
   "equips": [
@@ -7166,6 +7589,14 @@
       "cls": "Mage"
     },
     {
+      "id": "Z00103_351",
+      "name": "Deluge Wand",
+      "step": "S",
+      "type": "Main Hand",
+      "area": "Summer Coast",
+      "cls": "Mage,Priest"
+    },
+    {
       "id": "Z10015_331",
       "name": "Earth Staff",
       "step": "S",
@@ -7180,6 +7611,14 @@
       "type": "Main Hand",
       "area": "The Sunken Sea",
       "cls": "Mage,Priest"
+    },
+    {
+      "id": "Z00103_361",
+      "name": "Festival Rod",
+      "step": "S",
+      "type": "Main Hand",
+      "area": "Summer Coast",
+      "cls": "Priest"
     },
     {
       "id": "Z00201_421",
@@ -7454,12 +7893,28 @@
       "cls": "Mage"
     },
     {
+      "id": "Z00103_321",
+      "name": "Tidal Rod",
+      "step": "S",
+      "type": "Main Hand",
+      "area": "Summer Coast",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z05001_354",
       "name": "Titan Spear",
       "step": "S",
       "type": "Main Hand",
       "area": "Ashland Wastes",
       "cls": "Warrior"
+    },
+    {
+      "id": "Z00103_331",
+      "name": "Toy Water Gun",
+      "step": "S",
+      "type": "Main Hand",
+      "area": "Summer Coast",
+      "cls": "Archer"
     },
     {
       "id": "Z10028_121",
@@ -7492,6 +7947,14 @@
       "type": "Main Hand",
       "area": "The Sunken Sea",
       "cls": "Mage,Priest"
+    },
+    {
+      "id": "Z00103_311",
+      "name": "Wave Halberd",
+      "step": "S",
+      "type": "Main Hand",
+      "area": "Summer Coast",
+      "cls": "Warrior"
     },
     {
       "id": "Z06001_371",
@@ -7532,6 +7995,14 @@
       "type": "Main Hand",
       "area": "Wandering Woods",
       "cls": "Mage,Priest"
+    },
+    {
+      "id": "Z00103_341",
+      "name": "Wyrmhunt Bow",
+      "step": "S",
+      "type": "Main Hand",
+      "area": "Summer Coast",
+      "cls": "Archer"
     },
     {
       "id": "Z10016_121",
@@ -7694,6 +8165,14 @@
       "cls": "Mage,Archer"
     },
     {
+      "id": "Z00103_211",
+      "name": "Dewfall Staff",
+      "step": "A",
+      "type": "Main Hand",
+      "area": "Summer Coast",
+      "cls": "Warrior,Mage"
+    },
+    {
       "id": "Z07001_271",
       "name": "Dissolve Wand",
       "step": "A",
@@ -7755,6 +8234,14 @@
       "step": "A",
       "type": "Main Hand",
       "area": "Magma Passage",
+      "cls": "Warrior"
+    },
+    {
+      "id": "Z00103_271",
+      "name": "Flurry Club",
+      "step": "A",
+      "type": "Main Hand",
+      "area": "Summer Coast",
       "cls": "Warrior"
     },
     {
@@ -7916,6 +8403,14 @@
       "type": "Main Hand",
       "area": "Forsaken Mines",
       "cls": "Archer"
+    },
+    {
+      "id": "Z00103_284",
+      "name": "Ornate Rod",
+      "step": "A",
+      "type": "Main Hand",
+      "area": "Summer Coast",
+      "cls": "Priest"
     },
     {
       "id": "Z10021_423",
@@ -8342,6 +8837,14 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z00103_111",
+      "name": "Fountain Rod",
+      "step": "B",
+      "type": "Main Hand",
+      "area": "Summer Coast",
+      "cls": "Priest,Mage"
+    },
+    {
       "id": "Z00101_211",
       "name": "Frostfang Crossbow",
       "step": "B",
@@ -8422,6 +8925,14 @@
       "cls": "Priest"
     },
     {
+      "id": "Z00103_121",
+      "name": "Rainrite Horn",
+      "step": "B",
+      "type": "Main Hand",
+      "area": "Summer Coast",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z00201_251",
       "name": "Rally Horn",
       "step": "B",
@@ -8500,6 +9011,14 @@
       "type": "Main Hand",
       "area": "Any",
       "cls": "Archer"
+    },
+    {
+      "id": "Z00103_141",
+      "name": "Vacation Umbrella",
+      "step": "B",
+      "type": "Main Hand",
+      "area": "Summer Coast",
+      "cls": "Warrior"
     },
     {
       "id": "Z10011_112",
@@ -8694,6 +9213,14 @@
       "cls": "Warrior,Priest"
     },
     {
+      "id": "Z00103_401",
+      "name": "Purifying Flask",
+      "step": "SS",
+      "type": "Off Hand",
+      "area": "Summer Coast",
+      "cls": "Priest"
+    },
+    {
       "id": "Z60004_332",
       "name": "Astral Orb",
       "step": "S",
@@ -8772,6 +9299,14 @@
       "type": "Off Hand",
       "area": "Dawnstep Plains",
       "cls": "Mage"
+    },
+    {
+      "id": "Z00103_362",
+      "name": "Festival Shield",
+      "step": "S",
+      "type": "Off Hand",
+      "area": "Summer Coast",
+      "cls": "Priest"
     },
     {
       "id": "Z00201_423",
@@ -9118,6 +9653,22 @@
       "cls": "Mage,Archer"
     },
     {
+      "id": "Z00103_212",
+      "name": "Dewfall Orb",
+      "step": "A",
+      "type": "Off Hand",
+      "area": "Summer Coast",
+      "cls": "Warrior,Mage"
+    },
+    {
+      "id": "Z00103_261",
+      "name": "Dewy Satchel",
+      "step": "A",
+      "type": "Off Hand",
+      "area": "Summer Coast",
+      "cls": "Warrior"
+    },
+    {
       "id": "Z07001_272",
       "name": "Dissolve Orb",
       "step": "A",
@@ -9155,6 +9706,14 @@
       "step": "A",
       "type": "Off Hand",
       "area": "Boundless Steppe",
+      "cls": "Archer"
+    },
+    {
+      "id": "Z00103_241",
+      "name": "Hydro Bolts",
+      "step": "A",
+      "type": "Off Hand",
+      "area": "Summer Coast",
       "cls": "Archer"
     },
     {
@@ -9228,6 +9787,14 @@
       "type": "Off Hand",
       "area": "Wandering Woods",
       "cls": "Mage"
+    },
+    {
+      "id": "Z00103_285",
+      "name": "Ornate Shield",
+      "step": "A",
+      "type": "Off Hand",
+      "area": "Summer Coast",
+      "cls": "Priest"
     },
     {
       "id": "Z05001_275",
@@ -9478,6 +10045,14 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z00103_112",
+      "name": "Fountain Orb",
+      "step": "B",
+      "type": "Off Hand",
+      "area": "Summer Coast",
+      "cls": "Priest,Mage"
+    },
+    {
       "id": "Z10016_223",
       "name": "Frostfang Bolts",
       "step": "B",
@@ -9622,6 +10197,14 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z00103_101",
+      "name": "Sealed Shield",
+      "step": "B",
+      "type": "Off Hand",
+      "area": "Summer Coast",
+      "cls": "Warrior"
+    },
+    {
       "id": "Z60011_012",
       "name": "Shade Orb",
       "step": "B",
@@ -9660,6 +10243,14 @@
       "type": "Off Hand",
       "area": "Any",
       "cls": "Archer"
+    },
+    {
+      "id": "Z00103_144",
+      "name": "Vacation Tote",
+      "step": "B",
+      "type": "Off Hand",
+      "area": "Summer Coast",
+      "cls": "Warrior"
     },
     {
       "id": "Z10011_111",
@@ -10190,6 +10781,14 @@
       "cls": "Mage,Warrior"
     },
     {
+      "id": "Z00103_301",
+      "name": "Sea God Helm",
+      "step": "S",
+      "type": "Head",
+      "area": "Summer Coast",
+      "cls": "Warrior,Mage"
+    },
+    {
       "id": "Z00201_461",
       "name": "Sea Queen Crown",
       "step": "S",
@@ -10246,6 +10845,14 @@
       "cls": "Warrior,Mage"
     },
     {
+      "id": "Z00103_332",
+      "name": "Toy Goggles",
+      "step": "S",
+      "type": "Head",
+      "area": "Summer Coast",
+      "cls": "Archer"
+    },
+    {
       "id": "Z03001_391",
       "name": "Transmute Eye",
       "step": "S",
@@ -10276,6 +10883,14 @@
       "type": "Head",
       "area": "The Sunken Sea",
       "cls": "Warrior,Mage"
+    },
+    {
+      "id": "Z00103_312",
+      "name": "Wave Helm",
+      "step": "S",
+      "type": "Head",
+      "area": "Summer Coast",
+      "cls": "Warrior"
     },
     {
       "id": "Z20026_531",
@@ -10324,6 +10939,14 @@
       "type": "Head",
       "area": "Crimson Highlands",
       "cls": "Warrior,Archer"
+    },
+    {
+      "id": "Z00103_291",
+      "name": "Azure Mage Hat",
+      "step": "A",
+      "type": "Head",
+      "area": "Summer Coast",
+      "cls": "Mage"
     },
     {
       "id": "Z01003_231",
@@ -10422,6 +11045,14 @@
       "cls": "Mage,Archer"
     },
     {
+      "id": "Z00103_262",
+      "name": "Dewy Cap",
+      "step": "A",
+      "type": "Head",
+      "area": "Summer Coast",
+      "cls": "Warrior"
+    },
+    {
       "id": "Z00201_371",
       "name": "Diving Mask",
       "step": "A",
@@ -10444,6 +11075,14 @@
       "type": "Head",
       "area": "Endless Desert",
       "cls": "Mage"
+    },
+    {
+      "id": "Z00103_251",
+      "name": "Festive Crown",
+      "step": "A",
+      "type": "Head",
+      "area": "Summer Coast",
+      "cls": "Priest"
     },
     {
       "id": "Z00102_242",
@@ -10758,6 +11397,14 @@
       "cls": "Warrior,Priest"
     },
     {
+      "id": "Z00103_201",
+      "name": "Spring Circlet",
+      "step": "A",
+      "type": "Head",
+      "area": "Summer Coast",
+      "cls": "Priest"
+    },
+    {
       "id": "Z60004_522",
       "name": "Starfall Helm",
       "step": "A",
@@ -10780,6 +11427,14 @@
       "type": "Head",
       "area": "Frostbound Tundra",
       "cls": "Warrior,Archer"
+    },
+    {
+      "id": "Z00103_231",
+      "name": "Sunshade Straw Hat",
+      "step": "A",
+      "type": "Head",
+      "area": "Summer Coast",
+      "cls": "All-Class"
     },
     {
       "id": "Z10024_521",
@@ -11070,6 +11725,14 @@
       "cls": "All-Class"
     },
     {
+      "id": "Z00103_142",
+      "name": "Vacation Straw Hat",
+      "step": "B",
+      "type": "Head",
+      "area": "Summer Coast",
+      "cls": "Warrior"
+    },
+    {
       "id": "Z07001_131",
       "name": "Warded Helm",
       "step": "B",
@@ -11342,6 +12005,14 @@
       "cls": "All-Class"
     },
     {
+      "id": "Z00103_363",
+      "name": "Festival Robe",
+      "step": "S",
+      "type": "Body",
+      "area": "Summer Coast",
+      "cls": "Priest"
+    },
+    {
       "id": "Z40022_621",
       "name": "Firefeather Cape",
       "step": "S",
@@ -11574,6 +12245,14 @@
       "cls": "All-Class"
     },
     {
+      "id": "Z00103_302",
+      "name": "Sea God Armor",
+      "step": "S",
+      "type": "Body",
+      "area": "Summer Coast",
+      "cls": "Warrior,Mage"
+    },
+    {
       "id": "Z00201_462",
       "name": "Sea Queen Armor",
       "step": "S",
@@ -11646,12 +12325,28 @@
       "cls": "Warrior,Mage"
     },
     {
+      "id": "Z00103_333",
+      "name": "Toy Tank",
+      "step": "S",
+      "type": "Body",
+      "area": "Summer Coast",
+      "cls": "Archer"
+    },
+    {
       "id": "Z07001_314",
       "name": "Undying Robe",
       "step": "S",
       "type": "Body",
       "area": "Deadwood Jungle",
       "cls": "Warrior,Mage"
+    },
+    {
+      "id": "Z00103_313",
+      "name": "Wave Armor",
+      "step": "S",
+      "type": "Body",
+      "area": "Summer Coast",
+      "cls": "Warrior"
     },
     {
       "id": "Z06001_372",
@@ -11692,6 +12387,14 @@
       "type": "Body",
       "area": "Wandering Woods",
       "cls": "Warrior,Priest"
+    },
+    {
+      "id": "Z00103_292",
+      "name": "Azure Robe",
+      "step": "A",
+      "type": "Body",
+      "area": "Summer Coast",
+      "cls": "Mage"
     },
     {
       "id": "Z06001_284",
@@ -11772,6 +12475,14 @@
       "type": "Body",
       "area": "Shadowveil Grove",
       "cls": "Mage"
+    },
+    {
+      "id": "Z00103_263",
+      "name": "Dewy Coat",
+      "step": "A",
+      "type": "Body",
+      "area": "Summer Coast",
+      "cls": "Warrior"
     },
     {
       "id": "Z30001_621",
@@ -12118,6 +12829,14 @@
       "cls": "Warrior,Priest"
     },
     {
+      "id": "Z00103_202",
+      "name": "Spring Shawl",
+      "step": "A",
+      "type": "Body",
+      "area": "Summer Coast",
+      "cls": "Priest"
+    },
+    {
       "id": "Z60004_521",
       "name": "Starfall Armor",
       "step": "A",
@@ -12132,6 +12851,14 @@
       "type": "Body",
       "area": "Frostbound Tundra",
       "cls": "Warrior,Archer"
+    },
+    {
+      "id": "Z00103_232",
+      "name": "Sunshade Shawl",
+      "step": "A",
+      "type": "Body",
+      "area": "Summer Coast",
+      "cls": "All-Class"
     },
     {
       "id": "Z02001_273",
@@ -12422,6 +13149,14 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z00103_102",
+      "name": "Sealed Armor",
+      "step": "B",
+      "type": "Body",
+      "area": "Summer Coast",
+      "cls": "Warrior"
+    },
+    {
       "id": "Z02001_113",
       "name": "Shadowveil Cloak",
       "step": "B",
@@ -12468,6 +13203,14 @@
       "type": "Body",
       "area": "Dawnstep Plains",
       "cls": "All-Class"
+    },
+    {
+      "id": "Z00103_143",
+      "name": "Vacation Coat",
+      "step": "B",
+      "type": "Body",
+      "area": "Summer Coast",
+      "cls": "Warrior"
     },
     {
       "id": "Z07001_132",
@@ -12523,6 +13266,14 @@
       "step": "C",
       "type": "Body",
       "area": "The Sunken Sea",
+      "cls": "All-Class"
+    },
+    {
+      "id": "Z00103_001",
+      "name": "Breezy Swimsuit",
+      "step": "C",
+      "type": "Body",
+      "area": "Summer Coast",
       "cls": "All-Class"
     },
     {
@@ -12734,6 +13485,14 @@
       "cls": "Archer"
     },
     {
+      "id": "Z00103_352",
+      "name": "Deluge Gloves",
+      "step": "S",
+      "type": "Gloves",
+      "area": "Summer Coast",
+      "cls": "Mage,Priest"
+    },
+    {
       "id": "Z30001_304",
       "name": "Divine Tree Bracers",
       "step": "S",
@@ -12756,6 +13515,14 @@
       "type": "Gloves",
       "area": "Any",
       "cls": "All-Class"
+    },
+    {
+      "id": "Z00103_364",
+      "name": "Festival Bracers",
+      "step": "S",
+      "type": "Gloves",
+      "area": "Summer Coast",
+      "cls": "Priest"
     },
     {
       "id": "Z00201_424",
@@ -12950,6 +13717,14 @@
       "cls": "Mage,Warrior"
     },
     {
+      "id": "Z00103_303",
+      "name": "Sea God Gauntlets",
+      "step": "S",
+      "type": "Gloves",
+      "area": "Summer Coast",
+      "cls": "Warrior,Mage"
+    },
+    {
       "id": "Z05001_323",
       "name": "Shadow Bracers",
       "step": "S",
@@ -12988,6 +13763,14 @@
       "type": "Gloves",
       "area": "Deadwood Jungle",
       "cls": "Warrior"
+    },
+    {
+      "id": "Z00103_322",
+      "name": "Tidal Gauntlets",
+      "step": "S",
+      "type": "Gloves",
+      "area": "Summer Coast",
+      "cls": "All-Class"
     },
     {
       "id": "Z05001_351",
@@ -13068,6 +13851,14 @@
       "type": "Gloves",
       "area": "Deadwood Jungle",
       "cls": "Mage"
+    },
+    {
+      "id": "Z00103_342",
+      "name": "Wyrmhunt Bracers",
+      "step": "S",
+      "type": "Gloves",
+      "area": "Summer Coast",
+      "cls": "Archer"
     },
     {
       "id": "Z10016_721",
@@ -13315,6 +14106,14 @@
       "step": "A",
       "type": "Gloves",
       "area": "Frostbound Tundra",
+      "cls": "Archer"
+    },
+    {
+      "id": "Z00103_242",
+      "name": "Hydro Gauntlets",
+      "step": "A",
+      "type": "Gloves",
+      "area": "Summer Coast",
       "cls": "Archer"
     },
     {
@@ -13606,6 +14405,14 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z00103_151",
+      "name": "Damp Bracers",
+      "step": "B",
+      "type": "Gloves",
+      "area": "Summer Coast",
+      "cls": "Warrior,Priest"
+    },
+    {
       "id": "Z02001_103",
       "name": "Deadwood Bracers",
       "step": "B",
@@ -13798,6 +14605,14 @@
       "cls": "All-Class"
     },
     {
+      "id": "Z00103_145",
+      "name": "Vacation Gloves",
+      "step": "B",
+      "type": "Gloves",
+      "area": "Summer Coast",
+      "cls": "Warrior"
+    },
+    {
       "id": "Z00102_151",
       "name": "Ward Gauntlets",
       "step": "B",
@@ -13828,6 +14643,14 @@
       "type": "Gloves",
       "area": "Any",
       "cls": "Archer"
+    },
+    {
+      "id": "Z00103_002",
+      "name": "Breezy Bracelet",
+      "step": "C",
+      "type": "Gloves",
+      "area": "Summer Coast",
+      "cls": "All-Class"
     },
     {
       "id": "Z07001_001",
@@ -14086,6 +14909,14 @@
       "cls": "All-Class"
     },
     {
+      "id": "Z00103_365",
+      "name": "Festival Sash",
+      "step": "S",
+      "type": "Belt",
+      "area": "Summer Coast",
+      "cls": "Priest"
+    },
+    {
       "id": "Z40022_722",
       "name": "Firefeather Belt",
       "step": "S",
@@ -14246,6 +15077,14 @@
       "cls": "Priest"
     },
     {
+      "id": "Z00103_343",
+      "name": "Wyrmhunt Sash",
+      "step": "S",
+      "type": "Belt",
+      "area": "Summer Coast",
+      "cls": "Archer"
+    },
+    {
       "id": "Z20003_723",
       "name": "Ancient Tree Belt",
       "step": "A",
@@ -14268,6 +15107,14 @@
       "type": "Belt",
       "area": "Crimson Highlands",
       "cls": "Warrior,Archer"
+    },
+    {
+      "id": "Z00103_293",
+      "name": "Azure Sash",
+      "step": "A",
+      "type": "Belt",
+      "area": "Summer Coast",
+      "cls": "Mage"
     },
     {
       "id": "Z00014_722",
@@ -14398,12 +15245,28 @@
       "cls": "Archer,Mage"
     },
     {
+      "id": "Z00103_272",
+      "name": "Flurry Belt",
+      "step": "A",
+      "type": "Belt",
+      "area": "Summer Coast",
+      "cls": "Warrior,Archer"
+    },
+    {
       "id": "Z10015_723",
       "name": "Haste Cord",
       "step": "A",
       "type": "Belt",
       "area": "Dawnstep Plains",
       "cls": "Priest"
+    },
+    {
+      "id": "Z00103_243",
+      "name": "Hydro Belt",
+      "step": "A",
+      "type": "Belt",
+      "area": "Summer Coast",
+      "cls": "Archer"
     },
     {
       "id": "Z00201_314",
@@ -14478,6 +15341,14 @@
       "cls": "Warrior,Priest"
     },
     {
+      "id": "Z00103_286",
+      "name": "Ornate Belt",
+      "step": "A",
+      "type": "Belt",
+      "area": "Summer Coast",
+      "cls": "Priest"
+    },
+    {
       "id": "Z10002_721",
       "name": "Packwolf Sash",
       "step": "A",
@@ -14540,6 +15411,14 @@
       "type": "Belt",
       "area": "The Deep Hollows",
       "cls": "Warrior,Priest"
+    },
+    {
+      "id": "Z00103_203",
+      "name": "Spring Belt",
+      "step": "A",
+      "type": "Belt",
+      "area": "Summer Coast",
+      "cls": "Priest"
     },
     {
       "id": "Z60004_731",
@@ -14702,6 +15581,14 @@
       "cls": "Warrior"
     },
     {
+      "id": "Z00103_152",
+      "name": "Damp Belt",
+      "step": "B",
+      "type": "Belt",
+      "area": "Summer Coast",
+      "cls": "Warrior,Priest"
+    },
+    {
       "id": "Z01003_128",
       "name": "Fine Belt",
       "step": "B",
@@ -14819,6 +15706,14 @@
       "step": "B",
       "type": "Belt",
       "area": "Magma Passage",
+      "cls": "Warrior"
+    },
+    {
+      "id": "Z00103_103",
+      "name": "Sealed Belt",
+      "step": "B",
+      "type": "Belt",
+      "area": "Summer Coast",
       "cls": "Warrior"
     },
     {
@@ -15052,6 +15947,14 @@
       "type": "Boots",
       "area": "Crimson Highlands",
       "cls": "Warrior,Priest"
+    },
+    {
+      "id": "Z00103_353",
+      "name": "Deluge Shoes",
+      "step": "S",
+      "type": "Boots",
+      "area": "Summer Coast",
+      "cls": "Mage,Priest"
     },
     {
       "id": "Z60003_732",
@@ -15366,6 +16269,14 @@
       "cls": "Archer,Mage"
     },
     {
+      "id": "Z00103_273",
+      "name": "Flurry Shoes",
+      "step": "A",
+      "type": "Boots",
+      "area": "Summer Coast",
+      "cls": "Warrior,Archer"
+    },
+    {
       "id": "Z10021_722",
       "name": "Gilt Boots",
       "step": "A",
@@ -15483,6 +16394,14 @@
       "step": "A",
       "type": "Boots",
       "area": "Magma Passage",
+      "cls": "All-Class"
+    },
+    {
+      "id": "Z00103_233",
+      "name": "Sunshade Sandals",
+      "step": "A",
+      "type": "Boots",
+      "area": "Summer Coast",
       "cls": "All-Class"
     },
     {
@@ -15604,6 +16523,14 @@
       "type": "Boots",
       "area": "Crimson Highlands",
       "cls": "Warrior"
+    },
+    {
+      "id": "Z00103_153",
+      "name": "Damp Boots",
+      "step": "B",
+      "type": "Boots",
+      "area": "Summer Coast",
+      "cls": "Warrior,Priest"
     },
     {
       "id": "Z01003_124",
@@ -15742,6 +16669,14 @@
       "cls": "All-Class"
     },
     {
+      "id": "Z00103_146",
+      "name": "Vacation Sandals",
+      "step": "B",
+      "type": "Boots",
+      "area": "Summer Coast",
+      "cls": "Warrior"
+    },
+    {
       "id": "Z00102_153",
       "name": "Ward Boots",
       "step": "B",
@@ -15787,6 +16722,14 @@
       "step": "C",
       "type": "Boots",
       "area": "The Sunken Sea",
+      "cls": "All-Class"
+    },
+    {
+      "id": "Z00103_003",
+      "name": "Breezy Sandals",
+      "step": "C",
+      "type": "Boots",
+      "area": "Summer Coast",
       "cls": "All-Class"
     },
     {
@@ -16030,6 +16973,14 @@
       "cls": "All-Class"
     },
     {
+      "id": "Z00103_366",
+      "name": "Festival Necklace",
+      "step": "S",
+      "type": "Amulet",
+      "area": "Summer Coast",
+      "cls": "Priest"
+    },
+    {
       "id": "Z00201_426",
       "name": "Flawless Necklace",
       "step": "S",
@@ -16246,6 +17197,14 @@
       "cls": "Archer"
     },
     {
+      "id": "Z00103_323",
+      "name": "Tidal Necklace",
+      "step": "S",
+      "type": "Amulet",
+      "area": "Summer Coast",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z05001_353",
       "name": "Titan Necklace",
       "step": "S",
@@ -16294,12 +17253,36 @@
       "cls": "Mage"
     },
     {
+      "id": "Z00103_344",
+      "name": "猎龙项链",
+      "step": "S",
+      "type": "Amulet",
+      "area": "Summer Coast",
+      "cls": "Archer"
+    },
+    {
       "id": "Z00003_522",
       "name": "Archmage Necklace",
       "step": "A",
       "type": "Amulet",
       "area": "Any",
       "cls": "Mage"
+    },
+    {
+      "id": "Z00103_294",
+      "name": "Azure Necklace",
+      "step": "A",
+      "type": "Amulet",
+      "area": "Summer Coast",
+      "cls": "Mage,Warrior"
+    },
+    {
+      "id": "Z00103_221",
+      "name": "Baptism Necklace",
+      "step": "A",
+      "type": "Amulet",
+      "area": "Summer Coast",
+      "cls": "All-Class"
     },
     {
       "id": "Z06001_281",
@@ -16622,6 +17605,14 @@
       "cls": "Archer"
     },
     {
+      "id": "Z00103_281",
+      "name": "Ornate Necklace",
+      "step": "A",
+      "type": "Amulet",
+      "area": "Summer Coast",
+      "cls": "Priest"
+    },
+    {
       "id": "Z07001_201",
       "name": "Parched Necklace",
       "step": "A",
@@ -16732,6 +17723,14 @@
       "type": "Amulet",
       "area": "The Deep Hollows",
       "cls": "Mage"
+    },
+    {
+      "id": "Z00103_204",
+      "name": "Spring Necklace",
+      "step": "A",
+      "type": "Amulet",
+      "area": "Summer Coast",
+      "cls": "Priest"
     },
     {
       "id": "Z00101_261",
@@ -16886,6 +17885,14 @@
       "cls": "Mage"
     },
     {
+      "id": "Z00103_154",
+      "name": "Damp Necklace",
+      "step": "B",
+      "type": "Amulet",
+      "area": "Summer Coast",
+      "cls": "Warrior,Priest"
+    },
+    {
       "id": "Z03001_143",
       "name": "Defender Necklace",
       "step": "B",
@@ -16916,6 +17923,14 @@
       "type": "Amulet",
       "area": "Endless Desert",
       "cls": "All-Class"
+    },
+    {
+      "id": "Z00103_113",
+      "name": "Fountain Necklace",
+      "step": "B",
+      "type": "Amulet",
+      "area": "Summer Coast",
+      "cls": "Priest,Mage"
     },
     {
       "id": "Z02001_192",
@@ -16950,6 +17965,14 @@
       "cls": "All-Class"
     },
     {
+      "id": "Z00103_131",
+      "name": "Party Necklace",
+      "step": "B",
+      "type": "Amulet",
+      "area": "Summer Coast",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z30005_821",
       "name": "Pearl Necklace",
       "step": "B",
@@ -16964,6 +17987,14 @@
       "type": "Amulet",
       "area": "Wandering Woods",
       "cls": "Priest"
+    },
+    {
+      "id": "Z00103_122",
+      "name": "Rainrite Necklace",
+      "step": "B",
+      "type": "Amulet",
+      "area": "Summer Coast",
+      "cls": "All-Class"
     },
     {
       "id": "Z00201_253",
@@ -17038,6 +18069,14 @@
       "cls": "Priest"
     },
     {
+      "id": "Z00103_011",
+      "name": "Dewdrop Necklace",
+      "step": "C",
+      "type": "Amulet",
+      "area": "Summer Coast",
+      "cls": "Warrior,Priest"
+    },
+    {
       "id": "Z00201_114",
       "name": "Fishbone Necklace",
       "step": "C",
@@ -17068,6 +18107,14 @@
       "type": "Amulet",
       "area": "Forsaken Mines",
       "cls": "All-Class"
+    },
+    {
+      "id": "Z00103_021",
+      "name": "Mistral Necklace",
+      "step": "C",
+      "type": "Amulet",
+      "area": "Summer Coast",
+      "cls": "Warrior,Priest"
     },
     {
       "id": "Z10006_801",
@@ -17382,6 +18429,14 @@
       "cls": "Mage"
     },
     {
+      "id": "Z00103_345",
+      "name": "猎龙戒指",
+      "step": "S",
+      "type": "Ring",
+      "area": "Summer Coast",
+      "cls": "Archer"
+    },
+    {
       "id": "Z10016_921",
       "name": "Alloy Ring",
       "step": "A",
@@ -17412,6 +18467,22 @@
       "type": "Ring",
       "area": "Wandering Woods",
       "cls": "Warrior,Priest"
+    },
+    {
+      "id": "Z00103_295",
+      "name": "Azure Ring",
+      "step": "A",
+      "type": "Ring",
+      "area": "Summer Coast",
+      "cls": "Mage,Warrior"
+    },
+    {
+      "id": "Z00103_222",
+      "name": "Baptism Ring",
+      "step": "A",
+      "type": "Ring",
+      "area": "Summer Coast",
+      "cls": "All-Class"
     },
     {
       "id": "Z06001_283",
@@ -17526,6 +18597,14 @@
       "cls": "Mage,Archer"
     },
     {
+      "id": "Z00103_213",
+      "name": "Dewfall Stone",
+      "step": "A",
+      "type": "Ring",
+      "area": "Summer Coast",
+      "cls": "Warrior,Mage"
+    },
+    {
       "id": "Z07001_276",
       "name": "Dissolve Ring",
       "step": "A",
@@ -17564,6 +18643,14 @@
       "type": "Ring",
       "area": "The Deep Hollows",
       "cls": "Mage"
+    },
+    {
+      "id": "Z00103_252",
+      "name": "Festive Ring",
+      "step": "A",
+      "type": "Ring",
+      "area": "Summer Coast",
+      "cls": "Priest"
     },
     {
       "id": "Z06001_202",
@@ -17718,6 +18805,14 @@
       "cls": "Archer"
     },
     {
+      "id": "Z00103_283",
+      "name": "Ornate Ring",
+      "step": "A",
+      "type": "Ring",
+      "area": "Summer Coast",
+      "cls": "Priest"
+    },
+    {
       "id": "Z07001_202",
       "name": "Parched Ring",
       "step": "A",
@@ -17820,6 +18915,14 @@
       "type": "Ring",
       "area": "Forsaken Mines",
       "cls": "Warrior,Mage"
+    },
+    {
+      "id": "Z00103_205",
+      "name": "Spring Ring",
+      "step": "A",
+      "type": "Ring",
+      "area": "Summer Coast",
+      "cls": "Priest"
     },
     {
       "id": "Z00101_262",
@@ -18014,6 +19117,14 @@
       "cls": "Mage"
     },
     {
+      "id": "Z00103_155",
+      "name": "Damp Ring",
+      "step": "B",
+      "type": "Ring",
+      "area": "Summer Coast",
+      "cls": "Warrior,Priest"
+    },
+    {
       "id": "Z03001_144",
       "name": "Defender Ring",
       "step": "B",
@@ -18094,12 +19205,28 @@
       "cls": "All-Class"
     },
     {
+      "id": "Z00103_132",
+      "name": "Party Ring",
+      "step": "B",
+      "type": "Ring",
+      "area": "Summer Coast",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z10008_112",
       "name": "Plunder Ring",
       "step": "B",
       "type": "Ring",
       "area": "Dawnstep Plains",
       "cls": "Warrior"
+    },
+    {
+      "id": "Z00103_123",
+      "name": "Rainrite Ring",
+      "step": "B",
+      "type": "Ring",
+      "area": "Summer Coast",
+      "cls": "All-Class"
     },
     {
       "id": "Z00201_252",
@@ -18198,6 +19325,14 @@
       "cls": "Warrior,Archer"
     },
     {
+      "id": "Z00103_012",
+      "name": "Dewdrop Ring",
+      "step": "C",
+      "type": "Ring",
+      "area": "Summer Coast",
+      "cls": "Warrior,Priest"
+    },
+    {
       "id": "Z00201_115",
       "name": "Fishbone Ring",
       "step": "C",
@@ -18212,6 +19347,14 @@
       "type": "Ring",
       "area": "Crimson Highlands",
       "cls": "Priest"
+    },
+    {
+      "id": "Z00103_022",
+      "name": "Mistral Ring",
+      "step": "C",
+      "type": "Ring",
+      "area": "Summer Coast",
+      "cls": "Warrior,Priest"
     },
     {
       "id": "Z00201_102",
@@ -18574,6 +19717,14 @@
       "cls": "Mage,Priest"
     },
     {
+      "id": "Z00103_346",
+      "name": "猎龙徽章",
+      "step": "S",
+      "type": "Badge",
+      "area": "Summer Coast",
+      "cls": "Archer"
+    },
+    {
       "id": "Z02001_413",
       "name": "Aquatic Badge",
       "step": "A",
@@ -18596,6 +19747,22 @@
       "type": "Badge",
       "area": "Wandering Woods",
       "cls": "Warrior,Priest"
+    },
+    {
+      "id": "Z00103_296",
+      "name": "Azure Badge",
+      "step": "A",
+      "type": "Badge",
+      "area": "Summer Coast",
+      "cls": "Mage,Warrior"
+    },
+    {
+      "id": "Z00103_223",
+      "name": "Baptism Badge",
+      "step": "A",
+      "type": "Badge",
+      "area": "Summer Coast",
+      "cls": "All-Class"
     },
     {
       "id": "Z06001_282",
@@ -18708,6 +19875,14 @@
       "type": "Badge",
       "area": "The Deep Hollows",
       "cls": "Mage"
+    },
+    {
+      "id": "Z00103_253",
+      "name": "Festive Badge",
+      "step": "A",
+      "type": "Badge",
+      "area": "Summer Coast",
+      "cls": "Priest"
     },
     {
       "id": "Z00102_273",
@@ -18846,6 +20021,14 @@
       "cls": "Mage"
     },
     {
+      "id": "Z00103_282",
+      "name": "Ornate Badge",
+      "step": "A",
+      "type": "Badge",
+      "area": "Summer Coast",
+      "cls": "Priest"
+    },
+    {
       "id": "Z10021_021",
       "name": "Overseer Badge",
       "step": "A",
@@ -18932,6 +20115,14 @@
       "type": "Badge",
       "area": "Forsaken Mines",
       "cls": "Warrior,Mage"
+    },
+    {
+      "id": "Z00103_206",
+      "name": "Spring Badge",
+      "step": "A",
+      "type": "Badge",
+      "area": "Summer Coast",
+      "cls": "Priest"
     },
     {
       "id": "Z00101_263",
@@ -19054,6 +20245,14 @@
       "cls": "Mage"
     },
     {
+      "id": "Z00103_156",
+      "name": "Damp Badge",
+      "step": "B",
+      "type": "Badge",
+      "area": "Summer Coast",
+      "cls": "Warrior,Priest"
+    },
+    {
       "id": "Z03001_141",
       "name": "Defender Chip",
       "step": "B",
@@ -19142,6 +20341,14 @@
       "cls": "All-Class"
     },
     {
+      "id": "Z00103_133",
+      "name": "Party Badge",
+      "step": "B",
+      "type": "Badge",
+      "area": "Summer Coast",
+      "cls": "All-Class"
+    },
+    {
       "id": "Z00102_163",
       "name": "Ruby Badge",
       "step": "B",
@@ -19214,11 +20421,27 @@
       "cls": "Mage"
     },
     {
+      "id": "Z00103_013",
+      "name": "Dewdrop Badge",
+      "step": "C",
+      "type": "Badge",
+      "area": "Summer Coast",
+      "cls": "Warrior,Priest"
+    },
+    {
       "id": "Z00201_113",
       "name": "Fishbone Badge",
       "step": "C",
       "type": "Badge",
       "area": "Breezy Shores",
+      "cls": "Warrior,Priest"
+    },
+    {
+      "id": "Z00103_023",
+      "name": "Mistral Badge",
+      "step": "C",
+      "type": "Badge",
+      "area": "Summer Coast",
       "cls": "Warrior,Priest"
     },
     {
@@ -19380,6 +20603,12 @@
       "material": "Deadwood"
     },
     {
+      "id": "F40002_016",
+      "name": "Eternal Rune",
+      "step": "S",
+      "material": "Festival"
+    },
+    {
       "id": "F30003_011",
       "name": "Heroic Rune",
       "step": "S",
@@ -19476,6 +20705,12 @@
       "material": "Deadwood"
     },
     {
+      "id": "F20003_016",
+      "name": "Luck Rune",
+      "step": "S",
+      "material": "Festival"
+    },
+    {
       "id": "F40003_001",
       "name": "Nature Rune",
       "step": "S",
@@ -19564,6 +20799,12 @@
       "name": "Nature Rune",
       "step": "S",
       "material": "Deadwood"
+    },
+    {
+      "id": "F40003_016",
+      "name": "Nature Rune",
+      "step": "S",
+      "material": "Festival"
     },
     {
       "id": "F40001_001",
@@ -19656,6 +20897,12 @@
       "material": "Deadwood"
     },
     {
+      "id": "F40001_016",
+      "name": "Ruin Rune",
+      "step": "S",
+      "material": "Festival"
+    },
+    {
       "id": "F30001_001",
       "name": "Mana Rune",
       "step": "A",
@@ -19744,6 +20991,12 @@
       "name": "Mana Rune",
       "step": "A",
       "material": "Deadwood"
+    },
+    {
+      "id": "F30001_016",
+      "name": "Mana Rune",
+      "step": "A",
+      "material": "Festival"
     },
     {
       "id": "F30002_001",
@@ -19836,6 +21089,12 @@
       "material": "Deadwood"
     },
     {
+      "id": "F30002_016",
+      "name": "Resilience Rune",
+      "step": "A",
+      "material": "Festival"
+    },
+    {
       "id": "F20002_001",
       "name": "HP Rune",
       "step": "B",
@@ -19924,6 +21183,12 @@
       "name": "HP Rune",
       "step": "B",
       "material": "Deadwood"
+    },
+    {
+      "id": "F20002_016",
+      "name": "HP Rune",
+      "step": "B",
+      "material": "Festival"
     },
     {
       "id": "F20001_001",
@@ -20016,6 +21281,12 @@
       "material": "Deadwood"
     },
     {
+      "id": "F20001_016",
+      "name": "SPD Rune",
+      "step": "B",
+      "material": "Festival"
+    },
+    {
       "id": "F10001_001",
       "name": "ATK Rune",
       "step": "C",
@@ -20106,6 +21377,12 @@
       "material": "Deadwood"
     },
     {
+      "id": "F10001_016",
+      "name": "ATK Rune",
+      "step": "C",
+      "material": "Festival"
+    },
+    {
       "id": "F10002_001",
       "name": "DEF Rune",
       "step": "C",
@@ -20194,6 +21471,12 @@
       "name": "DEF Rune",
       "step": "C",
       "material": "Deadwood"
+    },
+    {
+      "id": "F10002_016",
+      "name": "DEF Rune",
+      "step": "C",
+      "material": "Festival"
     }
   ],
   "godStoneAffixes": [
