@@ -1714,6 +1714,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17303_004",
+      "name": "Absorbent Skin",
+      "effect": "After becoming Weakness Exposed, consume up to 20 stacks of Soothe and gain the same number of Fortitude stacks.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF14305_004",
       "name": "Abyss Call",
       "effect": "Lose 50% max HP at turn start, but gain 1 ally count for every 20 HP lost.",
@@ -1787,6 +1794,13 @@
       "id": "TF00022",
       "name": "Ancient Treant",
       "effect": "Gain 100 stacks of Growth at battle start.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17404_004",
+      "name": "Ancient Will",
+      "effect": "Immune to Stun, but lose 20 SPD.",
       "step": "S",
       "type": "Talent"
     },
@@ -1912,7 +1926,7 @@
     {
       "id": "TF11102_004",
       "name": "Blood Drain",
-      "effect": "Apply +2 Expose stacks on the target and make them suffer +1 HP Loss per 1 stacks of Expose.",
+      "effect": "Apply +2 Expose stacks on the target and make them suffer +1 HP Loss per 50 stacks of Expose.",
       "step": "S",
       "type": "Talent"
     },
@@ -2071,6 +2085,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17204_004",
+      "name": "Chameleon Scales",
+      "effect": "Never be the enemy's first priority, and take -40 AoE Skill DMG.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF14504_004",
       "name": "Charge Crystal",
       "effect": "Deal +100% single-hit DMG when casting a skill if no basic attacks occurred this turn.",
@@ -2183,6 +2204,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17501_004",
+      "name": "Core Meltdown",
+      "effect": "Apply 6 stacks of Shock to the nearest 3 enemy targets when defeated.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF10009_004",
       "name": "Core Position",
       "effect": "Deal +8 total DMG when in mid position.",
@@ -2211,9 +2239,23 @@
       "type": "Talent"
     },
     {
+      "id": "TF17304_004",
+      "name": "Crisp Croak",
+      "effect": "Other allies at high Toughness gain 4 stacks of Inspire before the action start.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF00011",
       "name": "Critical Moment",
       "effect": "Apply +8 stacks of Reversal to low HP targets.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17401_004",
+      "name": "Crushing Jaws",
+      "effect": "Apply +15 stacks of Expose per 15 stacks of Stun on the target.",
       "step": "S",
       "type": "Talent"
     },
@@ -2248,7 +2290,7 @@
     {
       "id": "TF17103_004",
       "name": "Cycle Strike",
-      "effect": "进行攻击后使自身获得4点魔力],[CN: 但造成全部伤害-25%。",
+      "effect": "Gain 4 Mana after attacking, but deal -25% total DMG.",
       "step": "S",
       "type": "Talent"
     },
@@ -2316,6 +2358,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17405_004",
+      "name": "Death Roll",
+      "effect": "After casting a skill, enemy targets take +4 stacks of Expose and prioritize self as their target this turn.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF16801_004",
       "name": "Deep Command",
       "effect": "Apply +1 stacks of Soothe per 3 ally count when casting skill.",
@@ -2339,7 +2388,14 @@
     {
       "id": "TF01067",
       "name": "Deep Sea Sneak",
-      "effect": "When gaining Mana, immune to effects that reduce own Mana Gain.",
+      "effect": "Immune to effects that reduce own Mana Gain when receiving Mana Gain.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01068",
+      "name": "Deep Wounds",
+      "effect": "Deal +1 Follow-up DMG to the target per 20 stacks of Hinder on the target.",
       "step": "S",
       "type": "Talent"
     },
@@ -2361,6 +2417,13 @@
       "id": "TF13505_004",
       "name": "Delayed Start",
       "effect": "Cannot act on turn 1. Deal +1 total DMG on subsequent turns per 20 HP lost during turn 1.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01072_000",
+      "name": "Demon Hunt Rite",
+      "effect": "Gain +1 multi-hit skill count per 100 stacks of Decay applied when casting skills.",
       "step": "S",
       "type": "Talent"
     },
@@ -3016,6 +3079,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17305_004",
+      "name": "Hibernation",
+      "effect": "Take -15 Toughness Loss at low HP. Receive +0 Toughness Gain at high HP.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF01046",
       "name": "High Momentum",
       "effect": "Apply +2 stacks of all statuses while having Bloodlust.",
@@ -3226,6 +3296,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17504_004",
+      "name": "Kinetic Conversion",
+      "effect": "Deal +1 Total DMG per 30 SPD.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF00050",
       "name": "Kinetic Use",
       "effect": "Deal +1 skill DMG per 20 SPD.",
@@ -3271,6 +3348,13 @@
       "id": "TF13104_004",
       "name": "Legend Creature",
       "effect": "Gain +40 HP and +40 Toughness at level 100.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01033_000",
+      "name": "Lethal Toxin",
+      "effect": "Deal +1 single-hit Skill DMG to the target per 1 stacks of Hinder on the target. Remove all Hinder from the target after casting attack skills.",
       "step": "S",
       "type": "Talent"
     },
@@ -3569,6 +3653,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17302_004",
+      "name": "Motion Vision",
+      "effect": "Gain +1 SPD per 5 stacks of Precision.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF17104_004",
       "name": "Multi-Arm Sync",
       "effect": "Cannot be countered after casting skill.",
@@ -3716,6 +3807,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17505_004",
+      "name": "Overdrive",
+      "effect": "Gain +1 single-hit skill attack hits, but cannot cast skills on even-numbered turns.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF01018",
       "name": "Oversized",
       "effect": "+1 AoE skill targets.",
@@ -3754,6 +3852,13 @@
       "id": "TF15902_004",
       "name": "Patient Counter",
       "effect": "Deal +1 Counter DMG per 10 stacks of Thorns.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17203_004",
+      "name": "Patient Stalker",
+      "effect": "Deal +80 Total DMG on the first attack if not attacked this battle.",
       "step": "S",
       "type": "Talent"
     },
@@ -3821,6 +3926,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17301_004",
+      "name": "Powerful Hind Legs",
+      "effect": "Gain +4 Action Mana. Gain extra +1 Action Mana per 200 STR.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF01048",
       "name": "Prayers of All",
       "effect": "Gain 2 Mana after gaining Luck.",
@@ -3859,6 +3971,13 @@
       "id": "TF17004_004",
       "name": "Pristine Wings",
       "effect": "Apply +2 stacks of Cleanse. Gain 4 stacks of Cleanse at action end.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17503_004",
+      "name": "Programmed Routine",
+      "effect": "Take 1 extra actions immediately for every 5 actions taken by other allies.",
       "step": "S",
       "type": "Talent"
     },
@@ -3942,7 +4061,7 @@
     {
       "id": "TF01070",
       "name": "Rally",
-      "effect": "其他友方目标弱点暴露后使自身获得2点魔力。",
+      "effect": "Gain 2 Mana when another ally becomes Weakness Exposed.",
       "step": "S",
       "type": "Talent"
     },
@@ -3991,7 +4110,7 @@
     {
       "id": "TF00065",
       "name": "Regen Thorns",
-      "effect": "获得生命效果会同时使自身获得10层反伤。",
+      "effect": "Gain 10 stacks of Thorns when gaining the HP Gain effect.",
       "step": "S",
       "type": "Talent"
     },
@@ -3999,6 +4118,13 @@
       "id": "TF13404_004",
       "name": "Ring Master",
       "effect": "Gain +4 all stats from Ring gear. Ring gear's Basic Bond level +2.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01011_000",
+      "name": "Rising Tide",
+      "effect": "Deal +50% single-hit Skill DMG per 450 stacks of Soothe.",
       "step": "S",
       "type": "Talent"
     },
@@ -4034,6 +4160,13 @@
       "id": "TF00067",
       "name": "Sacred Blessing",
       "effect": "Take -15 debuff stacks coming from next attacks when having no current debuffs.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF01073",
+      "name": "Sadistic Strike",
+      "effect": "On the first skill cast each turn, ignore all DEF of targets at max Expose stacks.",
       "step": "S",
       "type": "Talent"
     },
@@ -4122,6 +4255,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17502_004",
+      "name": "Self-Diagnostics",
+      "effect": "Gain 8 stacks of Cleanse at action end. Gain HP equal to the number of Cleanse stacks that do not take effect.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF10406_004",
       "name": "Selfless",
       "effect": "Lose 20% of current HP when using basic heals, increasing total HP restored to targets by the same amount.",
@@ -4185,6 +4325,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF01069",
+      "name": "Silent Dive",
+      "effect": "If not attacked this turn, apply +10 stacks of Decay for the rest of this turn.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF16101_004",
       "name": "Silver Purge",
       "effect": "Gain +12 Cleanse stacks from allies.",
@@ -4229,7 +4376,7 @@
     {
       "id": "TF12702_004",
       "name": "Soul Curse",
-      "effect": "战斗开始前触发2次自身战败效果],[CN: 但使自身失去20%生命上限的生命。",
+      "effect": "Trigger own defeat effect 2 times at battle start, but lose HP equal to 20% of max HP.",
       "step": "S",
       "type": "Talent"
     },
@@ -4423,6 +4570,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF01073_000",
+      "name": "Stubborn Stain",
+      "effect": "For every 25 stacks of Hinder applied to the target, they take +1 Hinder stacks but -1 stacks of other debuffs.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF00060",
       "name": "Sunshine",
       "effect": "All enemies take +3 stacks of Burn and +1 stacks of Cleanse.",
@@ -4437,6 +4591,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17403_004",
+      "name": "Swamp Sovereign",
+      "effect": "Deal +30 Total DMG when no other Crocodilian ally is present. Effect doubles on Swamp maps.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF13002_004",
       "name": "Swarm Control",
       "effect": "Inflict +1 HP Loss on targets per 2 ally count.",
@@ -4446,7 +4607,7 @@
     {
       "id": "TF14004_004",
       "name": "Swarm Wreck",
-      "effect": "+2 Ally count. Apply +1 stacks of Vulnerable per 1 ally count.",
+      "effect": "+2 Ally count. Apply +1 stacks of Vulnerable per 10 ally ROUND(",
       "step": "S",
       "type": "Talent"
     },
@@ -4461,6 +4622,13 @@
       "id": "TF12901_004",
       "name": "Swift Pounce",
       "effect": "+8 SPD. Deal +1 Follow-Up DMG per 40 SPD.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17201_004",
+      "name": "Tail Shedding",
+      "effect": "Gain 10 stacks of Fortitude after becoming Weakness Exposed the first 4 times each turn.",
       "step": "S",
       "type": "Talent"
     },
@@ -4510,6 +4678,20 @@
       "id": "TF12705_004",
       "name": "Terror Ritual",
       "effect": "Reduce Max HP to 1 at battle start and apply Fear stacks equal to 40% of reduced amount to all enemies.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17205_004",
+      "name": "Thermal Surge",
+      "effect": "Deal +1 Total DMG after gaining Bloodlust.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17402_004",
+      "name": "Thick Scales",
+      "effect": "Take -20 Total DMG while not in the Weakness Exposed state.",
       "step": "S",
       "type": "Talent"
     },
@@ -4661,6 +4843,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF01072",
+      "name": "Trick Blowpipe",
+      "effect": "Gain +2 single-hit Skill attack targets when all enemies are at max Hinder stacks.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF00010",
       "name": "Triple Strike",
       "effect": "Deal +6 basic DMG every 3 basic attacks, increasing by 6 each time.",
@@ -4733,7 +4922,7 @@
     {
       "id": "TF00052_000",
       "name": "Vapor Surge",
-      "effect": "拥有满层滋润时自身造成多段技能攻击次数+2。",
+      "effect": "Gain +2 multi-hit skill count at max Soothe stacks.",
       "step": "S",
       "type": "Talent"
     },
@@ -4755,6 +4944,13 @@
       "id": "TF13003_004",
       "name": "Venom Fang",
       "effect": "Target loses 2 HP and 2 Toughness after taking DMG.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17202_004",
+      "name": "Venom Spit",
+      "effect": "After dealing DMG, the target receives +2 Hinder stacks.",
       "step": "S",
       "type": "Talent"
     },
@@ -4815,6 +5011,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF01071",
+      "name": "Wild Growth",
+      "effect": "Gain 10 stacks of Growth when receiving HP Gain.",
+      "step": "S",
+      "type": "Talent"
+    },
+    {
       "id": "TF12801_004",
       "name": "Wild Growth",
       "effect": "Gain +2 stacks of Growth. HP Gain +1 per 50 stacks of Growth.",
@@ -4857,206 +5060,10 @@
       "type": "Talent"
     },
     {
-      "id": "TF01068",
-      "name": "伤害加深",
-      "effect": "目标每拥有20层阻碍使自身对其造成追击伤害+1。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17305_004",
-      "name": "冬眠蛰伏",
-      "effect": "低生命时自身失去韧性-15],[CN: 高生命时自身获得韧性+0。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17202_004",
-      "name": "剧毒唾液",
-      "effect": "造成伤害后使目标受到阻碍层数+2。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17302_004",
-      "name": "动态视觉",
-      "effect": "每拥有5层精准使自身速度+1。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17504_004",
-      "name": "动能转化",
-      "effect": "每30点速度使自身造成全部伤害+1。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17402_004",
-      "name": "厚实鳞甲",
-      "effect": "非弱点暴露时自身受到全部伤害-20。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17205_004",
-      "name": "变温爆发",
-      "effect": "获得热血后使自身造成全部伤害+1。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17204_004",
-      "name": "变色鳞甲",
-      "effect": "不会优先成为敌方目标],[CN: 并且受到群体技能伤害-40。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17303_004",
-      "name": "吸水皮肤",
-      "effect": "弱点暴露后消耗最多20层滋润使自身获得等量层数的坚韧。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF01072",
-      "name": "奇形吹管",
-      "effect": "敌方全体目标拥有满层阻碍时自身单段技能攻击目标+2。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17401_004",
-      "name": "巨颚撕咬",
-      "effect": "目标每拥有15层眩晕使自身对其造成剥离层数+15。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17301_004",
-      "name": "强力后肢",
-      "effect": "行动回魔+4],[CN: 每200点力量使自身行动回魔额外+1。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17201_004",
-      "name": "断尾求生",
-      "effect": "每回合前4次弱点暴露后使自身获得10层坚韧。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF01073",
-      "name": "施虐打击",
-      "effect": "每回合首次释放技能时无视满层剥离目标全部防御点数。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17503_004",
-      "name": "既定程序",
-      "effect": "友方其他目标每进行5次行动使自身立即进行1次额外行动。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17405_004",
-      "name": "死亡翻滚",
-      "effect": "释放技能后使敌方目标受到剥离层数+4],[CN: 并且本回合优先以自身为目标。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17403_004",
-      "name": "沼泽霸主",
-      "effect": "友方没有其他巨鳄族时使自身造成全部伤害+30],[CN: 位于沼泽地图时效果翻倍。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF01011_000",
-      "name": "浪潮翻涌",
-      "effect": "Deal +50% single-hit Skill DMG per 450 stacks of Soothe.",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17304_004",
-      "name": "清脆蛙鸣",
-      "effect": "行动开始前使友方其他高韧性目标获得4层鼓舞。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF01072_000",
-      "name": "猎魔仪式",
-      "effect": "释放技能时每造成100层泯灭使自身造成多段技能攻击次数+1。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF01071",
-      "name": "疯狂生长",
-      "effect": "获得生命效果会同时使自身获得10层成长。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17203_004",
-      "name": "耐心潜伏",
-      "effect": "首次进行攻击时如果本场战斗没有受到攻击则使本次造成全部伤害+80。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17501_004",
-      "name": "能源自毁",
-      "effect": "自身战败后对最近的3名敌方目标造成6层感电。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17502_004",
-      "name": "自我诊断",
-      "effect": "行动结束后使自身获得8层净化],[CN: 并使自身获得本次未生效净化层数等量的生命。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF01033_000",
-      "name": "致命毒素",
-      "effect": "目标每拥有1层阻碍使自身对其造成单段技能伤害+1],[CN: 并在释放攻击技能后移除目标全部阻碍。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17505_004",
-      "name": "超载运行",
-      "effect": "造成单段技能攻击次数+1],[CN: 但自身偶数回合无法释放技能。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17404_004",
-      "name": "远古意志",
-      "effect": "免疫眩晕],[CN: 但速度-20。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF01073_000",
-      "name": "难以清洗",
-      "effect": "对目标每造成25层阻碍使其受到阻碍层数+1],[CN: 但受到其他负面状态层数-1。",
-      "step": "S",
-      "type": "Talent"
-    },
-    {
-      "id": "TF01069",
-      "name": "默默潜水",
-      "effect": "如果本回合没受到攻击则使自身本回合造成泯灭层数+10。",
-      "step": "S",
+      "id": "TF17303_003",
+      "name": "Absorbent Skin",
+      "effect": "After becoming Weakness Exposed, consume up to 10 stacks of Soothe and gain the same number of Fortitude stacks.",
+      "step": "A",
       "type": "Talent"
     },
     {
@@ -5118,7 +5125,7 @@
     {
       "id": "TF11102_003",
       "name": "Blood Drain",
-      "effect": "Apply +1 Expose stacks on the target and make them suffer +1 HP Loss per 1 stacks of Expose.",
+      "effect": "Apply +1 Expose stacks on the target and make them suffer +1 HP Loss per 100 stacks of Expose.",
       "step": "A",
       "type": "Talent"
     },
@@ -5207,9 +5214,23 @@
       "type": "Talent"
     },
     {
+      "id": "TF17501_003",
+      "name": "Core Meltdown",
+      "effect": "Apply 6 stacks of Shock to the nearest 2 enemy targets when defeated.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF10009_003",
       "name": "Core Position",
       "effect": "Deal +6 total DMG when in mid position.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17401_003",
+      "name": "Crushing Jaws",
+      "effect": "Apply +20 stacks of Expose per 20 stacks of Stun on the target.",
       "step": "A",
       "type": "Talent"
     },
@@ -5230,7 +5251,7 @@
     {
       "id": "TF17103_003",
       "name": "Cycle Strike",
-      "effect": "进行攻击后使自身获得2点魔力],[CN: 但造成全部伤害-25%。",
+      "effect": "Gain 2 Mana after attacking, but deal -25% total DMG.",
       "step": "A",
       "type": "Talent"
     },
@@ -5655,6 +5676,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17504_003",
+      "name": "Kinetic Conversion",
+      "effect": "Deal +1 Total DMG per 60 SPD.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF10306_003",
       "name": "Kite Master",
       "effect": "Take -1 total DMG per 80 SPD.",
@@ -5795,6 +5823,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17302_003",
+      "name": "Motion Vision",
+      "effect": "Gain +1 SPD per 10 stacks of Precision.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF10205_003",
       "name": "Multicast",
       "effect": "+1 Multi-hit skill hits but deal -50% skill DMG.",
@@ -5879,6 +5914,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17203_003",
+      "name": "Patient Stalker",
+      "effect": "Deal +40 Total DMG on the first attack if not attacked this battle.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF14104_003",
       "name": "Pitiful",
       "effect": "Apply +1 stacks of Taunt. Take -1 total DMG per 100 stacks of Taunt on target.",
@@ -5910,6 +5952,13 @@
       "id": "TF11103_003",
       "name": "Power Decay",
       "effect": "Apply +1 stacks of Shock. Enemies lose 1 Mana per 100 stacks of Shock applied.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17301_003",
+      "name": "Powerful Hind Legs",
+      "effect": "Gain +3 Action Mana. Gain extra +1 Action Mana per 300 STR.",
       "step": "A",
       "type": "Talent"
     },
@@ -6050,6 +6099,13 @@
       "id": "TF16203_003",
       "name": "Searing Purgatory",
       "effect": "Target loses 4 Toughness after applying Burn.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17502_003",
+      "name": "Self-Diagnostics",
+      "effect": "Gain 4 stacks of Cleanse at action end. Gain HP equal to the number of Cleanse stacks that do not take effect.",
       "step": "A",
       "type": "Talent"
     },
@@ -6215,6 +6271,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17403_003",
+      "name": "Swamp Sovereign",
+      "effect": "Deal +15 Total DMG when no other Crocodilian ally is present. Effect doubles on Swamp maps.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF12805_003",
       "name": "Sweet Scent",
       "effect": "Apply 2 stacks of Taunt to all enemies at turn start. Gain HP equal to 100% of Taunt stacks applied.",
@@ -6225,6 +6288,13 @@
       "id": "TF12901_003",
       "name": "Swift Pounce",
       "effect": "+6 SPD. Deal +1 Follow-Up DMG per 60 SPD.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17201_003",
+      "name": "Tail Shedding",
+      "effect": "Gain 10 stacks of Fortitude after becoming Weakness Exposed the first 3 times each turn.",
       "step": "A",
       "type": "Talent"
     },
@@ -6246,6 +6316,13 @@
       "id": "TF11502_003",
       "name": "Terror Aura",
       "effect": "Apply +1 stacks of Fear. Enemies with Weakness exposed gain -4 Toughness.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17402_003",
+      "name": "Thick Scales",
+      "effect": "Take -10 Total DMG while not in the Weakness Exposed state.",
       "step": "A",
       "type": "Talent"
     },
@@ -6383,6 +6460,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17202_003",
+      "name": "Venom Spit",
+      "effect": "After dealing DMG, the target receives +1 Hinder stacks.",
+      "step": "A",
+      "type": "Talent"
+    },
+    {
       "id": "TF10104_003",
       "name": "War Trample",
       "effect": "Nearest enemy loses 2 HP at action end. Effect increases by 1 per 80 STR.",
@@ -6407,90 +6491,6 @@
       "id": "TF14001_003",
       "name": "Wreck Master",
       "effect": "Apply +1 stacks of Vulnerable. Apply +1 stacks of Vulnerable per 200 stacks of Vulnerable on target.",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17202_003",
-      "name": "剧毒唾液",
-      "effect": "造成伤害后使目标受到阻碍层数+1。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17302_003",
-      "name": "动态视觉",
-      "effect": "每拥有10层精准使自身速度+1。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17504_003",
-      "name": "动能转化",
-      "effect": "每60点速度使自身造成全部伤害+1。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17402_003",
-      "name": "厚实鳞甲",
-      "effect": "非弱点暴露时自身受到全部伤害-10。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17303_003",
-      "name": "吸水皮肤",
-      "effect": "弱点暴露后消耗最多10层滋润使自身获得等量层数的坚韧。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17401_003",
-      "name": "巨颚撕咬",
-      "effect": "目标每拥有20层眩晕使自身对其造成剥离层数+20。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17301_003",
-      "name": "强力后肢",
-      "effect": "行动回魔+3],[CN: 每300点力量使自身行动回魔额外+1。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17201_003",
-      "name": "断尾求生",
-      "effect": "每回合前3次弱点暴露后使自身获得10层坚韧。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17403_003",
-      "name": "沼泽霸主",
-      "effect": "友方没有其他巨鳄族时使自身造成全部伤害+15],[CN: 位于沼泽地图时效果翻倍。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17203_003",
-      "name": "耐心潜伏",
-      "effect": "首次进行攻击时如果本场战斗没有受到攻击则使本次造成全部伤害+40。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17501_003",
-      "name": "能源自毁",
-      "effect": "自身战败后对最近的2名敌方目标造成6层感电。",
-      "step": "A",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17502_003",
-      "name": "自我诊断",
-      "effect": "行动结束后使自身获得4层净化],[CN: 并使自身获得本次未生效净化层数等量的生命。",
       "step": "A",
       "type": "Talent"
     },
@@ -6551,9 +6551,23 @@
       "type": "Talent"
     },
     {
+      "id": "TF17501_002",
+      "name": "Core Meltdown",
+      "effect": "Apply 6 stacks of Shock to the nearest 1 enemy targets when defeated.",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
       "id": "TF10009_002",
       "name": "Core Position",
       "effect": "Deal +4 total DMG when in mid position.",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17401_002",
+      "name": "Crushing Jaws",
+      "effect": "Apply +25 stacks of Expose per 25 stacks of Stun on the target.",
       "step": "B",
       "type": "Talent"
     },
@@ -6782,6 +6796,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17301_002",
+      "name": "Powerful Hind Legs",
+      "effect": "Gain +2 Action Mana. Gain extra +1 Action Mana per 400 STR.",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
       "id": "TF13303_002",
       "name": "Primal Body",
       "effect": "+8 HP and -4 HP Loss.",
@@ -6880,6 +6901,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17201_002",
+      "name": "Tail Shedding",
+      "effect": "Gain 10 stacks of Fortitude after becoming Weakness Exposed the first 2 times each turn.",
+      "step": "B",
+      "type": "Talent"
+    },
+    {
       "id": "TF15901_002",
       "name": "Tough Hide",
       "effect": "Take -6 basic DMG and -6 Follow-Up DMG.",
@@ -6925,34 +6953,6 @@
       "id": "TF15401_002",
       "name": "Weathering Erosion",
       "effect": "All enemies lose 4 DEF at turn start.",
-      "step": "B",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17401_002",
-      "name": "巨颚撕咬",
-      "effect": "目标每拥有25层眩晕使自身对其造成剥离层数+25。",
-      "step": "B",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17301_002",
-      "name": "强力后肢",
-      "effect": "行动回魔+2],[CN: 每400点力量使自身行动回魔额外+1。",
-      "step": "B",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17201_002",
-      "name": "断尾求生",
-      "effect": "每回合前2次弱点暴露后使自身获得10层坚韧。",
-      "step": "B",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17501_002",
-      "name": "能源自毁",
-      "effect": "自身战败后对最近的1名敌方目标造成6层感电。",
       "step": "B",
       "type": "Talent"
     },
@@ -7013,9 +7013,23 @@
       "type": "Talent"
     },
     {
+      "id": "TF17501_001",
+      "name": "Core Meltdown",
+      "effect": "Apply 3 stacks of Shock to the nearest 1 enemy targets when defeated.",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
       "id": "TF10009_001",
       "name": "Core Position",
       "effect": "Deal +2 total DMG when in mid position.",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
+      "id": "TF17401_001",
+      "name": "Crushing Jaws",
+      "effect": "Apply +30 stacks of Expose per 30 stacks of Stun on the target.",
       "step": "C",
       "type": "Talent"
     },
@@ -7244,6 +7258,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17301_001",
+      "name": "Powerful Hind Legs",
+      "effect": "Gain +1 Action Mana. Gain extra +1 Action Mana per 500 STR.",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
       "id": "TF13303_001",
       "name": "Primal Body",
       "effect": "+4 HP and -2 HP Loss.",
@@ -7342,6 +7363,13 @@
       "type": "Talent"
     },
     {
+      "id": "TF17201_001",
+      "name": "Tail Shedding",
+      "effect": "Gain 10 stacks of Fortitude after becoming Weakness Exposed the first 1 times each turn.",
+      "step": "C",
+      "type": "Talent"
+    },
+    {
       "id": "TF15901_001",
       "name": "Tough Hide",
       "effect": "Take -3 basic DMG and -3 Follow-Up DMG.",
@@ -7387,34 +7415,6 @@
       "id": "TF15401_001",
       "name": "Weathering Erosion",
       "effect": "All enemies lose 2 DEF at turn start.",
-      "step": "C",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17401_001",
-      "name": "巨颚撕咬",
-      "effect": "目标每拥有30层眩晕使自身对其造成剥离层数+30。",
-      "step": "C",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17301_001",
-      "name": "强力后肢",
-      "effect": "行动回魔+1],[CN: 每500点力量使自身行动回魔额外+1。",
-      "step": "C",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17201_001",
-      "name": "断尾求生",
-      "effect": "每回合前1次弱点暴露后使自身获得10层坚韧。",
-      "step": "C",
-      "type": "Talent"
-    },
-    {
-      "id": "TF17501_001",
-      "name": "能源自毁",
-      "effect": "自身战败后对最近的1名敌方目标造成3层感电。",
       "step": "C",
       "type": "Talent"
     }
@@ -17254,7 +17254,7 @@
     },
     {
       "id": "Z00103_344",
-      "name": "猎龙项链",
+      "name": "Wyrmhunt Necklace",
       "step": "S",
       "type": "Amulet",
       "area": "Summer Coast",
@@ -18430,7 +18430,7 @@
     },
     {
       "id": "Z00103_345",
-      "name": "猎龙戒指",
+      "name": "Wyrmhunt Ring",
       "step": "S",
       "type": "Ring",
       "area": "Summer Coast",
@@ -19718,7 +19718,7 @@
     },
     {
       "id": "Z00103_346",
-      "name": "猎龙徽章",
+      "name": "Wyrmhunt Badge",
       "step": "S",
       "type": "Badge",
       "area": "Summer Coast",
