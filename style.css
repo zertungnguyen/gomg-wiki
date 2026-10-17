@@ -69,6 +69,28 @@ aside.sidenav .brand {
   border-bottom: 1px solid var(--border);
   padding-bottom: 12px;
 }
+.nes-layout-switch {
+  display: block;
+  width: 100%;
+  margin: 8px 0 12px 0;
+  font-family: 'Press Start 2P', 'Chakra Petch', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 7px 6px;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid var(--accent);
+  border-radius: 4px;
+  background: var(--code-bg);
+  color: var(--accent);
+  text-transform: uppercase;
+  user-select: none;
+  transition: all .15s;
+}
+.nes-layout-switch:hover {
+  background: var(--accent);
+  color: #000;
+}
 aside.sidenav nav {
   display: flex;
   flex-direction: column;

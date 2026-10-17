@@ -1,0 +1,314 @@
+/* ==========================================================================
+   NES Retro UI Theme Overlay for Guild of Monster Girls Wiki
+   Scoped to: body.nes-theme
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@500;600;700&display=swap');
+
+/* When NES Theme is active */
+body.nes-theme {
+  background-color: #1a1c23 !important;
+  color: #ffffff !important;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* Retain high readability for dense tables, formulas, descriptions */
+body.nes-theme .readable,
+body.nes-theme p,
+body.nes-theme td,
+body.nes-theme th,
+body.nes-theme .card-desc,
+body.nes-theme .stat-line,
+body.nes-theme .aname,
+body.nes-theme .aeffect,
+body.nes-theme .results-meta,
+body.nes-theme .sub,
+body.nes-theme input,
+body.nes-theme select,
+body.nes-theme textarea {
+  font-family: 'Chakra Petch', sans-serif !important;
+  letter-spacing: .3px;
+}
+
+/* Headings */
+body.nes-theme h1,
+body.nes-theme h2,
+body.nes-theme h3,
+body.nes-theme h4,
+body.nes-theme .title,
+body.nes-theme .brand {
+  font-family: 'Press Start 2P', monospace !important;
+  text-shadow: 2px 2px #000;
+  letter-spacing: 0.5px;
+}
+body.nes-theme h1 { font-size: 18px !important; border-bottom: 4px solid #fff !important; padding-bottom: 10px !important; color: #f7d51d !important; }
+body.nes-theme h2 { font-size: 14px !important; border-bottom: 3px solid #fff !important; padding-bottom: 6px !important; color: #209cee !important; }
+body.nes-theme h3 { font-size: 12px !important; color: #92cc41 !important; }
+body.nes-theme h4 { font-size: 11px !important; color: #f7d51d !important; }
+
+/* Links */
+body.nes-theme a { color: #209cee; text-decoration: none; }
+body.nes-theme a:hover { color: #f7d51d; text-decoration: none; }
+
+/* Sidenav: Retro Arcade Drawer */
+body.nes-theme aside.sidenav,
+body.nes-theme aside.mgg-sidenav {
+  background: #212529 !important;
+  border-right: 4px solid #fff !important;
+  box-shadow: 4px 0 0 #000, 8px 0 16px rgba(0,0,0,0.6) !important;
+  padding: 16px 12px !important;
+}
+body.nes-theme aside.sidenav .brand,
+body.nes-theme aside.mgg-sidenav .brand {
+  font-size: 13px !important;
+  color: #f7d51d !important;
+  border-bottom: 4px solid #fff !important;
+  padding-bottom: 12px !important;
+  margin-bottom: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+body.nes-theme aside.sidenav nav a,
+body.nes-theme aside.mgg-sidenav nav a {
+  font-family: 'Chakra Petch', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  border-radius: 0 !important;
+  border: 2px solid transparent !important;
+  margin-bottom: 2px !important;
+  transition: none !important;
+}
+body.nes-theme aside.sidenav nav a:hover,
+body.nes-theme aside.mgg-sidenav nav a:hover {
+  background: #209cee !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+  box-shadow: inset -3px -3px #006bb3 !important;
+  transform: translateX(4px);
+}
+body.nes-theme aside.sidenav nav a.current,
+body.nes-theme aside.mgg-sidenav nav a.current {
+  background: #f7d51d !important;
+  color: #000 !important;
+  border: 2px solid #fff !important;
+  box-shadow: inset -3px -3px #e59400 !important;
+  position: relative;
+}
+body.nes-theme aside.sidenav nav a.current::before {
+  content: "► ";
+  color: #000;
+  font-weight: bold;
+}
+
+/* Sidenav Collapse & Expand Buttons */
+body.nes-theme .sn-collapse-btn,
+body.nes-theme .sn-expand-btn {
+  border-radius: 0 !important;
+  border: 3px solid #fff !important;
+  background: #212529 !important;
+  color: #fff !important;
+  box-shadow: inset -2px -2px #000 !important;
+}
+body.nes-theme .sn-collapse-btn:hover,
+body.nes-theme .sn-expand-btn:hover {
+  background: #f7d51d !important;
+  color: #000 !important;
+}
+
+/* Layout Switcher Pill in Sidenav */
+.nes-layout-switch {
+  display: block;
+  width: 100%;
+  margin-bottom: 14px;
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 9px !important;
+  padding: 8px 6px !important;
+  text-align: center;
+  cursor: pointer;
+  border: 3px solid #fff;
+  border-radius: 0;
+  background: #209cee;
+  color: #fff;
+  box-shadow: inset -3px -3px #006bb3, 0 3px 0 #000;
+  text-transform: uppercase;
+  user-select: none;
+  transition: transform .08s;
+}
+.nes-layout-switch:hover {
+  background: #108de0;
+  transform: translateY(-1px);
+}
+.nes-layout-switch:active {
+  box-shadow: inset 3px 3px #006bb3;
+  transform: translateY(2px);
+}
+body.nes-theme .nes-layout-switch {
+  background: #f7d51d !important;
+  color: #000 !important;
+  box-shadow: inset -3px -3px #e59400, 0 3px 0 #000 !important;
+}
+
+/* Cards & Containers */
+body.nes-theme .card,
+body.nes-theme .hub-card,
+body.nes-theme .entry,
+body.nes-theme .g-card,
+body.nes-theme .slot,
+body.nes-theme .equip-slot,
+body.nes-theme .rune-slot,
+body.nes-theme .gs-stone,
+body.nes-theme .picker,
+body.nes-theme .gear-filter-col {
+  background: #212529 !important;
+  border: 3px solid #fff !important;
+  border-radius: 0 !important;
+  box-shadow: 4px 4px 0px #000 !important;
+  position: relative !important;
+  transition: none !important;
+}
+body.nes-theme .card:hover,
+body.nes-theme .hub-card:hover,
+body.nes-theme .g-card:hover {
+  border-color: #f7d51d !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 4px 6px 0px #000 !important;
+}
+
+/* Chunky 8-Bit Buttons */
+body.nes-theme button,
+body.nes-theme .btn-clear,
+body.nes-theme .pill {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 9px !important;
+  border-radius: 0 !important;
+  border: 3px solid #fff !important;
+  background: #212529 !important;
+  color: #fff !important;
+  box-shadow: inset -3px -3px #000, 2px 2px 0 #000 !important;
+  cursor: pointer !important;
+  text-transform: uppercase !important;
+  transition: none !important;
+}
+body.nes-theme button:hover,
+body.nes-theme .btn-clear:hover,
+body.nes-theme .pill:hover {
+  background: #209cee !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+body.nes-theme button:active,
+body.nes-theme .btn-clear:active,
+body.nes-theme .pill:active {
+  box-shadow: inset 3px 3px #000 !important;
+  transform: translate(2px, 2px);
+}
+body.nes-theme button.primary,
+body.nes-theme .pill.on,
+body.nes-theme .pill.active {
+  background: #f7d51d !important;
+  color: #000 !important;
+  border-color: #fff !important;
+  box-shadow: inset -3px -3px #e59400, 2px 2px 0 #000 !important;
+}
+
+/* Badges & Rarity Tags */
+body.nes-theme .badge,
+body.nes-theme .tag,
+body.nes-theme .badge-tag {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 8px !important;
+  border-radius: 0 !important;
+  border: 2px solid #000 !important;
+  padding: 3px 6px !important;
+  text-transform: uppercase !important;
+  box-shadow: 2px 2px 0 #000 !important;
+}
+body.nes-theme .badge-SS,
+body.nes-theme .step.s-SS,
+body.nes-theme .b-Red { background: #e76e55 !important; color: #fff !important; }
+
+body.nes-theme .badge-S,
+body.nes-theme .step.s-S,
+body.nes-theme .b-Orange { background: #f7d51d !important; color: #000 !important; }
+
+body.nes-theme .badge-A,
+body.nes-theme .step.s-A,
+body.nes-theme .b-Purple { background: #b66dff !important; color: #fff !important; }
+
+body.nes-theme .badge-B,
+body.nes-theme .step.s-B,
+body.nes-theme .b-Blue { background: #209cee !important; color: #fff !important; }
+
+body.nes-theme .badge-C,
+body.nes-theme .step.s-C,
+body.nes-theme .b-Green { background: #92cc41 !important; color: #000 !important; }
+
+/* Inputs, Selects, Textareas */
+body.nes-theme input,
+body.nes-theme select,
+body.nes-theme textarea {
+  border-radius: 0 !important;
+  border: 3px solid #fff !important;
+  background: #000 !important;
+  color: #fff !important;
+  box-shadow: inset 2px 2px #000, 2px 2px 0 #000 !important;
+  outline: none !important;
+}
+body.nes-theme input:focus,
+body.nes-theme select:focus,
+body.nes-theme textarea:focus {
+  border-color: #f7d51d !important;
+}
+
+/* Tables */
+body.nes-theme table.results {
+  border: 3px solid #fff !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  background: #212529 !important;
+}
+body.nes-theme table.results thead th {
+  background: #000 !important;
+  color: #f7d51d !important;
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 9px !important;
+  border-bottom: 3px solid #fff !important;
+  padding: 10px 8px !important;
+}
+body.nes-theme table.results td {
+  border-bottom: 2px dashed #444 !important;
+  font-family: 'Chakra Petch', sans-serif !important;
+  font-size: 13px !important;
+}
+body.nes-theme table.results tr:hover td {
+  background: rgba(32, 156, 238, 0.2) !important;
+}
+
+/* Pixel Art Rendering */
+body.nes-theme img,
+body.nes-theme .gear-icon,
+body.nes-theme .lime-icon,
+body.nes-theme .unit-avatar {
+  image-rendering: pixelated !important;
+  image-rendering: -moz-crisp-edges !important;
+  image-rendering: crisp-edges !important;
+  border-radius: 0 !important;
+}
+
+/* 8-bit Progress Bar */
+body.nes-theme .progress-bar-wrap {
+  border-radius: 0 !important;
+  border: 3px solid #fff !important;
+  background: #000 !important;
+  height: 20px !important;
+}
+body.nes-theme .progress-bar {
+  border-radius: 0 !important;
+  background-color: #92cc41 !important;
+  background-image: linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff) !important;
+  background-position: 0 0, 10px 10px !important;
+  background-size: 20px 20px !important;
+}
