@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8-Bit NES Rymarium — Guild of Monster Girls</title>
+
+<!-- 8-Bit Font & Readable Companion Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
+
+<!-- Local NES.css Framework (Downloaded Offline) -->
+<link rel="stylesheet" href="assets/css/nes.min.css">
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  background-color: #1a1c23;
+  color: #fff;
+  padding: 24px 16px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* Dense reading elements use Chakra Petch for maximum eye comfort */
+.readable {
+  font-family: 'Chakra Petch', sans-serif;
+  letter-spacing: .5px;
+}
+
+/* Header bar */
+.arcade-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.arcade-title {
+  font-size: 18px;
+  color: #f7d51d;
+  text-shadow: 3px 3px #000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.arcade-back {
+  font-size: 10px;
+}
+
+/* Top NPC dialogue section */
+.npc-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.npc-avatar {
+  width: 56px;
+  height: 56px;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+  border: 4px solid #fff;
+  background: #212529;
+}
+
+/* Progress bar container */
+.progress-section {
+  margin-bottom: 24px;
+}
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+
+/* Filter Bar */
+.filter-box {
+  margin-bottom: 24px;
+}
+.filter-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.search-row {
+  margin-top: 14px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.search-row input {
+  flex: 1;
+  min-width: 240px;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 14px;
+}
+
+/* Specimen Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 18px;
+}
+
+.rym-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform .1s;
+  position: relative;
+}
+.rym-card:hover {
+  transform: translateY(-2px);
+}
+.rym-card.caught {
+  border-color: #92cc41 !important;
+}
+
+.rym-top {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.rym-sprite {
+  width: 52px;
+  height: 52px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  border: 3px solid #fff;
+  background: #000;
+  flex-shrink: 0;
+}
+.rym-card.tier-SS .rym-sprite { border-color: #e76e55; box-shadow: 0 0 10px rgba(231,110,85,0.6); }
+.rym-card.tier-S  .rym-sprite { border-color: #f7d51d; box-shadow: 0 0 10px rgba(247,213,29,0.6); }
+.rym-card.tier-A  .rym-sprite { border-color: #b66dff; box-shadow: 0 0 10px rgba(182,109,255,0.6); }
+.rym-card.tier-B  .rym-sprite { border-color: #209cee; box-shadow: 0 0 10px rgba(32,156,238,0.6); }
+.rym-card.tier-C  .rym-sprite { border-color: #92cc41; box-shadow: 0 0 10px rgba(146,204,65,0.6); }
+
+.rym-info {
+  flex: 1;
+  min-width: 0;
+}
+.rym-name {
+  font-size: 13px;
+  color: #fff;
+  margin-bottom: 4px;
+  word-break: break-word;
+}
+.rym-sub {
+  font-size: 10px;
+  color: #adafbc;
+}
+
+.rym-desc {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 12px;
+  color: #d3d3d3;
+  line-height: 1.4;
+  font-style: italic;
+  padding: 6px 8px;
+  background: rgba(0,0,0,0.3);
+  border: 2px dashed #444;
+}
+
+.rym-stats {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+}
+.stat-label {
+  color: #adafbc;
+}
+.stat-val {
+  font-weight: 700;
+  color: #fff;
+}
+
+.btn-catch {
+  margin-top: auto;
+  font-size: 10px !important;
+  padding: 8px 10px !important;
+  width: 100%;
+}
+
+/* Badge helpers */
+.badge-tag {
+  font-size: 9px;
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 0;
+}
+
+@media (max-width: 600px) {
+  .arcade-header { flex-direction: column; align-items: flex-start; }
+  .grid { grid-template-columns: 1fr; }
+  .npc-row { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="arcade-header">
+  <div class="arcade-title">
+    <span>&#9733;</span> RYMARIUM &middot; 8-BIT EDITION
+  </div>
+  <a href="search-limes.html" class="nes-btn is-warning arcade-back">&larr; Standard Wiki</a>
+</div>
+
+<!-- NPC Dialogue Box -->
+<div class="npc-row">
+  <img class="npc-avatar" src="assets/icons/Lime/LM01033.png" alt="Rym NPC">
+  <div class="nes-balloon from-left is-dark" style="margin-bottom:0">
+    <p style="font-size:11px">GREETINGS GUILDMASTER! ALL 50 RYMS ARE ARCHIVED IN 8-BIT RETRO STYLE!</p>
+  </div>
+</div>
+
+<!-- Collection Tracker / Progress -->
+<div class="nes-container is-dark with-title progress-section">
+  <p class="title">EXP &amp; COLLECTION</p>
+  <div class="progress-meta readable">
+    <span>CAUGHT STATUS: <strong id="progressText" style="color:#92cc41">0 / 50</strong></span>
+    <span>COMPLETION: <strong id="progressPct" style="color:#f7d51d">0%</strong></span>
+  </div>
+  <progress class="nes-progress is-pattern" id="progressBar" value="0" max="50"></progress>
+</div>
+
+<!-- Controls / Cartridge Filters -->
+<div class="nes-container is-dark with-title filter-box">
+  <p class="title">CARTRIDGE FILTER</p>
+  
+  <div style="font-size:10px;color:#adafbc;margin-bottom:6px">SELECT TIER:</div>
+  <div class="filter-btn-group">
+    <button type="button" class="nes-btn is-primary" id="btn-ALL" onclick="setStep('ALL')">ALL</button>
+    <button type="button" class="nes-btn" id="btn-SS" onclick="setStep('SS')" style="color:#e76e55">SS</button>
+    <button type="button" class="nes-btn" id="btn-S" onclick="setStep('S')" style="color:#f7d51d">S</button>
+    <button type="button" class="nes-btn" id="btn-A" onclick="setStep('A')" style="color:#b66dff">A</button>
+    <button type="button" class="nes-btn" id="btn-B" onclick="setStep('B')" style="color:#209cee">B</button>
+    <button type="button" class="nes-btn" id="btn-C" onclick="setStep('C')" style="color:#92cc41">C</button>
+  </div>
+
+  <div class="search-row">
+    <input type="text" id="searchInput" class="nes-input is-dark" placeholder="SEARCH RYM NAME, AREA, OR ABILITY..." oninput="onSearch()">
+    <button type="button" class="nes-btn is-error" onclick="resetFilters()" style="font-size:10px">RESET</button>
+  </div>
+</div>
+
+<!-- Specimen Grid -->
+<div class="grid" id="rymGrid">
+  <!-- Rendered by JS -->
+</div>
+
+<script src="limes-data.js"></script>
+<script>
+var STORAGE_KEY = 'mgg-limes-collection';
+var caughtSet = {};
+var currentStep = 'ALL';
+var currentQuery = '';
+var allLimes = (window.LIMES_DATA && window.LIMES_DATA.limes) || [];
+
+function loadStorage() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) caughtSet = JSON.parse(raw) || {};
+  } catch(e) { caughtSet = {}; }
+}
+
+function saveStorage() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(caughtSet));
+  } catch(e) {}
+}
+
+function toggleCatch(id) {
+  if (caughtSet[id]) {
+    delete caughtSet[id];
+  } else {
+    caughtSet[id] = true;
+  }
+  saveStorage();
+  updateTracker();
+  render();
+}
+
+function updateTracker() {
+  var count = Object.keys(caughtSet).length;
+  var total = allLimes.length || 50;
+  var pct = Math.round((count / total) * 100);
+
+  document.getElementById('progressText').textContent = count + ' / ' + total;
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressBar').value = count;
+}
+
+function setStep(step) {
+  currentStep = step;
+  ['ALL', 'SS', 'S', 'A', 'B', 'C'].forEach(function(s){
+    var el = document.getElementById('btn-' + s);
+    if (el) {
+      if (s === step) {
+        el.className = 'nes-btn is-primary';
+      } else {
+        el.className = 'nes-btn';
+      }
+    }
+  });
+  render();
+}
+
+function onSearch() {
+  currentQuery = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+  render();
+}
+
+function resetFilters() {
+  document.getElementById('searchInput').value = '';
+  currentQuery = '';
+  setStep('ALL');
+}
+
+function render() {
+  var grid = document.getElementById('rymGrid');
+  var filtered = allLimes.filter(function(l){
+    if (currentStep !== 'ALL' && l.step !== currentStep) return false;
+    if (currentQuery) {
+      var hay = (l.name + ' ' + (l.name_cn || '') + ' ' + l.background + ' ' + l.description + ' ' + l.id).toLowerCase();
+      if (hay.indexOf(currentQuery) === -1) return false;
+    }
+    return true;
+  });
+
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="nes-container is-dark is-centered" style="grid-column:1/-1;padding:30px">NO RYMS FOUND MATCHING THIS QUERY!</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(function(l){
+    var isCaught = !!caughtSet[l.id];
+    var tierColor = {
+      SS: '#e76e55',
+      S: '#f7d51d',
+      A: '#b66dff',
+      B: '#209cee',
+      C: '#92cc41'
+    }[l.step] || '#fff';
+
+    var catchBtnClass = isCaught ? 'nes-btn is-success btn-catch' : 'nes-btn btn-catch';
+    var catchBtnText = isCaught ? '&#10003; CAUGHT' : 'MARK CAUGHT';
+
+    return '<div class="nes-container is-dark is-rounded rym-card tier-' + l.step + (isCaught ? ' caught' : '') + '">' +
+      '<div class="rym-top">' +
+        '<img class="rym-sprite" src="' + l.icon + '" alt="' + l.name + '" loading="lazy" onerror="this.style.display=\'none\'">' +
+        '<div class="rym-info">' +
+          '<div class="rym-name">' + l.name + '</div>' +
+          '<div class="rym-sub">' + l.id + ' &bull; ' + l.name_cn + '</div>' +
+          '<div style="margin-top:4px">' +
+            '<span class="badge-tag" style="background:' + tierColor + ';color:#000;font-weight:700">TIER ' + l.step + '</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="rym-desc">&ldquo;' + l.description + '&rdquo;</div>' +
+
+      '<div class="rym-stats">' +
+        '<div class="stat-row"><span class="stat-label">AREA:</span><span class="stat-val">' + l.background + '</span></div>' +
+        '<div class="stat-row"><span class="stat-label">BLOCK:</span><span class="stat-val">' + l.block + '</span></div>' +
+        '<div class="stat-row"><span class="stat-label">RATE:</span><span class="stat-val" style="color:#f7d51d">' + l.rate_pct + '%</span></div>' +
+        '<div class="stat-row"><span class="stat-label">REWARD:</span><span class="stat-val" style="color:#92cc41">' + l.reward + '</span></div>' +
+      '</div>' +
+
+      '<button type="button" class="' + catchBtnClass + '" onclick="toggleCatch(\'' + l.id + '\')">' +
+        catchBtnText +
+      '</button>' +
+    '</div>';
+  }).join('');
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  loadStorage();
+  updateTracker();
+  render();
+});
+</script>
+
+</body>
+</html>
