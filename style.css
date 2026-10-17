@@ -186,7 +186,7 @@ footer {
 .page > footer { margin-left: 0; }
 .hub-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 16px;
   margin: 24px 0;
 }
@@ -194,18 +194,405 @@ footer {
   background: var(--bg-alt);
   border: 1px solid var(--border);
   border-radius: 6px;
-  padding: 20px;
+  padding: 16px 18px;
   text-decoration: none;
   color: var(--fg);
-  display: block;
-  transition: border-color 0.15s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 .hub-card:hover {
   border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
   text-decoration: none;
 }
-.hub-card h3 { margin: 0 0 8px 0; color: var(--accent); }
-.hub-card p { margin: 0; color: var(--fg-dim); font-size: 13px; }
+.hub-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.hub-card-icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.hub-thumb {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px;
+}
+.hub-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: rgba(245,179,66,.12);
+  color: var(--accent);
+  border: 1px solid rgba(245,179,66,.25);
+  letter-spacing: .3px;
+}
+.hub-card h3 { margin: 0 0 6px 0; color: var(--accent); font-size: 16px; }
+.hub-card p { margin: 0; color: var(--fg-dim); font-size: 13px; line-height: 1.5; }
+
+/* Featured Scout Hero */
+.featured-hero {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin: 18px 0 28px 0;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+.hero-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.hero-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2ecc71;
+  box-shadow: 0 0 8px #2ecc71;
+  display: inline-block;
+  animation: pulse-live 2s infinite ease-in-out;
+}
+@keyframes pulse-live {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+.hero-eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.hero-reroll-btn {
+  padding: 6px 14px;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all .15s;
+}
+.hero-reroll-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+.hero-reroll-btn:active {
+  transform: translateY(1px);
+}
+.hero-content {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+@media (max-width: 720px) {
+  .hero-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+.hero-sprite-panel {
+  flex: 0 0 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.hero-sprite-frame {
+  width: 130px;
+  height: 130px;
+  background: radial-gradient(circle, rgba(245,179,66,.1) 0%, rgba(21,23,26,.85) 70%);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero-idle-sprite {
+  max-width: 110px;
+  max-height: 110px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+}
+.hero-sprite-caption {
+  font-size: 11px;
+  color: var(--fg-dim);
+  margin-top: 8px;
+  letter-spacing: .5px;
+}
+.hero-details-panel {
+  flex: 1;
+  min-width: 0;
+}
+.hero-badge-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.hero-unit-name {
+  margin: 0 0 10px 0;
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.hero-unit-name a {
+  color: var(--fg);
+  text-decoration: none;
+}
+.hero-unit-name a:hover {
+  color: var(--link);
+}
+.hero-unit-id {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--fg-dim);
+}
+.hero-skill-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+}
+.hero-skill-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.hero-skill-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--fg-dim);
+}
+.hero-skill-title {
+  color: var(--accent);
+  font-size: 14px;
+}
+.hero-skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.hero-mini-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  background: rgba(78,161,255,.12);
+  color: #4ea1ff;
+  border: 1px solid rgba(78,161,255,.25);
+}
+.hero-skill-desc {
+  margin: 0;
+  font-size: 13px;
+  color: var(--fg);
+  line-height: 1.5;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.hero-action-btn {
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  transition: all .15s;
+}
+.hero-action-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+.hero-action-btn.primary {
+  background: rgba(245,179,66,.15);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.hero-action-btn.primary:hover {
+  background: var(--accent);
+  color: #000;
+}
+
+/* Badges & Tags */
+.badge {
+  display: inline-block; padding: 2px 9px; border-radius: 3px;
+  font-size: 11px; font-weight: 700; letter-spacing: .3px;
+}
+.b-Orange { background: rgba(245,179,66,.18); color: #f5b342; }
+.b-Purple { background: rgba(194,144,232,.18); color: #c290e8; }
+.b-Blue   { background: rgba(78,161,255,.18); color: #4ea1ff; }
+.b-Green  { background: rgba(108,192,144,.18); color: #6cc090; }
+.tag {
+  display: inline-block; padding: 1px 7px; border-radius: 3px;
+  font-size: 11px; font-weight: 600; margin-right: 4px;
+}
+.t-cls { background: rgba(245,179,66,.15); color: #f5b342; }
+.t-typ { background: rgba(46,204,113,.15); color: #2ecc71; }
+.t-elem { background: rgba(231,76,60,.15); color: #e74c3c; }
+.t-terr { background: rgba(78,161,255,.15); color: #4ea1ff; }
+.t-race { background: rgba(240,140,90,.15); color: #f08c5a; }
+.t-var { background: rgba(255,255,255,.06); color: var(--fg-dim); }
+
+/* NES Theme Overrides for Hero Scout & Hub Cards */
+body.nes-theme .featured-hero {
+  background: #212529 !important;
+  border: 4px solid #fff !important;
+  border-radius: 0 !important;
+  box-shadow: 4px 4px 0 #000, inset -2px -2px #000 !important;
+}
+body.nes-theme .hero-sprite-frame {
+  border: 3px solid #fff !important;
+  border-radius: 0 !important;
+  background: #000 !important;
+  box-shadow: 3px 3px 0 #000 !important;
+}
+body.nes-theme .hero-skill-card {
+  background: #000 !important;
+  border: 2px solid #fff !important;
+  border-radius: 0 !important;
+  box-shadow: 2px 2px 0 #000 !important;
+}
+body.nes-theme .hero-unit-name {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 14px !important;
+}
+body.nes-theme .hero-skill-title {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 10px !important;
+  color: #f7d51d !important;
+}
+body.nes-theme .hero-eyebrow {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 9px !important;
+  color: #f7d51d !important;
+}
+body.nes-theme .hero-reroll-btn,
+body.nes-theme .hero-action-btn {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 8px !important;
+  border: 3px solid #fff !important;
+  border-radius: 0 !important;
+  background: #212529 !important;
+  color: #fff !important;
+  box-shadow: inset -2px -2px #000, 2px 2px 0 #000 !important;
+  text-transform: uppercase !important;
+}
+body.nes-theme .hero-reroll-btn:hover,
+body.nes-theme .hero-action-btn:hover {
+  background: #209cee !important;
+  color: #fff !important;
+}
+body.nes-theme .hero-action-btn.primary {
+  background: #f7d51d !important;
+  color: #000 !important;
+  box-shadow: inset -2px -2px #e59400, 2px 2px 0 #000 !important;
+}
+body.nes-theme .hub-thumb {
+  border: 2px solid #fff !important;
+  border-radius: 0 !important;
+  background: #000 !important;
+  box-shadow: 2px 2px 0 #000 !important;
+}
+body.nes-theme .hub-badge {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 8px !important;
+  border-radius: 0 !important;
+  border: 2px solid #fff !important;
+  background: #209cee !important;
+  color: #fff !important;
+}
+body.nes-theme .view-switcher {
+  border: 3px solid #fff !important;
+  border-radius: 0 !important;
+  background: #000 !important;
+  box-shadow: 2px 2px 0 #000 !important;
+}
+body.nes-theme .view-btn {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 8px !important;
+  border: 2px solid transparent !important;
+  border-radius: 0 !important;
+  color: #fff !important;
+  text-transform: uppercase !important;
+  transition: none !important;
+}
+body.nes-theme .view-btn.active {
+  background: #f7d51d !important;
+  color: #000 !important;
+  border-color: #fff !important;
+  box-shadow: inset -2px -2px #e59400 !important;
+}
+body.nes-theme .unit-card {
+  background: #212529 !important;
+  border: 3px solid #fff !important;
+  border-radius: 0 !important;
+  box-shadow: 4px 4px 0px #000 !important;
+  transition: none !important;
+}
+body.nes-theme .unit-card:hover {
+  border-color: #f7d51d !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 4px 6px 0px #000 !important;
+}
+body.nes-theme .uc-art-wrap {
+  border: 2px solid #fff !important;
+  border-radius: 0 !important;
+  background: #000 !important;
+  box-shadow: 2px 2px 0 #000 !important;
+}
+body.nes-theme .uc-name {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 9px !important;
+}
+
+
 .unit-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));

@@ -65,6 +65,77 @@ h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:va
 .bonds-row{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
 .bond-tag{font-size:10px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,.05);color:var(--dim);border:1px solid rgba(255,255,255,.1)}
 .empty{grid-column:1/-1;padding:40px;text-align:center;color:var(--dim);font-style:italic}
+
+/* Tactical Stamina & Certainty Calculator Widget */
+.calc-widget{background:var(--card2);border:1.5px solid var(--accent);border-radius:8px;padding:18px 20px;margin-bottom:22px;box-shadow:0 4px 20px rgba(0,0,0,0.35);transition:box-shadow .3s}
+.calc-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:16px}
+.calc-title{font-family:'Chakra Petch',sans-serif;font-size:16px;font-weight:700;color:var(--accent);letter-spacing:1px;display:flex;align-items:center;gap:8px}
+.calc-badge{font-size:11px;padding:3px 8px;border-radius:3px;background:rgba(245,179,66,.15);color:var(--accent);border:1px solid var(--accent);font-weight:600;font-family:'Consolas',monospace}
+.calc-body{display:grid;grid-template-columns:1.05fr 1fr;gap:20px}
+@media (max-width:880px){.calc-body{grid-template-columns:1fr}}
+
+.calc-section-label{font-family:'Chakra Petch',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);font-weight:700;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.calc-gear-select{width:100%;padding:8px 12px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:4px;font-size:13px;font-family:'Chakra Petch',sans-serif;font-weight:600;margin-bottom:10px}
+.calc-gear-select:focus{outline:none;border-color:var(--accent)}
+
+.calc-selected-gear{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.02);border:1px solid var(--border);padding:10px 14px;border-radius:6px;margin-bottom:14px}
+.calc-gear-icon{width:50px;height:50px;border-radius:6px;background:var(--card);border:1.5px solid var(--border);image-rendering:pixelated;flex-shrink:0}
+.calc-gear-meta{flex:1;min-width:0}
+.calc-gear-name{font-size:15px;font-weight:700;color:var(--text);line-height:1.3}
+.calc-gear-sub{font-size:12px;color:var(--dim);margin-top:3px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.calc-rate-badge{font-family:'Consolas',monospace;font-weight:700;font-size:15px}
+
+.conf-pills{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px}
+@media (min-width:520px){.conf-pills{grid-template-columns:repeat(4,1fr)}}
+.conf-btn{padding:8px 10px;border:1.5px solid var(--border);background:var(--card);color:var(--dim);border-radius:4px;font-family:'Chakra Petch',sans-serif;font-size:12px;font-weight:600;cursor:pointer;text-align:center;transition:all .15s}
+.conf-btn:hover{border-color:#666;color:var(--text)}
+.conf-btn.active{background:rgba(245,179,66,.2);border-color:var(--accent);color:#fff;box-shadow:0 0 10px rgba(245,179,66,.25)}
+.conf-btn .pct{font-size:14px;font-weight:700;display:block;color:var(--accent)}
+.conf-btn.active .pct{color:#fff}
+
+.stamina-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.stamina-btn{padding:6px 12px;border:1px solid var(--border);background:var(--card);color:var(--dim);border-radius:4px;font-family:'Chakra Petch',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.stamina-btn:hover{border-color:#666;color:var(--text)}
+.stamina-btn.active{background:rgba(59,130,246,.2);border-color:#3b82f6;color:#fff}
+.stamina-input{width:64px;padding:5px 8px;background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Consolas',monospace;font-size:12px;text-align:center}
+.stamina-input:focus{outline:none;border-color:var(--accent)}
+
+.calc-metrics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+.metric-box{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:10px 12px}
+.metric-box.highlight{border-color:rgba(245,179,66,.45);background:rgba(245,179,66,.05)}
+.metric-lbl{font-size:10px;color:var(--dim);font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.metric-val{font-family:'Consolas',monospace;font-size:20px;font-weight:700;color:var(--text)}
+.metric-box.highlight .metric-val{color:var(--accent)}
+.metric-sub{font-size:11px;color:var(--dim);margin-top:2px}
+
+.certainty-bar-wrap{margin-top:6px}
+.certainty-bar-bg{width:100%;height:18px;background:rgba(0,0,0,.4);border-radius:4px;border:1px solid var(--border);position:relative;overflow:hidden}
+.certainty-bar-fill{height:100%;background:linear-gradient(90deg,#3b82f6 0%,#10b981 60%,#f5b342 90%,#ff4757 100%);border-radius:3px;transition:width .3s ease}
+.certainty-markers{display:flex;justify-content:space-between;font-size:10px;font-family:'Consolas',monospace;color:var(--dim);margin-top:4px}
+.calc-summary-text{font-size:12px;color:var(--text);line-height:1.5;background:rgba(255,255,255,.02);border-left:3px solid var(--accent);padding:8px 12px;border-radius:0 4px 4px 0;margin-top:10px}
+
+.btn-calc-run{margin-top:8px;padding:6px 12px;background:rgba(245,179,66,.12);color:var(--accent);border:1px solid rgba(245,179,66,.4);border-radius:4px;font-size:11px;font-family:'Chakra Petch',sans-serif;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;letter-spacing:.5px;transition:all .15s}
+.btn-calc-run:hover{background:var(--accent);color:#000;border-color:var(--accent)}
+
+/* NES Retro UI Overrides */
+body.nes-theme .calc-widget{background:#212529 !important;border:3px solid #fff !important;border-radius:0 !important;box-shadow:4px 4px 0 #000 !important}
+body.nes-theme .calc-header{border-bottom:3px solid #fff !important}
+body.nes-theme .calc-title{font-family:'Press Start 2P',monospace !important;font-size:11px !important;color:#f7d51d !important}
+body.nes-theme .calc-badge{font-family:'Press Start 2P',monospace !important;font-size:7px !important;border-radius:0 !important;border:2px solid #fff !important}
+body.nes-theme .calc-selected-gear{background:#1a1c23 !important;border:2px solid #fff !important;border-radius:0 !important}
+body.nes-theme .calc-gear-icon{border:2px solid #fff !important;border-radius:0 !important}
+body.nes-theme .conf-btn{font-family:'Press Start 2P',monospace !important;font-size:8px !important;border-radius:0 !important;border:2px solid #fff !important;background:#212529 !important;color:#fff !important;box-shadow:inset -2px -2px #000, 2px 2px 0 #000 !important}
+body.nes-theme .conf-btn.active{background:#f7d51d !important;color:#000 !important;border-color:#fff !important;box-shadow:inset -2px -2px #e59400, 2px 2px 0 #000 !important}
+body.nes-theme .conf-btn .pct{color:#f7d51d !important}
+body.nes-theme .conf-btn.active .pct{color:#000 !important}
+body.nes-theme .stamina-btn{font-family:'Press Start 2P',monospace !important;font-size:8px !important;border-radius:0 !important;border:2px solid #fff !important;background:#212529 !important;color:#fff !important}
+body.nes-theme .stamina-btn.active{background:#209cee !important;color:#fff !important}
+body.nes-theme .metric-box{background:#1a1c23 !important;border:2px solid #fff !important;border-radius:0 !important}
+body.nes-theme .certainty-bar-bg{border:2px solid #fff !important;border-radius:0 !important;background:#000 !important}
+body.nes-theme .certainty-bar-fill{border-radius:0 !important;background:#92cc41 !important}
+body.nes-theme .calc-summary-text{border-left:4px solid #f7d51d !important;background:#1a1c23 !important;border-radius:0 !important}
+body.nes-theme .btn-calc-run{font-family:'Press Start 2P',monospace !important;font-size:8px !important;border-radius:0 !important;border:2px solid #fff !important;background:#212529 !important;color:#f7d51d !important;box-shadow:2px 2px 0 #000 !important}
+body.nes-theme .btn-calc-run:hover{background:#f7d51d !important;color:#000 !important}
 </style>
 </head>
 <body>
@@ -110,15 +181,128 @@ h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:va
 <script src="assets/js/nes-switcher.js"></script>
 
 
-
-
-
 <main class="wrap">
   <h1>Gear Drop Rates &amp; Farm Calculator</h1>
   <div class="sub">Find where SS Red and S Gold gear drop across all 15 adventure maps, with exact encounter opportunities and farm difficulty ratings.</div>
 
   <div class="notice-box">
     <strong>Farm Mechanics:</strong> SS-tier Legacy Gear exclusively drops during <strong>Tier 5 Battles</strong> (the highest difficulty encounters on each map). When a Tier 5 battle triggers, SS gear has a rare conditional replacement chance onto enemies whose Class matches the gear slot. S-tier Golden gear drops from enemy equipment slots in high-tier battles.
+  </div>
+
+  <!-- Tactical Stamina & Certainty Calculator Widget (One Live Thing) -->
+  <div class="calc-widget" id="farmCalcWidget">
+    <div class="calc-header">
+      <div class="calc-title">
+        <span style="font-size:18px">⚡</span>
+        <span>TACTICAL STAMINA &amp; CERTAINTY CALCULATOR</span>
+      </div>
+      <div class="calc-badge">Binomial Model: N = ⌈ln(1 - P) / ln(1 - p)⌉</div>
+    </div>
+
+    <div class="calc-body">
+      <!-- Left Column: Target Gear & Controls -->
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <label for="calcGearSelect" class="calc-section-label" style="margin-bottom:0">Target Gear Item</label>
+          <span style="font-size:11px;color:var(--dim);font-family:'Chakra Petch',sans-serif">Or click "Calc Runs" on cards below</span>
+        </div>
+        <select id="calcGearSelect" class="calc-gear-select" onchange="onCalcGearSelectChange()"></select>
+
+        <div class="calc-selected-gear">
+          <img id="calcGearIcon" class="calc-gear-icon" src="" alt="Gear Icon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'><rect fill=\'%231d2025\' width=\'40\' height=\'40\'/></svg>'">
+          <div class="calc-gear-meta">
+            <div id="calcGearName" class="calc-gear-name">Select gear</div>
+            <div id="calcGearMetaTags" class="calc-gear-sub"></div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:10px;text-transform:uppercase;color:var(--dim);letter-spacing:1px;font-family:'Chakra Petch',sans-serif">Drop Rate</div>
+            <div id="calcGearRate" class="calc-rate-badge" style="font-size:15px;color:var(--accent)">--%</div>
+          </div>
+        </div>
+
+        <div class="calc-section-label">
+          <span>Target Confidence Level (P)</span>
+          <span id="metricConfLbl" style="color:var(--accent);font-family:'Consolas',monospace">95% Certainty</span>
+        </div>
+        <div class="conf-pills">
+          <button type="button" class="conf-btn" data-conf="0.50" onclick="setConfidence(0.50)">
+            <span class="pct">50%</span>
+            <span>Coin Flip</span>
+          </button>
+          <button type="button" class="conf-btn" data-conf="0.80" onclick="setConfidence(0.80)">
+            <span class="pct">80%</span>
+            <span>Likely</span>
+          </button>
+          <button type="button" class="conf-btn active" data-conf="0.95" onclick="setConfidence(0.95)">
+            <span class="pct">95%</span>
+            <span>Safe Target</span>
+          </button>
+          <button type="button" class="conf-btn" data-conf="0.99" onclick="setConfidence(0.99)">
+            <span class="pct">99%</span>
+            <span>Guaranteed</span>
+          </button>
+        </div>
+
+        <div class="calc-section-label">
+          <span>Map Stamina Cost per Run</span>
+        </div>
+        <div class="stamina-row">
+          <button type="button" class="stamina-btn active" data-stamina="8" onclick="setStamina(8)">8 ST (Standard)</button>
+          <button type="button" class="stamina-btn" data-stamina="10" onclick="setStamina(10)">10 ST (High Tier / Event)</button>
+          <div style="display:flex;align-items:center;gap:6px;margin-left:auto">
+            <span style="font-size:11px;color:var(--dim);font-family:'Chakra Petch',sans-serif">Custom:</span>
+            <input type="number" id="calcStaminaInput" class="stamina-input" min="1" max="99" value="8" oninput="onCustomStaminaInput()">
+            <span style="font-size:11px;color:var(--dim)">ST</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Results & Progress Meter -->
+      <div style="display:flex;flex-direction:column;justify-content:space-between">
+        <div class="calc-metrics-grid">
+          <div class="metric-box highlight">
+            <div class="metric-lbl">Required Encounters / Runs (N)</div>
+            <div class="metric-val" id="metricRuns">--</div>
+            <div class="metric-sub" style="color:var(--accent)">For selected certainty</div>
+          </div>
+          <div class="metric-box highlight">
+            <div class="metric-lbl">Estimated Stamina Cost</div>
+            <div class="metric-val" id="metricStamina">-- ST</div>
+            <div class="metric-sub">Runs &times; Stamina/run</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-lbl">Expected Average Runs</div>
+            <div class="metric-val" id="metricExpRuns" style="font-size:17px">~--</div>
+            <div class="metric-sub" id="metricExpRunsSub">1 / drop rate</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-lbl">Unlucky Miss Risk</div>
+            <div class="metric-val" id="metricRisk" style="font-size:17px">5.0%</div>
+            <div class="metric-sub">1 - Confidence</div>
+          </div>
+        </div>
+
+        <div class="certainty-bar-wrap">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin-bottom:5px;font-family:'Chakra Petch',sans-serif">
+            <span>Certainty Gauge:</span>
+            <span id="certaintyBarText" style="color:#fff;font-weight:700">95% Cumulative Probability</span>
+          </div>
+          <div class="certainty-bar-bg">
+            <div class="certainty-bar-fill" id="certaintyBarFill" style="width:95%"></div>
+          </div>
+          <div class="certainty-markers">
+            <span>50%</span>
+            <span>80%</span>
+            <span>95%</span>
+            <span>99%</span>
+          </div>
+        </div>
+
+        <div class="calc-summary-text" id="calcSummaryText">
+          Loading farm calculation...
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="controls-row">
@@ -164,6 +348,12 @@ var selClass = null;
 var selSlot = null;
 var selDiff = null;
 
+// Calculator State
+var selectedGear = null;
+var selectedGearMap = null;
+var selectedConfidence = 0.95;
+var selectedStamina = 8;
+
 var STEPS = ['SS', 'S'];
 var CLASSES = ['All', 'Warrior', 'Mage', 'Archer', 'Priest'];
 var SLOTS = ['Main Hand', 'Off Hand', 'Head', 'Body', 'Accessory'];
@@ -192,6 +382,13 @@ function init() {
     return '<button class="pill' + on + '" onclick="toggleDiff(\'' + d.id + '\')">' + d.label + '</button>';
   }).join('');
 
+  // Default calculator gear
+  if (!selectedGear && maps.length > 0 && maps[0].items.length > 0) {
+    selectedGear = maps[0].items[0];
+    selectedGearMap = maps[0];
+  }
+
+  updateCalculator();
   render();
 }
 
@@ -215,6 +412,17 @@ function toggleDiff(dId) {
 
 function onMapChange() {
   activeMapIdx = parseInt(document.getElementById('mapSelect').value) || 0;
+  var maps = window.GEAR_DROP_DATA.maps;
+  if (maps && maps[activeMapIdx] && maps[activeMapIdx].items.length > 0) {
+    // If current selected gear isn't on the new map, pick the map's first item
+    var curMap = maps[activeMapIdx];
+    var existsOnNewMap = curMap.items.some(function(it){ return selectedGear && it.id === selectedGear.id; });
+    if (!existsOnNewMap) {
+      selectedGear = curMap.items[0];
+      selectedGearMap = curMap;
+    }
+  }
+  updateCalculator();
   render();
 }
 
@@ -222,6 +430,185 @@ function clearAll() {
   selStep = null; selClass = null; selSlot = null; selDiff = null;
   document.getElementById('searchInput').value = '';
   init();
+}
+
+// --------------------------------------------------------------------------
+// Tactical Stamina & Certainty Calculator
+// --------------------------------------------------------------------------
+function selectGearForCalc(itemId) {
+  var maps = window.GEAR_DROP_DATA.maps;
+  if (!maps) return;
+  var found = null;
+  var foundMap = null;
+
+  // Search active map first
+  var curMap = maps[activeMapIdx];
+  if (curMap) {
+    found = curMap.items.find(function(it){ return it.id === itemId; });
+    if (found) foundMap = curMap;
+  }
+  // Otherwise search across all maps
+  if (!found) {
+    for (var m = 0; m < maps.length; m++) {
+      var item = maps[m].items.find(function(it){ return it.id === itemId; });
+      if (item) {
+        found = item;
+        foundMap = maps[m];
+        activeMapIdx = m;
+        document.getElementById('mapSelect').value = m;
+        render();
+        break;
+      }
+    }
+  }
+
+  if (found) {
+    selectedGear = found;
+    selectedGearMap = foundMap;
+    updateCalculator();
+    var widget = document.getElementById('farmCalcWidget');
+    if (widget) {
+      widget.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      widget.style.boxShadow = '0 0 25px rgba(245,179,66,0.55)';
+      setTimeout(function(){ widget.style.boxShadow = ''; }, 750);
+    }
+  }
+}
+
+function onCalcGearSelectChange() {
+  var sel = document.getElementById('calcGearSelect');
+  if (sel && sel.value) {
+    selectGearForCalc(sel.value);
+  }
+}
+
+function setConfidence(conf) {
+  selectedConfidence = conf;
+  var btns = document.querySelectorAll('.conf-btn');
+  btns.forEach(function(b){
+    var c = parseFloat(b.getAttribute('data-conf'));
+    b.classList.toggle('active', Math.abs(c - conf) < 0.001);
+  });
+  updateCalculator();
+}
+
+function setStamina(cost) {
+  selectedStamina = cost;
+  var btns = document.querySelectorAll('.stamina-btn');
+  btns.forEach(function(b){
+    var s = parseInt(b.getAttribute('data-stamina'));
+    b.classList.toggle('active', s === cost);
+  });
+  var input = document.getElementById('calcStaminaInput');
+  if (input) input.value = cost;
+  updateCalculator();
+}
+
+function onCustomStaminaInput() {
+  var input = document.getElementById('calcStaminaInput');
+  var val = parseInt(input.value) || 8;
+  if (val < 1) val = 1;
+  if (val > 99) val = 99;
+  selectedStamina = val;
+  var btns = document.querySelectorAll('.stamina-btn');
+  btns.forEach(function(b){
+    var s = parseInt(b.getAttribute('data-stamina'));
+    b.classList.toggle('active', s === val);
+  });
+  updateCalculator();
+}
+
+function updateCalculator() {
+  var maps = window.GEAR_DROP_DATA ? window.GEAR_DROP_DATA.maps : null;
+  if (!maps) return;
+
+  if (!selectedGear) {
+    if (maps[activeMapIdx] && maps[activeMapIdx].items.length > 0) {
+      selectedGear = maps[activeMapIdx].items[0];
+      selectedGearMap = maps[activeMapIdx];
+    } else {
+      return;
+    }
+  }
+  if (!selectedGearMap) {
+    selectedGearMap = maps[activeMapIdx];
+  }
+
+  // Populate gear select dropdown
+  var sel = document.getElementById('calcGearSelect');
+  if (sel && selectedGearMap) {
+    sel.innerHTML = selectedGearMap.items.map(function(it){
+      var isCur = (it.id === selectedGear.id) ? ' selected' : '';
+      return '<option value="' + it.id + '"' + isCur + '>[' + it.step + '] ' + it.name + ' (' + (it.name_cn || '') + ') — ' + it.prob_str + '</option>';
+    }).join('');
+  }
+
+  // Gear details display
+  var iconEl = document.getElementById('calcGearIcon');
+  if (iconEl) {
+    iconEl.src = selectedGear.icon || '';
+    iconEl.alt = selectedGear.name;
+  }
+  var nameEl = document.getElementById('calcGearName');
+  if (nameEl) {
+    nameEl.textContent = selectedGear.name + (selectedGear.name_cn ? ' (' + selectedGear.name_cn + ')' : '');
+  }
+
+  var stepBadge = '<span class="badge badge-' + selectedGear.step + '">' + selectedGear.step + '</span>';
+  var diffBadge = '<span class="badge badge-diff" style="background:rgba(255,255,255,.05);color:' + selectedGear.diff_color + ';border:1px solid ' + selectedGear.diff_color + '">' + selectedGear.diff_name + '</span>';
+  var metaEl = document.getElementById('calcGearMetaTags');
+  if (metaEl) {
+    metaEl.innerHTML = stepBadge + ' ' + diffBadge +
+      ' &bull; <span>' + selectedGear.cls + '</span>' +
+      ' &bull; <span>' + selectedGear.slot + '</span>' +
+      ' &bull; <span style="color:var(--accent)">' + (selectedGearMap ? selectedGearMap.map_en : '') + '</span>';
+  }
+
+  var rateEl = document.getElementById('calcGearRate');
+  if (rateEl) {
+    rateEl.textContent = selectedGear.prob_str;
+    rateEl.style.color = selectedGear.diff_color;
+  }
+
+  // Binomial Probability Math
+  // Drop probability per run p = prob_pct / 100
+  var p = (selectedGear.prob_pct || 0) / 100;
+  var P = selectedConfidence; // e.g. 0.50, 0.80, 0.95, 0.99
+
+  var runs = 0;
+  var expRuns = 0;
+  if (p > 0 && p < 1) {
+    // Formula: N = ceil(ln(1 - P) / ln(1 - p))
+    runs = Math.ceil(Math.log(1 - P) / Math.log(1 - p));
+    expRuns = Math.ceil(1 / p);
+  } else if (p >= 1) {
+    runs = 1;
+    expRuns = 1;
+  }
+
+  var totalStamina = runs * selectedStamina;
+  var expStamina = expRuns * selectedStamina;
+  var riskPct = ((1 - P) * 100).toFixed(1);
+
+  document.getElementById('metricRuns').textContent = runs.toLocaleString();
+  document.getElementById('metricStamina').textContent = totalStamina.toLocaleString() + ' ST';
+  document.getElementById('metricExpRuns').textContent = '~' + expRuns.toLocaleString() + ' runs';
+  document.getElementById('metricExpRunsSub').textContent = '(' + expStamina.toLocaleString() + ' Stamina)';
+  document.getElementById('metricRisk').textContent = riskPct + '%';
+  document.getElementById('metricConfLbl').textContent = (P * 100).toFixed(0) + '% Certainty';
+
+  // Certainty Bar Fill
+  var barFill = document.getElementById('certaintyBarFill');
+  if (barFill) barFill.style.width = (P * 100) + '%';
+  var barText = document.getElementById('certaintyBarText');
+  if (barText) barText.textContent = (P * 100) + '% Cumulative Probability (' + (P === 0.95 ? 'Safe Farm Target' : P === 0.99 ? 'Guaranteed' : P === 0.80 ? 'Likely' : 'Coin Flip') + ')';
+
+  // Summary Text
+  var confName = P === 0.5 ? 'Coin Flip (50%)' : P === 0.8 ? 'Likely (80%)' : P === 0.95 ? 'Safe Farm Target (95%)' : 'Guaranteed (99%)';
+  var summaryEl = document.getElementById('calcSummaryText');
+  if (summaryEl) {
+    summaryEl.innerHTML = 'To achieve <strong>' + confName + '</strong> certainty of looting <strong>' + selectedGear.name + '</strong> on <em>' + (selectedGearMap ? selectedGearMap.map_en : '') + '</em> (' + selectedGear.prob_str + ' drop rate), budget <strong>' + runs.toLocaleString() + ' runs</strong> (~<strong>' + totalStamina.toLocaleString() + ' Stamina</strong> at ' + selectedStamina + ' ST/run). The expected mean is <strong>' + expRuns.toLocaleString() + ' runs</strong>.';
+  }
 }
 
 function render() {
@@ -289,6 +676,7 @@ function render() {
           '<span class="stat-val">~' + it.approx_battles.toLocaleString() + '</span>' +
         '</div>' +
       '</div>' +
+      '<button type="button" class="btn-calc-run" onclick="selectGearForCalc(\'' + it.id + '\')">⚡ Calc Runs</button>' +
       bondsHtml +
     '</div>';
   }).join('');

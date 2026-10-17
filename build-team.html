@@ -319,6 +319,37 @@ button.primary:hover{background:#dab466}
 .support-slot .ss-body .empty-mark{font-size:11px;color:var(--dim);font-style:italic}
 .support-slot .ss-clear{position:absolute;top:4px;right:6px;background:var(--card);border:1px solid var(--border);color:var(--dim);font-size:16px;cursor:pointer;padding:0;line-height:1;width:22px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:700}
 .support-slot .ss-clear:hover{color:var(--accent)}
+
+/* ============ Live Team Stats & Synergy Bar ============ */
+.synergy-bar{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:8px;padding:12px 16px;margin-bottom:14px;position:sticky;top:10px;z-index:40;box-shadow:0 6px 20px rgba(0,0,0,0.45);backdrop-filter:blur(10px)}
+.syn-top-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:8px}
+.syn-char-title{display:flex;align-items:center;gap:8px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:14px;color:var(--accent);letter-spacing:.5px}
+.syn-char-title .syn-badge-name{color:var(--text);font-size:13px;font-weight:600}
+.syn-counts{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.syn-pill{font-family:'Chakra Petch',sans-serif;font-size:11px;font-weight:600;padding:3px 9px;border-radius:4px;background:var(--card2);border:1px solid var(--border);color:var(--dim);letter-spacing:.5px}
+.syn-pill.full{border-color:#2ecc71;color:#2ecc71;background:rgba(46,204,113,0.12)}
+.syn-bonds-section{border-top:1px solid rgba(255,255,255,0.08);padding-top:8px;margin-top:6px}
+.syn-bonds-header{font-family:'Chakra Petch',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--dim);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.syn-bonds-grid{display:flex;flex-wrap:wrap;gap:8px}
+.syn-bond-chip{display:inline-flex;align-items:center;gap:6px;background:var(--card2);border:1.5px solid var(--border);border-radius:5px;padding:4px 10px;font-size:11.5px;color:var(--text);transition:all .15s}
+.syn-bond-chip.active{border-color:var(--accent);background:rgba(245,179,66,0.12);box-shadow:0 0 10px rgba(245,179,66,0.22)}
+.syn-bond-chip .syn-bond-badge{font-family:'Chakra Petch',sans-serif;font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;background:var(--border);color:var(--dim);text-transform:uppercase}
+.syn-bond-chip.active .syn-bond-badge{background:var(--accent);color:#000}
+.syn-bond-chip .syn-bond-name{font-weight:600}
+.syn-bond-chip .syn-bond-eff{font-size:10.5px;color:var(--dim);border-left:1px solid var(--border);padding-left:6px}
+.syn-bond-chip.active .syn-bond-eff{color:#eee}
+.syn-stats-row{margin-top:8px;font-family:'Chakra Petch',sans-serif;font-size:11px;color:var(--dim);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.syn-stat-label{text-transform:uppercase;letter-spacing:1px;font-weight:700;color:var(--accent);font-size:10px}
+.syn-stat-val{color:var(--text);font-weight:700;font-family:'Consolas',monospace}
+
+/* NES Retro UI Overrides */
+body.nes-theme .synergy-bar{background:#212529 !important;border:3px solid #fff !important;box-shadow:4px 4px 0px #000 !important;border-radius:0 !important}
+body.nes-theme .syn-char-title{font-family:'Press Start 2P',monospace !important;font-size:10px !important}
+body.nes-theme .syn-pill{font-family:'Press Start 2P',monospace !important;font-size:8px !important;border-radius:0 !important;border:2px solid #fff !important}
+body.nes-theme .syn-bond-chip{border:2px solid #fff !important;border-radius:0 !important;background:#000 !important}
+body.nes-theme .syn-bond-chip.active{border-color:#f7d51d !important;background:#212529 !important;color:#f7d51d !important}
+body.nes-theme .syn-bond-chip .syn-bond-badge{border-radius:0 !important;font-family:'Press Start 2P',monospace !important;font-size:8px !important}
+body.nes-theme .syn-bond-chip.active .syn-bond-badge{background:#f7d51d !important;color:#000 !important}
 </style>
 </head>
 <body>
@@ -364,138 +395,11 @@ button.primary:hover{background:#dab466}
 <script src="assets/js/nes-switcher.js"></script>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="page">
 <div class="wrap">
 
 <h1>Build Team</h1>
-<div class="sub">Set overrides for your team — talents, supports, gear, runes, jewel affixes. Use <strong>+ Add character</strong> to grow the team or <strong>× Remove</strong> on a tab to drop one. Export as JSON for <code>character_overrides.json</code>.</div>
+<div class="sub">Configure complete battle loadouts — characters, supports, gear sets, runes, and jewel matrices. Export JSON for <code>character_overrides.json</code>.</div>
 
 <div class="top-actions">
   <button onclick="doExport()" class="primary">Export JSON</button>
@@ -510,6 +414,9 @@ button.primary:hover{background:#dab466}
   <label for="team-notes" style="display:block;font-family:'Chakra Petch',sans-serif;font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Team notes (exported as top-level <code>_notes</code>, ignored by patcher)</label>
   <textarea id="team-notes" placeholder="e.g. 'Peak-36 team, alt build with Frost focus, Windstrider support'..." style="width:100%;min-height:44px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:4px;padding:6px 8px;font-family:'Noto Sans',sans-serif;font-size:12px;resize:vertical" oninput="onTeamNotesChange(this.value)"></textarea>
 </div>
+
+<!-- Live Team Stats & Synergy Bar -->
+<div id="liveSynergyBar" class="synergy-bar"></div>
 
 <div class="tab-bar" id="tab-bar"></div>
 
@@ -1347,7 +1254,7 @@ function renderCharPanel(charIdx) {
     [ 2, SUPPORT_LABELS[2], c.supports[2], false],
   ];
   const activeLabel = slots.find(s => s[0] === c.activeSupport)?.[1] || "";
-  html += `<div class="card"><h2>Team (click a slot on the left, then pick a unit on the right)</h2>`;
+  html += `<div class="card"><h2>FORMATION &amp; SUPPORTS</h2>`;
   html += `<div class="team-row"><div class="support-slots">`;
   for (const [sid, label, filledId, isChar] of slots) {
     const src = filledId ? findRole(filledId) : null;
@@ -1381,7 +1288,7 @@ function renderCharPanel(charIdx) {
   html += `</div>`;   // card
 
   // === Talents: 4 slot chips LEFT + shared grid picker RIGHT (2-col like Team) ===
-  html += `<div class="card"><h2>Talents (click a slot on the left, then pick a talent on the right)</h2>`;
+  html += `<div class="card"><h2>TALENT ARCHITECTURE</h2>`;
   html += `<div class="team-row"><div class="talent-slots">`;
   for (let i = 0; i < 4; i++) {
     const tid = c.talents[i];
@@ -1404,7 +1311,7 @@ function renderCharPanel(charIdx) {
   html += `</div></div></div>`;
 
   // === Equip: 10 slot chips LEFT + shared grid picker RIGHT (2-col like Team) ===
-  html += `<div class="card"><h2>Equip (click a slot on the left; picker on the right filters by that slot type)</h2>`;
+  html += `<div class="card"><h2>EQUIPMENT LOADOUT</h2>`;
   html += `<div class="team-row"><div class="equip-slots">`;
   for (const i of SLOT_DISPLAY_ORDER) {
     const slotType = SLOT_TYPES[i];
@@ -1431,7 +1338,7 @@ function renderCharPanel(charIdx) {
   html += `</div></div></div>`;
 
   // === Rune: 10 slot chips LEFT + shared grid picker RIGHT (uniqueness enforced) ===
-  html += `<div class="card"><h2>Rune (click a slot on the left; unique per character — a rune can't repeat)</h2>`;
+  html += `<div class="card"><h2>RUNE MATRIX</h2>`;
   html += `<div class="team-row"><div class="rune-slots">`;
   for (const i of SLOT_DISPLAY_ORDER) {
     const r = c.runeList[i];
@@ -1456,7 +1363,7 @@ function renderCharPanel(charIdx) {
   html += `</div></div></div>`;
 
   // === Godstone: 6 stones × 3 affix chips LEFT + affix grid RIGHT ===
-  html += `<div class="card"><h2>God Stones (click any affix slot; tier defaults to max on pick)</h2>`;
+  html += `<div class="card"><h2>GODSTONE MATRIX</h2>`;
   html += `<div class="team-row"><div class="gs-slots">`;
   for (let g = 0; g < 6; g++) {
     const gs = c.godStones[g];
@@ -1524,6 +1431,7 @@ function renderAll() {
     html += `<div class="char-panel ${i === currentTab ? "active" : ""}" data-char="${i}">${renderCharPanel(i)}</div>`;
   }
   panels.innerHTML = html;
+  updateLiveSynergyBar();
 }
 
 function switchTab(idx) {
@@ -1534,6 +1442,185 @@ function switchTab(idx) {
     if (dc !== null) b.classList.toggle("active", parseInt(dc) === idx);
   });
   document.querySelectorAll(".char-panel").forEach((p, i) => p.classList.toggle("active", i === idx));
+  updateLiveSynergyBar();
+}
+
+function updateLiveSynergyBar() {
+  const el = document.getElementById("liveSynergyBar");
+  if (!el) return;
+  const c = state[currentTab];
+  if (!c) {
+    el.innerHTML = "";
+    return;
+  }
+  const role = c.roleId ? findRole(c.roleId) : null;
+  const roleName = role ? role.name : "Unassigned Unit";
+  const roleClass = role ? `[${role.cls || ""}${role.element ? " · " + role.element : ""}]` : "";
+
+  // 1. Calculate Loadout Counts for active character
+  const equipCount = c.equipList.filter(e => e.IDs).length;
+  const runeCount = c.runeList.filter(r => r.IDs).length;
+  const talentCount = c.talents.filter(t => t).length;
+  let affixCount = 0;
+  c.godStones.forEach(gs => {
+    gs.affixes.forEach(a => {
+      if (a.IDs) affixCount++;
+    });
+  });
+
+  // Calculate team total equipment
+  let teamTotalEquip = 0;
+  let teamTotalRunes = 0;
+  state.forEach(char => {
+    teamTotalEquip += char.equipList.filter(e => e.IDs).length;
+    teamTotalRunes += char.runeList.filter(r => r.IDs).length;
+  });
+
+  // 2. Calculate Active Gear Set Bonds & Aggregated Stats
+  const bondCounts = {};
+  const statsTotal = { STR: 0, SPI: 0, AGI: 0, HP: 0, SPD: 0, Luck: 0, Tough: 0, Mana: 0 };
+  let hasStats = false;
+
+  for (const eqSlot of c.equipList) {
+    if (!eqSlot.IDs) continue;
+    const eq = findEquip(eqSlot.IDs);
+    if (!eq) continue;
+
+    // Accumulate stats
+    if (eq.stats) {
+      for (const [k, v] of Object.entries(eq.stats)) {
+        if (v) {
+          statsTotal[k] = (statsTotal[k] || 0) + v;
+          hasStats = true;
+        }
+      }
+    }
+
+    // Accumulate bonds
+    if (eq.bonds && Array.isArray(eq.bonds)) {
+      for (const b of eq.bonds) {
+        if (b && b.name) {
+          bondCounts[b.name] = (bondCounts[b.name] || 0) + (b.count || 1);
+        }
+      }
+    }
+  }
+
+  // Scan bondCounts against DATA.bondData
+  const bondData = DATA.bondData || {};
+  const activeBonds = [];
+  const pendingBonds = [];
+
+  for (const [bName, count] of Object.entries(bondCounts)) {
+    const bd = bondData[bName];
+    if (bd && bd.tiers && bd.tiers.length > 0) {
+      let highestActiveTier = null;
+      let nextTier = null;
+      for (const tier of bd.tiers) {
+        if (count >= tier.pieces) {
+          highestActiveTier = tier;
+        } else if (!nextTier) {
+          nextTier = tier;
+        }
+      }
+      if (highestActiveTier) {
+        activeBonds.push({
+          name: bName,
+          count: count,
+          reqPieces: highestActiveTier.pieces,
+          active: true,
+          effect: highestActiveTier.effect || bd.basicDesc || ""
+        });
+      } else if (nextTier) {
+        pendingBonds.push({
+          name: bName,
+          count: count,
+          reqPieces: nextTier.pieces,
+          active: false,
+          effect: bd.basicDesc || nextTier.effect || ""
+        });
+      }
+    } else {
+      if (count >= 2) {
+        activeBonds.push({
+          name: bName,
+          count: count,
+          reqPieces: 2,
+          active: true,
+          effect: "Set Active"
+        });
+      } else {
+        pendingBonds.push({
+          name: bName,
+          count: count,
+          reqPieces: 2,
+          active: false,
+          effect: "Need 1 more"
+        });
+      }
+    }
+  }
+
+  activeBonds.sort((a, b) => b.reqPieces - a.reqPieces || a.name.localeCompare(b.name));
+  pendingBonds.sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+
+  let bondsHtml = "";
+  if (activeBonds.length === 0 && pendingBonds.length === 0) {
+    bondsHtml = `<div style="font-size:11px;color:var(--dim);font-style:italic">No equipment equipped yet — select items from Equipment Loadout below to activate gear set bonds.</div>`;
+  } else {
+    bondsHtml = `<div class="syn-bonds-grid">`;
+    for (const b of activeBonds) {
+      const descHtml = b.effect ? `<span class="syn-bond-eff">${escapeHtml(b.effect)}</span>` : "";
+      bondsHtml += `<div class="syn-bond-chip active" title="${escapeAttr(b.name + ' (' + b.count + '/' + b.reqPieces + '): Active - ' + b.effect)}">
+        <span class="syn-bond-name">${escapeHtml(b.name)} (${b.count}/${b.reqPieces})</span>
+        <span class="syn-bond-badge">ACTIVE</span>
+        ${descHtml}
+      </div>`;
+    }
+    for (const b of pendingBonds.slice(0, 4)) {
+      bondsHtml += `<div class="syn-bond-chip" style="opacity:0.65" title="${escapeAttr(b.name + ': ' + b.count + '/' + b.reqPieces + ' pieces')}">
+        <span class="syn-bond-name">${escapeHtml(b.name)}</span>
+        <span class="syn-bond-badge">${b.count}/${b.reqPieces}</span>
+      </div>`;
+    }
+    bondsHtml += `</div>`;
+  }
+
+  let statsHtml = "";
+  if (hasStats) {
+    const statChips = Object.entries(statsTotal)
+      .filter(([k, v]) => v > 0)
+      .map(([k, v]) => `<span>${k} <strong class="syn-stat-val">+${v}</strong></span>`)
+      .join(" &bull; ");
+    if (statChips) {
+      statsHtml = `<div class="syn-stats-row"><span class="syn-stat-label">Equip Stats:</span> ${statChips}</div>`;
+    }
+  }
+
+  el.innerHTML = `
+    <div class="syn-top-row">
+      <div class="syn-char-title">
+        <span>MEMBER ${currentTab + 1}:</span>
+        <span class="syn-badge-name">${escapeHtml(roleName)}</span>
+        <span style="font-size:11px;color:var(--dim);font-weight:400">${escapeHtml(roleClass)}</span>
+      </div>
+      <div class="syn-counts">
+        <span class="syn-pill ${equipCount === 10 ? 'full' : ''}">${equipCount}/10 EQUIP</span>
+        <span class="syn-pill ${runeCount === 10 ? 'full' : ''}">${runeCount}/10 RUNES</span>
+        <span class="syn-pill ${talentCount === 4 ? 'full' : ''}">${talentCount}/4 TALENTS</span>
+        <span class="syn-pill ${affixCount === 18 ? 'full' : ''}">${affixCount}/18 JEWELS</span>
+        <span class="syn-pill" style="color:var(--accent);border-color:var(--accent)66" title="Total squad equipped gear across ${state.length} members">SQUAD: ${teamTotalEquip}/${state.length * 10}</span>
+      </div>
+    </div>
+    <div class="syn-bonds-section">
+      <div class="syn-bonds-header">
+        <span>Active Gear Set Bonds &amp; Synergies</span>
+        <span style="color:var(--accent);font-weight:700">${activeBonds.length} Active Set${activeBonds.length === 1 ? '' : 's'}</span>
+      </div>
+      ${bondsHtml}
+      ${statsHtml}
+    </div>
+  `;
 }
 
 function addCharacter() {
@@ -1559,14 +1646,14 @@ function removeCharacter(idx) {
 
 // Change handlers
 function onCharCommentChange(c, v) { state[c].comment = v; }
-function onRoleChange(c, v) { state[c].roleId = v; }
-function onTalentChange(c, i, v) { state[c].talents[i] = v; }
-function onSupportChange(c, i, v) { state[c].supports[i] = v; }
-function onEquipChange(c, i, v) { state[c].equipList[i].IDs = v; }
-function onEquipStar(c, i, v) { state[c].equipList[i].star = parseInt(v) || 0; }
-function onEquipHeritage(c, i, v) { state[c].equipList[i].Heritage = !!v; }
+function onRoleChange(c, v) { state[c].roleId = v; updateLiveSynergyBar(); }
+function onTalentChange(c, i, v) { state[c].talents[i] = v; updateLiveSynergyBar(); }
+function onSupportChange(c, i, v) { state[c].supports[i] = v; updateLiveSynergyBar(); }
+function onEquipChange(c, i, v) { state[c].equipList[i].IDs = v; updateLiveSynergyBar(); }
+function onEquipStar(c, i, v) { state[c].equipList[i].star = parseInt(v) || 0; updateLiveSynergyBar(); }
+function onEquipHeritage(c, i, v) { state[c].equipList[i].Heritage = !!v; updateLiveSynergyBar(); }
 function onRuneChange(c, i, v) { state[c].runeList[i].IDs = v; renderAll(); }
-function onRuneStar(c, i, v) { state[c].runeList[i].star = parseInt(v) || 0; }
+function onRuneStar(c, i, v) { state[c].runeList[i].star = parseInt(v) || 0; updateLiveSynergyBar(); }
 function onAffixChange(c, g, a, v) {
   const slot = state[c].godStones[g].affixes[a];
   slot.IDs = v;
@@ -1581,6 +1668,7 @@ function onAffixTier(c, g, a, which, v) {
   const val = parseInt(v) || 1;
   if (which === 0) state[c].godStones[g].affixes[a].tier0 = val;
   else state[c].godStones[g].affixes[a].tier1 = val;
+  updateLiveSynergyBar();
 }
 
 // Build character_overrides.json compatible object

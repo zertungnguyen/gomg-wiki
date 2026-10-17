@@ -312,3 +312,120 @@ body.nes-theme .progress-bar {
   background-position: 0 0, 10px 10px !important;
   background-size: 20px 20px !important;
 }
+
+/* ==========================================================================
+   NES Hero Scout, Hub Visual Cards & Unit Codex View Switcher Overrides
+   ========================================================================== */
+body.nes-theme .featured-hero {
+  background: #212529 !important;
+  border: 4px solid #fff !important;
+  border-radius: 0 !important;
+  box-shadow: 4px 4px 0 #000, inset -2px -2px #000 !important;
+}
+body.nes-theme .hero-sprite-frame {
+  border: 3px solid #fff !important;
+  border-radius: 0 !important;
+  background: #000 !important;
+  box-shadow: 3px 3px 0 #000 !important;
+}
+body.nes-theme .hero-skill-card {
+  background: #000 !important;
+  border: 2px solid #fff !important;
+  border-radius: 0 !important;
+  box-shadow: 2px 2px 0 #000 !important;
+}
+body.nes-theme .hero-unit-name {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 14px !important;
+}
+body.nes-theme .hero-skill-title {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 10px !important;
+  color: #f7d51d !important;
+}
+body.nes-theme .hero-eyebrow {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 9px !important;
+  color: #f7d51d !important;
+}
+body.nes-theme .hero-reroll-btn,
+body.nes-theme .hero-action-btn {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 8px !important;
+  border: 3px solid #fff !important;
+  border-radius: 0 !important;
+  background: #212529 !important;
+  color: #fff !important;
+  box-shadow: inset -2px -2px #000, 2px 2px 0 #000 !important;
+  text-transform: uppercase !important;
+}
+body.nes-theme .hero-reroll-btn:hover,
+body.nes-theme .hero-action-btn:hover {
+  background: #209cee !important;
+  color: #fff !important;
+}
+body.nes-theme .hero-action-btn.primary {
+  background: #f7d51d !important;
+  color: #000 !important;
+  box-shadow: inset -2px -2px #e59400, 2px 2px 0 #000 !important;
+}
+body.nes-theme .hub-thumb {
+  border: 2px solid #fff !important;
+  border-radius: 0 !important;
+  background: #000 !important;
+  box-shadow: 2px 2px 0 #000 !important;
+}
+body.nes-theme .hub-badge {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 8px !important;
+  border-radius: 0 !important;
+  border: 2px solid #fff !important;
+  background: #209cee !important;
+  color: #fff !important;
+}
+
+/* Unit Codex View Switcher & Unit Cards in NES Mode */
+body.nes-theme .view-switcher {
+  border: 3px solid #fff !important;
+  border-radius: 0 !important;
+  background: #000 !important;
+  box-shadow: 2px 2px 0 #000 !important;
+}
+body.nes-theme .view-btn {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 8px !important;
+  border: 2px solid transparent !important;
+  border-radius: 0 !important;
+  color: #fff !important;
+  text-transform: uppercase !important;
+  transition: none !important;
+}
+body.nes-theme .view-btn.active {
+  background: #f7d51d !important;
+  color: #000 !important;
+  border-color: #fff !important;
+  box-shadow: inset -2px -2px #e59400 !important;
+}
+body.nes-theme .unit-card {
+  background: #212529 !important;
+  border: 3px solid #fff !important;
+  border-radius: 0 !important;
+  box-shadow: 4px 4px 0px #000 !important;
+  transition: none !important;
+}
+body.nes-theme .unit-card:hover {
+  border-color: #f7d51d !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 4px 6px 0px #000 !important;
+}
+body.nes-theme .uc-art-wrap {
+  border: 2px solid #fff !important;
+  border-radius: 0 !important;
+  background: #000 !important;
+  box-shadow: 2px 2px 0 #000 !important;
+}
+body.nes-theme .uc-name {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 9px !important;
+}
+

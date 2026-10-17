@@ -76,6 +76,43 @@ h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:va
 .stat-val{font-weight:600;font-family:'Consolas',monospace;color:var(--text)}
 
 .empty{grid-column:1/-1;padding:40px;text-align:center;color:var(--dim);font-style:italic}
+
+/* Biome / Habitat Realm styling */
+.biome-Plains { color: #84cc16; }
+.biome-Forest { color: #22c55e; }
+.biome-Mines  { color: #f59e0b; }
+.biome-Tundra { color: #38bdf8; }
+.biome-Sea    { color: #3b82f6; }
+.biome-Astral { color: #c084fc; }
+
+.pill.on.biome-Plains { color: #84cc16; background: rgba(132,204,22,0.15); border-color: #84cc16; }
+.pill.on.biome-Forest { color: #22c55e; background: rgba(34,197,94,0.15); border-color: #22c55e; }
+.pill.on.biome-Mines  { color: #f59e0b; background: rgba(245,158,11,0.15); border-color: #f59e0b; }
+.pill.on.biome-Tundra { color: #38bdf8; background: rgba(56,189,248,0.15); border-color: #38bdf8; }
+.pill.on.biome-Sea    { color: #3b82f6; background: rgba(59,130,246,0.15); border-color: #3b82f6; }
+.pill.on.biome-Astral { color: #c084fc; background: rgba(192,132,252,0.15); border-color: #c084fc; }
+
+.biome-chip {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  font-family: 'Chakra Petch', sans-serif;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  background: rgba(0,0,0,0.3);
+}
+
+/* NES mode overrides */
+body.nes-theme .biome-chip {
+  border-radius: 0 !important;
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 8px !important;
+  border: 2px solid #fff !important;
+  box-shadow: 2px 2px 0 #000 !important;
+}
 </style>
 </head>
 <body>
@@ -121,9 +158,6 @@ h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:va
 <script src="assets/js/nes-switcher.js"></script>
 
 
-
-
-
 <main class="wrap">
   <h1>Rym (Lime) Codex &amp; Collection Tracker</h1>
   <div class="sub">Discover all 50 mysterious Ryms across the continent, view natural spawn rates, and track your personal collection. Click any card to mark as Caught.</div>
@@ -151,10 +185,14 @@ h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:va
     <div class="filter-col">
       <h4>Collection Status</h4>
       <div class="pills">
-        <button class="pill" id="stAll" onclick="setStatus(null)">All</button>
-        <button class="pill" id="stCaught" onclick="setStatus('caught')">Caught</button>
-        <button class="pill" id="stMissing" onclick="setStatus('missing')">Missing</button>
+        <button class="pill" id="stAll" onclick="setStatus(null)">All (50)</button>
+        <button class="pill" id="stCaught" onclick="setStatus('caught')">Caught (0)</button>
+        <button class="pill" id="stMissing" onclick="setStatus('missing')">Missing (50)</button>
       </div>
+    </div>
+    <div class="filter-col habitat-col">
+      <h4>Habitat Realm</h4>
+      <div class="pills" id="habitatPills"></div>
     </div>
     <div class="filter-col">
       <h4>Tier</h4>
@@ -179,13 +217,57 @@ var STORAGE_KEY = 'mgg-limes-collection';
 var caughtSet = {};
 
 var selStatus = null; // null | 'caught' | 'missing'
+var selHabitat = null; // null | 'Plains' | 'Forest' | 'Mines' | 'Tundra' | 'Sea' | 'Astral'
 var selStep = null;
 var selType = null;
 var selArea = null;
 
 var STEPS = ['SS', 'S', 'A', 'B', 'C'];
 var TYPES = ['Color Change', 'Transformation', 'Elements'];
+var HABITATS = ['Plains', 'Forest', 'Mines', 'Tundra', 'Sea', 'Astral'];
 var AREAS = ['World', 'Plains', 'Forest', 'Mounts', 'Tundra', 'Beach', 'Ocean'];
+
+function getHabitat(l) {
+  var bg = l.background || '';
+  var at = l.area_type || '';
+  if (bg.indexOf('Astral') !== -1 || (at === 'World' && bg === 'Astral Realm')) return 'Astral';
+  if (bg.indexOf('Mines') !== -1 || bg.indexOf('Hollows') !== -1 || at.indexOf('Mounts') !== -1 || bg.indexOf('Highlands') !== -1) return 'Mines';
+  if (bg.indexOf('Sea') !== -1 || bg.indexOf('Shores') !== -1 || at.indexOf('Ocean') !== -1 || at.indexOf('Beach') !== -1) return 'Sea';
+  if (bg.indexOf('Tundra') !== -1 || at.indexOf('Tundra') !== -1) return 'Tundra';
+  if (bg.indexOf('Woods') !== -1 || bg.indexOf('Grove') !== -1 || at.indexOf('Forest') !== -1) return 'Forest';
+  if (bg.indexOf('Plains') !== -1 || bg.indexOf('Steppe') !== -1 || at.indexOf('Plains') !== -1) return 'Plains';
+  return 'Astral';
+}
+
+function playCatchChime(caught) {
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.type = 'triangle';
+    if (caught) {
+      osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+      osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.05);
+      osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.10);
+      osc.frequency.setValueAtTime(1046.50, ctx.currentTime + 0.16);
+      gain.gain.setValueAtTime(0.12, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.25);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.26);
+    } else {
+      osc.frequency.setValueAtTime(330, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(165, ctx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.11);
+    }
+  } catch(e) {}
+}
 
 function loadStorage() {
   try {
@@ -202,6 +284,7 @@ function saveStorage() {
 
 function toggleCaught(id, e) {
   if (e) e.stopPropagation();
+  var willBeCaught = !caughtSet[id];
   if (caughtSet[id]) {
     delete caughtSet[id];
   } else {
@@ -209,6 +292,7 @@ function toggleCaught(id, e) {
   }
   saveStorage();
   updateTracker();
+  playCatchChime(willBeCaught);
   render();
 }
 
@@ -226,12 +310,58 @@ function updateTracker() {
   var pct = Math.round((count / total) * 100);
   document.getElementById('caughtCount').textContent = count + ' / ' + total + ' (' + pct + '%)';
   document.getElementById('progressBar').style.width = pct + '%';
+  updateStatusPills();
+}
+
+function updateStatusPills() {
+  var total = (window.LIMES_DATA && window.LIMES_DATA.limes) ? window.LIMES_DATA.limes.length : 50;
+  var count = Object.keys(caughtSet).length;
+  var missing = Math.max(0, total - count);
+
+  var btnAll = document.getElementById('stAll');
+  var btnCaught = document.getElementById('stCaught');
+  var btnMissing = document.getElementById('stMissing');
+
+  if (btnAll) {
+    btnAll.textContent = 'All (' + total + ')';
+    btnAll.className = 'pill' + (selStatus === null ? ' on' : '');
+  }
+  if (btnCaught) {
+    btnCaught.textContent = 'Caught (' + count + ')';
+    btnCaught.className = 'pill' + (selStatus === 'caught' ? ' on status-caught' : '');
+  }
+  if (btnMissing) {
+    btnMissing.textContent = 'Missing (' + missing + ')';
+    btnMissing.className = 'pill' + (selStatus === 'missing' ? ' on status-missing' : '');
+  }
+}
+
+function buildHabitatPills() {
+  var el = document.getElementById('habitatPills');
+  if (!el || !window.LIMES_DATA || !window.LIMES_DATA.limes) return;
+  var counts = {};
+  window.LIMES_DATA.limes.forEach(function(l) {
+    var h = getHabitat(l);
+    counts[h] = (counts[h] || 0) + 1;
+  });
+  el.innerHTML = HABITATS.map(function(h) {
+    var on = (selHabitat === h) ? ' on biome-' + h : '';
+    var cnt = counts[h] || 0;
+    return '<button class="pill' + on + '" onclick="toggleHabitat(\'' + h + '\')">' + h + ' (' + cnt + ')</button>';
+  }).join('');
+}
+
+function toggleHabitat(h) {
+  selHabitat = (selHabitat === h) ? null : h;
+  buildHabitatPills();
+  render();
 }
 
 function init() {
   loadStorage();
   updateTracker();
 
+  buildHabitatPills();
   buildPills('stepPills', STEPS, function(s){ return 'step-' + s; }, function(s){ return s; }, selStep, function(s){ selStep = (selStep === s) ? null : s; render(); });
   buildPills('typePills', TYPES, function(){ return ''; }, function(t){ return t; }, selType, function(t){ selType = (selType === t) ? null : t; render(); });
   buildPills('areaPills', AREAS, function(){ return ''; }, function(a){ return a; }, selArea, function(a){ selArea = (selArea === a) ? null : a; render(); });
@@ -254,14 +384,8 @@ function setStatus(st) {
   render();
 }
 
-function updateStatusPills() {
-  document.getElementById('stAll').className = 'pill' + (selStatus === null ? ' on' : '');
-  document.getElementById('stCaught').className = 'pill' + (selStatus === 'caught' ? ' on status-caught' : '');
-  document.getElementById('stMissing').className = 'pill' + (selStatus === 'missing' ? ' on status-missing' : '');
-}
-
 function clearFilters() {
-  selStatus = null; selStep = null; selType = null; selArea = null;
+  selStatus = null; selHabitat = null; selStep = null; selType = null; selArea = null;
   document.getElementById('searchInput').value = '';
   init();
 }
@@ -275,6 +399,7 @@ function render() {
     var isCaught = !!caughtSet[l.id];
     if (selStatus === 'caught' && !isCaught) return false;
     if (selStatus === 'missing' && isCaught) return false;
+    if (selHabitat && getHabitat(l) !== selHabitat) return false;
     if (selStep && l.step !== selStep) return false;
     if (selType && l.type !== selType) return false;
     if (selArea && l.area_type.indexOf(selArea) === -1) return false;
@@ -298,7 +423,9 @@ function render() {
 
   grid.innerHTML = filtered.map(function(l){
     var isCaught = !!caughtSet[l.id];
+    var habitat = getHabitat(l);
     var stepBadge = '<span class="badge badge-' + l.step + '">' + l.step + '</span>';
+    var habitatBadge = '<span class="biome-chip biome-' + habitat + '">' + habitat + '</span>';
     var checkMark = isCaught ? '&#10003;' : '';
     var iconHtml = l.icon
       ? '<img class="lime-icon" src="' + l.icon + '" alt="' + (l.name || '') + '" loading="lazy" onerror="this.style.display=\'none\'">'
@@ -306,7 +433,10 @@ function render() {
 
     return '<div class="card step-' + l.step + (isCaught ? ' caught' : '') + '" onclick="toggleCaught(\'' + l.id + '\')">' +
       '<div class="card-header">' +
-        stepBadge +
+        '<div style="display:flex;align-items:center;gap:6px">' +
+          stepBadge +
+          habitatBadge +
+        '</div>' +
         '<div class="check-box" title="Toggle caught">' + checkMark + '</div>' +
       '</div>' +
       '<div class="card-top">' +
@@ -317,6 +447,10 @@ function render() {
         '</div>' +
       '</div>' +
       '<div class="card-stats">' +
+        '<div class="stat-line">' +
+          '<span class="stat-label">Habitat Realm</span>' +
+          '<span class="stat-val biome-' + habitat + '">' + habitat + '</span>' +
+        '</div>' +
         '<div class="stat-line">' +
           '<span class="stat-label">Spawn Area</span>' +
           '<span class="stat-val">' + l.background + '</span>' +

@@ -44,6 +44,100 @@ table.results tbody tr.jackpot{background:rgba(255,71,87,.08);border-left:3px so
 .badge-type{background:rgba(255,255,255,.05);color:var(--text);border:1px solid rgba(255,255,255,.1)}
 .prob-val{font-family:'Consolas',monospace;font-weight:700;color:var(--accent)}
 .empty{padding:40px;text-align:center;color:var(--dim);font-style:italic}
+
+/* Currency Registry & Badges */
+.currency-ledger{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px;align-items:center}
+.currency-pill{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:20px;font-size:12px;font-family:'Chakra Petch',sans-serif;font-weight:600;letter-spacing:.3px;background:var(--card2);border:1px solid var(--border);transition:all .15s}
+.cur-icon{display:inline-block;vertical-align:middle;flex-shrink:0}
+
+.cur-gold{color:#f5b342;border-color:rgba(245,179,66,.4);background:rgba(245,179,66,.08)}
+.cur-gold:hover{background:rgba(245,179,66,.15);box-shadow:0 0 8px rgba(245,179,66,.25)}
+.cur-gem{color:#4ea1ff;border-color:rgba(78,161,255,.4);background:rgba(78,161,255,.08)}
+.cur-gem:hover{background:rgba(78,161,255,.15);box-shadow:0 0 8px rgba(78,161,255,.25)}
+.cur-clover{color:#6cc090;border-color:rgba(108,192,144,.4);background:rgba(108,192,144,.08)}
+.cur-clover:hover{background:rgba(108,192,144,.15);box-shadow:0 0 8px rgba(108,192,144,.25)}
+.cur-relic{color:#b66dff;border-color:rgba(182,109,255,.4);background:rgba(182,109,255,.08)}
+.cur-relic:hover{background:rgba(182,109,255,.15);box-shadow:0 0 8px rgba(182,109,255,.25)}
+
+.currency-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:700;font-family:'Chakra Petch',sans-serif;letter-spacing:.3px}
+
+/* Roll Simulator Panel */
+.sim-panel{background:var(--card2);border:1.5px solid var(--accent);border-radius:8px;padding:18px 20px;margin-bottom:22px;box-shadow:0 4px 20px rgba(0,0,0,0.35);transition:all .2s}
+.sim-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;border-bottom:1px solid var(--border);padding-bottom:14px;margin-bottom:14px}
+.sim-title-group{display:flex;flex-direction:column;gap:3px}
+.sim-title{font-family:'Chakra Petch',sans-serif;font-size:16px;font-weight:700;color:var(--accent);letter-spacing:1px;display:flex;align-items:center;gap:8px}
+.sim-subtitle{font-size:12px;color:var(--dim)}
+.sim-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+.btn-roll{padding:8px 18px;border-radius:4px;font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px;transition:all .15s;border:1px solid transparent;display:inline-flex;align-items:center;gap:6px}
+.btn-roll-10{background:linear-gradient(135deg,#f5b342 0%,#e59400 100%);color:#000;box-shadow:0 2px 12px rgba(245,179,66,.35)}
+.btn-roll-10:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(245,179,66,.5)}
+.btn-roll-1{background:rgba(255,255,255,.08);color:var(--text);border-color:var(--border)}
+.btn-roll-1:hover{background:rgba(255,255,255,.15);border-color:#666}
+.btn-reset-sim{padding:7px 12px;background:transparent;color:var(--dim);border:1px solid var(--border);border-radius:4px;font-family:'Chakra Petch',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-reset-sim:hover{color:var(--text);border-color:#777}
+
+/* Simulator Stats Bar */
+.sim-stats-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;margin-bottom:14px}
+.sim-stat-pill{display:flex;align-items:center;gap:6px;font-size:12px;font-family:'Chakra Petch',sans-serif}
+.sim-stat-pill .lbl{color:var(--dim);font-size:11px;text-transform:uppercase}
+.sim-stat-pill .val{font-family:'Consolas',monospace;font-weight:700;color:var(--text)}
+.sim-stat-pill.tier-SS .val{color:var(--SS)}
+.sim-stat-pill.tier-S .val{color:var(--S)}
+.sim-stat-pill.tier-A .val{color:var(--A)}
+.sim-stat-pill.tier-B .val{color:var(--B)}
+.sim-stat-pill.tier-C .val{color:var(--C)}
+
+/* Simulator Results Grid */
+.sim-results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+@media (min-width:1000px){.sim-results-grid{grid-template-columns:repeat(5,1fr)}}
+
+.sim-empty-callout{grid-column:1/-1;padding:32px;text-align:center;color:var(--dim);border:1px dashed var(--border);border-radius:6px;background:rgba(255,255,255,.01);font-size:13px}
+
+.sim-card{background:var(--card);border-radius:6px;padding:12px 10px;display:flex;flex-direction:column;justify-content:space-between;position:relative;text-align:center;min-height:120px;transition:transform .15s,box-shadow .15s;animation:cardPop .25s ease-out backwards}
+@keyframes cardPop{0%{opacity:0;transform:scale(.92)}100%{opacity:1;transform:scale(1)}}
+@keyframes jackpotPulse{0%{box-shadow:0 0 16px rgba(255,71,87,.5),inset 0 0 10px rgba(255,71,87,.2)}100%{box-shadow:0 0 28px rgba(255,71,87,.85),inset 0 0 18px rgba(255,71,87,.4)}}
+
+.sim-card.tier-SS{border:2px solid #ff4757;background:linear-gradient(180deg,rgba(255,71,87,.22) 0%,rgba(15,17,20,.95) 100%);box-shadow:0 0 20px rgba(255,71,87,.55);animation:cardPop .25s ease-out backwards, jackpotPulse 1.8s infinite alternate}
+.sim-card.tier-S{border:2px solid #f5b342;background:linear-gradient(180deg,rgba(245,179,66,.18) 0%,rgba(15,17,20,.95) 100%);box-shadow:0 0 16px rgba(245,179,66,.42)}
+.sim-card.tier-A{border:1.5px solid #c290e8;background:linear-gradient(180deg,rgba(194,144,232,.12) 0%,rgba(15,17,20,.95) 100%);box-shadow:0 0 12px rgba(194,144,232,.32)}
+.sim-card.tier-B{border:1.5px solid #4ea1ff;background:linear-gradient(180deg,rgba(78,161,255,.1) 0%,rgba(15,17,20,.95) 100%);box-shadow:0 0 10px rgba(78,161,255,.24)}
+.sim-card.tier-C{border:1px solid #6cc090;background:linear-gradient(180deg,rgba(108,192,144,.07) 0%,rgba(15,17,20,.95) 100%);box-shadow:0 0 6px rgba(108,192,144,.15)}
+
+.sim-card-top{display:flex;align-items:center;justify-content:space-between;width:100%;margin-bottom:6px}
+.sim-tier-badge{font-family:'Chakra Petch',sans-serif;font-size:11px;font-weight:700;padding:2px 6px;border-radius:3px}
+.sim-card.tier-SS .sim-tier-badge{background:rgba(255,71,87,.3);color:#ff4757}
+.sim-card.tier-S .sim-tier-badge{background:rgba(245,179,66,.3);color:#f5b342}
+.sim-card.tier-A .sim-tier-badge{background:rgba(194,144,232,.3);color:#c290e8}
+.sim-card.tier-B .sim-tier-badge{background:rgba(78,161,255,.3);color:#4ea1ff}
+.sim-card.tier-C .sim-tier-badge{background:rgba(108,192,144,.3);color:#6cc090}
+
+.sim-card-type{font-size:10px;color:var(--dim);font-family:'Chakra Petch',sans-serif;text-transform:uppercase}
+.sim-card-name{font-size:13px;font-weight:700;color:var(--text);line-height:1.3;margin:4px 0}
+.sim-card-cn{font-size:11px;color:var(--dim);margin-bottom:6px}
+.sim-card-bottom{display:flex;align-items:center;justify-content:space-between;width:100%;margin-top:auto;padding-top:6px;border-top:1px dashed rgba(255,255,255,.08);font-size:11px}
+.sim-card-qty{font-family:'Consolas',monospace;font-weight:700;color:var(--accent)}
+.sim-card-prob{font-family:'Consolas',monospace;color:var(--dim);font-size:10px}
+.jackpot-banner{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#ff4757;color:#fff;font-family:'Chakra Petch',sans-serif;font-size:9px;font-weight:900;letter-spacing:1px;padding:2px 8px;border-radius:3px;box-shadow:0 2px 8px rgba(255,71,87,.6)}
+
+/* NES Retro UI Overrides */
+body.nes-theme .currency-pill{border-radius:0 !important;border:2px solid #fff !important;background:#212529 !important;box-shadow:2px 2px 0 #000 !important}
+body.nes-theme .currency-badge{border-radius:0 !important;border:2px solid #fff !important}
+body.nes-theme .sim-panel{background:#212529 !important;border:3px solid #fff !important;border-radius:0 !important;box-shadow:4px 4px 0 #000 !important}
+body.nes-theme .sim-header{border-bottom:3px solid #fff !important}
+body.nes-theme .sim-title{font-family:'Press Start 2P',monospace !important;font-size:11px !important;color:#f7d51d !important}
+body.nes-theme .sim-subtitle{font-family:'Chakra Petch',sans-serif !important;font-size:12px !important}
+body.nes-theme .btn-roll{font-family:'Press Start 2P',monospace !important;font-size:9px !important;border-radius:0 !important;border:3px solid #fff !important;box-shadow:inset -3px -3px #000, 2px 2px 0 #000 !important}
+body.nes-theme .btn-roll-10{background:#f7d51d !important;color:#000 !important;box-shadow:inset -3px -3px #e59400, 2px 2px 0 #000 !important}
+body.nes-theme .btn-reset-sim{font-family:'Press Start 2P',monospace !important;font-size:8px !important;border-radius:0 !important;border:2px solid #fff !important;background:#212529 !important}
+body.nes-theme .sim-stats-bar{background:#1a1c23 !important;border:2px solid #fff !important;border-radius:0 !important}
+body.nes-theme .sim-card{border-radius:0 !important;border:3px solid #fff !important;box-shadow:3px 3px 0 #000 !important;background:#212529 !important}
+body.nes-theme .sim-card.tier-SS{border-color:#e76e55 !important}
+body.nes-theme .sim-card.tier-S{border-color:#f7d51d !important}
+body.nes-theme .sim-card.tier-A{border-color:#b66dff !important}
+body.nes-theme .sim-card.tier-B{border-color:#209cee !important}
+body.nes-theme .sim-card.tier-C{border-color:#92cc41 !important}
+body.nes-theme .jackpot-banner{font-family:'Press Start 2P',monospace !important;font-size:7px !important;border-radius:0 !important;border:2px solid #fff !important}
 </style>
 </head>
 <body>
@@ -89,12 +183,29 @@ table.results tbody tr.jackpot{background:rgba(255,71,87,.08);border-left:3px so
 <script src="assets/js/nes-switcher.js"></script>
 
 
-
-
-
 <main class="wrap">
   <h1>Shops &amp; Golden Vault Drop Rates</h1>
   <div class="sub">Detailed item pools, crystal costs, and exact roll probabilities for the Traveling Merchant and the 3-Ring Golden Vault.</div>
+
+  <!-- Vault Currency Registry -->
+  <div class="currency-ledger">
+    <div class="currency-pill cur-gold">
+      <svg class="cur-icon" viewBox="0 0 16 16" width="14" height="14"><circle cx="8" cy="8" r="6.2" fill="#f5b342" fill-opacity="0.25" stroke="#f5b342" stroke-width="1.4"/><text x="8" y="11" font-size="8.5" font-weight="900" text-anchor="middle" fill="#f5b342" font-family="sans-serif">G</text></svg>
+      <span><strong>Gold</strong> (#f5b342 &bull; Merchant Shop)</span>
+    </div>
+    <div class="currency-pill cur-gem">
+      <svg class="cur-icon" viewBox="0 0 16 16" width="14" height="14"><polygon points="4,2 12,2 15,6 8,14 1,6" fill="#4ea1ff" fill-opacity="0.25" stroke="#4ea1ff" stroke-width="1.3" stroke-linejoin="round"/><polyline points="1,6 8,6 15,6" stroke="#4ea1ff" stroke-width="0.9"/><polyline points="4,2 8,6 12,2" stroke="#4ea1ff" stroke-width="0.9"/></svg>
+      <span><strong>Crystal / Gem</strong> (#4ea1ff &bull; Golden Vault Rings)</span>
+    </div>
+    <div class="currency-pill cur-clover">
+      <svg class="cur-icon" viewBox="0 0 16 16" width="14" height="14"><circle cx="6" cy="6" r="2.8" fill="#6cc090" fill-opacity="0.25" stroke="#6cc090" stroke-width="1.1"/><circle cx="10" cy="6" r="2.8" fill="#6cc090" fill-opacity="0.25" stroke="#6cc090" stroke-width="1.1"/><circle cx="6" cy="10" r="2.8" fill="#6cc090" fill-opacity="0.25" stroke="#6cc090" stroke-width="1.1"/><circle cx="10" cy="10" r="2.8" fill="#6cc090" fill-opacity="0.25" stroke="#6cc090" stroke-width="1.1"/><path d="M8 8v5" stroke="#6cc090" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <span><strong>Four-Leaf Clover</strong> (#6cc090 &bull; Lucky Barter)</span>
+    </div>
+    <div class="currency-pill cur-relic">
+      <svg class="cur-icon" viewBox="0 0 16 16" width="14" height="14"><polygon points="8,1 14,4.5 14,11.5 8,15 2,11.5 2,4.5" fill="#b66dff" fill-opacity="0.25" stroke="#b66dff" stroke-width="1.3" stroke-linejoin="round"/><circle cx="8" cy="8" r="2.2" fill="#b66dff"/></svg>
+      <span><strong>Relic Token</strong> (#b66dff &bull; Heritage &amp; Wish Stones)</span>
+    </div>
+  </div>
 
   <div class="main-tabs">
     <button class="main-tab active" id="tabMerchant" onclick="switchMainTab('merchant')">Traveling Merchant (旅行商人)</button>
@@ -104,6 +215,46 @@ table.results tbody tr.jackpot{background:rgba(255,71,87,.08);border-left:3px so
   <div class="sub-bar">
     <div class="sub-tabs" id="subTabs"></div>
     <div class="cost-tag" id="costTag"></div>
+  </div>
+
+  <!-- Interactive Golden Vault 10x Roll Simulator -->
+  <div class="sim-panel" id="rollSimPanel">
+    <div class="sim-header">
+      <div class="sim-title-group">
+        <div class="sim-title">
+          <span style="font-size:20px">🎲</span>
+          <span>GOLDEN VAULT 10x ROLL SIMULATOR</span>
+        </div>
+        <div class="sim-subtitle">
+          Simulate live draws using authentic drop weights for <span id="simPoolLabel" style="color:var(--accent);font-weight:700">Traveling Merchant (Round 1)</span>
+        </div>
+      </div>
+      <div class="sim-actions">
+        <button type="button" class="btn-roll btn-roll-10" onclick="simulateRoll(10)">🎲 Roll 10x</button>
+        <button type="button" class="btn-roll btn-roll-1" onclick="simulateRoll(1)">🎲 Roll 1x</button>
+        <button type="button" class="btn-reset-sim" onclick="resetSimStats()" title="Clear simulated roll history">Reset Stats</button>
+      </div>
+    </div>
+
+    <!-- Simulator Stats Bar -->
+    <div class="sim-stats-bar">
+      <div class="sim-stat-pill"><span class="lbl">Total Pulls:</span> <span class="val" id="statTotalPulls">0</span></div>
+      <div class="sim-stat-pill tier-SS"><span class="lbl">SS Red:</span> <span class="val" id="statSS">0 (0.0%)</span></div>
+      <div class="sim-stat-pill tier-S"><span class="lbl">S Gold:</span> <span class="val" id="statS">0 (0.0%)</span></div>
+      <div class="sim-stat-pill tier-A"><span class="lbl">A Purple:</span> <span class="val" id="statA">0 (0.0%)</span></div>
+      <div class="sim-stat-pill tier-B"><span class="lbl">B Blue:</span> <span class="val" id="statB">0 (0.0%)</span></div>
+      <div class="sim-stat-pill tier-C"><span class="lbl">C Green:</span> <span class="val" id="statC">0 (0.0%)</span></div>
+      <div class="sim-stat-pill" style="margin-left:auto" id="statCostSpentWrap"><span class="lbl">Cost Spent:</span> <span class="val" id="statCostSpent" style="color:var(--accent)">0</span></div>
+    </div>
+
+    <!-- Results Grid -->
+    <div class="sim-results-grid" id="simResultsGrid">
+      <div class="sim-empty-callout">
+        <div style="font-size:24px;margin-bottom:6px">🎰</div>
+        <div>Click <strong>Roll 10x</strong> or <strong>Roll 1x</strong> to test your luck in the active pool!</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:4px">Rolled items reveal authentic in-game drop weights with rarity glow feedback.</div>
+      </div>
+    </div>
   </div>
 
   <div class="controls-row">
@@ -129,6 +280,209 @@ table.results tbody tr.jackpot{background:rgba(255,71,87,.08);border-left:3px so
 <script>
 var currentMain = 'merchant'; // 'merchant' | 'vault'
 var currentSub = 'Round 1';
+
+// Currency SVGs for fast vector badges
+var CURRENCY_SVGS = {
+  gold: '<svg class="cur-icon" viewBox="0 0 16 16" width="13" height="13"><circle cx="8" cy="8" r="6.2" fill="#f5b342" fill-opacity="0.25" stroke="#f5b342" stroke-width="1.4"/><text x="8" y="11" font-size="8.5" font-weight="900" text-anchor="middle" fill="#f5b342" font-family="sans-serif">G</text></svg>',
+  gem: '<svg class="cur-icon" viewBox="0 0 16 16" width="13" height="13"><polygon points="4,2 12,2 15,6 8,14 1,6" fill="#4ea1ff" fill-opacity="0.25" stroke="#4ea1ff" stroke-width="1.3" stroke-linejoin="round"/><polyline points="1,6 8,6 15,6" stroke="#4ea1ff" stroke-width="0.9"/><polyline points="4,2 8,6 12,2" stroke="#4ea1ff" stroke-width="0.9"/></svg>',
+  clover: '<svg class="cur-icon" viewBox="0 0 16 16" width="13" height="13"><circle cx="6" cy="6" r="2.8" fill="#6cc090" fill-opacity="0.25" stroke="#6cc090" stroke-width="1.1"/><circle cx="10" cy="6" r="2.8" fill="#6cc090" fill-opacity="0.25" stroke="#6cc090" stroke-width="1.1"/><circle cx="6" cy="10" r="2.8" fill="#6cc090" fill-opacity="0.25" stroke="#6cc090" stroke-width="1.1"/><circle cx="10" cy="10" r="2.8" fill="#6cc090" fill-opacity="0.25" stroke="#6cc090" stroke-width="1.1"/><path d="M8 8v5" stroke="#6cc090" stroke-width="1.2" stroke-linecap="round"/></svg>',
+  relic: '<svg class="cur-icon" viewBox="0 0 16 16" width="13" height="13"><polygon points="8,1 14,4.5 14,11.5 8,15 2,11.5 2,4.5" fill="#b66dff" fill-opacity="0.25" stroke="#b66dff" stroke-width="1.3" stroke-linejoin="round"/><circle cx="8" cy="8" r="2.2" fill="#b66dff"/></svg>'
+};
+
+// Roll Simulator State
+var simStats = {
+  total: 0,
+  SS: 0,
+  S: 0,
+  A: 0,
+  B: 0,
+  C: 0,
+  goldSpent: 0,
+  crystalsSpent: {}
+};
+
+function getItemTier(it) {
+  var str = (it.content || '') + ' ' + (it.content_cn || '');
+  if (str.indexOf('SS-tier') !== -1 || str.indexOf('SS阶') !== -1 || it.weight <= 1) return 'SS';
+  if (str.indexOf('S-tier') !== -1 || str.indexOf('S阶') !== -1 || str.indexOf('Wish Stone') !== -1 || str.indexOf('Divine Crystal') !== -1 || str.indexOf('圣灵结晶') !== -1) return 'S';
+  if (str.indexOf('A-tier') !== -1 || str.indexOf('A阶') !== -1 || str.indexOf('Violet Crystal') !== -1 || str.indexOf('暗紫结晶') !== -1) return 'A';
+  if (str.indexOf('B-tier') !== -1 || str.indexOf('B阶') !== -1 || str.indexOf('Azure Crystal') !== -1 || str.indexOf('海蓝结晶') !== -1) return 'B';
+  if (str.indexOf('C-tier') !== -1 || str.indexOf('C阶') !== -1 || str.indexOf('Verdant Crystal') !== -1 || str.indexOf('翠绿结晶') !== -1) return 'C';
+  if (it.weight <= 2) return 'SS';
+  if (it.weight <= 25) return 'S';
+  if (it.weight <= 100) return 'A';
+  if (it.weight <= 500) return 'B';
+  return 'C';
+}
+
+function playRollChime(hasSS, hasS) {
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var now = ctx.currentTime;
+    if (hasSS) {
+      // Fanfare for SS Jackpot!
+      [523.25, 659.25, 783.99, 1046.50].forEach(function(freq, i) {
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now + i * 0.08);
+        gain.gain.setValueAtTime(0.18, now + i * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.28);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + i * 0.08);
+        osc.stop(now + i * 0.08 + 0.29);
+      });
+    } else if (hasS) {
+      // High Golden Chime
+      [587.33, 880].forEach(function(freq, i) {
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + i * 0.09);
+        gain.gain.setValueAtTime(0.12, now + i * 0.09);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.09 + 0.22);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + i * 0.09);
+        osc.stop(now + i * 0.09 + 0.23);
+      });
+    } else {
+      // Snappy roll tick
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(392, now);
+      osc.frequency.exponentialRampToValueAtTime(523.25, now + 0.07);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.linearRampToValueAtTime(0.001, now + 0.08);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.09);
+    }
+  } catch(e) {}
+}
+
+function simulateRoll(times) {
+  if (!window.VAULT_DATA) return;
+  var data = window.VAULT_DATA[currentMain];
+  if (!data || !data[currentSub]) return;
+  var pool = data[currentSub];
+
+  var rolled = [];
+  var hasSS = false;
+  var hasS = false;
+
+  for (var t = 0; t < times; t++) {
+    var r = Math.random() * pool.total_weight;
+    var acc = 0;
+    var picked = pool.items[pool.items.length - 1];
+    for (var i = 0; i < pool.items.length; i++) {
+      acc += pool.items[i].weight;
+      if (r < acc) {
+        picked = pool.items[i];
+        break;
+      }
+    }
+    var tier = getItemTier(picked);
+    if (tier === 'SS') hasSS = true;
+    if (tier === 'S') hasS = true;
+
+    rolled.push({ item: picked, tier: tier });
+    simStats.total++;
+    simStats[tier]++;
+  }
+
+  // Cost tracking
+  if (currentMain === 'merchant') {
+    simStats.goldSpent += (pool.cost_gold || 0) * times;
+  } else {
+    var cName = (pool.cost || 'Crystal').split(' ')[0];
+    simStats.crystalsSpent[cName] = (simStats.crystalsSpent[cName] || 0) + times;
+  }
+
+  playRollChime(hasSS, hasS);
+  renderSimResults(rolled);
+  updateSimStats();
+}
+
+function renderSimResults(rolled) {
+  var grid = document.getElementById('simResultsGrid');
+  grid.innerHTML = rolled.map(function(r){
+    var it = r.item;
+    var tier = r.tier;
+    var jackpotTag = (tier === 'SS') ? '<div class="jackpot-banner">★ JACKPOT ★</div>' : '';
+    
+    // Type currency badge if applicable
+    var typeBadge = '<span class="sim-card-type">' + it.type + '</span>';
+    if (it.type === 'Crystal' || it.content.indexOf('Crystal') !== -1) {
+      typeBadge = '<span class="currency-badge cur-gem" style="font-size:10px;padding:1px 5px">' + CURRENCY_SVGS.gem + ' Crystal</span>';
+    } else if (it.type === 'Clover' || it.content.indexOf('Clover') !== -1) {
+      typeBadge = '<span class="currency-badge cur-clover" style="font-size:10px;padding:1px 5px">' + CURRENCY_SVGS.clover + ' Clover</span>';
+    } else if (it.content.indexOf('Heritage') !== -1 || it.content.indexOf('Wish') !== -1) {
+      typeBadge = '<span class="currency-badge cur-relic" style="font-size:10px;padding:1px 5px">' + CURRENCY_SVGS.relic + ' Relic</span>';
+    }
+
+    return '<div class="sim-card tier-' + tier + '">' +
+      jackpotTag +
+      '<div class="sim-card-top">' +
+        '<span class="sim-tier-badge">' + tier + '</span>' +
+        typeBadge +
+      '</div>' +
+      '<div>' +
+        '<div class="sim-card-name">' + it.content + '</div>' +
+        (it.content_cn ? '<div class="sim-card-cn">' + it.content_cn + '</div>' : '') +
+      '</div>' +
+      '<div class="sim-card-bottom">' +
+        '<span class="sim-card-qty">&times;' + it.num + '</span>' +
+        '<span class="sim-card-prob">' + it.pct + '% drop</span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function updateSimStats() {
+  document.getElementById('statTotalPulls').textContent = simStats.total.toLocaleString();
+  var total = simStats.total || 1;
+  document.getElementById('statSS').textContent = simStats.SS + ' (' + (simStats.SS / total * 100).toFixed(1) + '%)';
+  document.getElementById('statS').textContent = simStats.S + ' (' + (simStats.S / total * 100).toFixed(1) + '%)';
+  document.getElementById('statA').textContent = simStats.A + ' (' + (simStats.A / total * 100).toFixed(1) + '%)';
+  document.getElementById('statB').textContent = simStats.B + ' (' + (simStats.B / total * 100).toFixed(1) + '%)';
+  document.getElementById('statC').textContent = simStats.C + ' (' + (simStats.C / total * 100).toFixed(1) + '%)';
+
+  var costWrap = document.getElementById('statCostSpent');
+  if (costWrap) {
+    if (currentMain === 'merchant') {
+      costWrap.textContent = simStats.goldSpent.toLocaleString() + ' Gold';
+    } else {
+      var parts = [];
+      for (var k in simStats.crystalsSpent) {
+        parts.push(simStats.crystalsSpent[k] + 'x ' + k);
+      }
+      costWrap.textContent = parts.length > 0 ? parts.join(', ') : '0';
+    }
+  }
+}
+
+function resetSimStats() {
+  simStats = {
+    total: 0,
+    SS: 0,
+    S: 0,
+    A: 0,
+    B: 0,
+    C: 0,
+    goldSpent: 0,
+    crystalsSpent: {}
+  };
+  updateSimStats();
+  document.getElementById('simResultsGrid').innerHTML = '<div class="sim-empty-callout">' +
+    '<div style="font-size:24px;margin-bottom:6px">🎰</div>' +
+    '<div>Click <strong>Roll 10x</strong> or <strong>Roll 1x</strong> to test your luck in the active pool!</div>' +
+    '<div style="font-size:11px;color:var(--dim);margin-top:4px">Rolled items reveal authentic in-game drop weights with rarity glow feedback.</div>' +
+  '</div>';
+}
 
 function switchMainTab(tab) {
   currentMain = tab;
@@ -173,12 +527,18 @@ function render() {
   var currentData = data[currentSub];
   var query = (document.getElementById('searchInput').value || '').trim().toLowerCase();
 
-  // Set cost label
+  // Update simulator pool label
+  var simLabel = document.getElementById('simPoolLabel');
+  if (simLabel) {
+    simLabel.textContent = (currentMain === 'merchant' ? 'Traveling Merchant (' + currentSub + ')' : 'Golden Vault (' + currentSub + ')');
+  }
+
+  // Set cost label with styled currency badges
   var costEl = document.getElementById('costTag');
   if (currentMain === 'merchant') {
-    costEl.textContent = 'Roll Cost: ' + currentData.cost_gold.toLocaleString() + ' Gold';
+    costEl.innerHTML = '<span class="currency-badge cur-gold">' + CURRENCY_SVGS.gold + ' Roll Cost: <strong>' + currentData.cost_gold.toLocaleString() + ' Gold</strong></span>';
   } else {
-    costEl.textContent = 'Required: ' + currentData.cost;
+    costEl.innerHTML = '<span class="currency-badge cur-gem">' + CURRENCY_SVGS.gem + ' Required: <strong>' + currentData.cost + '</strong></span>';
   }
 
   var filtered = currentData.items.filter(function(it){
@@ -201,8 +561,29 @@ function render() {
 
   tbody.innerHTML = filtered.map(function(it){
     var isJackpot = (it.content && it.content.indexOf('SS-tier') !== -1) || (it.weight <= 2);
+    
+    // Type badge with currency styling
+    var typeBadge = '<span class="badge badge-type">' + it.type + '</span>';
+    if (it.type === 'Crystal' || it.content.indexOf('Crystal') !== -1) {
+      typeBadge = '<span class="currency-badge cur-gem">' + CURRENCY_SVGS.gem + ' ' + it.type + '</span>';
+    } else if (it.type === 'Clover' || it.content.indexOf('Clover') !== -1) {
+      typeBadge = '<span class="currency-badge cur-clover">' + CURRENCY_SVGS.clover + ' ' + it.type + '</span>';
+    } else if (it.content.indexOf('Heritage Stone') !== -1 || it.content.indexOf('Wish Stone') !== -1) {
+      typeBadge = '<span class="currency-badge cur-relic">' + CURRENCY_SVGS.relic + ' Relic</span>';
+    } else if (it.type === 'Jewels') {
+      typeBadge = '<span class="badge" style="background:rgba(182,109,255,.15);color:var(--A);border:1px solid rgba(182,109,255,.3)">Jewels</span>';
+    } else if (it.type === 'Gear') {
+      typeBadge = '<span class="badge" style="background:rgba(245,179,66,.15);color:var(--accent);border:1px solid rgba(245,179,66,.3)">Gear</span>';
+    } else if (it.type === 'Runes') {
+      typeBadge = '<span class="badge" style="background:rgba(78,161,255,.15);color:var(--B);border:1px solid rgba(78,161,255,.3)">Runes</span>';
+    } else if (it.type === 'Chests') {
+      typeBadge = '<span class="badge" style="background:rgba(245,158,11,.15);color:#f59e0b;border:1px solid rgba(245,158,11,.3)">Chests</span>';
+    } else if (it.type === 'Materials') {
+      typeBadge = '<span class="badge" style="background:rgba(16,185,129,.15);color:#10b981;border:1px solid rgba(16,185,129,.3)">Materials</span>';
+    }
+
     return '<tr' + (isJackpot ? ' class="jackpot"' : '') + '>' +
-      '<td><span class="badge badge-type">' + it.type + '</span></td>' +
+      '<td>' + typeBadge + '</td>' +
       '<td><span style="font-weight:600;color:var(--text)">' + it.content + '</span> ' +
         (it.content_cn ? '<span style="color:var(--dim);font-size:11px">(' + it.content_cn + ')</span>' : '') +
       '</td>' +
