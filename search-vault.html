@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shops &amp; Golden Vault Rates — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="style.css">
+<style>
+:root{
+  --card:#1d2025; --card2:#0f1114;
+  --text:#e3e3e3; --dim:#a8a8a8;
+  --SS:#ff4757; --S:#f5b342; --A:#c290e8; --B:#4ea1ff; --C:#6cc090;
+  --accent:#f5b342;
+}
+.wrap{max-width:1200px;margin:0 auto;padding:0 0 40px}
+h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:4px}
+.sub{color:var(--dim);font-size:13px;margin-bottom:18px;line-height:1.5}
+
+.main-tabs{display:flex;gap:8px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:12px}
+.main-tab{padding:8px 18px;border-radius:4px;border:1px solid var(--border);background:var(--card2);color:var(--dim);font-size:13px;cursor:pointer;font-family:'Chakra Petch',sans-serif;font-weight:700;letter-spacing:.5px;transition:all .15s}
+.main-tab:hover{border-color:#555}
+.main-tab.active{background:rgba(245,179,66,.15);border-color:var(--accent);color:var(--accent)}
+
+.sub-bar{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.sub-tabs{display:flex;flex-wrap:wrap;gap:6px}
+.sub-tab{padding:5px 12px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--dim);font-size:12px;cursor:pointer;font-family:'Chakra Petch',sans-serif;font-weight:600;letter-spacing:.5px;transition:all .15s}
+.sub-tab:hover{border-color:#555}
+.sub-tab.active{background:rgba(255,255,255,.1);border-color:#888;color:#fff}
+
+.cost-tag{font-size:13px;font-family:'Consolas',monospace;color:var(--accent);font-weight:600}
+
+.controls-row{display:flex;align-items:center;gap:12px;margin:14px 0;flex-wrap:wrap}
+#searchInput{padding:8px 14px;background:var(--card2);color:var(--text);border:1px solid var(--border);border-radius:4px;font-size:13px;width:320px;max-width:100%}
+#searchInput:focus{outline:none;border-color:var(--accent)}
+.results-meta{color:var(--dim);font-size:12px;font-family:'Chakra Petch',sans-serif;letter-spacing:.5px;margin-left:auto}
+
+table.results{width:100%;font-size:13px;border-collapse:collapse;background:var(--card2);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+table.results thead th{background:rgba(0,0,0,.3);text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:10px 14px;border-bottom:1px solid var(--border);font-family:'Chakra Petch',sans-serif;color:var(--dim)}
+table.results td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+table.results tbody tr:hover{background:rgba(255,255,255,.02)}
+table.results tbody tr.jackpot{background:rgba(255,71,87,.08);border-left:3px solid var(--SS)}
+
+.badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:700;letter-spacing:.3px;font-family:'Chakra Petch',sans-serif}
+.badge-type{background:rgba(255,255,255,.05);color:var(--text);border:1px solid rgba(255,255,255,.1)}
+.prob-val{font-family:'Consolas',monospace;font-weight:700;color:var(--accent)}
+.empty{padding:40px;text-align:center;color:var(--dim);font-style:italic}
+</style>
+</head>
+<body>
+<aside class="sidenav">
+  <button class="sn-collapse-btn" onclick="toggleSidenav()" title="Hide menu" aria-label="Hide menu">&#8249;</button>
+  <a class="brand" href="index.html">GMG Wiki</a>
+  <nav>
+    <a href="units/index.html">Units</a>
+    <a href="keywords/index.html">Keywords</a>
+    <a href="gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="talent-simulator.html">Talent Simulator</a>
+    <a href="talent-manage.html">My Talents</a>
+    <a href="build-team.html">Build Team</a>
+    <a href="search-unit.html">Search &middot; Units</a>
+    <a href="search-talent.html">Search &middot; Talents (facet)</a>
+    <a href="search-talent-new.html">Search &middot; Talents (fulltext)</a>
+    <a href="search-gear.html">Search &middot; Gear</a>
+    <a href="gear-drop-rates.html">Gear Drop Rates</a>
+    <a href="search-runes.html">Search &middot; Runes</a>
+    <a href="search-godstone.html">Search &middot; Jewels</a>
+    <a href="search-blessing.html">Search &middot; Blessings</a>
+    <a href="search-limes.html">Ryms (Limes)</a>
+    <a href="search-vault.html" class="current">Shops &amp; Vaults</a>
+    <a href="search-foretell.html">Prophecies</a>
+    <a href="news.html">News</a>
+  </nav>
+</aside>
+<button class="sn-expand-btn" onclick="toggleSidenav()" title="Show menu" aria-label="Show menu">&#9776;</button>
+<script>
+(function(){
+  var KEY='mgg-sidenav-collapsed';
+  function apply(){
+    var c=localStorage.getItem(KEY)==='1';
+    document.body.classList.toggle('sn-collapsed',c);
+  }
+  window.toggleSidenav=function(){
+    var now=document.body.classList.toggle('sn-collapsed');
+    try{localStorage.setItem(KEY,now?'1':'0');}catch(e){}
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+})();
+</script>
+
+
+
+<main class="wrap">
+  <h1>Shops &amp; Golden Vault Drop Rates</h1>
+  <div class="sub">Detailed item pools, crystal costs, and exact roll probabilities for the Traveling Merchant and the 3-Ring Golden Vault.</div>
+
+  <div class="main-tabs">
+    <button class="main-tab active" id="tabMerchant" onclick="switchMainTab('merchant')">Traveling Merchant (旅行商人)</button>
+    <button class="main-tab" id="tabVault" onclick="switchMainTab('vault')">Golden Vault (黄金宝库)</button>
+  </div>
+
+  <div class="sub-bar">
+    <div class="sub-tabs" id="subTabs"></div>
+    <div class="cost-tag" id="costTag"></div>
+  </div>
+
+  <div class="controls-row">
+    <input type="text" id="searchInput" placeholder="Search item content or type..." oninput="render()">
+    <div class="results-meta" id="resultsMeta">Loading...</div>
+  </div>
+
+  <table class="results">
+    <thead>
+      <tr>
+        <th style="width:110px">Type</th>
+        <th>Reward Content</th>
+        <th style="width:80px">Qty</th>
+        <th style="width:90px;text-align:right">Weight</th>
+        <th style="width:120px;text-align:right">Drop Chance</th>
+      </tr>
+    </thead>
+    <tbody id="resultsBody"></tbody>
+  </table>
+</main>
+
+<script src="vault-data.js"></script>
+<script>
+var currentMain = 'merchant'; // 'merchant' | 'vault'
+var currentSub = 'Round 1';
+
+function switchMainTab(tab) {
+  currentMain = tab;
+  document.getElementById('tabMerchant').className = 'main-tab' + (tab === 'merchant' ? ' active' : '');
+  document.getElementById('tabVault').className = 'main-tab' + (tab === 'vault' ? ' active' : '');
+  
+  if (tab === 'merchant') {
+    currentSub = 'Round 1';
+  } else {
+    currentSub = 'Outer Ring';
+  }
+  setupSubTabs();
+  render();
+}
+
+function setupSubTabs() {
+  var el = document.getElementById('subTabs');
+  if (currentMain === 'merchant') {
+    var rounds = ['Round 1', 'Round 2', 'Round 3', 'Round 4', 'Round 5'];
+    el.innerHTML = rounds.map(function(r){
+      return '<button class="sub-tab' + (currentSub === r ? ' active' : '') + '" onclick="switchSubTab(\'' + r + '\')">' + r + '</button>';
+    }).join('');
+  } else {
+    var rings = ['Outer Ring', 'Middle Ring', 'Center Core'];
+    el.innerHTML = rings.map(function(r){
+      return '<button class="sub-tab' + (currentSub === r ? ' active' : '') + '" onclick="switchSubTab(\'' + r + '\')">' + r + '</button>';
+    }).join('');
+  }
+}
+
+function switchSubTab(sub) {
+  currentSub = sub;
+  setupSubTabs();
+  render();
+}
+
+function render() {
+  if (!window.VAULT_DATA) return;
+  var data = window.VAULT_DATA[currentMain];
+  if (!data || !data[currentSub]) return;
+
+  var currentData = data[currentSub];
+  var query = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+
+  // Set cost label
+  var costEl = document.getElementById('costTag');
+  if (currentMain === 'merchant') {
+    costEl.textContent = 'Roll Cost: ' + currentData.cost_gold.toLocaleString() + ' Gold';
+  } else {
+    costEl.textContent = 'Required: ' + currentData.cost;
+  }
+
+  var filtered = currentData.items.filter(function(it){
+    if (query) {
+      var mContent = (it.content || '').toLowerCase().indexOf(query) !== -1;
+      var mType = (it.type || '').toLowerCase().indexOf(query) !== -1;
+      var mCn = (it.content_cn || '').toLowerCase().indexOf(query) !== -1;
+      if (!mContent && !mType && !mCn) return false;
+    }
+    return true;
+  });
+
+  document.getElementById('resultsMeta').textContent = filtered.length + ' rewards listed (Total weight: ' + currentData.total_weight.toLocaleString() + ')';
+
+  var tbody = document.getElementById('resultsBody');
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty">No rewards match your search.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(function(it){
+    var isJackpot = (it.content && it.content.indexOf('SS-tier') !== -1) || (it.weight <= 2);
+    return '<tr' + (isJackpot ? ' class="jackpot"' : '') + '>' +
+      '<td><span class="badge badge-type">' + it.type + '</span></td>' +
+      '<td><span style="font-weight:600;color:var(--text)">' + it.content + '</span> ' +
+        (it.content_cn ? '<span style="color:var(--dim);font-size:11px">(' + it.content_cn + ')</span>' : '') +
+      '</td>' +
+      '<td style="font-family:monospace;font-size:12px">' + it.num + '</td>' +
+      '<td style="text-align:right;font-family:monospace;color:var(--dim)">' + it.weight.toLocaleString() + '</td>' +
+      '<td style="text-align:right"><span class="prob-val">' + it.pct + '%</span></td>' +
+    '</tr>';
+  }).join('');
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  setupSubTabs();
+  render();
+});
+</script>
+</body>
+</html>

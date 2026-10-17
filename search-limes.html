@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rym (Lime) Codex &amp; Collection Tracker — Guild of Monster Girls Wiki</title>
+<link rel="stylesheet" href="style.css">
+<style>
+:root{
+  --card:#1d2025; --card2:#0f1114;
+  --text:#e3e3e3; --dim:#a8a8a8;
+  --SS:#ff4757; --S:#f5b342; --A:#c290e8; --B:#4ea1ff; --C:#6cc090;
+  --accent:#6cc090;
+}
+.wrap{max-width:1200px;margin:0 auto;padding:0 0 40px}
+h1{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:4px}
+.sub{color:var(--dim);font-size:13px;margin-bottom:18px;line-height:1.5}
+
+.tracker-bar{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.tracker-stats{display:flex;align-items:baseline;gap:10px}
+.tracker-num{font-family:'Chakra Petch',sans-serif;font-size:24px;font-weight:700;color:var(--accent)}
+.tracker-label{font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
+.progress-bar-wrap{flex:1;min-width:200px;height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden}
+.progress-bar{height:100%;background:var(--accent);width:0%;transition:width .3s}
+
+.filter-row{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:14px;align-items:flex-start}
+.filter-col h4{font-family:'Chakra Petch',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);margin:0 0 6px 0;font-weight:600}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{padding:5px 12px;border-radius:4px;border:1.5px solid var(--border);background:transparent;color:var(--dim);font-size:12px;cursor:pointer;user-select:none;transition:all .15s;font-family:'Chakra Petch',sans-serif;font-weight:600;letter-spacing:.5px}
+.pill:hover{border-color:#555}
+.pill.on{color:#fff;border-color:currentColor}
+.pill.on.step-SS{color:var(--SS);background:rgba(255,71,87,.15);border-color:var(--SS)}
+.pill.on.step-S{color:var(--S);background:rgba(245,179,66,.15);border-color:var(--S)}
+.pill.on.step-A{color:var(--A);background:rgba(194,144,232,.15);border-color:var(--A)}
+.pill.on.step-B{color:var(--B);background:rgba(78,161,255,.15);border-color:var(--B)}
+.pill.on.step-C{color:var(--C);background:rgba(108,192,144,.15);border-color:var(--C)}
+.pill.on.status-caught{color:#10b981;background:rgba(16,185,129,.15);border-color:#10b981}
+.pill.on.status-missing{color:#ef4444;background:rgba(239,68,68,.15);border-color:#ef4444}
+
+.controls-row{display:flex;align-items:center;gap:12px;margin:16px 0 14px 0;flex-wrap:wrap}
+#searchInput{padding:8px 14px;background:var(--card2);color:var(--text);border:1px solid var(--border);border-radius:4px;font-size:13px;width:320px;max-width:100%}
+#searchInput:focus{outline:none;border-color:var(--accent)}
+.btn-clear{padding:7px 14px;background:var(--card2);color:var(--text);border:1px solid var(--border);border-radius:4px;cursor:pointer;font-size:12px;font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:1px}
+.btn-clear:hover{border-color:var(--accent)}
+.results-meta{color:var(--dim);font-size:12px;font-family:'Chakra Petch',sans-serif;letter-spacing:.5px;margin-left:auto}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:14px}
+.card{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:14px;display:flex;flex-direction:column;gap:8px;position:relative;cursor:pointer;user-select:none;transition:transform .15s, border-color .15s}
+.card:hover{border-color:#444;transform:translateY(-2px)}
+.card.caught{border-color:rgba(108,192,144,.4);background:rgba(108,192,144,.03)}
+.card-header{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card-title{font-size:15px;font-weight:700;color:var(--text);line-height:1.3;display:flex;align-items:center;gap:8px}
+.check-box{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;transition:all .15s}
+.card.caught .check-box{background:var(--accent);border-color:var(--accent);color:#0f1114}
+
+.badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:700;letter-spacing:.3px;font-family:'Chakra Petch',sans-serif}
+.badge-SS{background:rgba(255,71,87,.2);color:var(--SS)}
+.badge-S{background:rgba(245,179,66,.2);color:var(--S)}
+.badge-A{background:rgba(194,144,232,.2);color:var(--A)}
+.badge-B{background:rgba(78,161,255,.2);color:var(--B)}
+.badge-C{background:rgba(108,192,144,.2);color:var(--C)}
+
+.card-desc{font-size:12px;color:var(--dim);line-height:1.5;margin-top:2px;font-style:italic}
+.card-stats{background:rgba(255,255,255,.02);border:1px dashed var(--border);padding:8px 10px;border-radius:4px;margin-top:auto}
+.stat-line{display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px}
+.stat-line:last-child{margin-bottom:0}
+.stat-label{color:var(--dim)}
+.stat-val{font-weight:600;font-family:'Consolas',monospace;color:var(--text)}
+
+.empty{grid-column:1/-1;padding:40px;text-align:center;color:var(--dim);font-style:italic}
+</style>
+</head>
+<body>
+<aside class="sidenav">
+  <button class="sn-collapse-btn" onclick="toggleSidenav()" title="Hide menu" aria-label="Hide menu">&#8249;</button>
+  <a class="brand" href="index.html">GMG Wiki</a>
+  <nav>
+    <a href="units/index.html">Units</a>
+    <a href="keywords/index.html">Keywords</a>
+    <a href="gacha-optimizer.html">Gacha Optimizer</a>
+    <a href="talent-simulator.html">Talent Simulator</a>
+    <a href="talent-manage.html">My Talents</a>
+    <a href="build-team.html">Build Team</a>
+    <a href="search-unit.html">Search &middot; Units</a>
+    <a href="search-talent.html">Search &middot; Talents (facet)</a>
+    <a href="search-talent-new.html">Search &middot; Talents (fulltext)</a>
+    <a href="search-gear.html">Search &middot; Gear</a>
+    <a href="gear-drop-rates.html">Gear Drop Rates</a>
+    <a href="search-runes.html">Search &middot; Runes</a>
+    <a href="search-godstone.html">Search &middot; Jewels</a>
+    <a href="search-blessing.html">Search &middot; Blessings</a>
+    <a href="search-limes.html" class="current">Ryms (Limes)</a>
+    <a href="search-vault.html">Shops &amp; Vaults</a>
+    <a href="search-foretell.html">Prophecies</a>
+    <a href="news.html">News</a>
+  </nav>
+</aside>
+<button class="sn-expand-btn" onclick="toggleSidenav()" title="Show menu" aria-label="Show menu">&#9776;</button>
+<script>
+(function(){
+  var KEY='mgg-sidenav-collapsed';
+  function apply(){
+    var c=localStorage.getItem(KEY)==='1';
+    document.body.classList.toggle('sn-collapsed',c);
+  }
+  window.toggleSidenav=function(){
+    var now=document.body.classList.toggle('sn-collapsed');
+    try{localStorage.setItem(KEY,now?'1':'0');}catch(e){}
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+})();
+</script>
+
+
+
+<main class="wrap">
+  <h1>Rym (Lime) Codex &amp; Collection Tracker</h1>
+  <div class="sub">Discover all 50 mysterious Ryms across the continent, view natural spawn rates, and track your personal collection. Click any card to mark as Caught.</div>
+
+  <div class="tracker-bar">
+    <div class="tracker-stats">
+      <span class="tracker-num" id="caughtCount">0 / 50</span>
+      <span class="tracker-label">Collection Progress</span>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <button class="btn-clear" onclick="resetCollection()" style="font-size:11px">Reset Caught</button>
+  </div>
+
+  <div class="controls-row">
+    <div style="flex:1">
+      <input type="text" id="searchInput" placeholder="Search Rym name, area, or description..." oninput="render()">
+    </div>
+    <button class="btn-clear" onclick="clearFilters()">Reset Filters</button>
+    <div class="results-meta" id="resultsMeta">Loading...</div>
+  </div>
+
+  <div class="filter-row">
+    <div class="filter-col">
+      <h4>Collection Status</h4>
+      <div class="pills">
+        <button class="pill" id="stAll" onclick="setStatus(null)">All</button>
+        <button class="pill" id="stCaught" onclick="setStatus('caught')">Caught</button>
+        <button class="pill" id="stMissing" onclick="setStatus('missing')">Missing</button>
+      </div>
+    </div>
+    <div class="filter-col">
+      <h4>Tier</h4>
+      <div class="pills" id="stepPills"></div>
+    </div>
+    <div class="filter-col">
+      <h4>Type</h4>
+      <div class="pills" id="typePills"></div>
+    </div>
+    <div class="filter-col">
+      <h4>Region</h4>
+      <div class="pills" id="areaPills"></div>
+    </div>
+  </div>
+
+  <div class="grid" id="limesGrid"></div>
+</main>
+
+<script src="limes-data.js"></script>
+<script>
+var STORAGE_KEY = 'mgg-limes-collection';
+var caughtSet = {};
+
+var selStatus = null; // null | 'caught' | 'missing'
+var selStep = null;
+var selType = null;
+var selArea = null;
+
+var STEPS = ['SS', 'S', 'A', 'B', 'C'];
+var TYPES = ['Color Change', 'Transformation', 'Elements'];
+var AREAS = ['World', 'Plains', 'Forest', 'Mounts', 'Tundra', 'Beach', 'Ocean'];
+
+function loadStorage() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) caughtSet = JSON.parse(raw) || {};
+  } catch(e) { caughtSet = {}; }
+}
+
+function saveStorage() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(caughtSet));
+  } catch(e) {}
+}
+
+function toggleCaught(id, e) {
+  if (e) e.stopPropagation();
+  if (caughtSet[id]) {
+    delete caughtSet[id];
+  } else {
+    caughtSet[id] = true;
+  }
+  saveStorage();
+  updateTracker();
+  render();
+}
+
+function resetCollection() {
+  if (!confirm('Reset your caught Rym collection?')) return;
+  caughtSet = {};
+  saveStorage();
+  updateTracker();
+  render();
+}
+
+function updateTracker() {
+  var total = (window.LIMES_DATA && window.LIMES_DATA.limes) ? window.LIMES_DATA.limes.length : 50;
+  var count = Object.keys(caughtSet).length;
+  var pct = Math.round((count / total) * 100);
+  document.getElementById('caughtCount').textContent = count + ' / ' + total + ' (' + pct + '%)';
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+function init() {
+  loadStorage();
+  updateTracker();
+
+  buildPills('stepPills', STEPS, function(s){ return 'step-' + s; }, function(s){ return s; }, selStep, function(s){ selStep = (selStep === s) ? null : s; render(); });
+  buildPills('typePills', TYPES, function(){ return ''; }, function(t){ return t; }, selType, function(t){ selType = (selType === t) ? null : t; render(); });
+  buildPills('areaPills', AREAS, function(){ return ''; }, function(a){ return a; }, selArea, function(a){ selArea = (selArea === a) ? null : a; render(); });
+
+  updateStatusPills();
+  render();
+}
+
+function buildPills(containerId, items, clsFunc, labelFunc, selected, onClick) {
+  var el = document.getElementById(containerId);
+  el.innerHTML = items.map(function(it){
+    var on = (selected === it) ? ' on ' + clsFunc(it) : '';
+    return '<button class="pill' + on + '" onclick="(' + onClick.toString() + ')(\'' + it + '\')">' + labelFunc(it) + '</button>';
+  }).join('');
+}
+
+function setStatus(st) {
+  selStatus = st;
+  updateStatusPills();
+  render();
+}
+
+function updateStatusPills() {
+  document.getElementById('stAll').className = 'pill' + (selStatus === null ? ' on' : '');
+  document.getElementById('stCaught').className = 'pill' + (selStatus === 'caught' ? ' on status-caught' : '');
+  document.getElementById('stMissing').className = 'pill' + (selStatus === 'missing' ? ' on status-missing' : '');
+}
+
+function clearFilters() {
+  selStatus = null; selStep = null; selType = null; selArea = null;
+  document.getElementById('searchInput').value = '';
+  init();
+}
+
+function render() {
+  if (!window.LIMES_DATA || !window.LIMES_DATA.limes) return;
+  var limes = window.LIMES_DATA.limes;
+  var query = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+
+  var filtered = limes.filter(function(l){
+    var isCaught = !!caughtSet[l.id];
+    if (selStatus === 'caught' && !isCaught) return false;
+    if (selStatus === 'missing' && isCaught) return false;
+    if (selStep && l.step !== selStep) return false;
+    if (selType && l.type !== selType) return false;
+    if (selArea && l.area_type.indexOf(selArea) === -1) return false;
+    if (query) {
+      var matchName = (l.name || '').toLowerCase().indexOf(query) !== -1;
+      var matchDesc = (l.description || '').toLowerCase().indexOf(query) !== -1;
+      var matchBg = (l.background || '').toLowerCase().indexOf(query) !== -1;
+      var matchId = (l.id || '').toLowerCase().indexOf(query) !== -1;
+      if (!matchName && !matchDesc && !matchBg && !matchId) return false;
+    }
+    return true;
+  });
+
+  document.getElementById('resultsMeta').textContent = filtered.length + ' of ' + limes.length + ' Ryms shown';
+
+  var grid = document.getElementById('limesGrid');
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="empty">No Ryms found matching your search.</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(function(l){
+    var isCaught = !!caughtSet[l.id];
+    var stepBadge = '<span class="badge badge-' + l.step + '">' + l.step + '</span>';
+    var checkMark = isCaught ? '&#10003;' : '';
+
+    return '<div class="card' + (isCaught ? ' caught' : '') + '" onclick="toggleCaught(\'' + l.id + '\')">' +
+      '<div class="card-header">' +
+        stepBadge +
+        '<div class="check-box" title="Toggle caught">' + checkMark + '</div>' +
+      '</div>' +
+      '<div class="card-title">' + l.name + '</div>' +
+      '<div class="card-desc">"' + l.description + '"</div>' +
+      '<div class="card-stats">' +
+        '<div class="stat-line">' +
+          '<span class="stat-label">Spawn Area</span>' +
+          '<span class="stat-val">' + l.background + '</span>' +
+        '</div>' +
+        '<div class="stat-line">' +
+          '<span class="stat-label">Terrain Block</span>' +
+          '<span class="stat-val">' + l.block + '</span>' +
+        '</div>' +
+        '<div class="stat-line">' +
+          '<span class="stat-label">Natural Rate</span>' +
+          '<span class="stat-val">' + l.rate_pct + '%</span>' +
+        '</div>' +
+        '<div class="stat-line">' +
+          '<span class="stat-label">Reward</span>' +
+          '<span class="stat-val" style="color:var(--accent)">' + l.reward + '</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
