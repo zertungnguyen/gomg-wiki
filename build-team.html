@@ -208,7 +208,12 @@ button.primary:hover{background:#dab466}
 .equip-slot .es-label{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;font-weight:600}
 .equip-slot.active .es-label{color:var(--accent)}
 .equip-slot .es-body{display:flex;align-items:center;gap:6px;min-width:0}
-.equip-slot .es-body img{width:28px;height:28px;border-radius:3px;object-fit:contain;background:var(--card);flex-shrink:0}
+.equip-slot .es-body img{width:28px;height:28px;border-radius:4px;object-fit:contain;background:var(--card);flex-shrink:0;border:1.5px solid var(--border);image-rendering:pixelated;image-rendering:crisp-edges;transition:border-color .15s,box-shadow .15s}
+.equip-slot.step-SS .es-body img{border-color:rgba(255,71,87,.6);box-shadow:0 0 8px rgba(255,71,87,.3)}
+.equip-slot.step-S  .es-body img{border-color:rgba(245,179,66,.6);box-shadow:0 0 8px rgba(245,179,66,.3)}
+.equip-slot.step-A  .es-body img{border-color:rgba(194,144,232,.6);box-shadow:0 0 8px rgba(194,144,232,.3)}
+.equip-slot.step-B  .es-body img{border-color:rgba(78,161,255,.6);box-shadow:0 0 8px rgba(78,161,255,.3)}
+.equip-slot.step-C  .es-body img{border-color:rgba(108,192,144,.6);box-shadow:0 0 8px rgba(108,192,144,.3)}
 .equip-slot .es-body .esname{font-size:11px;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .equip-slot .es-body .empty-mark{font-size:11px;color:var(--dim);font-style:italic;flex:1}
 .equip-slot .es-body .es-star{width:34px;padding:2px 4px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:3px;font-size:11px;flex-shrink:0}
@@ -223,7 +228,17 @@ button.primary:hover{background:#dab466}
 .g-card.disabled:hover{border-color:var(--border);background:var(--card)}
 .g-card:hover{border-color:var(--accent);transform:translateY(-1px)}
 .g-card.selected{border-color:var(--accent);background:#f5b34215;box-shadow:0 0 8px #f5b34244}
-.g-card img{width:52px;height:52px;object-fit:contain;background:var(--card2);border-radius:4px}
+.g-card img{width:52px;height:52px;object-fit:contain;background:var(--card2);border-radius:6px;border:1.5px solid var(--border);image-rendering:pixelated;image-rendering:crisp-edges;transition:border-color .15s,box-shadow .15s}
+.g-card.step-SS img{border-color:rgba(255,71,87,.6);box-shadow:0 0 10px rgba(255,71,87,.25)}
+.g-card.step-S  img{border-color:rgba(245,179,66,.6);box-shadow:0 0 10px rgba(245,179,66,.25)}
+.g-card.step-A  img{border-color:rgba(194,144,232,.6);box-shadow:0 0 10px rgba(194,144,232,.25)}
+.g-card.step-B  img{border-color:rgba(78,161,255,.6);box-shadow:0 0 10px rgba(78,161,255,.25)}
+.g-card.step-C  img{border-color:rgba(108,192,144,.6);box-shadow:0 0 10px rgba(108,192,144,.25)}
+.g-card.step-SS:hover img{box-shadow:0 0 14px rgba(255,71,87,.5)}
+.g-card.step-S:hover  img{box-shadow:0 0 14px rgba(245,179,66,.5)}
+.g-card.step-A:hover  img{box-shadow:0 0 14px rgba(194,144,232,.5)}
+.g-card.step-B:hover  img{box-shadow:0 0 14px rgba(78,161,255,.5)}
+.g-card.step-C:hover  img{box-shadow:0 0 14px rgba(108,192,144,.5)}
 .g-card .gname{font-size:11px;font-weight:600;line-height:1.15;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px}
 .g-card .garea{font-size:9px;color:var(--dim);width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .g-card .step{position:absolute;top:4px;left:4px;width:16px;height:16px;border-radius:3px;font-weight:700;font-size:9px;display:flex;align-items:center;justify-content:center}
@@ -241,7 +256,12 @@ button.primary:hover{background:#dab466}
 .rune-slot .rs-label{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;font-weight:600}
 .rune-slot.active .rs-label{color:var(--accent)}
 .rune-slot .rs-body{display:flex;align-items:center;gap:6px;min-width:0}
-.rune-slot .rs-body img{width:28px;height:28px;border-radius:3px;object-fit:contain;background:var(--card);flex-shrink:0}
+.rune-slot .rs-body img{width:28px;height:28px;border-radius:4px;object-fit:contain;background:var(--card);flex-shrink:0;border:1.5px solid var(--border);image-rendering:pixelated;image-rendering:crisp-edges;transition:border-color .15s,box-shadow .15s}
+.rune-slot.step-SS .rs-body img{border-color:rgba(255,71,87,.6);box-shadow:0 0 8px rgba(255,71,87,.3)}
+.rune-slot.step-S  .rs-body img{border-color:rgba(245,179,66,.6);box-shadow:0 0 8px rgba(245,179,66,.3)}
+.rune-slot.step-A  .rs-body img{border-color:rgba(194,144,232,.6);box-shadow:0 0 8px rgba(194,144,232,.3)}
+.rune-slot.step-B  .rs-body img{border-color:rgba(78,161,255,.6);box-shadow:0 0 8px rgba(78,161,255,.3)}
+.rune-slot.step-C  .rs-body img{border-color:rgba(108,192,144,.6);box-shadow:0 0 8px rgba(108,192,144,.3)}
 .rune-slot .rs-body .rsname{font-size:11px;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rune-slot .rs-body .empty-mark{font-size:11px;color:var(--dim);font-style:italic;flex:1}
 .rune-slot .rs-body .rs-star{width:34px;padding:2px 4px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:3px;font-size:11px;flex-shrink:0}
@@ -1078,7 +1098,7 @@ function renderRuneGridBody(charIdx) {
   let html = "";
   for (const r of list.slice(0, 500)) {
     const sel = r.id === currentSlotId ? "selected" : "";
-    html += `<div class="g-card ${sel}" onclick="onPickRune(${charIdx}, '${escapeAttr(r.id)}')" title="${escapeAttr(r.id + ' — ' + r.name + (r.material ? ' · ' + r.material : ''))}">
+    html += `<div class="g-card step-${r.step} ${sel}" onclick="onPickRune(${charIdx}, '${escapeAttr(r.id)}')" title="${escapeAttr(r.id + ' — ' + r.name + (r.material ? ' · ' + r.material : ''))}">
       <div class="step s-${r.step}">${r.step}</div>
       <img src="${escapeAttr(runeIcon(r.id))}" alt="" loading="lazy" onerror="this.style.background='var(--card2)';this.removeAttribute('src')">
       <div class="gname">${escapeHtml(r.name)}</div>
@@ -1269,7 +1289,7 @@ function renderEquipGridBody(charIdx) {
     const sel = selSet.has(e.id) ? "selected" : "";
     const disabled = noRole ? "disabled" : "";
     const clsShort = e.cls === "All-Class" ? "All" : (e.cls || "").replace(/,/g, "/");
-    html += `<div class="g-card ${sel} ${disabled}" onclick="onPickEquip(${charIdx}, '${escapeAttr(e.id)}')" title="${escapeAttr(e.id + ' — ' + e.name + (e.area ? ' · ' + e.area : '') + (e.cls ? ' · ' + e.cls : ''))}">
+    html += `<div class="g-card step-${e.step} ${sel} ${disabled}" onclick="onPickEquip(${charIdx}, '${escapeAttr(e.id)}')" title="${escapeAttr(e.id + ' — ' + e.name + (e.area ? ' · ' + e.area : '') + (e.cls ? ' · ' + e.cls : ''))}">
       <div class="step s-${e.step}">${e.step}</div>
       <img src="${escapeAttr(equipIcon(e.id))}" alt="" loading="lazy" onerror="this.style.background='var(--card2)';this.removeAttribute('src')">
       <div class="gname">${escapeHtml(e.name)}</div>
@@ -1388,6 +1408,7 @@ function renderCharPanel(charIdx) {
     const e = c.equipList[i];
     const eq = e.IDs ? findEquip(e.IDs) : null;
     const active = c.activeEquip === i ? "active" : "";
+    const stepClass = eq ? `step-${eq.step}` : "";
     const bodyHtml = eq
       ? `<img src="${escapeAttr(equipIcon(eq.id))}" alt="" onerror="this.style.visibility='hidden'"><div class="esname">${escapeHtml(eq.name)}</div>`
       : `<div class="empty-mark">(empty)</div>`;
@@ -1396,7 +1417,7 @@ function renderCharPanel(charIdx) {
     const clearBtn = eq
       ? `<button class="es-clear" onclick="event.stopPropagation();clearEquip(${charIdx}, ${i})" title="Clear">×</button>`
       : "";
-    html += `<div class="equip-slot ${active}" onclick="setActiveEquip(${charIdx}, ${i})">
+    html += `<div class="equip-slot ${stepClass} ${active}" onclick="setActiveEquip(${charIdx}, ${i})">
       <div class="es-label">${slotType}</div>
       <div class="es-body">${bodyHtml}${starInput}${heritageCb}</div>
       ${clearBtn}
@@ -1413,6 +1434,7 @@ function renderCharPanel(charIdx) {
     const r = c.runeList[i];
     const rn = r.IDs ? findRune(r.IDs) : null;
     const active = c.activeRune === i ? "active" : "";
+    const stepClass = rn ? `step-${rn.step}` : "";
     const bodyHtml = rn
       ? `<img src="${escapeAttr(runeIcon(rn.id))}" alt="" onerror="this.style.visibility='hidden'"><div class="rsname">${escapeHtml(rn.name)}</div>`
       : `<div class="empty-mark">(empty)</div>`;
@@ -1420,7 +1442,7 @@ function renderCharPanel(charIdx) {
     const clearBtn = rn
       ? `<button class="rs-clear" onclick="event.stopPropagation();clearRune(${charIdx}, ${i})" title="Clear">×</button>`
       : "";
-    html += `<div class="rune-slot ${active}" onclick="setActiveRune(${charIdx}, ${i})">
+    html += `<div class="rune-slot ${stepClass} ${active}" onclick="setActiveRune(${charIdx}, ${i})">
       <div class="rs-label">${SLOT_TYPES[i]}</div>
       <div class="rs-body">${bodyHtml}${starInput}</div>
       ${clearBtn}
