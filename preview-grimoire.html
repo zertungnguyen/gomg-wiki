@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Adventurer's Grimoire — Rym Codex Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=MedievalSharp&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Desk & Lighting */
+  --desk-bg: radial-gradient(ellipse at 50% 30%, #201712 0%, #110c09 65%, #070504 100%);
+  
+  /* Day Parchment Theme */
+  --parchment: #f6efe0;
+  --parchment-border: #c8b598;
+  --parchment-edge: rgba(120, 85, 45, 0.28);
+  --ink: #2a221b;
+  --ink-dim: #6d5b4a;
+  --ink-faint: #a18e7b;
+  --gold-accent: #9a6f2d;
+  --gold-foil: #c99846;
+  --gold-glow: rgba(201, 152, 70, 0.35);
+  --spine-shadow: rgba(40, 25, 10, 0.45);
+  --wax-red: #9e1c1c;
+  --wax-glow: rgba(185, 28, 28, 0.35);
+  --leather-rim: #3a271b;
+}
+
+/* Arcane / Dark Grimoire Mode */
+body.dark-grimoire {
+  --desk-bg: radial-gradient(ellipse at 50% 30%, #12151c 0%, #08090d 70%, #030406 100%);
+  --parchment: #1d1917;
+  --parchment-border: #4d3e2c;
+  --parchment-edge: rgba(0, 0, 0, 0.65);
+  --ink: #e8dcc4;
+  --ink-dim: #aa9c86;
+  --ink-faint: #5f5446;
+  --gold-accent: #d8a852;
+  --gold-foil: #f3c774;
+  --gold-glow: rgba(243, 199, 116, 0.35);
+  --spine-shadow: rgba(0, 0, 0, 0.7);
+  --leather-rim: #14110e;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--desk-bg);
+  color: var(--ink);
+  font-family: 'EB Garamond', serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px 40px;
+  overflow-x: hidden;
+  transition: background .4s;
+}
+
+/* Floating top menu */
+.top-bar {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 8px;
+}
+.brand-link {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-foil);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand-link:hover { text-shadow: 0 0 10px var(--gold-glow); }
+.mode-toggle {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--parchment-border);
+  color: var(--gold-foil);
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.mode-toggle:hover {
+  background: rgba(201, 152, 70, 0.2);
+  border-color: var(--gold-foil);
+}
+
+/* Outer Book Binder */
+.grimoire-book {
+  width: 100%;
+  max-width: 1100px;
+  background: var(--leather-rim);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 
+    0 25px 60px rgba(0, 0, 0, 0.8),
+    0 0 0 2px #4a3424,
+    inset 0 0 30px rgba(0,0,0,0.6);
+  position: relative;
+  transition: all .3s;
+}
+
+/* Antique Ornate Corners (Brass filigree) */
+.book-corner {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+  font-size: 24px;
+  color: var(--gold-foil);
+  line-height: 1;
+  opacity: 0.85;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+}
+.corner-tl { top: 6px; left: 8px; }
+.corner-tr { top: 6px; right: 8px; text-align: right; }
+.corner-bl { bottom: 6px; left: 8px; }
+.corner-br { bottom: 6px; right: 8px; text-align: right; }
+
+/* Silk Ribbon Bookmark hanging from top */
+.ribbon-bookmark {
+  position: absolute;
+  top: -12px;
+  right: 120px;
+  width: 30px;
+  height: 70px;
+  background: linear-gradient(135deg, #b91c1c 0%, #881313 100%);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
+  z-index: 20;
+  transition: transform .2s;
+  cursor: pointer;
+}
+.ribbon-bookmark:hover { transform: translateY(4px); }
+
+/* Double-page open book spread */
+.spread {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 640px;
+  background: var(--parchment);
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+/* Center book spine seam */
+.spread::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 50%;
+  width: 30px;
+  transform: translateX(-50%);
+  background: linear-gradient(to right, 
+    transparent 0%, 
+    var(--spine-shadow) 38%, 
+    rgba(0,0,0,0.7) 50%, 
+    var(--spine-shadow) 62%, 
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Page base styling */
+.page {
+  padding: 36px 36px 28px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-image: 
+    radial-gradient(circle at center, transparent 75%, var(--parchment-edge) 100%);
+}
+.page.left {
+  border-right: 1px solid var(--parchment-border);
+  box-shadow: inset -15px 0 25px -10px var(--spine-shadow);
+}
+.page.right {
+  box-shadow: inset 15px 0 25px -10px var(--spine-shadow);
+}
+
+/* Page Header */
+.page-header {
+  border-bottom: 2px double var(--parchment-border);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.page-header h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--gold-accent);
+  text-transform: uppercase;
+}
+.page-header .subtitle {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--ink-dim);
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+/* Left Page: Specimen Index (Search & Roster) */
+.filter-pills {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.stamp-pill {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px dashed var(--parchment-border);
+  color: var(--ink-dim);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.stamp-pill:hover, .stamp-pill.active {
+  color: var(--gold-foil);
+  border-color: var(--gold-accent);
+  border-style: solid;
+  background: rgba(201, 152, 70, 0.12);
+}
+
+.search-line {
+  margin-bottom: 14px;
+}
+.search-line input {
+  width: 100%;
+  padding: 8px 12px;
+  background: rgba(0,0,0,0.04);
+  border: 1px solid var(--parchment-border);
+  border-radius: 4px;
+  font-family: 'EB Garamond', serif;
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+}
+.search-line input:focus { border-color: var(--gold-accent); }
+
+/* Left Page: Specimen Catalogue Grid */
+.specimen-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  overflow-y: auto;
+  max-height: 410px;
+  padding-right: 4px;
+}
+.specimen-grid::-webkit-scrollbar { width: 5px; }
+.specimen-grid::-webkit-scrollbar-track { background: transparent; }
+.specimen-grid::-webkit-scrollbar-thumb { background: var(--parchment-border); border-radius: 3px; }
+
+.specimen-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+  border: 1px solid var(--parchment-border);
+  border-radius: 4px;
+  background: rgba(255,255,255,0.25);
+  cursor: pointer;
+  transition: all .15s;
+  position: relative;
+}
+body.dark-grimoire .specimen-chip { background: rgba(0,0,0,0.25); }
+
+.specimen-chip:hover {
+  border-color: var(--gold-accent);
+  background: rgba(201, 152, 70, 0.12);
+  transform: translateY(-1px);
+}
+.specimen-chip.selected {
+  border: 1.5px solid var(--gold-foil);
+  background: rgba(201, 152, 70, 0.2);
+  box-shadow: 0 0 8px var(--gold-glow);
+}
+.specimen-chip img {
+  width: 36px;
+  height: 36px;
+  image-rendering: pixelated;
+  border: 1px solid var(--parchment-border);
+  border-radius: 4px;
+  background: rgba(0,0,0,0.1);
+  flex-shrink: 0;
+}
+.specimen-chip .chip-name {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.specimen-chip .chip-sub {
+  font-size: 11px;
+  color: var(--ink-dim);
+  font-style: italic;
+}
+.specimen-chip .tier-mark {
+  margin-left: auto;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 11px;
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+.tier-mark.SS { color: #b91c1c; }
+.tier-mark.S  { color: #d97706; }
+.tier-mark.A  { color: #7c3aed; }
+.tier-mark.B  { color: #2563eb; }
+.tier-mark.C  { color: #059669; }
+
+/* Right Page: Bestiary Detailed Entry */
+.entry-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.entry-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.entry-title-wrap h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--ink);
+}
+.entry-title-wrap .latin-sub {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--gold-accent);
+}
+.entry-tier-badge {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border: 1px solid var(--parchment-border);
+  border-radius: 3px;
+  background: rgba(0,0,0,0.04);
+}
+
+/* Illustrated Plate (framed etching style) */
+.plate-wrap {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+.plate-frame {
+  width: 96px;
+  height: 96px;
+  border: 2px solid var(--gold-accent);
+  padding: 4px;
+  position: relative;
+  background: rgba(0,0,0,0.06);
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+  flex-shrink: 0;
+}
+.plate-frame::before {
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px; right: 2px; bottom: 2px;
+  border: 1px dashed var(--parchment-border);
+  pointer-events: none;
+}
+.plate-frame img {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  object-fit: contain;
+}
+
+/* Naturalist Field Quote / Drop Cap */
+.field-notes {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+  font-style: italic;
+  position: relative;
+  padding-left: 12px;
+  border-left: 2px solid var(--gold-accent);
+}
+
+/* Ledger Style Stat Table */
+.ledger-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin-top: 10px;
+}
+.ledger-table tr {
+  border-bottom: 1px dashed var(--parchment-border);
+}
+.ledger-table td {
+  padding: 7px 4px;
+}
+.ledger-table td.label {
+  color: var(--ink-dim);
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  width: 40%;
+}
+.ledger-table td.val {
+  font-weight: 600;
+  color: var(--ink);
+  text-align: right;
+  font-family: 'EB Garamond', serif;
+}
+
+/* Wax Seal Stamp (Realistic 3D wax effect) */
+.seal-container {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 2px double var(--parchment-border);
+}
+.wax-seal {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #cb2a2a, #801313 70%, #520b0b 100%);
+  box-shadow: 
+    0 4px 10px rgba(0,0,0,0.5),
+    inset 0 2px 3px rgba(255,255,255,0.35),
+    inset 0 -3px 6px rgba(0,0,0,0.6);
+  border: 2px dashed rgba(255,255,255,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  transform: rotate(-12deg);
+  transition: transform .2s, box-shadow .2s;
+}
+.wax-seal:hover {
+  transform: rotate(-8deg) scale(1.05);
+  box-shadow: 0 6px 14px var(--wax-glow);
+}
+.wax-seal.unsealed {
+  background: radial-gradient(circle at 35% 35%, #777, #444 70%, #222 100%);
+  border-color: rgba(255,255,255,0.1);
+  filter: grayscale(1);
+  opacity: 0.5;
+}
+.wax-seal .seal-star { font-size: 14px; line-height: 1; }
+
+.seal-action-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  background: transparent;
+  border: 1.5px solid var(--gold-accent);
+  color: var(--gold-accent);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.seal-action-btn:hover {
+  background: var(--gold-accent);
+  color: var(--parchment);
+}
+
+/* Page footer markings (Page numbers) */
+.page-folio {
+  position: absolute;
+  bottom: 8px;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--ink-faint);
+  letter-spacing: 1px;
+}
+.page.left .page-folio { left: 36px; }
+.page.right .page-folio { right: 36px; }
+
+/* Responsive: stack pages on small screens */
+@media (max-width: 820px) {
+  .spread { grid-template-columns: 1fr; }
+  .spread::after { display: none; }
+  .page.left { border-right: none; border-bottom: 2px double var(--parchment-border); }
+  .specimen-grid { max-height: 280px; }
+  .ribbon-bookmark { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="brand-link" href="search-limes.html">&larr; Return to Standard Wiki</a>
+  <button class="mode-toggle" onclick="toggleArcane()">Toggle Arcane Leather</button>
+</div>
+
+<div class="grimoire-book">
+  <div class="book-corner corner-tl">&#10022;</div>
+  <div class="book-corner corner-tr">&#10022;</div>
+  <div class="book-corner corner-bl">&#10022;</div>
+  <div class="book-corner corner-br">&#10022;</div>
+
+  <div class="ribbon-bookmark" title="Bookmark Ribbon"></div>
+
+  <div class="spread">
+    <!-- LEFT PAGE: Catalogue & Roster -->
+    <div class="page left">
+      <div class="page-header">
+        <h2>Rymarium Cryptid Codex</h2>
+        <div class="subtitle">&mdash; Field Classification of All 50 Ryms &mdash;</div>
+      </div>
+
+      <div class="filter-pills">
+        <button class="stamp-pill active" onclick="filterStep('ALL')">All Tiers</button>
+        <button class="stamp-pill" onclick="filterStep('SS')">SS-Class</button>
+        <button class="stamp-pill" onclick="filterStep('S')">S-Class</button>
+        <button class="stamp-pill" onclick="filterStep('A')">A-Class</button>
+        <button class="stamp-pill" onclick="filterStep('B')">B-Class</button>
+        <button class="stamp-pill" onclick="filterStep('C')">C-Class</button>
+      </div>
+
+      <div class="search-line">
+        <input type="text" id="searchInput" placeholder="Search by name, region or trait..." oninput="onSearch()">
+      </div>
+
+      <div class="specimen-grid" id="specimenGrid">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div class="page-folio">&mdash; Folio III &bull; Naturalist Journal &mdash;</div>
+    </div>
+
+    <!-- RIGHT PAGE: Specimen Observation Plate -->
+    <div class="page right">
+      <div class="entry-card" id="entryDetail">
+        <!-- Rendered by JS -->
+      </div>
+      <div class="page-folio">&mdash; Plate IV &bull; Field Sketches &mdash;</div>
+    </div>
+  </div>
+</div>
+
+<script src="limes-data.js"></script>
+<script>
+var allLimes = (window.LIMES_DATA && window.LIMES_DATA.limes) || [];
+var currentStep = 'ALL';
+var currentSearch = '';
+var selectedId = allLimes.length ? allLimes[0].id : null;
+var caughtSet = {};
+
+try {
+  var raw = localStorage.getItem('mgg-limes-collection');
+  if (raw) caughtSet = JSON.parse(raw) || {};
+} catch(e) {}
+
+function saveCaught() {
+  try {
+    localStorage.setItem('mgg-limes-collection', JSON.stringify(caughtSet));
+  } catch(e) {}
+}
+
+function toggleArcane() {
+  document.body.classList.toggle('dark-grimoire');
+}
+
+function filterStep(s) {
+  currentStep = s;
+  document.querySelectorAll('.stamp-pill').forEach(function(btn){
+    btn.classList.toggle('active', btn.textContent.indexOf(s) !== -1 || (s==='ALL' && btn.textContent.indexOf('All')!==-1));
+  });
+  renderList();
+}
+
+function onSearch() {
+  currentSearch = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+  renderList();
+}
+
+function selectSpecimen(id) {
+  selectedId = id;
+  renderList();
+  renderDetail();
+}
+
+function toggleCaughtSeal(id) {
+  if (caughtSet[id]) {
+    delete caughtSet[id];
+  } else {
+    caughtSet[id] = true;
+  }
+  saveCaught();
+  renderList();
+  renderDetail();
+}
+
+function renderList() {
+  var grid = document.getElementById('specimenGrid');
+  var filtered = allLimes.filter(function(l){
+    if (currentStep !== 'ALL' && l.step !== currentStep) return false;
+    if (currentSearch) {
+      var hay = (l.name + ' ' + l.background + ' ' + l.description + ' ' + l.id).toLowerCase();
+      if (hay.indexOf(currentSearch) === -1) return false;
+    }
+    return true;
+  });
+
+  if (!filtered.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;padding:30px;text-align:center;font-style:italic;color:var(--ink-dim)">No cryptid recorded under this classification.</div>';
+    return;
+  }
+
+  // If selectedId not in filtered, choose first
+  if (!filtered.some(function(l){ return l.id === selectedId; })) {
+    selectedId = filtered[0].id;
+    renderDetail();
+  }
+
+  grid.innerHTML = filtered.map(function(l){
+    var isSel = l.id === selectedId ? 'selected' : '';
+    var isCaught = !!caughtSet[l.id];
+    var mark = isCaught ? '&#10003; ' : '';
+    return '<div class="specimen-chip ' + isSel + '" onclick="selectSpecimen(\'' + l.id + '\')">' +
+      '<img src="' + l.icon + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">' +
+      '<div style="min-width:0;flex:1">' +
+        '<div class="chip-name">' + mark + l.name + '</div>' +
+        '<div class="chip-sub">' + l.background + '</div>' +
+      '</div>' +
+      '<span class="tier-mark ' + l.step + '">' + l.step + '</span>' +
+    '</div>';
+  }).join('');
+}
+
+function renderDetail() {
+  var wrap = document.getElementById('entryDetail');
+  var l = allLimes.find(function(x){ return x.id === selectedId; }) || allLimes[0];
+  if (!l) return;
+
+  var isCaught = !!caughtSet[l.id];
+  var sealClass = isCaught ? 'wax-seal' : 'wax-seal unsealed';
+  var sealText = isCaught ? '<span class="seal-star">&#10022;</span>SEALED' : '<span class="seal-star">&#9675;</span>UNSEEN';
+
+  wrap.innerHTML = 
+    '<div class="entry-head">' +
+      '<div class="entry-title-wrap">' +
+        '<h3>' + l.name + '</h3>' +
+        '<div class="latin-sub">Codex Identifier: #' + l.id + ' &bull; ' + l.name_cn + '</div>' +
+      '</div>' +
+      '<span class="entry-tier-badge" style="color:var(--gold-accent)">Tier ' + l.step + '-Rank</span>' +
+    '</div>' +
+
+    '<div class="plate-wrap">' +
+      '<div class="plate-frame">' +
+        '<img src="' + l.icon + '" alt="' + l.name + '">' +
+      '</div>' +
+      '<div class="field-notes">' +
+        '&ldquo;' + l.description + '&rdquo;' +
+      '</div>' +
+    '</div>' +
+
+    '<table class="ledger-table">' +
+      '<tr><td class="label">Habitat Realm</td><td class="val">' + l.background + ' (' + l.area_type + ')</td></tr>' +
+      '<tr><td class="label">Natural Block</td><td class="val">' + l.block + '</td></tr>' +
+      '<tr><td class="label">Encounter Rate</td><td class="val">' + l.rate_pct + '% natural spawn</td></tr>' +
+      '<tr><td class="label">Classification</td><td class="val">' + l.type + ' Genus</td></tr>' +
+      '<tr><td class="label">Trophy Bounty</td><td class="val" style="color:var(--gold-accent)">' + l.reward + '</td></tr>' +
+    '</table>' +
+
+    '<div class="seal-container">' +
+      '<div style="flex:1">' +
+        '<div style="font-family:\'Cinzel\',serif;font-size:11px;letter-spacing:1px;color:var(--ink-dim);text-transform:uppercase">Guild Guildmaster Registry</div>' +
+        '<div style="font-size:13px;font-style:italic;color:var(--ink)">' + (isCaught ? 'Status: Captured & Verified in Field Log' : 'Status: Specimen Not Yet Encountered') + '</div>' +
+      '</div>' +
+      '<div class="' + sealClass + '" onclick="toggleCaughtSeal(\'' + l.id + '\')" title="Click to stamp wax seal">' +
+        sealText +
+      '</div>' +
+    '</div>';
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  renderList();
+  renderDetail();
+});
+</script>
+
+</body>
+</html>
