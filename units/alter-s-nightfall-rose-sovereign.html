@@ -50,9 +50,19 @@
 <div class="page">
 <main class="content">
 <h1>Rose Sovereign</h1>
-<p><strong>ID:</strong> <code>M13307_000</code> · <strong>Standard counterpart:</strong> <a href="../units/standard-s-rose-sovereign.html">M13307</a> · <strong>Alter Theme:</strong> Nightfall · <strong>Step:</strong> S · <strong>Weight:</strong> 10 · <strong>CharacterRole:</strong> DPS</p>
+<p><strong>ID:</strong> <code>M13307_000</code> · <strong>Standard counterpart:</strong> <a href="../units/standard-s-rose-sovereign.html">M13307</a> · <strong>Alter Theme:</strong> Nightfall · <strong>Source:</strong> Limited · <strong>Step:</strong> S · <strong>Weight:</strong> 10 · <strong>CharacterRole:</strong> DPS</p>
 <!-- imagery:start -->
 
+<h2>Animated</h2>
+<div class="anim-grid">
+<figure><div class="thumb"><img src="../assets/icons/animated/idle/M13307_000.gif" alt="M13307_000 idle"></div><figcaption>Idle</figcaption></figure>
+<figure><div class="thumb"><img src="../assets/icons/animated/walk/M13307_000.gif" alt="M13307_000 walk"></div><figcaption>Walk</figcaption></figure>
+<figure><div class="thumb"><img src="../assets/icons/animated/celebrate/M13307_000.gif" alt="M13307_000 celebrate"></div><figcaption>Celebrate</figcaption></figure>
+<figure><div class="thumb"><img src="../assets/icons/animated/special/M13307_000.gif" alt="M13307_000 special"></div><figcaption>Special (Ult)</figcaption></figure>
+<figure><div class="thumb"><img src="../assets/icons/animated/death/M13307_000.gif" alt="M13307_000 death"></div><figcaption>Death</figcaption></figure>
+<figure><div class="thumb"><img src="../assets/icons/animated/abnormal/M13307_000.gif" alt="M13307_000 abnormal"></div><figcaption>Abnormal</figcaption></figure>
+<figure><div class="thumb"><img src="../assets/icons/animated/_single/M13307_000.gif" alt="M13307_000 _single"></div><figcaption>Alt idle</figcaption></figure>
+</div>
 <h2>Still</h2>
 <div class="still-grid">
 <figure><div class="thumb"><img src="../assets/icons/Header/M13307_000.png" alt="M13307_000 Avatar (Header)"></div><figcaption>Avatar (Header)</figcaption></figure>
@@ -63,7 +73,7 @@
 </div>
 <!-- imagery:end -->
 
-<p><strong>Archetypes:</strong> Skill DMG, <a href="../keywords/mechanic-hp-loss.html">Life Loss</a></p>
+<p><strong>Archetypes:</strong> Skill DMG, <a href="../keywords/mechanic-hp-loss.html">Life Loss</a>, <a href="../keywords/debuff-expose.html">Expose</a></p>
 <h2>Attributes (Class · Type · Element · Terrain)</h2>
 <table>
 <thead>
@@ -84,7 +94,7 @@
 </tbody>
 </table>
 <blockquote>
-<p><strong>Race name</strong> (used for talent filter): <code>[CN: 夜族]</code> (race name ≠ Type race-family <code>Undead</code>).</p>
+<p><strong>Race name</strong> (used for talent filter): <code>Vampiric</code> (race name ≠ Type race-family <code>Undead</code>).</p>
 </blockquote>
 <h2>Codex (Insight)</h2>
 <p><strong>Tome of Blood</strong> (<code>XD14001_061</code>)</p>
@@ -375,7 +385,7 @@
 </tbody>
 </table>
 <h2>Talents</h2>
-<p>Talents unlock at <strong>5★</strong>, rolled / rerolled with <strong>Talent Fruit</strong>. Eligible pool for this unit = <strong>90</strong> total = 1 exclusive + 0 race + 21 class + 10 element + 58 generic.</p>
+<p>Talents unlock at <strong>5★</strong>, rolled / rerolled with <strong>Talent Fruit</strong>. Eligible pool for this unit = <strong>100</strong> total = 1 exclusive + 10 race + 21 class + 10 element + 58 generic.</p>
 <blockquote>
 <p><strong>Format:</strong> Effect column = canonical <code>TalentDataTable.Effect_EN</code> with <strong>highest-tier values filled</strong> (bold). <code>Tiers</code> column lists which tiers the talent has (e.g. <code>CBAS</code>, <code>AS</code>, <code>S</code>). Per-tier values in italic at end as <code>Value0[/Value1[/Value2]]</code>. Talent names are canonical from <code>Name_EN</code> — do NOT paraphrase.</p>
 </blockquote>
@@ -385,8 +395,49 @@
 <blockquote>
 <p><em>(per-tier values: _000: 25/1)</em></p>
 </blockquote>
-<h3>Race-restricted (0 talents)</h3>
-<p><em>(none)</em></p>
+<h3>Race-restricted: Vampiric (10 talents across 5 base IDs)</h3>
+<table>
+<thead>
+<tr>
+<th>Base ID</th>
+<th>Name</th>
+<th>Tiers</th>
+<th>Effect (highest-tier filled) &amp; per-tier values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TF16401</td>
+<td><strong>Blood Siphon</strong></td>
+<td>CBAS</td>
+<td><strong>Absorb 8 HP from target after casting skill.</strong> <em>(C: 2 · B: 4 · A: 6 · S: 8)</em></td>
+</tr>
+<tr>
+<td>TF16402</td>
+<td><strong>Innate Bloodthirst</strong></td>
+<td>AS</td>
+<td><strong>[CN: 释放技能时每获得10点生命使自身造成失去生命额外+1。]</strong> <em>(A: 20/1 · S: 10/1)</em></td>
+</tr>
+<tr>
+<td>TF16403</td>
+<td><strong>Blood Frenzy</strong></td>
+<td>AS</td>
+<td><strong>Apply +1 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-expose.html">Expose</a> per 50 HP lost.</strong> <em>(A: 100/1 · S: 50/1)</em></td>
+</tr>
+<tr>
+<td>TF16404</td>
+<td><strong>Hemomancy</strong></td>
+<td>S</td>
+<td><strong>Lose HP equal to 10% of own Max HP at action start. Deal additional <a href="../keywords/mechanic-total-dmg.html">total DMG</a> equal to HP lost.</strong> <em>(S: 10)</em></td>
+</tr>
+<tr>
+<td>TF16405</td>
+<td><strong>Child of Night</strong></td>
+<td>S</td>
+<td><strong>Gain +1 Max HP per 10 HP gained.</strong> <em>(S: 10/1)</em></td>
+</tr>
+</tbody>
+</table>
 <h3>Class-restricted: Mage (21 talents across 10 base IDs)</h3>
 <table>
 <thead>
@@ -644,8 +695,8 @@
 </ul>
 <!-- SYNERGY-START -->
 
-<h2>Synergistic Talents · 128 talent(s) (kit-based, auto-generated)</h2>
-<h3>Trigger chain · 10</h3>
+<h2>Synergistic Talents · 136 talent(s) (kit-based, auto-generated)</h2>
+<h3>Trigger chain · 12</h3>
 <ul>
 <li><span class="broken-link" title="missing: TF00005-food-coma">TF00005 · Food Coma</span> — Shared trigger: action start</li>
 <li><span class="broken-link" title="missing: TF00012-elemental-reaction">TF00012 · Elemental Reaction</span> — Shared trigger: after attack</li>
@@ -657,8 +708,10 @@
 <li><span class="broken-link" title="missing: TF11206-water-absorb">TF11206 · Water Absorb</span> — Shared trigger: action start</li>
 <li><span class="broken-link" title="missing: TF15402-softened-ground">TF15402 · Softened Ground</span> — Shared trigger: after attack</li>
 <li><span class="broken-link" title="missing: TF15804-flame-of-hope">TF15804 · Flame of Hope</span> — Shared trigger: action start</li>
+<li><span class="broken-link" title="missing: TF17103-cycle-strike">TF17103 · Cycle Strike</span> — Shared trigger: after attack</li>
+<li><span class="broken-link" title="missing: TF17304-crisp-croak">TF17304 · Crisp Croak</span> — Shared trigger: action start</li>
 </ul>
-<h3>Stat chain · 103</h3>
+<h3>Stat chain · 108</h3>
 <ul>
 <li><span class="broken-link" title="missing: TF00003-execute">TF00003 · Execute</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF00011-critical-moment">TF00011 · Critical Moment</span> — Shared stat: HP</li>
@@ -681,6 +734,7 @@
 <li><span class="broken-link" title="missing: TF01053-jade-essence">TF01053 · Jade Essence</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF01057-ruin-descends">TF01057 · Ruin Descends</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF01064-thorns-abound">TF01064 · Thorns Abound</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF01071-wild-growth">TF01071 · Wild Growth</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF10004-fit-body">TF10004 · Fit Body</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF10012-life-rebuild">TF10012 · Life Rebuild</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF10104-war-trample">TF10104 · War Trample</span> — Shared stat: HP</li>
@@ -752,19 +806,23 @@
 <li><span class="broken-link" title="missing: TF16302-soul-release">TF16302 · Soul Release</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF16303-supremacy">TF16303 · Supremacy</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF16305-ascension">TF16305 · Ascension</span> — Shared stat: HP</li>
-<li><span class="broken-link" title="missing: TF16401-blood-siphon">TF16401 · Blood Siphon</span> — Shared stat: HP</li>
-<li><span class="broken-link" title="missing: TF16402-innate-bloodthirst">TF16402 · Innate Bloodthirst</span> — Shared stat: HP</li>
-<li><span class="broken-link" title="missing: TF16403-blood-frenzy">TF16403 · Blood Frenzy</span> — Shared stat: HP</li>
-<li><span class="broken-link" title="missing: TF16404-hemomancy">TF16404 · Hemomancy</span> — Shared stat: HP; Shared trigger: action start</li>
-<li><span class="broken-link" title="missing: TF16405-child-of-night">TF16405 · Child of Night</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16401-blood-siphon">TF16401 · Blood Siphon</span> — Shared stat: HP; Same race lock: Vampiric</li>
+<li><span class="broken-link" title="missing: TF16403-blood-frenzy">TF16403 · Blood Frenzy</span> — Shared stat: HP; Same race lock: Vampiric</li>
+<li><span class="broken-link" title="missing: TF16404-hemomancy">TF16404 · Hemomancy</span> — Shared stat: HP; Shared trigger: action start; Same race lock: Vampiric</li>
+<li><span class="broken-link" title="missing: TF16405-child-of-night">TF16405 · Child of Night</span> — Shared stat: HP; Same race lock: Vampiric</li>
 <li><span class="broken-link" title="missing: TF16501-hardened-spines">TF16501 · Hardened Spines</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF16503-spine-wound">TF16503 · Spine Wound</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF16504-needle-sweep">TF16504 · Needle Sweep</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF16701-ancient-blood">TF16701 · Ancient Blood</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF16702-hyper-regen">TF16702 · Hyper Regen</span> — Shared stat: HP; Shared trigger: action start</li>
 <li><span class="broken-link" title="missing: TF16705-elders-gift">TF16705 · Elder's Gift</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16804-oceans-blessing">TF16804 · Ocean's Blessing</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF17101-damp-scales">TF17101 · Damp Scales</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF17102-tidal-sovereign">TF17102 · Tidal Sovereign</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF17305-hibernation">TF17305 · Hibernation</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF17502-self-diagnostics">TF17502 · Self-Diagnostics</span> — Shared stat: HP</li>
 </ul>
-<h3>Same restriction pool (weak) · 15</h3>
+<h3>Same restriction pool (weak) · 16</h3>
 <ul>
 <li><span class="broken-link" title="missing: TF10201-gifted">TF10201 · Gifted</span> — Same class lock: Mage</li>
 <li><span class="broken-link" title="missing: TF10202-spell-demo">TF10202 · Spell Demo</span> — Same class lock: Mage</li>
@@ -781,6 +839,7 @@
 <li><span class="broken-link" title="missing: TF11503-endless-cycle">TF11503 · Endless Cycle</span> — Same element lock: Dark</li>
 <li><span class="broken-link" title="missing: TF11505-shadow-follow">TF11505 · Shadow Follow</span> — Same element lock: Dark</li>
 <li><span class="broken-link" title="missing: TF11506-shadow-lurk">TF11506 · Shadow Lurk</span> — Same element lock: Dark</li>
+<li><span class="broken-link" title="missing: TF16402-innate-bloodthirst">TF16402 · Innate Bloodthirst</span> — Same race lock: Vampiric</li>
 </ul>
 <!-- SYNERGY-END -->
 </main>

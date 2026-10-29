@@ -50,7 +50,7 @@
 <div class="page">
 <main class="content">
 <h1>Minotaur Brave</h1>
-<p><strong>ID:</strong> <code>M11304</code> · <strong>Alters:</strong> <a href="../units/alter-s-legion-minotaur-brave.html">Legion</a> · <strong>Step:</strong> S · <strong>Weight:</strong> 10 · <strong>CharacterRole:</strong> DPS,Tank</p>
+<p><strong>ID:</strong> <code>M11304</code> · <strong>Alters:</strong> <a href="../units/alter-s-legion-minotaur-brave.html">Legion</a>, <a href="../units/alter-s-black-sail-minotaur-brave.html">Black Sail</a> · <strong>Step:</strong> S · <strong>Weight:</strong> 10 · <strong>CharacterRole:</strong> DPS,Tank</p>
 <!-- imagery:start -->
 
 <h2>Animated</h2>
@@ -400,8 +400,8 @@
 <h2>Perk</h2>
 <p><strong>Blood Edge</strong> (<code>BD40939</code>) — UnlockStar 5</p>
 <blockquote>
-<p>[Counter] Gain <strong>4</strong> HP per counter hit.</p>
-<p><em>(Value0=4.)</em></p>
+<p>[Counter] Upon counterattacking, gain <strong>4</strong> HP per <strong>1</strong> Counters.</p>
+<p><em>(Value0=1, Value1=4.)</em></p>
 </blockquote>
 <h2>Level-up Materials</h2>
 <table>
@@ -474,7 +474,7 @@
 <td>TF13804</td>
 <td><strong>Horn Charge</strong></td>
 <td>AS</td>
-<td><strong>Apply 20 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-stun.html">Stun</a> to the nearest target upon the first basic attack each turn, increasing by 10 per 1 distance.</strong> <em>(A: 10/1/5 · S: 20/1/10)</em></td>
+<td><strong>After the first Basic Attack each turn, apply 20 <a href="../keywords/mechanic-stacks.html">stacks</a> of <a href="../keywords/debuff-stun.html">Stun</a> to the nearest target. Apply +10 <a href="../keywords/debuff-stun.html">Stun</a> <a href="../keywords/mechanic-stacks.html">stacks</a> per 1 Attack Range.</strong> <em>(A: 10/1/5 · S: 20/1/10)</em></td>
 </tr>
 <tr>
 <td>TF13805</td>
@@ -741,7 +741,7 @@
 </ul>
 <!-- SYNERGY-START -->
 
-<h2>Synergistic Talents · 170 talent(s) (kit-based, auto-generated)</h2>
+<h2>Synergistic Talents · 182 talent(s) (kit-based, auto-generated)</h2>
 <h3>Action-type chain · 16</h3>
 <ul>
 <li><span class="broken-link" title="missing: TF00001-astral-backlash">TF00001 · Astral Backlash</span> — Shared action type: counter</li>
@@ -761,7 +761,7 @@
 <li><span class="broken-link" title="missing: TF15902-patient-counter">TF15902 · Patient Counter</span> — Shared action type: counter</li>
 <li><span class="broken-link" title="missing: TF16204-wrath-scale">TF16204 · Wrath Scale</span> — Shared action type: counter</li>
 </ul>
-<h3>Stat chain · 143</h3>
+<h3>Stat chain · 155</h3>
 <ul>
 <li><span class="broken-link" title="missing: TF00003-execute">TF00003 · Execute</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF00011-critical-moment">TF00011 · Critical Moment</span> — Shared stat: HP</li>
@@ -799,6 +799,9 @@
 <li><span class="broken-link" title="missing: TF01063-cozy-quilt">TF01063 · Cozy Quilt</span> — Shared stat: Mana</li>
 <li><span class="broken-link" title="missing: TF01064-thorns-abound">TF01064 · Thorns Abound</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF01065-mana-rampage">TF01065 · Mana Rampage</span> — Shared stat: Mana</li>
+<li><span class="broken-link" title="missing: TF01067-deep-sea-sneak">TF01067 · Deep Sea Sneak</span> — Shared stat: Mana</li>
+<li><span class="broken-link" title="missing: TF01070-rally">TF01070 · Rally</span> — Shared stat: Mana</li>
+<li><span class="broken-link" title="missing: TF01071-wild-growth">TF01071 · Wild Growth</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF10004-fit-body">TF10004 · Fit Body</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF10011-mana-surge">TF10011 · Mana Surge</span> — Shared stat: Mana</li>
 <li><span class="broken-link" title="missing: TF10012-life-rebuild">TF10012 · Life Rebuild</span> — Shared stat: HP</li>
@@ -895,7 +898,6 @@
 <li><span class="broken-link" title="missing: TF16304-soul-forge">TF16304 · Soul Forge</span> — Shared stat: Mana</li>
 <li><span class="broken-link" title="missing: TF16305-ascension">TF16305 · Ascension</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF16401-blood-siphon">TF16401 · Blood Siphon</span> — Shared stat: HP</li>
-<li><span class="broken-link" title="missing: TF16402-innate-bloodthirst">TF16402 · Innate Bloodthirst</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF16403-blood-frenzy">TF16403 · Blood Frenzy</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF16404-hemomancy">TF16404 · Hemomancy</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF16405-child-of-night">TF16405 · Child of Night</span> — Shared stat: HP</li>
@@ -906,6 +908,16 @@
 <li><span class="broken-link" title="missing: TF16702-hyper-regen">TF16702 · Hyper Regen</span> — Shared stat: HP</li>
 <li><span class="broken-link" title="missing: TF16704-mana-surge">TF16704 · Mana Surge</span> — Shared stat: Mana</li>
 <li><span class="broken-link" title="missing: TF16705-elders-gift">TF16705 · Elder's Gift</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16803-tidal-bond">TF16803 · Tidal Bond</span> — Shared stat: Mana</li>
+<li><span class="broken-link" title="missing: TF16804-oceans-blessing">TF16804 · Ocean's Blessing</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF16903-ocean-force">TF16903 · Ocean Force</span> — Shared stat: Mana</li>
+<li><span class="broken-link" title="missing: TF17101-damp-scales">TF17101 · Damp Scales</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF17102-tidal-sovereign">TF17102 · Tidal Sovereign</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF17103-cycle-strike">TF17103 · Cycle Strike</span> — Shared stat: Mana</li>
+<li><span class="broken-link" title="missing: TF17105-tidal-foresight">TF17105 · Tidal Foresight</span> — Shared stat: Mana</li>
+<li><span class="broken-link" title="missing: TF17301-powerful-hind-legs">TF17301 · Powerful Hind Legs</span> — Shared stat: Mana</li>
+<li><span class="broken-link" title="missing: TF17305-hibernation">TF17305 · Hibernation</span> — Shared stat: HP</li>
+<li><span class="broken-link" title="missing: TF17502-self-diagnostics">TF17502 · Self-Diagnostics</span> — Shared stat: HP</li>
 </ul>
 <h3>Same restriction pool (weak) · 11</h3>
 <ul>
